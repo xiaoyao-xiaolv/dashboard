@@ -1,0 +1,101 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "dimensions",
+                "displayNameKey": "字段",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {}
+            }
+        ],
+        "conditions": [
+            {
+                "dimensions": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "custom",
+                        "type": "Boolean",
+                        "displayName": "使用自定义文本",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "customText",
+                        "type": "Text",
+                        "displayNameKey": "自定义文本",
+                        "defaultValue": "这是一个自定义文本"
+                    },
+                    {
+                        "displayNameKey": "滚动方向",
+                        "name": "scrollDirection",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "up",
+                                "displayNameKey": "上"
+                            },
+                            {
+                                "value": "down",
+                                "displayNameKey": "下"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "左"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右"
+                            }
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "scrollAmount",
+                        "type": "Integer",
+                        "displayName": "滚动速度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

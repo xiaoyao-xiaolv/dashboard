@@ -1,0 +1,14 @@
+{
+    "name": "imageView",
+    "version": "0.0.1",
+    "displayName": "图片动态预警",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

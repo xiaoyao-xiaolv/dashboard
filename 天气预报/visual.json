@@ -1,0 +1,14 @@
+{
+    "name": "weather",
+    "version": "0.0.1",
+    "displayName": "天气预报",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

@@ -1,0 +1,156 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "departure",
+                "displayNameKey": "起始地点",
+                "kind": "grouping"
+            },
+            {
+                "name": "destination",
+                "displayNameKey": "目标地点",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "departure": {
+                                "min": 1
+                            },
+                            "destination": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "departure": {
+                    "max": 1
+                },
+                "destination": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "roam",
+                        "type": "Boolean",
+                        "displayName": "是否允许缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "palette",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "inheritFrom": "dashboard.palette"
+                    },
+                    {
+                        "name": "symbolSize",
+                        "type": "Integer",
+                        "displayName": "数据点大小",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "showLegend",
+                        "type": "Boolean",
+                        "displayName": "是否显示图例",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "effect",
+                        "type": "Boolean",
+                        "displayName": "是否自定义特效",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "Text",
+                        "displayName": "特效图形",
+                        "defaultValue": "path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z"
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "地图边界颜色",
+                        "defaultValue": "rgba(147, 235, 248, 1)"
+                    },
+                    {
+                        "name": "startColor",
+                        "type": "Color",
+                        "displayName": "填充起始颜色",
+                        "defaultValue": "rgba(147, 235, 248, 0)"
+                    },
+                    {
+                        "name": "endColor",
+                        "type": "Color",
+                        "displayName": "填充终止颜色",
+                        "defaultValue": "rgba(147, 235, 248, 0.1)"
+                    },
+                    {
+                        "name": "shadowColor",
+                        "type": "Color",
+                        "displayName": "阴影效果颜色",
+                        "defaultValue": "rgba(128, 217, 248, 1)"
+                    },
+                    {
+                        "name": "emphasisColor",
+                        "type": "Color",
+                        "displayName": "悬浮背景颜色",
+                        "defaultValue": "#389BB7"
+                    }
+
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

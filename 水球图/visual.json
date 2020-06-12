@@ -1,0 +1,13 @@
+{
+    "name": "liquidfill",
+    "version": "0.0.1",
+    "displayName": "水球图",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "configuration": {
+        "token": "xxxxxxx"
+    }
+}

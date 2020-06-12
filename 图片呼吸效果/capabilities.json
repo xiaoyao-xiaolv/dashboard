@@ -1,0 +1,27 @@
+{
+    "dataBinding": {},
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "Image1",
+                        "type": "Image",
+                        "displayName": "前景图片"
+                    },
+                    {
+                        "name": "Image2",
+                        "type": "Image",
+                        "displayName": "背景图片"
+                    }
+                ]
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}

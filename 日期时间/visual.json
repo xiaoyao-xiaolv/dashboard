@@ -1,0 +1,14 @@
+{
+    "name": "DateTime",
+    "version": "0.0.1",
+    "displayName": "日期时间",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

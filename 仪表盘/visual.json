@@ -1,0 +1,14 @@
+{
+    "name": "gauge",
+    "version": "0.0.1",
+    "displayName": "仪表盘",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

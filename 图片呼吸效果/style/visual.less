@@ -1,0 +1,25 @@
+::-webkit-scrollbar {display:none}
+img {
+    max-width: 100%; 
+    max-height:100%; 
+    height: auto; 
+    width: auto; 
+    position: absolute;
+}
+.B {
+    -webkit-animation: breath 2s infinite ease-in-out forwards;
+    animation: breath 2s ease-in-out infinite forwards;
+}
+@-webkit-keyframes breath {
+    0% {opacity: .2;}60% {opacity: 1;}to {opacity: .2;}
+}
+@keyframes breath {
+    0% {opacity: .2;}60% {opacity: 1;}to {opacity: .2;}
+}
+
+#visualDom{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position: relative;
+}

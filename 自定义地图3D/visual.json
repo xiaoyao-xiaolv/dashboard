@@ -1,0 +1,14 @@
+{
+    "name": "CustomMap3D",
+    "version": "0.0.1",
+    "displayName": "江苏省地图3D",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

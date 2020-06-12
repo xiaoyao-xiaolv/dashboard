@@ -1,0 +1,50 @@
+{
+    "dataBinding": {},
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "maskImage",
+                        "type": "Image",
+                        "displayName": "图片"
+                    },
+                    {
+                        "name": "X",
+                        "type": "Integer",
+                        "displayName": "X轴角度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "Y",
+                        "type": "Integer",
+                        "displayName": "Y轴角度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "fps",
+                        "type": "Integer",
+                        "displayName": "刷新率(FPS)",
+                        "defaultValue": 60
+                    }
+                ]
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

@@ -1,0 +1,33 @@
+::-webkit-scrollbar {display:none}
+img {
+    max-width: 100%; 
+    max-height:100%; 
+    height: auto; 
+    width: auto; 
+    position: absolute;
+}
+.A {
+    -webkit-animation:myRotate 20s linear infinite;
+    animation:myRotate 20s linear infinite;
+}
+@-webkit-keyframes myRotate{
+    0%{ -webkit-transform: rotate(0deg);}
+    25%{ -webkit-transform: rotate(90deg);}
+    50%{ -webkit-transform: rotate(180deg);}
+    75%{ -webkit-transform: rotate(270deg);}
+    100%{ -webkit-transform: rotate(360deg);}
+}
+@keyframes myRotate{
+    0%{ -webkit-transform: rotate(0deg);}
+    25%{ -webkit-transform: rotate(90deg);}
+    50%{ -webkit-transform: rotate(180deg);}
+    75%{ -webkit-transform: rotate(270deg);}
+    100%{ -webkit-transform: rotate(360deg);}
+}
+
+#visualDom{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position: relative;
+}

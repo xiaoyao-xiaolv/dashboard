@@ -1,0 +1,138 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "iconCss": "icon-format-data",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
+            },
+            {
+                "name": "ActualValue",
+                "displayNameKey": "实际值",
+                "kind": "value"
+            },
+            {
+                "name": "ContrastValue",
+                "displayNameKey": "对比值",
+                "kind": "value"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "showSubTitle",
+                        "type": "Boolean",
+                        "displayName": "显示副标题",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "subtitle",
+                        "type": "Text",
+                        "displayNameKey": "副标题",
+                        "defaultValue": "示例"
+                    },
+                    {
+                        "displayNameKey": "水球形状",
+                        "name": "shape",
+                        "type": "Enum",
+                        "items": [
+                            {
+                              "value": "rect",
+                              "displayNameKey": "rect"
+                            },
+                            {
+                              "value": "roundRect",
+                              "displayNameKey": "roundRect"
+                            },
+                            {
+                              "value": "circle",
+                              "displayNameKey": "circle"
+                            },
+                            {
+                              "value": "diamond",
+                              "displayNameKey": "diamond"
+                            }
+                          ],
+                          "defaultValue": "circle"
+                    },
+                    {
+                        "name": "borderWidth",
+                        "type": "Integer",
+                        "displayName": "边框线宽",
+                        "defaultValue": "5"
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "#ccc"
+                    },
+                    {
+                        "name": "waterColor",
+                        "type": "Color",
+                        "displayName": "水波颜色",
+                        "defaultValue": "#e6776c"
+                    },
+                    {
+                        "name": "backgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "fontSize",
+                        "type": "Integer",
+                        "displayName": "内容字体大小",
+                        "defaultValue":30
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

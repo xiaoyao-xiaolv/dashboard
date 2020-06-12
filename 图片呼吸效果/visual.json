@@ -1,0 +1,17 @@
+{
+    "name": "ImageTest",
+    "version": "0.0.1",
+    "displayName": "图片呼吸特效",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "testImg1": "assets/1.png",
+            "testImg2": "assets/2.png"
+        }
+    },
+    "configuration": {}
+}

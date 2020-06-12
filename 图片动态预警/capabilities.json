@@ -1,0 +1,83 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "设备状态",
+                "kind": "value"
+            },
+            {
+                "name": "xname",
+                "displayNameKey": "分类_X",
+                "kind": "grouping"
+            },
+            {
+                "name": "yname",
+                "displayNameKey": "分类_Y",
+                "kind": "grouping"
+            },
+            {
+                "name": "imageurl",
+                "displayNameKey": "图片信息",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "xname": {
+                                "min": 1
+                            },
+                            "yname": {
+                                "min": 1
+                            },
+                            "imageurl": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "xname": {
+                    "max": 1
+                },
+                "yname": {
+                    "max": 1
+                },
+                "imageurl": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {},
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

@@ -1,0 +1,14 @@
+{
+    "name": "CustomMap2D",
+    "version": "0.0.1",
+    "displayName": "自定义地图2D",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

@@ -1,0 +1,123 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "province",
+                "displayNameKey": "省份",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "province": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "province": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "roam",
+                        "type": "Boolean",
+                        "displayName": "是否允许缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showPieces",
+                        "type": "Boolean",
+                        "displayName": "是否采用分段填充",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showVisualMap",
+                        "type": "Boolean",
+                        "displayName": "是否显示分段图例",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "textColor",
+                        "type": "Color",
+                        "displayName": "图例字体颜色",
+                        "defaultValue": "#ffffff"
+                    },
+                    {
+                        "name": "pieces",
+                        "type": "LongText",
+                        "displayName": "分段颜色",
+                        "defaultValue": "[{\"gt\": 10000,\"label\": \">10000\"},{\"gte\": 1000,\"lte\": 10000,\"label\": \"1000 - 10000\"},{\"gte\": 100,\"lt\": 1000,\"label\": \"100 - 999\"},{\"gte\": 1,\"lt\": 100,\"label\": \"1 - 99\"},{\"lte\": 0,\"label\": \"0\"}]"
+                    },
+                    {
+                        "name": "piecesColor",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "inheritFrom": "dashboard.palette"
+                    },
+                    {
+                        "name": "mapColor",
+                        "type": "Color",
+                        "displayName": "地图填充颜色",
+                        "defaultValue": "#0a4880"
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "地图边界颜色",
+                        "defaultValue": "rgba(147, 235, 248, 1)"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

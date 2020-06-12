@@ -1,0 +1,75 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "longitude",
+                "displayNameKey": "经度",
+                "kind": "value"
+            },
+            {
+                "name": "latitude",
+                "displayNameKey": "纬度",
+                "kind": "value"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {}
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "name": "zoom",
+                "type": "Integer",
+                "displayName": "缩放比例",
+                "defaultValue": 14
+            },
+            {
+                "displayName": "地图类型",
+                "name": "mapStyle",
+                "type": "Enum",
+                "items": [
+                    {
+                      "value": "style",
+                      "displayName": "style"
+                    },
+                    {
+                      "value": "styleId",
+                      "displayName": "styleId"
+                    },
+                    {
+                      "value": "styleJson",
+                      "displayName": "styleJson"
+                    }
+                  ],
+                  "defaultValue": "style"
+            },
+            {
+                "name": "styleValue",
+                "type": "LongText",
+                "displayName": "地图样式",
+                "defaultValue": "normal"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

@@ -1,0 +1,14 @@
+{
+    "name": "DynamicText",
+    "version": "0.0.1",
+    "displayName": "动态文本",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

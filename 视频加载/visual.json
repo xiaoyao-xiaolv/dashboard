@@ -1,0 +1,14 @@
+{
+    "name": "VideoPlayer",
+    "version": "0.0.1",
+    "displayName": "视频播放",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

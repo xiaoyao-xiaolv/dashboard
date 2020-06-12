@@ -1,0 +1,14 @@
+{
+    "name": "heatMap",
+    "version": "0.0.1",
+    "displayName": "热力地图",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": ["http://api.map.baidu.com/api?v=3.0&ak=mI0aIsNIg5foyVH3m6tZ9xvQlMxG1ZGB"],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}

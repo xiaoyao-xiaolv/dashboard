@@ -1,0 +1,112 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "iconCss": "icon-format-data",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
+            },
+            {
+                "name": "ActualValue",
+                "displayNameKey": "实际值",
+                "kind": "value"
+            },
+            {
+                "name": "ContrastValue",
+                "displayNameKey": "对比值",
+                "kind": "value"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "showSubTitle",
+                        "type": "Boolean",
+                        "displayName": "显示副标题",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "subtitle",
+                        "type": "Text",
+                        "displayNameKey": "副标题",
+                        "defaultValue": "示例"
+                    },
+                    {
+                        "name": "icon",
+                        "type": "Image",
+                        "displayName": "图标"
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "外环颜色",
+                        "defaultValue": "#20da97"
+                    },
+                    {
+                        "name": "scaleColor",
+                        "type": "Color",
+                        "displayName": "刻度颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "fontColor",
+                        "type": "Color",
+                        "displayName": "字体颜色",
+                        "defaultValue": "#f44e3b"
+                    },
+                    {
+                        "name": "fontSize",
+                        "type": "Integer",
+                        "displayName": "字体大小",
+                        "defaultValue": 10
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

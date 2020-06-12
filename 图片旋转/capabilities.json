@@ -1,0 +1,22 @@
+{
+    "dataBinding": {},
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "maskImage",
+                        "type": "Image",
+                        "displayName": "图片"
+                    }
+                ]
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}

@@ -1,0 +1,16 @@
+{
+    "name": "pie",
+    "version": "0.0.1",
+    "displayName": "圆环指示器",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "default": "assets/default.png"
+        }
+    },
+    "configuration": {}
+}

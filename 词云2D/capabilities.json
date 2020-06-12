@@ -1,0 +1,110 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "dimensions",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {}
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "dimensions": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "showImage",
+                        "type": "Boolean",
+                        "displayName": "是否使用自定义形状",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "maskImage",
+                        "type": "Image",
+                        "displayName": "自定义形状"
+                    },
+                    {
+                        "displayNameKey": "词云形状",
+                        "name": "shape",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            },
+                            {
+                                "value": "pentagon",
+                                "displayNameKey": "五边形"
+                            },
+                            {
+                                "value": "star",
+                                "displayNameKey": "星形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形-直立"
+                            },
+                            {
+                                "value": "triangle-forward",
+                                "displayNameKey": "三角形-侧向"
+                            }
+                        ],
+                        "defaultValue": "circle"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

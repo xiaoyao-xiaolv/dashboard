@@ -1,0 +1,14 @@
+{
+    "name": "wordCloud3D",
+    "version": "0.0.1",
+    "displayName": "词云3D",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {}
+    },
+    "configuration": {}
+}
