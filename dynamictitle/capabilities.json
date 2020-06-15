@@ -1,0 +1,54 @@
+{
+    "dataBinding": {
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "custom",
+                        "type": "Boolean",
+                        "displayName": "使用自定义标题",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "customText",
+                        "type": "Text",
+                        "displayNameKey": "自定义标题",
+                        "defaultValue": "这是一个自定义标题"
+                    },
+                    {
+                        "name": "customTextPosition",
+                        "type": "Enum",
+                        "displayNameKey": "标题位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左"
+                            }, {
+                                "value": "center",
+                                "displayNameKey": "中"
+                            }, {
+                                "value": "right",
+                                "displayNameKey": "右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}

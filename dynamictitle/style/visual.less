@@ -1,0 +1,34 @@
+.title{
+	animation: anim 2s ;
+}
+
+.open {
+    color: green
+}
+@keyframes anim { 
+    0% {
+        opacity: 0;
+        -webkit-transform: translate(0, 1.5px) rotate(1.5deg);
+        transform: translate(0, 1.5px) rotate(1.5deg)
+    }
+    25% {
+        opacity: 1;
+        -webkit-transform: translate(0, -1.5px) rotate(-.5deg);
+        transform: translate(0, -1.5px) rotate(-.5deg)
+    }
+    50% {
+        opacity: 0;
+        -webkit-transform: translate(0, 1.5px) rotate(1.5deg);
+        transform: translate(0, 1.5px) rotate(1.5deg)
+    }
+    75% {
+        opacity: 0.5;
+        -webkit-transform: translate(0, -1.5px) rotate(-.5deg);
+        transform: translate(0, -1.5px) rotate(-.5deg)
+    }
+	100%{
+        opacity:1;
+        -webkit-transform: translate(0, 0px) rotate(0deg);
+        transform: translate(0, 0px) rotate(0deg)
+    }
+}
