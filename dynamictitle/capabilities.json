@@ -1,0 +1,195 @@
+{
+    "dataBinding": {
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "customText",
+                        "type": "Text",
+                        "displayNameKey": "自定义标题",
+                        "defaultValue": "这是一个自定义标题"
+                    },
+                    {
+                        "name": "customTextPosition",
+                        "type": "Enum",
+                        "displayNameKey": "标题位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左"
+                            }, {
+                                "value": "center",
+                                "displayNameKey": "中"
+                            }, {
+                                "value": "right",
+                                "displayNameKey": "右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                   
+                ]
+            },
+            {
+                "displayName": "动画效果",
+                "properties": [
+                    {
+                        "name": "customAnimate",
+                        "type": "Boolean",
+                        "displayName": "添加动画效果",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "customAnimateName",
+                        "type": "Enum",
+                        "displayName": "添加动画名字",
+                        "items": [
+                            {
+                                "value": "bounceIn",
+                                "displayNameKey": "弹跳"
+                            }, {
+                                "value": "backIn",
+                                "displayNameKey": "反弹"
+                            }, {
+                                "value": "fadeIn",
+                                "displayNameKey": "淡入"
+                            }, {
+                                "value": "slideIn",
+                                "displayNameKey": "滑动"
+                            }, {
+                                "value": "rotateIn",
+                                "displayNameKey": "旋转"
+                            }, {
+                                "value": "flip",
+                                "displayNameKey": "翻转"
+                            }
+                        ],
+                        "defaultValue": "bounceIn"
+                    }, {
+                        "name": "customAnimateDirection",
+                        "type": "Enum",
+                        "displayNameKey": "动画方向",
+                        "items": [
+                           {
+                                "value": "Down",
+                                "displayNameKey": "下"
+                            }, {
+                                "value": "Left",
+                                "displayNameKey": "左"
+                            }, {
+                                "value": "Right",
+                                "displayNameKey": "右"
+                            }, {
+                                "value": "Up",
+                                "displayNameKey": "上"
+                            }
+                        ],
+                        "defaultValue": "Down"
+                    }, {
+                        "name": "customAnimateRotateDirection",
+                        "type": "Enum",
+                        "displayNameKey": "动画旋转方向",
+                        "items": [
+                            {
+                                "value": "",
+                                "displayNameKey": "原点"
+                            }, {
+                                "value": "DownLeft",
+                                "displayNameKey": "左下"
+                            }, {
+                                "value": "DownRight",
+                                "displayNameKey": "右下"
+                            }, {
+                                "value": "UpLeft",
+                                "displayNameKey": "左上"
+                            }, {
+                                "value": "UpRight",
+                                "displayNameKey": "右上"
+                            }
+                        ],
+                        "defaultValue": ""
+                    }, {
+                        "name": "customAnimateFlipDirection",
+                        "type": "Enum",
+                        "displayNameKey": "动画翻转方向",
+                        "items": [
+                           {
+                                "value": "InX",
+                                "displayNameKey": "X轴"
+                            }, {
+                                "value": "InY",
+                                "displayNameKey": "Y轴"
+                            }, {
+                                "value": "",
+                                "displayNameKey": "原点"
+                            }
+                        ],
+                        "defaultValue": ""
+                    }, {
+                        "name": "customAnimateDuration",
+                        "type": "Number",
+                        "displayName": "动画时长",
+                        "defaultValue": 1
+                    }, {
+                        "name": "customAnimateDelay",
+                        "type": "Enum",
+                        "displayName": "动画延时",
+                        "items":[
+                            {
+                                "value": "1s",
+                                "displayNameKey": "1s"
+                            },{
+                                "value": "2s",
+                                "displayNameKey": "2s"
+                            }, {
+                                "value": "3s",
+                                "displayNameKey": "3s"
+                            }, {
+                                "value": "4s",
+                                "displayNameKey": "4s"
+                            }, {
+                                "value": "5s",
+                                "displayNameKey": "5s"
+                            }
+                        ],
+                        "defaultValue": "1s"
+                    }, {
+                        "name": "customAnimateRepeat",
+                        "type": "Enum",
+                        "displayName": "动画重复次数",
+                        "items":[
+                            {
+                                "value": "repeat-1",
+                                "displayNameKey": "1"
+                            },{
+                                "value": "repeat-2",
+                                "displayNameKey": "2"
+                            }, {
+                                "value": "repeat-3",
+                                "displayNameKey": "3"
+                            }, {
+                                "value": "infinite",
+                                "displayNameKey": "无限次"
+                            }
+                        ],
+                        "defaultValue": "repeat-1"
+                    }
+                ]
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}
