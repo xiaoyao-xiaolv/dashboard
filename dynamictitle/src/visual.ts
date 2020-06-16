@@ -12,7 +12,6 @@ export default class Visual {
     this.properties = {
       custom: true,
       customText: '这是一个自定义标题',
-      customTextPosition: 'center',
       textStyle: {
         color: '',
         fontSize: '10pt',
@@ -22,7 +21,7 @@ export default class Visual {
       },
       customAnimate: false,
       customAnimateName: 'animate__bounceIn',
-      customAnimateDelay: 'animate__delay-1s',
+      customAnimateDelay: '0s',
       customAnimateRepeat: 'animate__repeat-1'
     };
     this.render();
@@ -48,7 +47,6 @@ export default class Visual {
     p1.style.fontStyle = options.textStyle.fontStyle;
     p1.style.fontWeight = options.textStyle.fontWeight;
 
-    // dowebok.style.textAlign = options.customTextPosition
     // add  animate class name
 
     if (options.customAnimate) {

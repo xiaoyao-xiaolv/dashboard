@@ -11,26 +11,7 @@
                         "type": "Text",
                         "displayNameKey": "自定义标题",
                         "defaultValue": "这是一个自定义标题"
-                    },
-                    {
-                        "name": "customTextPosition",
-                        "type": "Enum",
-                        "displayNameKey": "标题位置",
-                        "items": [
-                            {
-                                "value": "left",
-                                "displayNameKey": "左"
-                            }, {
-                                "value": "center",
-                                "displayNameKey": "中"
-                            }, {
-                                "value": "right",
-                                "displayNameKey": "右"
-                            }
-                        ],
-                        "defaultValue": "center"
-                    },
-                    {
+                    }, {
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -81,16 +62,16 @@
                         "items": [
                            {
                                 "value": "Down",
-                                "displayNameKey": "下"
+                                "displayNameKey": "自顶部"
                             }, {
                                 "value": "Left",
-                                "displayNameKey": "左"
+                                "displayNameKey": "自左侧"
                             }, {
                                 "value": "Right",
-                                "displayNameKey": "右"
+                                "displayNameKey": "自右侧"
                             }, {
                                 "value": "Up",
-                                "displayNameKey": "上"
+                                "displayNameKey": "自底部"
                             }
                         ],
                         "defaultValue": "Down"
@@ -101,19 +82,19 @@
                         "items": [
                             {
                                 "value": "",
-                                "displayNameKey": "原点"
+                                "displayNameKey": "自原点"
                             }, {
                                 "value": "DownLeft",
-                                "displayNameKey": "左下"
+                                "displayNameKey": "自左下部"
                             }, {
                                 "value": "DownRight",
-                                "displayNameKey": "右下"
+                                "displayNameKey": "自右下部"
                             }, {
                                 "value": "UpLeft",
-                                "displayNameKey": "左上"
+                                "displayNameKey": "自左上部"
                             }, {
                                 "value": "UpRight",
-                                "displayNameKey": "右上"
+                                "displayNameKey": "自右上部"
                             }
                         ],
                         "defaultValue": ""
@@ -121,17 +102,16 @@
                         "name": "customAnimateFlipDirection",
                         "type": "Enum",
                         "displayNameKey": "动画翻转方向",
-                        "items": [
-                           {
-                                "value": "InX",
-                                "displayNameKey": "X轴"
-                            }, {
-                                "value": "InY",
-                                "displayNameKey": "Y轴"
-                            }, {
-                                "value": "",
-                                "displayNameKey": "原点"
-                            }
+                        "items": [{
+                            "value": "",
+                            "displayNameKey": "自原点"
+                        }, {
+                            "value": "InX",
+                            "displayNameKey": "自X轴"
+                        }, {
+                            "value": "InY",
+                            "displayNameKey": "自Y轴"
+                        }
                         ],
                         "defaultValue": ""
                     }, {
@@ -145,9 +125,12 @@
                         "displayName": "动画延时",
                         "items":[
                             {
+                                "value": "0s",
+                                "displayNameKey": "0s"
+                            }, {
                                 "value": "1s",
                                 "displayNameKey": "1s"
-                            },{
+                            }, {
                                 "value": "2s",
                                 "displayNameKey": "2s"
                             }, {
@@ -161,7 +144,7 @@
                                 "displayNameKey": "5s"
                             }
                         ],
-                        "defaultValue": "1s"
+                        "defaultValue": "0s"
                     }, {
                         "name": "customAnimateRepeat",
                         "type": "Enum",
