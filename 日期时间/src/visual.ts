@@ -1,19 +1,17 @@
 import '../style/visual.less';
-
 export default class Visual {
     private container: HTMLDivElement;
     private properties: any;
-
     constructor(dom: HTMLDivElement, host: any) {
         this.container = dom;
         this.properties = {
             shape: 'detailed',
             textStyle: {
-                color:'#fff',
-                fontSize:'10pt',
-                fontFamily:'微软雅黑',
-                fontStyle:'Normal',
-                fontWeight:'Normal'
+                color: '#fff',
+                fontSize: '10pt',
+                fontFamily: '微软雅黑',
+                fontStyle: 'Normal',
+                fontWeight: 'Normal'
             }
         };
         this.render();
@@ -23,8 +21,12 @@ export default class Visual {
         this.render();
     };
     private render() {
-        this.container.innerHTML="";
+        this.container.innerHTML = "";
         const options = this.properties;
+        let p1: any = document.createElement("p1");
+        p1.style = "white-space:pre;font-size:20px;margin:0 auto";
+        this.container.appendChild(p1);
+        //显示时间
         let nowtime: any = new Date();
         let hour: any = nowtime.getHours();//时
         let minutes: any = nowtime.getMinutes(); //分
@@ -40,34 +42,28 @@ export default class Visual {
         if (today.getDay() == 5) weekday = "星期五  ";
         if (today.getDay() == 6) weekday = "星期六  ";
         let date: any = (today.getFullYear()) + "年" + (today.getMonth() + 1) + "月" + today.getDate() + "日";
-        let p1: any = document.createElement("p1");
-        p1.style = "white-space:pre;font-size:20px;margin:0 auto";
-        //显示时间
-        switch (options.shape){
-            case "Short":{
+        p1.style.color = options.textStyle.color;
+        p1.style.fontSize = options.textStyle.fontSize;
+        p1.style.fontFamily = options.textStyle.fontFamily;
+        p1.style.fontStyle = options.textStyle.fontStyle;
+        p1.style.fontWeight = options.textStyle.fontWeight;
+        switch (options.shape) {
+            case "Short": {
                 p1.innerHTML = date;
                 break;
             }
-            case "Long":{
+            case "Long": {
                 p1.innerHTML = date + " " + this.p(hour) + ":" + this.p(minutes) + ":" + this.p(seconds);
                 break;
             }
-            default:{
+            default: {
                 p1.innerHTML = date + " " + weekday + " " + this.p(hour) + ":" + this.p(minutes) + ":" + this.p(seconds);
                 break;
             }
         }
-        p1.style.color =options.textStyle.color;
-        p1.style.fontSize = options.textStyle.fontSize;
-        p1.style.fontFamily=options.textStyle.fontFamily;
-        p1.style.fontStyle=options.textStyle.fontStyle;
-        p1.style.fontWeight=options.textStyle.fontWeight;
-        this.container.appendChild(p1);
-        setInterval(() => {
-            this.render()
-        }, 1000);
+        clearTimeout(timeID);
+        var timeID = setTimeout(() => { this.render() }, 1000);
     }
-
     private p(s: any) {
         return s < 10 ? '0' + s : s;
     }
