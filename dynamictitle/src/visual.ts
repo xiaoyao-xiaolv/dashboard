@@ -7,8 +7,6 @@ export default class Visual {
   private properties: any;
 
   constructor(dom: HTMLDivElement, host: any, options: any) {
-    
-    console.log(options, '======init options')
     this.container = dom;
     this.items = [];
     this.properties = {
@@ -16,18 +14,21 @@ export default class Visual {
       customText: '这是一个自定义标题',
       customTextPosition: 'center',
       textStyle: {
-        color: 'red',
+        color: '',
         fontSize: '10pt',
         fontFamily: '微软雅黑',
         fontStyle: 'Normal',
         fontWeight: 'Normal'
-      }
+      },
+      customAnimate: false,
+      customAnimateName: 'animate__bounceIn',
+      customAnimateDelay: 'animate__delay-1s',
+      customAnimateRepeat: 'animate__repeat-1'
     };
     this.render();
   }
 
   public update(options: any) {
-    console.log(options, 'update options')
     this.properties = options.properties;;
 
     this.render();
@@ -36,24 +37,39 @@ export default class Visual {
   public render () {
     this.container.innerHTML = "";
     const options = this.properties;
-    const items = options.custom ? [options.customText] : this.items;
+    const items = options.customText
     let dowebok: any = document.createElement("div");
-    for(let i = 0;i<items.length;i++){
-      let p1: any = document.createElement("h1");
-      p1.innerHTML = items[i];
-      p1.style.color = options.textStyle.color;
-      p1.style.fontSize = options.textStyle.fontSize;
-      p1.style.fontFamily = options.textStyle.fontFamily;
-      p1.style.fontStyle = options.textStyle.fontStyle;
-      p1.style.fontWeight = options.textStyle.fontWeight;
+    dowebok.className = 'hidden-scrollbar'
+    let p1: any = document.createElement("h1");
+    p1.innerHTML = items;
+    p1.style.color = options.textStyle.color;
+    p1.style.fontSize = options.textStyle.fontSize;
+    p1.style.fontFamily = options.textStyle.fontFamily;
+    p1.style.fontStyle = options.textStyle.fontStyle;
+    p1.style.fontWeight = options.textStyle.fontWeight;
 
-      p1.style.textAlign = options.customTextPosition
-      // add  animate class name
-      p1.className = 'animate__animated' 
-      p1.classList.add('animate__bounce', 'animate__repeat-5')
-      dowebok.appendChild(p1);
+    // dowebok.style.textAlign = options.customTextPosition
+    // add  animate class name
+
+    if (options.customAnimate) {
+      let addAnimateName = 'animate__';
+      
+      if(options.customAnimateName === 'flip') {
+        addAnimateName =addAnimateName + options.customAnimateName + options.customAnimateFlipDirection
+      }else if (options.customAnimateName === 'rotateIn') {
+        addAnimateName =addAnimateName + options.customAnimateName + options.customAnimateRotateDirection
+      } else {
+        addAnimateName = addAnimateName + options.customAnimateName + options.customAnimateDirection
+      }
+      
+      const addAnimateDelay = 'animate__delay-' + options.customAnimateDelay;
+      const addAnimateRepeat = 'animate__' + options.customAnimateRepeat;
+     
+      p1.classList.add('animate__animated', addAnimateName, addAnimateDelay, addAnimateRepeat)
+      p1.style.setProperty('--animate-duration', `${options.customAnimateDuration}s`);
     }
-
+    dowebok.appendChild(p1);
+    
     this.container.appendChild(dowebok);
   }
 
@@ -65,7 +81,24 @@ export default class Visual {
 
   }
 
-  public getInspectorHiddenState(options: any): string[] {
+  public getInspectorHiddenState(updateOptions: any): string[] {
+    // control animate display
+    if (!updateOptions.properties.customAnimate) {
+      return ['customAnimateName', 'customAnimateDirection', 'customAnimateDuration','customAnimateRotateDirection', 'customAnimateFlipDirection', 'customAnimateDelay', 'customAnimateRepeat'];
+    }
+    
+    if (updateOptions.properties.customAnimateName === 'flip') {
+      return ['customAnimateDirection', 'customAnimateRotateDirection'];
+    }
+
+    if (updateOptions.properties.customAnimateName === 'rotateIn') {
+      return ['customAnimateDirection', 'customAnimateFlipDirection'];
+    }
+    
+    if (updateOptions.properties.customAnimateName !== 'rotateIn' || updateOptions.properties.customAnimateName !== 'flip') {
+      return ['customAnimateRotateDirection', 'customAnimateFlipDirection'];
+    }
+
     return null;
   }
 
