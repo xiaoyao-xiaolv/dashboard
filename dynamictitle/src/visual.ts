@@ -36,8 +36,14 @@ export default class Visual {
     const options = this.properties;
     const items = options.customText
     let dowebok: any = document.createElement("div");
-    dowebok.className = 'hidden-scrollbar'
+
     let p1: any = document.createElement("h1");
+    // control position
+    dowebok.classList.add('title-text', options.customTextAlign, options.customTextVerticalAlign)
+    if(options.customTextAlign === 'v-center' && options.customTextVerticalAlign === 'h-center') {
+      dowebok.classList.add('center')
+    }
+    
     p1.innerHTML = items;
     p1.style.color = options.textStyle.color;
     p1.style.fontSize = options.textStyle.fontSize;
@@ -59,7 +65,7 @@ export default class Visual {
         addAnimateName = addAnimateName + options.customAnimateName + options.customAnimateDirection
       }
       
-      const addAnimateDelay = 'animate__delay-' + options.customAnimateDelay;
+      const addAnimateDelay = 'animate__' + options.customAnimateDelay;
       const addAnimateRepeat = 'animate__' + options.customAnimateRepeat;
      
       p1.classList.add('animate__animated', addAnimateName, addAnimateDelay, addAnimateRepeat)

@@ -16,6 +16,40 @@
                         "type": "Text",
                         "displayNameKey": "自定义标题",
                         "defaultValue": "请输入标题"
+                    },{
+                        "name": "customTextAlign",
+                        "type": "Enum",
+                        "displayNameKey": "水平对齐",
+                        "items": [
+                            {
+                                "value": "v-left",
+                                "displayNameKey": "居左对齐"
+                            }, {
+                                "value": "v-center",
+                                "displayNameKey": "居中对齐"
+                            }, {
+                                "value": "v-right",
+                                "displayNameKey": "居右对齐"
+                            }
+                        ],
+                        "defaultValue": "v-center"
+                    }, {
+                        "name": "customTextVerticalAlign",
+                        "type": "Enum",
+                        "displayNameKey": "垂直对齐",
+                        "items": [
+                            {
+                                "value": "h-top",
+                                "displayNameKey": "顶部对齐"
+                            }, {
+                                "value": "h-center",
+                                "displayNameKey": "居中对齐"
+                            }, {
+                                "value": "h-bottom",
+                                "displayNameKey": "底部对齐"
+                            }
+                        ],
+                        "defaultValue": "h-center"
                     }, {
                         "name": "textStyle",
                         "type": "TextStyle",
@@ -133,22 +167,22 @@
                         "displayName": "动画延时",
                         "items":[
                             {
-                                "value": "0s",
+                                "value": "delay-0s",
                                 "displayNameKey": "0s"
                             }, {
-                                "value": "1s",
+                                "value": "delay-1s",
                                 "displayNameKey": "1s"
                             }, {
-                                "value": "2s",
+                                "value": "delay-2s",
                                 "displayNameKey": "2s"
                             }, {
-                                "value": "3s",
+                                "value": "delay-3s",
                                 "displayNameKey": "3s"
                             }, {
-                                "value": "4s",
+                                "value": "delay-4s",
                                 "displayNameKey": "4s"
                             }, {
-                                "value": "5s",
+                                "value": "delay-5s",
                                 "displayNameKey": "5s"
                             }
                         ],
