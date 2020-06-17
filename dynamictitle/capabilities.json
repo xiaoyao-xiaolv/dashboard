@@ -15,7 +15,7 @@
                         "name": "customText",
                         "type": "Text",
                         "displayNameKey": "自定义标题",
-                        "defaultValue": "这是一个自定义标题"
+                        "defaultValue": "请输入标题"
                     }, {
                         "name": "textStyle",
                         "type": "TextStyle",

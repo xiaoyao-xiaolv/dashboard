@@ -11,7 +11,7 @@ export default class Visual {
     this.items = [];
     this.properties = {
       custom: true,
-      customText: '这是一个自定义标题',
+      customText: '请输入标题',
       textStyle: {
         fontSize: '20pt',
         fontFamily:'微软雅黑',
@@ -23,7 +23,6 @@ export default class Visual {
       customAnimateDelay: '0s',
       customAnimateRepeat: 'animate__repeat-1'
     };
-    this.render();
   }
 
   public update(options: any) {
