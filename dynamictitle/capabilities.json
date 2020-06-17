@@ -2,6 +2,11 @@
     "dataBinding": {
     },
     "options": {
+        "common": {
+            "size": {
+                "height": 100
+            }
+        },
         "visual": [
             {
                 "displayName": "自定义属性",
@@ -15,7 +20,10 @@
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "20pt"
+                        }
                     }
                    
                 ]

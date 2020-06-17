@@ -13,9 +13,8 @@ export default class Visual {
       custom: true,
       customText: '这是一个自定义标题',
       textStyle: {
-        color: '',
-        fontSize: '10pt',
-        fontFamily: '微软雅黑',
+        fontSize: '20pt',
+        fontFamily:'微软雅黑',
         fontStyle: 'Normal',
         fontWeight: 'Normal'
       },
@@ -43,6 +42,7 @@ export default class Visual {
     p1.innerHTML = items;
     p1.style.color = options.textStyle.color;
     p1.style.fontSize = options.textStyle.fontSize;
+
     p1.style.fontFamily = options.textStyle.fontFamily;
     p1.style.fontStyle = options.textStyle.fontStyle;
     p1.style.fontWeight = options.textStyle.fontWeight;
