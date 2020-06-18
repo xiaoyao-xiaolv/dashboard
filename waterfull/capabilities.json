@@ -45,40 +45,40 @@
                 "displayName": "自定义属性",
                 "properties": [
                     {
-                        "name": "barWidth",
-                        "type": "Integer",
-                        "displayName": "柱子宽度",
-                        "defaultValue": 14
-                    },
-                    {
                         "name": "fontSize",
                         "type": "Integer",
-                        "displayName": "分类字体大小",
+                        "displayName": "字体大小",
                         "defaultValue": 14
                     },
                     {
                         "name": "textColor",
                         "type": "Color",
-                        "displayName": "分类字体颜色",
+                        "displayName": "字体颜色",
                         "defaultValue": "#ffffff"
                     },
                     {
-                        "name": "barBackgroundColor",
+                        "name": "barUpColor",
                         "type": "Color",
-                        "displayName": "背景颜色",
-                        "defaultValue": "#444a58"
+                        "displayName": "上升颜色",
+                        "defaultValue": "#eb4b5c"
                     },
                     {
-                        "name": "barStartColor",
+                        "name": "barDowncolor",
                         "type": "Color",
-                        "displayName": "起始颜色",
-                        "defaultValue": "#57eabf"
+                        "displayName": "下降颜色",
+                        "defaultValue": "#b7d62d"
                     },
                     {
-                        "name": "barEndcolor",
-                        "type": "Color",
-                        "displayName": "终止颜色",
-                        "defaultValue": "#2563f9"
+                        "name": "customShowMark",
+                        "type": "Boolean",
+                        "displayName": "显示标注",
+                        "defaultValue": "false" 
+                    },
+                    {
+                        "name": "customOpacity",
+                        "type": "Percentage",
+                        "displayName": "图标透明度",
+                        "defaultValue": "50"
                     }
                 ]
             },
