@@ -2,11 +2,17 @@ import '../style/visual.less';
 import _ = require('lodash') ;
 import * as echarts from 'echarts'
 
+
+let isTooltipModelShown = false;
+
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
+  private host: any;
   private chart: any;
   private properties: any;
   private items: any;
+  private selectionManager: any;
+  private selection: any[] = [];
   static mockItems = [
     ["1月", "2月", "3月", "4月", "5月", "累计"], [12, 20, 6, -7, 59]
 ];
@@ -24,8 +30,91 @@ export default class Visual extends WynVisual {
       customShowMark: 'false'
     };
 
+    this.host = host;
+    this.bindEvents();
+    this.selectionManager = host.selectionService.createSelectionManager();
+  }
+  
+  // toolTip
+  private showTooltip = _.debounce((params, asModel = false) => {
+
+    if (asModel) isTooltipModelShown = true;
+     console.log(this.selectionManager.getSelectionIds(), '====this.selectionManager.getSelectionIds()')
+    // const visibleDimIdxs: any[] = _.flatten(Object.values(params.encode));
+    // let visibleDimensions: any[] =  visibleDimIdxs.map(idx => params.dimensionNames[idx]);
+    // if (params.data[''] === '') visibleDimensions = visibleDimensions.filter(d => d !== '');
+    // console.log(visibleDimensions, '======visibleDimensions')
+    this.host.toolTipService.show({
+      position: {
+        x: params.event.event.x,
+        y: params.event.event.y,
+      },
+      fields: [{
+        label: params.name ,
+        value: params.data[params.data.length -1 ],
+      }],
+      selected: this.selectionManager.getSelectionIds(),
+      menu: true,
+    }, 10);
+  });
+
+  private hideTooltip = () => {
+    this.host.toolTipService.hide();
+    isTooltipModelShown = false;
   }
 
+  createSelectionId = (sid?) => this.host.selectionService.createSelectionId(sid);
+ 
+  private dispatch = (type, payload) => this.chart.dispatchAction({ ...payload, type });
+  public bindEvents = () => {
+    // lister click 
+    this.container.addEventListener('click', (e: any) => {
+      if (!e.seriesClick) {
+        // clear tooltip
+        this.hideTooltip();
+        // clear selection
+        this.selection.forEach(i => this.dispatch('downplay', i));
+        this.selection = [];
+        this.selectionManager.clear();
+        return;
+      }
+    })
+
+    this.container.addEventListener('mouseleave', (e: any) => {
+      if (isTooltipModelShown) return;
+      this.hideTooltip();
+    })
+
+    this.chart.on('mousemove', (params) => {
+      if (params.componentType !== 'series') return;
+
+      if (!isTooltipModelShown) this.showTooltip(params);
+    })
+
+    this.chart.on('click', (params) => {
+      console.log('====click params', params)
+      if (params.componentType !== 'series') return;
+
+      this.showTooltip(params, true);
+      
+      params.event.event.seriesClick = true;
+      
+      const selectInfo = {
+        seriesIndex: params.seriesIndex,
+        dataIndex: params.dataIndex,
+      };
+
+      if (params.data.selectionId) {
+
+        const sid = this.createSelectionId(params.data.selectionId);
+        this.selectionManager.select(sid, true);
+      }
+      this.dispatch('highlight', selectInfo);
+      this.selection.push(selectInfo)
+      
+    })
+
+  }
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
     this.items = [];
@@ -37,7 +126,11 @@ export default class Visual extends WynVisual {
   
       this.items[0] = plainData.sort[dimension].order;
       this.items[0].push('累计')
-      this.items[1] = plainData.data.map((item) => item[ActualValue]);
+      this.items[1] = plainData.data.map((item) => {
+        
+        item[ActualValue]
+      });
+      
     }
 
     this.properties = options.properties;
