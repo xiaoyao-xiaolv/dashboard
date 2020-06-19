@@ -42,7 +42,7 @@
     "options": {
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "图表样式",
                 "properties": [
                     {
                         "name": "fontSize",
@@ -57,16 +57,10 @@
                         "defaultValue": "#ffffff"
                     },
                     {
-                        "name": "barUpColor",
-                        "type": "Color",
-                        "displayName": "上升颜色",
+                        "name": "customPaletteColor",
+                        "type": "Palette",
+                        "displayName": "调色板",
                         "defaultValue": "#eb4b5c"
-                    },
-                    {
-                        "name": "barDowncolor",
-                        "type": "Color",
-                        "displayName": "下降颜色",
-                        "defaultValue": "#b7d62d"
                     },
                     {
                         "name": "customShowMark",
@@ -79,6 +73,71 @@
                         "type": "Percentage",
                         "displayName": "图标透明度",
                         "defaultValue": "50"
+                    },
+                    {
+                        "name": "customShowLine",
+                        "type": "Boolean",
+                        "displayName": "显示辅助线",
+                        "defaultValue": "true" 
+                    },
+                    {
+                        "name": "customLineColor",
+                        "type": "Color",
+                        "displayName": "辅助线颜色",
+                        "defaultValue": "#eb4b5c" 
+                    }
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "name": "customShowLegend",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": "true" 
+                    },
+                    {
+                        "name": "legendFontSize",
+                        "type": "Integer",
+                        "displayName": "字体大小",
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "水平位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            }, {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            }, {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "legendHorizontalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            }, {
+                                "value": "middle",
+                                "displayNameKey": "居中"
+                            }, {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "top"
                     }
                 ]
             },

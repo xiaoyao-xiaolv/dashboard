@@ -13,6 +13,7 @@ export default class Visual extends WynVisual {
   private items: any;
   private selectionManager: any;
   private selection: any[] = [];
+
   static mockItems = [
     ["1月", "2月", "3月", "4月", "5月", "累计"], [12, 20, 6, -7, 59]
 ];
@@ -25,8 +26,7 @@ export default class Visual extends WynVisual {
     this.properties = {
       fontSize: 14,
       textColor: '#ffffff',
-      barUpColor: '#eb4b5c',
-      barDowncolor: '#b7d62d',
+      customPaletteColor: ['#eb4b5c', '#b7d62d'],
       customShowMark: 'false'
     };
 
@@ -39,7 +39,7 @@ export default class Visual extends WynVisual {
   private showTooltip = _.debounce((params, asModel = false) => {
 
     if (asModel) isTooltipModelShown = true;
-     console.log(this.selectionManager.getSelectionIds(), '====this.selectionManager.getSelectionIds()')
+
     // const visibleDimIdxs: any[] = _.flatten(Object.values(params.encode));
     // let visibleDimensions: any[] =  visibleDimIdxs.map(idx => params.dimensionNames[idx]);
     // if (params.data[''] === '') visibleDimensions = visibleDimensions.filter(d => d !== '');
@@ -49,6 +49,7 @@ export default class Visual extends WynVisual {
         x: params.event.event.x,
         y: params.event.event.y,
       },
+     
       fields: [{
         label: params.name ,
         value: params.data[params.data.length -1 ],
@@ -92,7 +93,7 @@ export default class Visual extends WynVisual {
     })
 
     this.chart.on('click', (params) => {
-      console.log('====click params', params)
+
       if (params.componentType !== 'series') return;
 
       this.showTooltip(params, true);
@@ -121,14 +122,14 @@ export default class Visual extends WynVisual {
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
       const plainData = dataView.plain;
-      let dimension = plainData.profile.dimension.values[0].display;
-      let ActualValue = plainData.profile.ActualValue.values[0].display;
+      const dimension = plainData.profile.dimension.values[0].display;
+      const ActualValue = plainData.profile.ActualValue.values[0].display;
   
       this.items[0] = plainData.sort[dimension].order;
       this.items[0].push('累计')
       this.items[1] = plainData.data.map((item) => {
         
-        item[ActualValue]
+        return item[ActualValue]
       });
       
     }
@@ -150,7 +151,7 @@ export default class Visual extends WynVisual {
                     position:'bottom',
                     show: true,
                     fontSize: options.fontSize,
-                    color: options.barDowncolor
+                    color: options.customPaletteColor[1].colorStops ?  options.customPaletteColor[1].colorStops[0] : options.customPaletteColor[1]
                   }
                 });
           } else {
@@ -174,7 +175,7 @@ export default class Visual extends WynVisual {
                     position:'bottom',
                     show: options.customShowMark,
                     fontSize: options.fontSize,
-                    color: options.barDowncolor
+                    color: options.customPaletteColor[1].colorStops ?  options.customPaletteColor[1].colorStops[0] : options.customPaletteColor[1]
                   }});
           }else{
                 label.push({
@@ -198,6 +199,20 @@ export default class Visual extends WynVisual {
     }
   }
 
+  public getLineData =  (data: Array<number>) => {
+    let line = []
+    for(let i = 0; i < data.length; i ++) {
+      if(i === 0) {
+        line[0] = data[0]
+      } else {
+        let sumData = data.slice(0, i + 1)
+        line[i] = _.sum(sumData)
+      }
+    }
+    line[data.length - 1] = 0
+    return line
+  }
+
   public render () {
     this.chart.clear();
     // get data
@@ -207,10 +222,9 @@ export default class Visual extends WynVisual {
     const dx: Array<any> = isMock ? Visual.mockItems[0] : this.items[0] 
     const dyData: Array<any> =  initData.concat([_.sum(initData)])
     let { dy, zt, label} = this.getBasicData(dyData, [], [], options)
+    const lineData = this.getLineData(dyData)
     // get properties
     
-    console.log(options, '======properties  options')
-    console.log('options', options.customOpacity)
     const option = {
       xAxis: {
           data: dx,
@@ -232,16 +246,31 @@ export default class Visual extends WynVisual {
             }
           },
       },
+      legend: { 
+        data: [{
+          name: '上升', 
+          fontSize: options.legendFontSize,
+          textStyle:{color:options.customPaletteColor[0].colorStops ?  options.customPaletteColor[0].colorStops[0] : options.customPaletteColor[0]}
+        },{
+          name: '下降', 
+          fontSize: options.legendFontSize,
+          textStyle:{color: options.customPaletteColor[1].colorStops ?  options.customPaletteColor[1].colorStops[0] : options.customPaletteColor[1]}
+        }], 
+        show: options.customShowLegend,
+        icon: 'none',
+        left: options.legendVerticalPosition,
+        top: options.legendHorizontalPosition
+       },
       series: [{
           type: 'candlestick',
+          name: '上升',
           barCategoryGap: '10',
           //开始值、结束值、最大值、最小值
           //[[1,2,3,4]
           data: zt,
           itemStyle:{
-            barBorderRadius: [ 2, 2, 0, 0],
-            color: options.barUpColor,
-            color0: options.barDowncolor,
+            color: options.customPaletteColor[0].colorStops ?  options.customPaletteColor[0].colorStops[0] : options.customPaletteColor[0],
+            color0: options.customPaletteColor[1].colorStops ?  options.customPaletteColor[1].colorStops[0] : options.customPaletteColor[1],
             opacity: options.customOpacity / 100,
             borderWidth: 0,
           },
@@ -250,7 +279,7 @@ export default class Visual extends WynVisual {
               symbolSize: 0.000000000000001,
               label: {
                   show: options.customShowMark,
-                  color: options.barUpColor,
+                  color: options.customPaletteColor[0].colorStops ?  options.customPaletteColor[0].colorStops[0] : options.customPaletteColor[0],
                   position: 'top',
                   fontSize: options.fontSize,
                   formatter: function(res) {
@@ -261,12 +290,28 @@ export default class Visual extends WynVisual {
           },
           emphasis:{
               itemStyle:{
-                  borderWidth:0,
-                  barBorderRadius: [ 20, 9, 0, 0]
+                  borderWidth:0
               }
           }
+      },
+      {
+        name: '下降',
+        type: 'line',
+        step: 'end',
+        symbol: 'none',
+        data: options.customShowLine ? lineData: [],
+        itemStyle:{
+          normal:{
+                    lineStyle:{
+                        width: 1,
+                        color: options.customLineColor,
+                        type:'dotted'
+                    }
+                }
+        }
       }]
     };
+
    this.chart.setOption(option)
 
   }
@@ -281,6 +326,14 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+
+    if(!options.properties.customShowLegend) {
+      return ['legendFontSize', 'legendVerticalPosition', 'legendHorizontalPosition']
+    }
+
+    if(!options.properties.customShowLine) {
+      return ['customLineColor']
+    }
     return null;
   }
 
