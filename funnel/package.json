@@ -28,6 +28,9 @@
     "file-loader": "6.0.0"
   },
   "dependencies": {
+    "@types/d3": "^5.7.2",
+    "@types/lodash": "^4.14.156",
+    "d3": "^5.16.0",
     "d3-funnel": "^1.2.2"
   }
 }
