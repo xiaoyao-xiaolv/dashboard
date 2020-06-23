@@ -10,9 +10,6 @@ export default class Visual extends WynVisual {
   private items: any;
   private host: any;
   private selectionManager: any;
-  private selection: any[] = [];
-  private _svg: SVGSVGElement;
-  private svg: any
   private dimension: string
   private ActualValue: string
   private x: number
@@ -40,7 +37,6 @@ export default class Visual extends WynVisual {
     };
     this.host = host;
 
-
     let dowebok: any = document.createElement("div");
     dowebok.setAttribute('id', 'funnel-container')
     dowebok.classList.add('animate__animated', 'animate__fadeInUp')
@@ -48,29 +44,46 @@ export default class Visual extends WynVisual {
     this.chart = new D3Funnel('#funnel-container');
 
     this.selectionManager = host.selectionService.createSelectionManager();
+    this.selectionManager.registerOnSelectCallback(() => {
+      this.render();
+    });
+
+    this.container.addEventListener('click', (e) => {
+      this.selectionManager.clear();
+      this.host.toolTipService.hide();
+    })
+    host.eventService.registerOnCustomEventCallback(this.onCustomEventHandler);
   }
 
 
-  public getNodeSelectionId = (label: any, value: any) => {
-    const { selectionId } = this.items.find((item: any) => item.label === label && item.value === value)
+  public getNodeSelectionId = (label: any) => {
+    const { selectionId } = this.items.find((item: any) => item.label === label)
 
+    return selectionId
+  }
+
+  private clickHandler = (node: any) => {
+
+
+    const selectionId = this.getNodeSelectionId(node.label.raw)
     if (!this.selectionManager.contains(selectionId)) {
       this.selectionManager.select(selectionId, true);
     } else {
       this.selectionManager.clear(selectionId);
     }
-    return selectionId
-  }
 
-  private clickHandler = (node: any) => {
     this.host.toolTipService.show({
       position: {
         x: this.x,
         y: this.y,
       },
-      selectionId: this.getNodeSelectionId(node.label.raw, node.value),
+      fields: [{
+        label: this.ActualValue,
+        value: node.value,
+      }],
+      selectionId: this.getNodeSelectionId(node.label.raw),
       selected: this.selectionManager.getSelectionIds(),
-      menu: true,
+      menu: true
     });
   }
 
@@ -131,7 +144,7 @@ export default class Visual extends WynVisual {
         click: {
           block: (e) => {
             setTimeout(() => {
-              this.clickHandler(e)
+              !isMock && this.clickHandler(e)
             })
           }
         }
@@ -139,8 +152,8 @@ export default class Visual extends WynVisual {
     };
 
     document.addEventListener('click', (e) => {
-      this.x = e.clientX
-      this.y = e.clientY
+      this.x = e.clientX;
+      this.y = e.clientY;
     })
 
     this.chart.draw(data, option);
@@ -162,7 +175,7 @@ export default class Visual extends WynVisual {
           const selectionId = this.host.selectionService.createSelectionId();
           selectionId
             .withDimension(plainData.profile.dimension.values[0], item)
-            .withDimension(plainData.profile.ActualValue.values[0], item);
+
           result.push({
             label: item[this.dimension],
             value: item[this.ActualValue],
@@ -198,5 +211,9 @@ export default class Visual extends WynVisual {
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     return null;
+  }
+
+  public onCustomEventHandler = (name: string) => {
+
   }
 }

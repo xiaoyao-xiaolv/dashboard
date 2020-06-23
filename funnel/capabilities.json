@@ -124,6 +124,22 @@
             }
         ]
     },
-    "actions": [],
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
     "analysis": []
 }
