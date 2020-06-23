@@ -19,10 +19,10 @@ export default class Visual extends WynVisual {
   private y: number
 
   static mockItems = [
-    { label: 'Inquiries', value: 5000 },
-    { label: 'Applicants', value: 2500 },
-    { label: 'Admits', value: 500 },
-    { label: 'Deposits', value: 200 }
+    { label: '一月', value: 5000 },
+    { label: '二月', value: 500 },
+    { label: '三月', value: 2500 },
+    { label: '四月', value: 500 }
   ]
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
@@ -43,7 +43,7 @@ export default class Visual extends WynVisual {
 
     let dowebok: any = document.createElement("div");
     dowebok.setAttribute('id', 'funnel-container')
-
+    dowebok.classList.add('animate__animated', 'animate__fadeInUp')
     this.container.appendChild(dowebok);
     this.chart = new D3Funnel('#funnel-container');
 
@@ -74,11 +74,31 @@ export default class Visual extends WynVisual {
     });
   }
 
+  private getCustomBg = (items: any, backgroundColors) => {
+
+    return items.map((item: any, index: number) => {
+      let backgroundColor = ''
+      if (index < backgroundColors.length - 1) {
+        backgroundColor = backgroundColors[index].colorStops ? backgroundColors[index].colorStops[0] : backgroundColors[index]
+      } else {
+        backgroundColor = backgroundColors[Math.floor((Math.random() * backgroundColors.length))].colorStops ? backgroundColors[Math.floor((Math.random() * backgroundColors.length))].colorStops[0] : backgroundColors[Math.floor((Math.random() * backgroundColors.length))]
+      }
+      return {
+        ...item,
+        backgroundColor
+      }
+    })
+  }
+
   public render() {
     this.host.eventService.renderStart();
     const options = this.properties;
     const isMock = !this.items.length;
-    const data = isMock ? Visual.mockItems : this.items;
+    const backgroundColors = options.backgroundColors;
+
+    let data = isMock ? Visual.mockItems : this.items;
+
+    data = this.getCustomBg(data, backgroundColors);
 
     const option = {
       chart: {
@@ -93,11 +113,11 @@ export default class Visual extends WynVisual {
       },
       block: {
         dynamicHeight: options.dynamicHeight,
-        minHeight: 15,
+        minHeight: 30,
         barOverlay: options.barOverlay,
         highlight: true,
         fill: {
-          type: options.fillType
+          type: 'gradient'
         }
       },
       label: {
@@ -105,7 +125,7 @@ export default class Visual extends WynVisual {
         fontFamily: options.textStyle.fontFamily,
         fontSize: options.textStyle.fontSize,
         fill: options.textStyle.color,
-        format: '{l}: ${v}'
+        format: '{l}: {v}'
       },
       events: {
         click: {
@@ -170,8 +190,8 @@ export default class Visual extends WynVisual {
       return ['curveHeight'];
     }
 
-    if (!options.properties.animateEnabled) {
-      return ['animateTime'];
+    if (!options.properties.labelEnabled) {
+      return ['textStyle'];
     }
     return null;
   }
