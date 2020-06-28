@@ -1,0 +1,19 @@
+{
+    "name": "hotmap",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [
+        "https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/echarts.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/extension/bmap.min.js",
+        "https://api.map.baidu.com/api?v=3.0&ak=nk3fyD5rK63n6Vf0L6p3dkTDff1g0Fc0&callback=init"
+    ],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {}
+}

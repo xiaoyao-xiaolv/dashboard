@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "target": "ES5",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "skipDefaultLibCheck": true,
+        "lib": [
+            "esnext",
+            "dom"
+        ]
+    },
+    "include": [
+        "./src",
+        "./visual.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "assets",
+        "dist"
+    ]
+}

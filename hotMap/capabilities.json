@@ -1,0 +1,67 @@
+{
+    "dataBinding": {},
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "zoom",
+                        "type": "Integer",
+                        "displayName": "缩放",
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "center",
+                        "type": "Text",
+                        "displayName": "中心点",
+                        "defaultValue": "西安"
+                    },
+                    {
+                        "name": "color",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "defaultValue": "#eb4b5c"
+                    },
+                    {
+                        "displayName": "地图类型",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "style",
+                                "displayName": "style"
+                            },
+                            {
+                                "value": "styleId",
+                                "displayName": "styleId"
+                            },
+                            {
+                                "value": "styleJson",
+                                "displayName": "styleJson"
+                            }
+                        ],
+                        "defaultValue": "style"
+                    },
+                    {
+                        "name": "styleValue",
+                        "type": "LongText",
+                        "displayName": "地图样式",
+                        "defaultValue": "normal"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}
