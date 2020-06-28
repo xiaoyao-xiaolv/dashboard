@@ -1,0 +1,120 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "ActualValue",
+                "displayNameKey": "数值",
+                "kind": "value"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "ActualValue": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "ActualValue": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "common": {
+            "size": {
+                "height": 100
+            }
+        },
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "animationMode",
+                        "type": "Enum",
+                        "displayNameKey": "动画模式",
+                        "items": [
+                            {
+                                "value": "slide",
+                                "displayNameKey": "幻灯片"
+                            },
+                            {
+                                "value": "flip",
+                                "displayNameKey": "翻转"
+                            }
+                        ],
+                        "defaultValue": "slide"
+                    },
+                    {
+                        "name": "animationDuration",
+                        "type": "Integer",
+                        "displayNameKey": "动画时长",
+                        "defaultValue": 1
+                    },
+                    {
+                        "name": "decimalLength",
+                        "type": "Integer",
+                        "displayName": "小数位控制位",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "integerType",
+                        "type": "Enum",
+                        "displayName": "整数位控制位",
+                        "items": [
+                            {
+                                "value": "auto",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "manual",
+                                "displayNameKey": "手动"
+                            }
+                        ],
+                        "defaultValue": "auto"
+                    },
+                    {
+                        "name": "integerLength",
+                        "type": "Integer",
+                        "displayName": "整数位数",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "showThousandSign",
+                        "type": "Boolean",
+                        "displayName": "显示千分符",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "backgroundColor",
+                        "type": "Palette",
+                        "displayName": "背景色"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "60pt"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}

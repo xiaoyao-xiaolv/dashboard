@@ -1,0 +1,85 @@
+.odometer.odometer-auto-theme {
+  display: inline-block;
+  vertical-align: middle;
+  /* position: relative; */
+}
+.odometer.odometer-auto-theme .odometer-digit {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer {
+  display: inline-block;
+  vertical-align: middle;
+  visibility: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner {
+  text-align: left;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon {
+  display: block;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon-inner {
+  display: block;
+  -webkit-backface-visibility: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-value {
+  display: block;
+  -webkit-transform: translateZ(0);
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-value.odometer-last-value {
+  position: absolute;
+}
+.odometer.odometer-auto-theme.animating-up .odometer-ribbon-inner {
+}
+.odometer.odometer-auto-theme.animating-up.animating .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.odometer.odometer-auto-theme.animating-down .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.odometer.odometer-auto-theme.animating-down.animating .odometer-ribbon-inner {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.odometer.odometer-auto-theme {
+  font-family: "Economica", sans-serif;
+}
+.odometer.odometer-auto-theme .odometer-digit {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 0.1em;
+
+  background-image: -webkit-linear-gradient(top, #0a2597 0%, #0a2597 35%, #02eef7 55%, #0a2597 55%, #0a2597 100%);
+  background-image: -moz-linear-gradient(top, #0a2597 0%, #0a2597 35%, #02eef7 55%, #0a2597 55%, #0a2597 100%);
+  background-image: -o-linear-gradient(top, #0a2597 0%, #0a2597 35%, #02eef7 55%, #0a2597 55%, #0a2597 100%);
+  background-image: -ms-linear-gradient(top, #0a2597 0%, #0a2597 35%, #02eef7 55%, #0a2597 55%, #0a2597 100%);
+  background-image: linear-gradient(top, #0a2597 0%, #0a2597 35%, #02eef7 55%, #0a2597 55%, #0a2597 100%);
+
+  padding: 0 0.15em;
+}
+.odometer.odometer-auto-theme .odometer-digit + .odometer-digit {
+  margin-left: 0.1em;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner {
+  left: 0.15em;
+}
