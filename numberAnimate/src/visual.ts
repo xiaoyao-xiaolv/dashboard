@@ -17,6 +17,9 @@ export default class Visual extends WynVisual {
   private aggregation: any;
   private options: any;
   private ActualValue: any
+  private host: any;
+  private selectionManager: any;
+  private selectionId: any
   static mockNumber = 123456;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
@@ -25,6 +28,7 @@ export default class Visual extends WynVisual {
     let chartDiv = wynbi.utils.createElement('div', 'chart-container');
 
     this.container = dom;
+    this.host = host
     this.chartContainer = chartDiv;
     this.digitsContainer = wynbi.utils.createElement('div', 'digits-container');
 
@@ -41,6 +45,9 @@ export default class Visual extends WynVisual {
     this.options = {
       digit: {},
     };
+
+    this.selectionManager = host.selectionService.createSelectionManager();
+
   }
 
   public renderDigits(number: number) {
@@ -48,15 +55,18 @@ export default class Visual extends WynVisual {
     if (this.isMock) {
       config.animationDuration = 0;
     }
+
     this.digitsChart.render(number, config);
   };
 
   public render() {
+    this.host.eventService.renderStart();
     this.container.style.opacity = this.isMock ? 0.3 : 1;
 
     let number = this.isMock ? Visual.mockNumber : this.number;
 
     this.renderDigits(number);
+    this.host.eventService.renderFinish();
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
@@ -69,11 +79,19 @@ export default class Visual extends WynVisual {
       italic: textStyle.fontStyle === 'Normal' ? false : textStyle.fontStyle,
     }
     const bgColor = options.properties.backgroundColor
-    const gradientBackgroundColor = `-webkit-linear-gradient(top, ${bgColor} 0%, ${bgColor} 35%, ${font.color} 55%, ${bgColor} 55%, ${bgColor} 100%);`
-    const backgroundColor = options.properties.gradientBackgroundColor ? gradientBackgroundColor : options.properties.backgroundColor
+    const gradientColor = options.properties.gradientBackgroundColor
+    let backgroundColor = options.properties.backgroundColor
 
+    if (options.properties.animationMode === 'slide') {
+      if (options.properties.gradientType === 'center') {
+        backgroundColor = `-webkit-linear-gradient(top, ${bgColor} 0%, ${bgColor} 35%, ${gradientColor} 55%, ${bgColor} 55%, ${bgColor} 100%);`
+      } else if (options.properties.gradientType === 'topToBottom') {
+        backgroundColor = `-webkit-linear-gradient(top, ${gradientColor} 0%, ${bgColor} 25%, ${bgColor} 55%, ${bgColor} 75%, ${gradientColor} 100%);`
+      }
+    }
 
     const integerLength = options.properties.integerType === 'auto' ? 'auto' : options.properties.integerLength
+
     delete options.properties.backgroundColor
     delete options.properties.textStyle
     delete options.properties.integerLength
@@ -92,10 +110,19 @@ export default class Visual extends WynVisual {
 
       this.ActualValue = plainData.profile.ActualValue.values[0].display;
       this.isMock = false
-      plainData.data.map((item: any) => this.number = item[this.ActualValue])
+      plainData.data.map((item: any) => {
+
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId
+          .withDimension(plainData.profile.ActualValue.values[0], item)
+        this.selectionId = selectionId
+
+        return this.number = item[this.ActualValue];
+      })
     } else {
       this.isMock = true
     }
+
     this.render()
   }
 
@@ -111,7 +138,8 @@ export default class Visual extends WynVisual {
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
 
     if (options.properties.animationMode === 'flip') {
-      return ['animationDuration'];
+      const integerLength = options.properties.integerType === 'auto' && ['integerLength'] || []
+      return ['animationDuration', 'gradientType', 'gradientBackgroundColor'].concat(integerLength);
     }
 
     if (options.properties.integerType === 'auto') {

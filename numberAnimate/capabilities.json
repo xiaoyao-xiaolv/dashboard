@@ -37,7 +37,7 @@
         },
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "图标样式",
                 "properties": [
                     {
                         "name": "animationMode",
@@ -87,7 +87,7 @@
                         "name": "integerLength",
                         "type": "Integer",
                         "displayName": "整数位数",
-                        "defaultValue": 6
+                        "defaultValue": 0
                     },
                     {
                         "name": "showThousandSign",
@@ -98,13 +98,34 @@
                     {
                         "name": "backgroundColor",
                         "type": "Color",
-                        "displayName": "背景色"
+                        "displayName": "背景色",
+                        "defaultValue": "#0a2597"
                     },
                     {
                         "name": "gradientBackgroundColor",
-                        "type": "Boolean",
-                        "displayName": "显示渐变色",
-                        "defaultValue": false
+                        "type": "Color",
+                        "displayName": "渐变修饰色",
+                        "defaultValue": "#02eef7"
+                    },
+                    {
+                        "name": "gradientType",
+                        "type": "Enum",
+                        "displayName": "渐变方式",
+                        "items": [
+                            {
+                                "value": "null",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "topToBottom",
+                                "displayNameKey": "两端"
+                            }
+                        ],
+                        "defaultValue": "center"
                     },
                     {
                         "name": "textStyle",
@@ -120,13 +141,7 @@
                 ]
             },
             {
-                "type": "appearance"
-            },
-            {
-                "type": "title",
-                "defaultValue": {
-                    "defaultValue": "yeb"
-                }
+                "type": "title"
             },
             {
                 "type": "appearance"
