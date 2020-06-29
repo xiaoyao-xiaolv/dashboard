@@ -31,7 +31,8 @@
     "options": {
         "common": {
             "size": {
-                "height": 100
+                "height": 100,
+                "width": 200
             }
         },
         "visual": [
@@ -86,7 +87,7 @@
                         "name": "integerLength",
                         "type": "Integer",
                         "displayName": "整数位数",
-                        "defaultValue": 0
+                        "defaultValue": 6
                     },
                     {
                         "name": "showThousandSign",
@@ -96,8 +97,14 @@
                     },
                     {
                         "name": "backgroundColor",
-                        "type": "Palette",
+                        "type": "Color",
                         "displayName": "背景色"
+                    },
+                    {
+                        "name": "gradientBackgroundColor",
+                        "type": "Boolean",
+                        "displayName": "显示渐变色",
+                        "defaultValue": false
                     },
                     {
                         "name": "textStyle",
@@ -105,16 +112,43 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "60pt"
+                            "color": "#02eef7",
+                            "fontSize": "auto",
+                            "fontWeight": "Bolder"
                         }
                     }
                 ]
             },
             {
                 "type": "appearance"
+            },
+            {
+                "type": "title",
+                "defaultValue": {
+                    "defaultValue": "yeb"
+                }
+            },
+            {
+                "type": "appearance"
             }
         ]
     },
-    "actions": [],
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
     "analysis": []
 }

@@ -3,11 +3,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 
 let { wynbi } = require('./utils.ts');
 
-
-// import wynbi from './utils.ts'
-
 (function () {
-    console.log('test', wynbi)
     // #region utils
     let MS_PER_FRAME: number,
         FRAMES_PER_VALUE: any,
