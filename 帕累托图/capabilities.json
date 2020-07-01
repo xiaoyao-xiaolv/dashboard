@@ -1,0 +1,272 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "ActualValue",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "dimension",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "ActualValue": {
+                                "min": 1
+                            },
+                            "dimension": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "ActualValue": {
+                    "max": 1
+                },
+                "dimension": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "chartColors",
+                        "type": "Palette",
+                        "displayName": "调色板"
+                    },
+                    {
+                        "name": "barCategoryGap",
+                        "type": "Integer",
+                        "displayNameKey": "柱子间距%",
+                        "defaultValue": 30
+                    }
+                ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+                    {
+                        "name": "xAxis",
+                        "type": "Boolean",
+                        "displayName": "显示轴",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "xAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "xAxisTick",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标记",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "xAxisLine",
+                        "type": "Boolean",
+                        "displayName": "显示轴线",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "xTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "左值轴",
+                "properties": [
+                    {
+                        "name": "leftAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisTick",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标记",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisLine",
+                        "type": "Boolean",
+                        "displayName": "显示轴线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftSplitLine",
+                        "type": "Boolean",
+                        "displayName": "显示网格线",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "leftTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "右值轴",
+                "properties": [
+                    {
+                        "name": "rightAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "rightAxisTick",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标记",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "rightAxisLine",
+                        "type": "Boolean",
+                        "displayName": "显示轴线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "rightSplitLine",
+                        "type": "Boolean",
+                        "displayName": "显示网格线",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "rightTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "name": "showLegend",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "legendName",
+                        "type": "Text",
+                        "displayName": "折线图例名称",
+                        "defaultValue": "累计率%"
+                    },
+                    {
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "水平位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "legendHorizontalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "middle",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
