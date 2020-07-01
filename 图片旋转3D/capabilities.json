@@ -14,13 +14,13 @@
                         "name": "X",
                         "type": "Integer",
                         "displayName": "X轴角度",
-                        "defaultValue": 0
+                        "defaultValue": 40
                     },
                     {
                         "name": "Y",
                         "type": "Integer",
                         "displayName": "Y轴角度",
-                        "defaultValue": 0
+                        "defaultValue": 20
                     },
                     {
                         "name": "fps",

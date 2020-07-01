@@ -39,7 +39,9 @@ export default class Visual {
 
     let p1: any = document.createElement("h1");
     // control position
-    dowebok.classList.add('title-text', options.customTextAlign, options.customTextVerticalAlign)
+    dowebok.classList.add('title-text');
+    dowebok.classList.add(options.customTextAlign);
+    dowebok.classList.add(options.customTextVerticalAlign);
     if(options.customTextAlign === 'v-center' && options.customTextVerticalAlign === 'h-center') {
       dowebok.classList.add('center')
     }
@@ -68,7 +70,10 @@ export default class Visual {
       const addAnimateDelay = 'animate__' + options.customAnimateDelay;
       const addAnimateRepeat = 'animate__' + options.customAnimateRepeat;
      
-      p1.classList.add('animate__animated', addAnimateName, addAnimateDelay, addAnimateRepeat)
+      p1.classList.add('animate__animated');
+      p1.classList.add(addAnimateName);
+      p1.classList.add(addAnimateDelay);
+      p1.classList.add(addAnimateRepeat);
       p1.style.setProperty('--animate-duration', `${options.customAnimateDuration}s`);
     }
     dowebok.appendChild(p1);

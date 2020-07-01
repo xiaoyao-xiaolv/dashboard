@@ -33,7 +33,6 @@ export default class Visual {
             backgroundColor: '#fff',
             fontSize:35
         };
-        this.render();
     }
 
     public update(options: any) {

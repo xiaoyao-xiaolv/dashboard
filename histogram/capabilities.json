@@ -1,0 +1,348 @@
+{
+  "dataBinding": {
+    "dataRoles": [
+      {
+        "name": "values",
+        "displayNameKey": "databinding.values",
+        "kind": "grouping"
+      },
+      {
+        "name": "series",
+        "displayNameKey": "databinding.series",
+        "kind": "grouping"
+      }
+    ],
+    "dataViewMappings": [
+      {
+        "plain": {
+          "required": [
+            {
+              "values": {
+                "min": 1
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "values": {
+          "max": 1
+        },
+        "series": {
+          "max": 1
+        }
+      }
+    ]
+  },
+  "options": {
+    "visual": [
+      {
+        "displayNameKey": "inspector.categories.chartStyle",
+        "properties": [
+          {
+            "name": "palette",
+            "inheritFrom": "dashboard.palette",
+            "type": "Palette",
+            "displayNameKey": "inspector.properties.palette"
+          },
+          {
+            "name": "graphOpacity",
+            "inheritFrom": "dashboard._graphOpacity",
+            "type": "Percentage",
+            "displayNameKey": "inspector.properties.graphOpacity"
+          },
+          {
+            "name": "groupingInterval",
+            "type": "Float",
+            "displayNameKey": "inspector.properties.groupingInterval",
+            "_allowNullValue": true,
+            "min": 0,
+            "_excludeMin": true
+          }
+        ]
+      },
+      {
+        "type": "interaction"
+      },
+      {
+        "displayNameKey": "inspector.categories.dataLabel",
+        "properties": [
+          {
+            "name": "showDataLabel",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showDataLabel.name",
+            "defaultValue": false
+          },
+          {
+            "name": "dataLabelPosition",
+            "type": "Enum",
+            "displayNameKey": "inspector.properties.showDataLabel.position.name",
+            "defaultValue": "top",
+            "items": [
+              {
+                "value": "top",
+                "displayNameKey": "inspector.properties.showDataLabel.position.around"
+              },
+              {
+                "value": "middle",
+                "displayNameKey": "inspector.properties.showDataLabel.position.onSlice"
+              }
+            ]
+          },
+          {
+            "name": "dataLabelFrequency",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showDataLabel.frequency",
+            "defaultValue": true
+          },
+          {
+            "name": "dataLabelGrouping",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showDataLabel.grouping",
+            "defaultValue": false
+          },
+          {
+            "name": "dataLabelSeries",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showDataLabel.series",
+            "defaultValue": false
+          },
+          {
+            "name": "dataLabelTextStyle",
+            "type": "TextStyle",
+            "displayNameKey": "inspector.properties.showDataLabel.textStyle",
+            "inheritFrom": "dashboard.textStyle"
+          }
+        ]
+      },
+      {
+        "type": "title"
+      },
+      {
+        "displayNameKey": "inspector.categories.legend",
+        "properties": [
+          {
+            "name": "showLegend",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showLegend.name",
+            "defaultValue": true
+          },
+          {
+            "name": "legendTitle",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showLegend.title",
+            "defaultValue": false
+          },
+          {
+            "name": "legendTextStyle",
+            "type": "TextStyle",
+            "displayNameKey": "inspector.properties.showLegend.textStyle",
+            "inheritFrom": "dashboard.textStyle"
+          },
+          {
+            "name": "legendPosition",
+            "type": "Enum",
+            "displayNameKey": "inspector.properties.showLegend.position.name",
+            "defaultValue": "right",
+            "items": [
+              {
+                "value": "top",
+                "displayNameKey": "inspector.properties.showLegend.position.top"
+              },
+              {
+                "value": "right",
+                "displayNameKey": "inspector.properties.showLegend.position.right"
+              },
+              {
+                "value": "bottom",
+                "displayNameKey": "inspector.properties.showLegend.position.bottom"
+              },
+              {
+                "value": "left",
+                "displayNameKey": "inspector.properties.showLegend.position.left"
+              },
+              {
+                "value": "left-top",
+                "displayNameKey": "inspector.properties.showLegend.position.leftTop"
+              },
+              {
+                "value": "right-top",
+                "displayNameKey": "inspector.properties.showLegend.position.rightTop"
+              },
+              {
+                "value": "left-bottom",
+                "displayNameKey": "inspector.properties.showLegend.position.leftBottom"
+              },
+              {
+                "value": "right-bottom",
+                "displayNameKey": "inspector.properties.showLegend.position.rightBottom"
+              }
+            ]
+          },
+          {
+            "name": "legendWrap",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showLegend.wrap",
+            "defaultValue": false
+          }
+        ]
+      },
+      {
+        "displayNameKey": "inspector.categories.groupingAxis",
+        "properties": [
+          {
+            "name": "showGroupingAxis",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showGroupingAxis.name",
+            "defaultValue": true
+          },
+          {
+            "name": "groupingAxisLine",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showGroupingAxis.line",
+            "defaultValue": true
+          },
+          {
+            "name": "groupingAxisTickLabel",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showGroupingAxis.tickLabel",
+            "defaultValue": true
+          },
+          {
+            "name": "groupingAxisTickMark",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showGroupingAxis.tickMark",
+            "defaultValue": true
+          },
+          {
+            "name": "groupingAxisTitle",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showGroupingAxis.title",
+            "defaultValue": false
+          },
+          {
+            "name": "groupingAxisFormat",
+            "type": "Format",
+            "displayNameKey": "inspector.properties.showGroupingAxis.format",
+            "defaultValue": "General"
+          },
+          {
+            "name": "groupingAxisLabelAutoRotate",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showGroupingAxis.labelAutoRotate",
+            "defaultValue": true
+          },
+          {
+            "name": "groupingAxisTextStyle",
+            "type": "TextStyle",
+            "displayNameKey": "inspector.properties.showGroupingAxis.textStyle",
+            "inheritFrom": "dashboard.textStyle"
+          }
+        ]
+      },
+      {
+        "displayNameKey": "inspector.categories.frequencyAxis",
+        "properties": [
+          {
+            "name": "showFrequencyAxis",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.name",
+            "defaultValue": true
+          },
+          {
+            "name": "frequencyAxisGridline",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.gridLine",
+            "defaultValue": false
+          },
+          {
+            "name": "frequencyAxisGridlineColor",
+            "type": "Color",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.gridLineColor",
+            "defaultValue": "#cccccc",
+            "resetType": "None"
+          },
+          {
+            "name": "frequencyAxisMaxValue",
+            "type": "Float",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.maxValue",
+            "_allowNullValue": true
+          },
+          {
+            "name": "frequencyAxisMinValue",
+            "type": "Float",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.minValue",
+            "_allowNullValue": true
+          },
+          {
+            "name": "frequencyAxisInterval",
+            "type": "Float",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.interval",
+            "_allowNullValue": true,
+            "min": 0,
+            "_excludeMin": true
+          },
+          {
+            "name": "frequencyAxisLine",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.line",
+            "defaultValue": true
+          },
+          {
+            "name": "frequencyAxisTickLabel",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.tickLabel",
+            "defaultValue": true
+          },
+          {
+            "name": "frequencyAxisTickMark",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.tickMark",
+            "defaultValue": true
+          },
+          {
+            "name": "frequencyAxisTitle",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.title",
+            "defaultValue": false
+          },
+          {
+            "name": "frequencyAxisLabelAutoRotate",
+            "type": "Boolean",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.labelAutoRotate",
+            "defaultValue": true
+          },
+          {
+            "name": "frequencyAxisTextStyle",
+            "type": "TextStyle",
+            "displayNameKey": "inspector.properties.showFrequencyAxis.textStyle",
+            "inheritFrom": "dashboard.textStyle"
+          }
+        ]
+      },
+      {
+        "type": "appearance"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "type": "focus"
+    },
+    {
+      "type": "annotation"
+    },
+    {
+      "type": "export"
+    },
+    {
+      "type": "filter"
+    },
+    {
+      "type": "showData"
+    }
+  ],
+  "analysis": []
+}

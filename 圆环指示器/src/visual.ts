@@ -24,7 +24,6 @@ export default class Visual {
             fontColor: '#f44e3b',
             fontSize: 10,
         };
-        this.render();
     }
 
     public update(options: any) {
@@ -50,7 +49,7 @@ export default class Visual {
     private render() {
         this.chart.clear();
         const isMock = !this.items.length;
-        const items = (isMock ? Visual.mockItems : this.items) * 100;
+        let items = (isMock ? Visual.mockItems : (this.items > 1 ? 1 : this.items)) * 100;
         this.container.style.opacity = isMock ? '0.3' : '1';
         const options = this.properties;
         let subtitle = options.showSubTitle ? options.subtitle : ''

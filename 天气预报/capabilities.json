@@ -3,6 +3,13 @@
     },
     "options": {
     },
-    "actions": [],
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
     "analysis": []
 }

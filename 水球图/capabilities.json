@@ -119,16 +119,22 @@
     },
     "actions": [
         {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
             "type": "filter"
+        },
+        {
+            "type": "sort"
         },
         {
             "type": "rank"
         },
         {
-            "type": "focus"
-        },
-        {
-            "type": "export"
+            "type": "convertVisual"
         },
         {
             "type": "annotation"

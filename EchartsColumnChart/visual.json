@@ -1,0 +1,17 @@
+{
+    "name": "echarts-column-chart",
+    "displayName": "ColumnChart(Echarts)",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [
+        "https://cdn.jsdelivr.net/npm/echarts@4.7.0/dist/echarts.js"
+    ],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {}
+}

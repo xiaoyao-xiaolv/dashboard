@@ -1,0 +1,18 @@
+{
+    "name": "wyn-custom-visual-bubble-chart",
+    "displayName": "Wyn Custom Visual Bubble Chart",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "testImg": "assets/icon.png",
+            "visualIcon": "assets/bubble.png"
+        }
+    },
+    "configuration": {
+        "token": "xxxxxxx"
+    }
+}

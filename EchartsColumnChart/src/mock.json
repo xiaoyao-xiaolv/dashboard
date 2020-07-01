@@ -1,0 +1,82 @@
+{
+  "data": [
+    {
+      "Column0": "A",
+      "Sum of Values": 111
+    },
+    {
+      "Column0": "B",
+      "Sum of Values": 222
+    },
+    {
+      "Column0": "C",
+      "Sum of Values": 333
+    }
+  ],
+  "sort": {},
+  "profile": {
+    "values": {
+      "options": {
+        "valueScale": "Linear",
+        "displayUnit": 0
+      },
+      "values": [
+        {
+          "display": "Sum of Values",
+          "name": "Values",
+          "category": 1,
+          "valueType": 1,
+          "originalItem": {
+            "name": "Values",
+            "valueType": 1,
+            "method": "sum",
+            "idx": 0,
+            "invalid": false
+          },
+          "method": "sum",
+          "dataType": "number",
+          "format": "General",
+          "parentIdx": 0,
+          "displayUnit": 0
+        }
+      ]
+    },
+    "category": {
+      "options": {
+        "categoryScale": "Ordinal"
+      },
+      "values": [
+        {
+          "display": "Column0",
+          "name": "column 0",
+          "category": 2,
+          "valueType": 1,
+          "originalItem": {
+            "name": "column 0",
+            "valueType": 1
+          },
+          "dataType": "string",
+          "format": "@",
+          "parentIdx": 0,
+          "displayUnit": 0
+        }
+      ]
+    },
+    "series": {
+      "options": {},
+      "values": []
+    },
+    "trellisColumns": {
+      "options": {},
+      "values": []
+    },
+    "trellisRows": {
+      "options": {},
+      "values": []
+    },
+    "conditionalFormatValues": {
+      "options": {},
+      "values": []
+    }
+  }
+}

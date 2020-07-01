@@ -250,9 +250,12 @@ export default class Visual {
       tooltip: {
         trigger: 'item',
         formatter: function (params, ticket, callback) {
-          if (params.seriesType == "effectScatter") {
-            return "线路：" + params.data.name + "" + params.data.value[2];
+          if (params.seriesType == "lines") {
+            return params.data.fromName + " --> " + params.data.toName + "<br />" + params.data.value;
+          } else {
+            return params.name;
           }
+
         }
       },
       legend: {

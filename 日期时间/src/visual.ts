@@ -14,7 +14,6 @@ export default class Visual {
                 fontWeight: 'Normal'
             }
         };
-        this.render();
     }
     public update(options: any) {
         this.properties = options.properties;
@@ -23,8 +22,11 @@ export default class Visual {
     private render() {
         this.container.innerHTML = "";
         const options = this.properties;
-        let p1: any = document.createElement("p1");
-        p1.style = "white-space:pre;font-size:20px;margin:0 auto";
+        let p1: any = document.createElement("p");
+        p1.className = 'p1';
+        p1.style.whiteSpace = 'pre';
+        p1.style.fontSize = '20px';
+        p1.style.margin = '0 auto';
         this.container.appendChild(p1);
         //显示时间
         let nowtime: any = new Date();

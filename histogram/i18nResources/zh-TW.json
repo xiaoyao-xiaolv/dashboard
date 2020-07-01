@@ -1,0 +1,75 @@
+{
+  "histogram": "直方圖",
+  "frequency": "頻數",
+  "databinding": {
+    "values": "數值",
+    "series": "系列"
+  },
+  "inspector": {
+    "categories": {
+      "chartStyle": "圖表樣式",
+      "dataLabel": "資料標註",
+      "legend": "圖例",
+      "groupingAxis": "分組軸",
+      "frequencyAxis": "頻數軸"
+    },
+    "properties": {
+      "palette": "調色盤",
+      "graphOpacity": "圖形不透明度",
+      "groupingInterval": "分組間隔",
+      "showDataLabel": {
+        "name": "顯示資料標註",
+        "position": {
+          "name": "位置",
+          "around": "環繞",
+          "onSlice": "資料點內"
+        },
+        "frequency": "頻數",
+        "grouping": "分組",
+        "series": "系列",
+        "textStyle": "資料標註字型設定"
+      },
+      "showLegend": {
+        "name": "顯示圖例",
+        "title": "顯示標題",
+        "textStyle": "系列字型設定",
+        "position": {
+          "name": "位置",
+          "top": "頂部",
+          "right": "右側",
+          "bottom": "底部",
+          "left": "左側",
+          "leftTop": "左上",
+          "rightTop": "右上",
+          "leftBottom": "左下",
+          "rightBottom": "右下"
+        },
+        "wrap": "圖例換行"
+      },
+      "showGroupingAxis": {
+        "name": "顯示軸",
+        "line": "顯示軸線",
+        "tickLabel": "顯示刻度標籤",
+        "tickMark": "顯示刻度標記",
+        "title": "顯示標題",
+        "format": "格式",
+        "labelAutoRotate": "標籤自動旋轉",
+        "textStyle": "標籤字型設定"
+      },
+      "showFrequencyAxis": {
+        "name": "顯示軸",
+        "gridLine": "顯示網格線",
+        "gridLineColor": "網格線顏色",
+        "maxValue": "最大值",
+        "minValue": "最小值",
+        "interval": "間隔",
+        "line": "顯示軸線",
+        "tickLabel": "顯示刻度標籤",
+        "tickMark": "顯示刻度標記",
+        "title": "顯示標題",
+        "labelAutoRotate": "標籤自動旋轉",
+        "textStyle": "標籤字型設定"
+      }
+    }
+  }
+}

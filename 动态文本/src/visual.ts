@@ -26,7 +26,6 @@ export default class Visual {
         fontWeight: 'Normal'
       }
     };
-    this.render();
   }
 
   public update(options: any) {

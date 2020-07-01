@@ -1,0 +1,75 @@
+{
+  "histogram": "Histogram",
+  "frequency": "Frequency",
+  "databinding": {
+    "values": "Values",
+    "series": "Series"
+  },
+  "inspector": {
+    "categories": {
+      "chartStyle": "Chart Style",
+      "dataLabel": "Data Label",
+      "legend": "Legend",
+      "groupingAxis": "Grouping Axis",
+      "frequencyAxis": "Frequency Axis"
+    },
+    "properties": {
+      "palette": "Palette",
+      "graphOpacity": "Graph Opacity",
+      "groupingInterval": "Grouping Interval",
+      "showDataLabel": {
+        "name": "Show Data Label",
+        "position": {
+          "name": "Position",
+          "around": "Around",
+          "onSlice": "On Slice"
+        },
+        "frequency": "Frequency",
+        "grouping": "Grouping",
+        "series": "Series",
+        "textStyle": "Data Label Font Setting"
+      },
+      "showLegend": {
+        "name": "Show Legend",
+        "title": "Show Title",
+        "textStyle": "Legend Font Setting",
+        "position": {
+          "name": "Position",
+          "top": "Top",
+          "right": "Right",
+          "bottom": "Bottom",
+          "left": "Left",
+          "leftTop": "Left Top",
+          "rightTop": "Right Top",
+          "leftBottom": "Left Bottom",
+          "rightBottom": "Right Bottom"
+        },
+        "wrap": "Wrap Legend"
+      },
+      "showGroupingAxis": {
+        "name": "Show Axis",
+        "line": "Show Axis Line",
+        "tickLabel": "Show Tick Labels",
+        "tickMark": "Show Tick Marks",
+        "title": "Show Title",
+        "format": "Format",
+        "labelAutoRotate": "Label Auto Rotation",
+        "textStyle": "Label Font Setting"
+      },
+      "showFrequencyAxis": {
+        "name": "Show Axis",
+        "gridLine": "Show Grid Lines",
+        "gridLineColor": "Grid Line Color",
+        "maxValue": "Max Value",
+        "minValue": "Min Value",
+        "interval": "Interval",
+        "line": "Show Axis Line",
+        "tickLabel": "Show Tick Labels",
+        "tickMark": "Show Tick Marks",
+        "title": "Show Title",
+        "labelAutoRotate": "Label Auto Rotation",
+        "textStyle": "Label Font Setting"
+      }
+    }
+  }
+}

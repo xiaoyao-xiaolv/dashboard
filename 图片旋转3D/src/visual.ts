@@ -9,11 +9,10 @@ export default class Visual {
     this.container = dom;
     this.visualHost = host;
     this.properties = {
-      X: 0,
-      Y: 0,
+      X: 40,
+      Y: 20,
       fps:60
     };
-    this.render();
   }
   public update(options: any) {
     this.properties = options.properties;

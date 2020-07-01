@@ -125,7 +125,13 @@
             "type": "filter"
         },
         {
+            "type": "sort"
+        },
+        {
             "type": "rank"
+        },
+        {
+            "type": "convertVisual"
         },
         {
             "type": "annotation"

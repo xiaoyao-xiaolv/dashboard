@@ -22,7 +22,6 @@ export default class Visual {
       barBackgroundColor: '#444a58',
       barStartColor: '#57eabf',
       barEndcolor: '#2563f9',
-
     };
   }
 

@@ -27,7 +27,6 @@ export default class Visual {
             scaleFontSize:10,
             pointerColor:'#5effea'
         };
-        this.render();
     }
 
     public update(options: any) {

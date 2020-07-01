@@ -7,7 +7,6 @@ export default class Visual {
     this.properties = {
       videoUrl: 'http://video1.grapecity.com.cn/WynEnterprise/online/wyn3.0.mp4',
     };
-    this.render();
   }
 
   public update(options: any) {

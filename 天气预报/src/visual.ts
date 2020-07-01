@@ -10,7 +10,6 @@ export default class Visual {
     this.visualHost = host;
     this.properties = {
     };
-    this.render();
   }
   public update(options: any) {
     this.properties = options.properties;
@@ -32,12 +31,10 @@ export default class Visual {
         "background": 1,
         "dataColor": "FFFFFF",
         "borderRadius": 5,
-        "city": "CN101301205",
-        "key": "76b3484aca3b45fa968d78c21490e0bb"
+        "key": "e1b995f9292e4303ab28f145ffb6a95d"
       }
     }
     script1.innerHTML = "WIDGET="+JSON.stringify(WIDGET);
-
     var script2 = document.createElement('script');
     script2.type = "text/javascript";
     script2.src = "https://widget.heweather.net/standard/static/js/he-standard-common.js?v=1.1";

@@ -1,0 +1,174 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "dataBindingPanel.values",
+                "kind": "value"
+            },
+            {
+                "name": "dimensions",
+                "displayNameKey": "dataBindingPanel.size",
+                "kind": "grouping"
+            },
+            {
+                "name": "series",
+                "displayNameKey": "dataBindingPanel.color",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conversionRules": {
+            "out": [
+                {
+                    "mode": "post",
+                    "execute": [
+                        {
+                            "source": "dimensions",
+                            "target": "category",
+                            "cmd": "all"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "Custom Demo",
+                "properties": [
+                    {
+                        "name": "showBorder",
+                        "type": "Boolean",
+                        "displayName": "Show Border",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "borderWidth",
+                        "type": "Integer",
+                        "displayNameKey": "Border Width",
+                        "defaultValue": 1
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "Border Color",
+                        "defaultValue": "#ccc"
+                    },
+                    {
+                        "name": "color",
+                        "type": "Color",
+                        "displayName": "Text Color",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "angle",
+                        "type": "Angle",
+                        "displayName": "Angle",
+                        "max": 200,
+                        "min": 100,
+                        "step": 15
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "edit"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "showData",
+            "rule": {
+                "out": [
+                    {
+                        "mode": "post",
+                        "execute": [
+                            {
+                                "source": "dimensions",
+                                "target": "columns",
+                                "cmd": "all"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        },
+        {
+            "type": "extension",
+            "name": "showBorder",
+            "displayName": "Show Border",
+            "path": "showBorder",
+            "extensionType": "toggle",
+            "toggleState": [
+                {
+                    "displayName": "show",
+                    "iconCss": "icon-expand"
+                },
+                {
+                    "displayName": "hide",
+                    "iconCss": "icon-expand"
+                }
+            ]
+        },
+        {
+            "name": "log",
+            "type": "event",
+            "icon": "testImg",
+            "displayName": "Log Event Test"
+        }
+    ],
+    "analysis": [
+        {
+            "type": "drill",
+            "rule": {
+                "roles": [
+                    "dimensions"
+                ]
+            }
+        }
+    ]
+}

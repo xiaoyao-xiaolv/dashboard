@@ -1,1 +1,1 @@
-::-webkit-scrollbar{display:none}#visualDom{display:flex;justify-content:center;align-items:center;position:relative}.p1{position:absolute}
+#visualDom{display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden}.p1{width:100%;text-align:center}

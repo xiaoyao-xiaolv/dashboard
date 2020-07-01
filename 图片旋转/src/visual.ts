@@ -10,7 +10,6 @@ export default class Visual {
     this.visualHost = host;
     this.properties = {
     };
-    this.render();
   }
   public update(options: any) {
     this.properties = options.properties;

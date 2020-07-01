@@ -19,7 +19,6 @@ export default class Visual {
       shape: 'circle',
       showImage: false
     };
-    this.render();
   }
 
   public update(options: any) {

@@ -1,5 +1,5 @@
 import '../style/visual.less';
-import "echarts/map/js/province/jiangsu.js"
+import "echarts/map/js/china.js"
 import "echarts-gl"
 export default class Visual {
   private container: HTMLDivElement;
@@ -83,7 +83,7 @@ export default class Visual {
         {
           name: 'map',
           type: 'map3D',
-          map: '江苏',
+          map: 'china',
 
           itemStyle: {
             opacity: 1,

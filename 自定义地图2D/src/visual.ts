@@ -1,4 +1,5 @@
 import '../style/visual.less';
+import * as echarts from 'echarts';
 import "echarts/map/js/china.js"
 export default class Visual {
   private container: HTMLDivElement;
@@ -7,9 +8,11 @@ export default class Visual {
   private items: any;
   private dataView: any;
   static mockItems = [];
+  static hourIndex = 0;
+  static fhourTime = null;
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = require('echarts').init(dom)
+    this.chart = echarts.init(dom)
     this.items = [];
     this.dataView = [];
     this.properties = {
@@ -44,8 +47,76 @@ export default class Visual {
     this.render();
   }
 
+  private auto_tooltip(){
+    Visual.fhourTime = setTimeout(() =>  {
+      this.chart.dispatchAction({
+        type: "downplay",
+        seriesIndex: 0,
+
+      });
+      this.chart.dispatchAction({
+        type: "highlight",
+        seriesIndex: 0,
+        dataIndex: Visual.hourIndex
+      });
+      this.chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: Visual.hourIndex
+      });
+      Visual.hourIndex++;
+      if (Visual.hourIndex > this.items.length) {
+        Visual.hourIndex = 0;
+      }
+    }, 3000);
+    //鼠标移入停止轮播
+    this.chart.on("mousemove", (e) =>  {
+      clearTimeout(Visual.fhourTime)
+      this.chart.dispatchAction({
+        type: "downplay",
+        seriesIndex: 0,
+      });
+      this.chart.dispatchAction({
+        type: "highlight",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
+      this.chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
+    })
+    //鼠标移出恢复轮播
+    this.chart.on("mouseout", () =>  {
+      Visual.fhourTime = setTimeout(() =>  {
+        this.chart.dispatchAction({
+          type: "downplay",
+          seriesIndex: 0,
+
+        });
+        this.chart.dispatchAction({
+          type: "highlight",
+          seriesIndex: 0,
+          dataIndex: Visual.hourIndex
+        });
+        this.chart.dispatchAction({
+          type: "showTip",
+          seriesIndex: 0,
+          dataIndex: Visual.hourIndex
+        });
+        Visual.hourIndex++;
+        if (Visual.hourIndex > this.items.length) {
+          Visual.hourIndex = 0;
+        }
+      }, 3000);
+    })
+    setTimeout(() => {this.auto_tooltip()}, 3000);
+  }
+
   private render() {
     this.chart.clear();
+    clearTimeout(Visual.fhourTime)
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items;
     this.container.style.opacity = isMock ? '0.3' : '1';
@@ -127,73 +198,7 @@ export default class Visual {
         },
       })
     }
-    var chart = this.chart;
-    var hourIndex = 0;
-    var fhourTime = null;
-    fhourTime = setInterval(function () {
-      chart.dispatchAction({
-        type: "downplay",
-        seriesIndex: 0,
-
-      });
-      chart.dispatchAction({
-        type: "highlight",
-        seriesIndex: 0,
-        dataIndex: hourIndex
-      });
-      chart.dispatchAction({
-        type: "showTip",
-        seriesIndex: 0,
-        dataIndex: hourIndex
-      });
-      hourIndex++;
-      if (hourIndex > items.length) {
-        hourIndex = 0;
-      }
-    }, 3000);
-    //鼠标移入停止轮播
-    chart.on("mousemove", function (e) {
-      clearInterval(fhourTime)
-      chart.dispatchAction({
-        type: "downplay",
-        seriesIndex: 0,
-      });
-      chart.dispatchAction({
-        type: "highlight",
-        seriesIndex: 0,
-        dataIndex: e.dataIndex
-      });
-      chart.dispatchAction({
-        type: "showTip",
-        seriesIndex: 0,
-        dataIndex: e.dataIndex
-      });
-    })
-    //鼠标移出恢复轮播
-    chart.on("mouseout", function () {
-      fhourTime = setInterval(function () {
-        chart.dispatchAction({
-          type: "downplay",
-          seriesIndex: 0,
-
-        });
-        chart.dispatchAction({
-          type: "highlight",
-          seriesIndex: 0,
-          dataIndex: hourIndex
-        });
-        chart.dispatchAction({
-          type: "showTip",
-          seriesIndex: 0,
-          dataIndex: hourIndex
-        });
-        hourIndex++;
-        if (hourIndex > items.length) {
-          hourIndex = 0;
-        }
-      }, 3000);
-    })
-
+    this.auto_tooltip();
   }
   public onResize() {
     this.chart.resize();

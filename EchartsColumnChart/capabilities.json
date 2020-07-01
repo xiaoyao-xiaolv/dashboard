@@ -1,0 +1,130 @@
+{
+    "dataBinding": {
+      "dataRoles": [
+        {
+          "name": "values",
+          "displayNameKey": "dataBindingPanel.values",
+          "kind": "value"
+        },
+        {
+          "name": "dimensions",
+          "displayNameKey": "dataBindingPanel.dimensions",
+          "kind": "grouping"
+        },
+        {
+          "name": "series",
+          "displayNameKey": "dataBindingPanel.legend",
+          "kind": "grouping"
+        }
+      ],
+      "dataViewMappings": [
+        {
+          "plain": {
+            "required": [
+              {
+                "values": {
+                  "min": 1
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "conditions": [
+        {
+          "values": {
+            "max": 1
+          },
+          "dimensions": {
+            "max": 1
+          },
+          "series": {
+            "max": 1
+          }
+        }
+      ]
+    },
+    "options": {
+      "visual": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "interaction"
+        },
+        {
+          "displayName": "Data Labels",
+          "properties": [
+            {
+              "name": "show",
+              "structuredPath": "dataLabel",
+              "type": "Boolean",
+              "displayName": "Show Data Label",
+              "defaultValue": false
+            },
+            {
+              "name": "position",
+              "structuredPath": "dataLabel",
+              "type": "Enum",
+              "displayName": "Data Label Position",
+              "items": [
+                {
+                  "value": "top",
+                  "displayName": "Top"
+                },
+                {
+                  "value": "inside",
+                  "displayName": "Inside"
+                },
+                {
+                  "value": "bottom",
+                  "displayName": "Bottom"
+                }
+              ],
+              "defaultValue": "top"
+            },
+            {
+              "name": "dataLabelFormatter",
+              "type": "Format",
+              "displayName": "Data Label Format",
+              "defaultValue": "General"
+            },
+            {
+              "name": "color",
+              "structuredPath": "dataLabel",
+              "type": "Color",
+              "displayName": "Data Label Color",
+              "defaultValue": "#fff"
+            },
+            {
+              "inheritFrom": "dashboard.textStyle",
+              "type": "TextStyle",
+              "name": "dataLabelTextStyle",
+              "displayName": "Data Label Text Style"
+            }
+          ]
+        }
+      ]
+    },
+    "actions": [
+      {
+        "type": "focus"
+      },
+      {
+        "type": "filter"
+      },
+      {
+        "type": "rank"
+      },
+      {
+        "type": "convertVisual"
+      },
+      {
+        "type": "export"
+      },
+      {
+        "type": "annotation"
+      }
+    ],
+    "analysis": []
+  }

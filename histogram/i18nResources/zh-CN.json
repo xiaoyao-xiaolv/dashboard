@@ -1,0 +1,75 @@
+{
+  "histogram": "直方图",
+  "frequency": "频数",
+  "databinding": {
+    "values": "数值",
+    "series": "系列"
+  },
+  "inspector": {
+    "categories": {
+      "chartStyle": "图表样式",
+      "dataLabel": "数据标注",
+      "legend": "图例",
+      "groupingAxis": "分组轴",
+      "frequencyAxis": "频数轴"
+    },
+    "properties": {
+      "palette": "调色板",
+      "graphOpacity": "图形不透明度",
+      "groupingInterval": "分组间隔",
+      "showDataLabel": {
+        "name": "显示数据标注",
+        "position": {
+          "name": "位置",
+          "around": "环绕",
+          "onSlice": "数据点内"
+        },
+        "frequency": "频数",
+        "grouping": "分组",
+        "series": "系列",
+        "textStyle": "数据标注字体设置"
+      },
+      "showLegend": {
+        "name": "显示图例",
+        "title": "显示标题",
+        "textStyle": "系列字体设置",
+        "position": {
+          "name": "位置",
+          "top": "顶部",
+          "right": "右侧",
+          "bottom": "底部",
+          "left": "左侧",
+          "leftTop": "左上",
+          "rightTop": "右上",
+          "leftBottom": "左下",
+          "rightBottom": "右下"
+        },
+        "wrap": "图例换行"
+      },
+      "showGroupingAxis": {
+        "name": "显示轴",
+        "line": "显示轴线",
+        "tickLabel": "显示刻度标签",
+        "tickMark": "显示刻度标记",
+        "title": "显示标题",
+        "format": "格式",
+        "labelAutoRotate": "标签自动旋转",
+        "textStyle": "标签字体设置"
+      },
+      "showFrequencyAxis": {
+        "name": "显示轴",
+        "gridLine": "显示网格线",
+        "gridLineColor": "网格线颜色",
+        "maxValue": "最大值",
+        "minValue": "最小值",
+        "interval": "间隔",
+        "line": "显示轴线",
+        "tickLabel": "显示刻度标签",
+        "tickMark": "显示刻度标记",
+        "title": "显示标题",
+        "labelAutoRotate": "标签自动旋转",
+        "textStyle": "标签字体设置"
+      }
+    }
+  }
+}
