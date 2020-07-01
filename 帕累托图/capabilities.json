@@ -4,6 +4,12 @@
             {
                 "name": "ActualValue",
                 "displayNameKey": "数值",
+                "options": [
+                    {
+                        "name": "数据单位2",
+                        "type": "format"
+                    }
+                ],
                 "kind": "value"
             },
             {
@@ -251,9 +257,6 @@
     "actions": [
         {
             "type": "focus"
-        },
-        {
-            "type": "sort"
         },
         {
             "type": "export"

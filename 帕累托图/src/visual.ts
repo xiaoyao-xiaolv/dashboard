@@ -13,7 +13,8 @@ export default class Visual extends WynVisual {
   private items: any;
   private selectionManager: any;
   private selection: any[] = [];
-  private ActualValue: any
+  private ActualValue: string;
+  private dimension: string;
   static mockItems: any = [
     ["1月", "2月", "3月", "4月", "5月", "6月", "7月"], [56, 44, 38, 25, 20, 12, 7]
   ];
@@ -31,11 +32,6 @@ export default class Visual extends WynVisual {
   // toolTip
   private showTooltip = _.debounce((params, asModel = false) => {
     if (asModel) isTooltipModelShown = true;
-
-    // const visibleDimIdxs: any[] = _.flatten(Object.values(params.encode));
-    // let visibleDimensions: any[] =  visibleDimIdxs.map(idx => params.dimensionNames[idx]);
-    // if (params.data[''] === '') visibleDimensions = visibleDimensions.filter(d => d !== '');
-    // console.log(visibleDimensions, '======visibleDimensions')
     this.host.toolTipService.show({
       position: {
         x: params.event.event.x,
@@ -43,8 +39,8 @@ export default class Visual extends WynVisual {
       },
 
       fields: [{
-        label: params.name,
-        value: params.data[params.data.length - 1],
+        label: this.ActualValue,
+        value: params.data,
       }],
       selected: this.selectionManager.getSelectionIds(),
       menu: true,
@@ -98,9 +94,9 @@ export default class Visual extends WynVisual {
         dataIndex: params.dataIndex,
       };
 
-      if (params.data.selectionId) {
-
-        const sid = this.createSelectionId(params.data.selectionId);
+      if (this.items[2][params.dataIndex]) {
+        const sid = this.items[2][params.dataIndex];
+        console.log(sid, '====sid')
         this.selectionManager.select(sid, true);
       }
       this.dispatch('highlight', selectInfo);
@@ -112,19 +108,23 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
+
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
       const plainData = dataView.plain;
-      const dimension = plainData.profile.dimension.values[0].display;
+      this.dimension = plainData.profile.dimension.values[0].display;
       this.ActualValue = plainData.profile.ActualValue.values[0].display;
 
-      const items = _.sortBy(plainData.data, (item) => {
-        return - item[this.ActualValue]
-      })
-      this.items[0] = items.map((item) => item[dimension]);
+      const items = plainData.data
+      this.items[0] = plainData.sort[this.dimension].order;
       this.items[1] = items.map((item) => item[this.ActualValue]);
-
+      const getSelectionId = (item) => {
+        const selectionId = this.createSelectionId();
+        this.dimension && selectionId.withDimension(plainData.profile.dimension.values[0], item)
+        return selectionId
+      }
+      this.items[2] = items.map((item) => getSelectionId(item));
     }
 
     this.properties = options.properties;
@@ -136,15 +136,12 @@ export default class Visual extends WynVisual {
     const totalNumber = _.sum(initData)
     const lineData = []
     initData.map((data: number, index: number) => {
-
-      console.log((Number((initData[index] / totalNumber).toFixed(2)) * 100), '===%%%')
       if (index) {
-        lineData[index] = (Number((initData[index] / totalNumber).toFixed(2)) * 100) + lineData[index - 1]
+        lineData[index] = (Number((data / totalNumber).toFixed(2)) * 100) + lineData[index - 1]
       } else {
         lineData[index] = (Number((initData[0] / totalNumber).toFixed(2)) * 100);
       }
     })
-    console.log(lineData, '===lineData')
     return lineData
   }
 
@@ -154,10 +151,10 @@ export default class Visual extends WynVisual {
     const isMock = !this.items.length
     const options = this.properties;
     let columnarData = isMock ? Visual.mockItems[1] : this.items[1];
-    console.log(options, '=====options')
     const lineData = this.getLineData(columnarData);
 
     // lengend position
+    const lengendBarName = isMock ? '质量' : this.ActualValue
     const h = options.legendHorizontalPosition;
     const v = options.legendVerticalPosition
     const orient = h === 'middle' && v === 'left' || h === 'middle' && v === 'right' ? 'vertical' : 'horizontal'
@@ -174,7 +171,7 @@ export default class Visual extends WynVisual {
         }
       },
       legend: {
-        data: [this.ActualValue, { name: options.legendName, icon: 'circle' }],
+        data: [lengendBarName, { name: options.legendName, icon: 'circle' }],
         show: options.showLegend,
         left: options.legendVerticalPosition,
         top: options.legendHorizontalPosition,
@@ -265,7 +262,7 @@ export default class Visual extends WynVisual {
       ],
       series: [
         {
-          name: this.ActualValue || '质量',
+          name: lengendBarName,
           type: 'bar',
           xAxisIndex: 0,
           yAxisIndex: 0,
