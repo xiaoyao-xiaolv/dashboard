@@ -141,6 +141,9 @@
                 ]
             },
             {
+                "type": "interaction"
+            },
+            {
                 "type": "title"
             },
             {
