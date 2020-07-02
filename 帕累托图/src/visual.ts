@@ -108,7 +108,7 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-
+    console.log(dataView, ' ===dataView')
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
@@ -116,8 +116,19 @@ export default class Visual extends WynVisual {
       this.dimension = plainData.profile.dimension.values[0].display;
       this.ActualValue = plainData.profile.ActualValue.values[0].display;
 
-      const items = plainData.data
-      this.items[0] = plainData.sort[this.dimension].order;
+      let items = plainData.data;
+      const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
+
+      // data sort 
+      if (isSort) {
+        const sortFlage = plainData.sort[this.dimension].order;
+        let newItems: any = sortFlage.map((flage) => {
+          return newItems = items.find((item) => item[this.dimension] === flage && item)
+        })
+        items = newItems.filter((item) => item)
+      }
+
+      this.items[0] = items.map((item) => item[this.dimension]);
       this.items[1] = items.map((item) => item[this.ActualValue]);
       const getSelectionId = (item) => {
         const selectionId = this.createSelectionId();
@@ -188,7 +199,7 @@ export default class Visual extends WynVisual {
       },
       xAxis: [
         {
-          show: options.xAxis,
+          // show: options.xAxis,
           axisTick: {
             show: options.xAxisTick
           },
@@ -223,6 +234,10 @@ export default class Visual extends WynVisual {
           type: 'value',
           axisLabel: {
             show: options.leftAxisLabel,
+            formatter: (value: any) => {
+              console.log(value, '=====value')
+              return value + '万'
+            },
             color: options.leftTextStyle.color,
             fontStyle: options.leftTextStyle.fontStyle,
             fontWeight: options.leftTextStyle.fontWeight,
@@ -235,7 +250,7 @@ export default class Visual extends WynVisual {
           axisLine: {
             show: options.leftAxisLine
           },
-          splitLine: options.leftSplitLine
+          splitLine: true
         },
         {
           type: 'value',

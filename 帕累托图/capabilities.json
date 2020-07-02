@@ -59,7 +59,7 @@
                         "name": "barCategoryGap",
                         "type": "Integer",
                         "displayNameKey": "柱子间距%",
-                        "defaultValue": 30
+                        "defaultValue": 50
                     }
                 ]
             },
@@ -257,6 +257,9 @@
     "actions": [
         {
             "type": "focus"
+        },
+        {
+            "type": "sort"
         },
         {
             "type": "export"
