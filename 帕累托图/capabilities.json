@@ -4,12 +4,6 @@
             {
                 "name": "ActualValue",
                 "displayNameKey": "数值",
-                "options": [
-                    {
-                        "name": "数据单位2",
-                        "type": "format"
-                    }
-                ],
                 "kind": "value"
             },
             {
@@ -57,9 +51,15 @@
                     },
                     {
                         "name": "barCategoryGap",
-                        "type": "Integer",
+                        "type": "Percentage",
                         "displayNameKey": "柱子间距%",
                         "defaultValue": 50
+                    },
+                    {
+                        "name": "opacity",
+                        "type": "Percentage",
+                        "displayNameKey": "图形不透明度",
+                        "defaultValue": 100
                     }
                 ]
             },
@@ -129,6 +129,72 @@
                         "defaultValue": false
                     },
                     {
+                        "name": "yMax",
+                        "type": "Text",
+                        "displayName": "最大值",
+                        "defaultValue": "默认"
+                    },
+                    {
+                        "name": "yMin",
+                        "type": "Text",
+                        "displayName": "最小值",
+                        "defaultValue": "默认"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "Text",
+                        "displayName": "间隔",
+                        "defaultValue": "默认"
+                    },
+                    {
+                        "name": "dataUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    },
+                    {
                         "name": "leftTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -184,13 +250,37 @@
                         "name": "showLegend",
                         "type": "Boolean",
                         "displayName": "显示图例",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "legendName",
                         "type": "Text",
                         "displayName": "折线图例名称",
                         "defaultValue": "累计率%"
+                    },
+                    {
+                        "name": "legendPosition",
+                        "type": "Enum",
+                        "displayName": "位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "top"
                     },
                     {
                         "name": "legendVerticalPosition",
@@ -210,7 +300,7 @@
                                 "displayNameKey": "居右"
                             }
                         ],
-                        "defaultValue": "left"
+                        "defaultValue": "center"
                     },
                     {
                         "name": "legendHorizontalPosition",
@@ -234,6 +324,42 @@
                     },
                     {
                         "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
+                    {
+                        "name": "dataindicate",
+                        "type": "Boolean",
+                        "displayName": "显示数据标注",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dataindicatePosition",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "还绕"
+                            },
+                            {
+                                "value": "inside",
+                                "displayNameKey": "数据点内"
+                            }
+                        ],
+                        "displayNameKey": "位置",
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "dataindicateTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",

@@ -75,12 +75,6 @@ export default class Visual extends WynVisual {
       this.hideTooltip();
     })
 
-    // this.chart.on('mousemove', (params) => {
-    //   if (params.componentType !== 'series') return;
-
-    //   if (!isTooltipModelShown) this.showTooltip(params);
-    // })
-
     this.chart.on('click', (params) => {
 
       if (params.componentType !== 'series') return;
@@ -96,7 +90,6 @@ export default class Visual extends WynVisual {
 
       if (this.items[2][params.dataIndex]) {
         const sid = this.items[2][params.dataIndex];
-        console.log(sid, '====sid')
         this.selectionManager.select(sid, true);
       }
       this.dispatch('highlight', selectInfo);
@@ -108,7 +101,6 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-    console.log(dataView, ' ===dataView')
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
@@ -156,19 +148,73 @@ export default class Visual extends WynVisual {
     return lineData
   }
 
+
+  public formatUnit = (value: any, dataUnit) => {
+    if (value) {
+      const units = [{
+        value: 1,
+        unit: ''
+      },
+      {
+        value: 100,
+        unit: '百'
+      }, {
+        value: 1000,
+        unit: '千'
+      }, {
+        value: 10000,
+        unit: '万'
+      }, {
+        value: 100000,
+        unit: '十万'
+      }, {
+        value: 1000000,
+        unit: '百万'
+      }, {
+        value: 10000000,
+        unit: '千万'
+      }, {
+        value: 100000000,
+        unit: '亿'
+      }, {
+        value: 1000000000,
+        unit: '十亿'
+      }, {
+        value: 100000000000,
+        unit: '万亿'
+      }]
+      const format = units.find((item) => item.value === Number(dataUnit))
+      return value / format.value + format.unit
+    } else {
+      return value
+    }
+  }
+
   public render() {
     this.chart.clear();
     // get data
-    const isMock = !this.items.length
+    const isMock = !this.items.length;
+    this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
     let columnarData = isMock ? Visual.mockItems[1] : this.items[1];
     const lineData = this.getLineData(columnarData);
 
     // lengend position
     const lengendBarName = isMock ? '质量' : this.ActualValue
-    const h = options.legendHorizontalPosition;
-    const v = options.legendVerticalPosition
-    const orient = h === 'middle' && v === 'left' || h === 'middle' && v === 'right' ? 'vertical' : 'horizontal'
+    const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal'
+    const gridPosition = !options.showLegend
+      ? {
+        left: '8%',
+        right: '10%',
+        top: '10%',
+        bottom: '10%',
+      }
+      : {
+        left: options.legendPosition === 'left' ? '15%' : '8%',
+        right: options.legendPosition === 'right' ? '15%' : '10%',
+        top: options.legendPosition === 'top' ? '15%' : '10%',
+        bottom: options.legendPosition === 'bottom' ? '15%' : '10%',
+      }
     // get properties
     const option = {
       tooltip: {
@@ -184,8 +230,8 @@ export default class Visual extends WynVisual {
       legend: {
         data: [lengendBarName, { name: options.legendName, icon: 'circle' }],
         show: options.showLegend,
-        left: options.legendVerticalPosition,
-        top: options.legendHorizontalPosition,
+        left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
+        top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
         align: 'auto',
         icon: 'roundRect',
         textStyle: {
@@ -197,9 +243,10 @@ export default class Visual extends WynVisual {
         },
         orient: orient,
       },
+      grid: gridPosition,
       xAxis: [
         {
-          // show: options.xAxis,
+          show: options.xAxis,
           axisTick: {
             show: options.xAxisTick
           },
@@ -232,11 +279,13 @@ export default class Visual extends WynVisual {
       yAxis: [
         {
           type: 'value',
+          max: Number(options.yMax) || null,
+          min: Number(options.yMin) || null,
+          interval: Number(options.interval) || null,
           axisLabel: {
             show: options.leftAxisLabel,
-            formatter: (value: any) => {
-              console.log(value, '=====value')
-              return value + '万'
+            formatter: (value) => {
+              return this.formatUnit(value, options.dataUnit)
             },
             color: options.leftTextStyle.color,
             fontStyle: options.leftTextStyle.fontStyle,
@@ -250,11 +299,13 @@ export default class Visual extends WynVisual {
           axisLine: {
             show: options.leftAxisLine
           },
-          splitLine: true
+          splitLine: {
+            show: options.leftSplitLine
+          }
         },
         {
           type: 'value',
-          max: 100,
+          // max: 100,
           axisLabel: {
             formatter: `{value}(%)`,
             show: options.rightAxisLabel,
@@ -272,7 +323,9 @@ export default class Visual extends WynVisual {
           axisLine: {
             show: options.rightAxisLine
           },
-          splitLine: options.rightSplitLine
+          splitLine: {
+            show: options.rightSplitLine
+          }
         }
       ],
       series: [
@@ -283,17 +336,21 @@ export default class Visual extends WynVisual {
           yAxisIndex: 0,
           barCategoryGap: `${options.barCategoryGap}%`,
           itemStyle: {
+            opacity: options.opacity / 100,
             color: options.chartColors[0].colorStops ? options.chartColors[0].colorStops[0] : options.chartColors[0]
           },
           label: {
             color: options.leftTextStyle.color,
             normal: {
-              show: true,
-              position: 'top',
+              show: options.dataindicate,
+              position: options.dataindicatePosition,
               formatter: '{c}',
               textStyle: {
-                // fontWeight: 'bold',
-                fontSize: 14
+                color: options.dataindicateTextStyle.color,
+                fontStyle: options.dataindicateTextStyle.fontStyle,
+                fontWeight: options.dataindicateTextStyle.fontWeight,
+                fontFamily: options.dataindicateTextStyle.fontFamily,
+                fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
               }
             }
           },
@@ -310,6 +367,7 @@ export default class Visual extends WynVisual {
           symbolSize: 9,
           itemStyle: {
             normal: {
+              opacity: options.opacity / 100,
               color: options.chartColors[1].colorStops ? options.chartColors[1].colorStops[0] : options.chartColors[1],
               //borderColor:,
               borderWidth: 3,
@@ -325,8 +383,6 @@ export default class Visual extends WynVisual {
         }
       ]
     };
-
-
     this.chart.setOption(option)
 
   }
@@ -342,8 +398,23 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     if (!options.properties.showLegend) {
-      return ['legendName', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle']
+      return ['legendName', 'legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle']
+    } else {
+
+      if (options.properties.legendPosition === 'top' || options.properties.legendPosition === 'bottom') {
+        return ['legendHorizontalPosition']
+      }
+
+      if (options.properties.legendPosition === 'right' || options.properties.legendPosition === 'left') {
+        return ['legendVerticalPosition']
+      }
+
     }
+
+    if (!options.properties.dataindicate) {
+      return ['dataindicatePosition', 'dataindicateTextStyle']
+    }
+
     return null;
   }
 
