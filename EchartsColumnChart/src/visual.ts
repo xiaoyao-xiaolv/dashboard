@@ -211,8 +211,6 @@ export default class Visual extends WynVisual {
 
     this.hideTooltip();
 
-    console.log(dataView);
-
     const option: echarts.EChartOption = {
       dataset: {
         source: this.getData(dataView),
@@ -223,8 +221,6 @@ export default class Visual extends WynVisual {
       legend: { type: 'plain' },
       series: this.getSeries(dataView),
     };
-
-    console.log(JSON.stringify(option, null ,2));
     this.chart.setOption(option, true);
   }
 
