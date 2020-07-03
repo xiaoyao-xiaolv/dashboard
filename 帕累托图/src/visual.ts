@@ -13,7 +13,8 @@ export default class Visual extends WynVisual {
   private items: any;
   private selectionManager: any;
   private selection: any[] = [];
-  private ActualValue: any
+  private ActualValue: string;
+  private dimension: string;
   static mockItems: any = [
     ["1月", "2月", "3月", "4月", "5月", "6月", "7月"], [56, 44, 38, 25, 20, 12, 7]
   ];
@@ -31,11 +32,6 @@ export default class Visual extends WynVisual {
   // toolTip
   private showTooltip = _.debounce((params, asModel = false) => {
     if (asModel) isTooltipModelShown = true;
-
-    // const visibleDimIdxs: any[] = _.flatten(Object.values(params.encode));
-    // let visibleDimensions: any[] =  visibleDimIdxs.map(idx => params.dimensionNames[idx]);
-    // if (params.data[''] === '') visibleDimensions = visibleDimensions.filter(d => d !== '');
-    // console.log(visibleDimensions, '======visibleDimensions')
     this.host.toolTipService.show({
       position: {
         x: params.event.event.x,
@@ -43,8 +39,8 @@ export default class Visual extends WynVisual {
       },
 
       fields: [{
-        label: params.name,
-        value: params.data[params.data.length - 1],
+        label: this.ActualValue,
+        value: params.data,
       }],
       selected: this.selectionManager.getSelectionIds(),
       menu: true,
@@ -79,12 +75,6 @@ export default class Visual extends WynVisual {
       this.hideTooltip();
     })
 
-    // this.chart.on('mousemove', (params) => {
-    //   if (params.componentType !== 'series') return;
-
-    //   if (!isTooltipModelShown) this.showTooltip(params);
-    // })
-
     this.chart.on('click', (params) => {
 
       if (params.componentType !== 'series') return;
@@ -98,9 +88,8 @@ export default class Visual extends WynVisual {
         dataIndex: params.dataIndex,
       };
 
-      if (params.data.selectionId) {
-
-        const sid = this.createSelectionId(params.data.selectionId);
+      if (this.items[2][params.dataIndex]) {
+        const sid = this.items[2][params.dataIndex];
         this.selectionManager.select(sid, true);
       }
       this.dispatch('highlight', selectInfo);
@@ -116,15 +105,29 @@ export default class Visual extends WynVisual {
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
       const plainData = dataView.plain;
-      const dimension = plainData.profile.dimension.values[0].display;
+      this.dimension = plainData.profile.dimension.values[0].display;
       this.ActualValue = plainData.profile.ActualValue.values[0].display;
 
-      const items = _.sortBy(plainData.data, (item) => {
-        return - item[this.ActualValue]
-      })
-      this.items[0] = items.map((item) => item[dimension]);
-      this.items[1] = items.map((item) => item[this.ActualValue]);
+      let items = plainData.data;
+      const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
 
+      // data sort 
+      if (isSort) {
+        const sortFlage = plainData.sort[this.dimension].order;
+        let newItems: any = sortFlage.map((flage) => {
+          return newItems = items.find((item) => item[this.dimension] === flage && item)
+        })
+        items = newItems.filter((item) => item)
+      }
+
+      this.items[0] = items.map((item) => item[this.dimension]);
+      this.items[1] = items.map((item) => item[this.ActualValue]);
+      const getSelectionId = (item) => {
+        const selectionId = this.createSelectionId();
+        this.dimension && selectionId.withDimension(plainData.profile.dimension.values[0], item)
+        return selectionId
+      }
+      this.items[2] = items.map((item) => getSelectionId(item));
     }
 
     this.properties = options.properties;
@@ -136,31 +139,82 @@ export default class Visual extends WynVisual {
     const totalNumber = _.sum(initData)
     const lineData = []
     initData.map((data: number, index: number) => {
-
-      console.log((Number((initData[index] / totalNumber).toFixed(2)) * 100), '===%%%')
       if (index) {
-        lineData[index] = (Number((initData[index] / totalNumber).toFixed(2)) * 100) + lineData[index - 1]
+        lineData[index] = (Number((data / totalNumber).toFixed(2)) * 100) + lineData[index - 1]
       } else {
         lineData[index] = (Number((initData[0] / totalNumber).toFixed(2)) * 100);
       }
     })
-    console.log(lineData, '===lineData')
     return lineData
+  }
+
+
+  public formatUnit = (value: any, dataUnit) => {
+    if (value) {
+      const units = [{
+        value: 1,
+        unit: ''
+      },
+      {
+        value: 100,
+        unit: '百'
+      }, {
+        value: 1000,
+        unit: '千'
+      }, {
+        value: 10000,
+        unit: '万'
+      }, {
+        value: 100000,
+        unit: '十万'
+      }, {
+        value: 1000000,
+        unit: '百万'
+      }, {
+        value: 10000000,
+        unit: '千万'
+      }, {
+        value: 100000000,
+        unit: '亿'
+      }, {
+        value: 1000000000,
+        unit: '十亿'
+      }, {
+        value: 100000000000,
+        unit: '万亿'
+      }]
+      const format = units.find((item) => item.value === Number(dataUnit))
+      return value / format.value + format.unit
+    } else {
+      return value
+    }
   }
 
   public render() {
     this.chart.clear();
     // get data
-    const isMock = !this.items.length
+    const isMock = !this.items.length;
+    this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
     let columnarData = isMock ? Visual.mockItems[1] : this.items[1];
-    console.log(options, '=====options')
     const lineData = this.getLineData(columnarData);
 
     // lengend position
-    const h = options.legendHorizontalPosition;
-    const v = options.legendVerticalPosition
-    const orient = h === 'middle' && v === 'left' || h === 'middle' && v === 'right' ? 'vertical' : 'horizontal'
+    const lengendBarName = isMock ? '质量' : this.ActualValue
+    const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal'
+    const gridPosition = !options.showLegend
+      ? {
+        left: '8%',
+        right: '10%',
+        top: '10%',
+        bottom: '10%',
+      }
+      : {
+        left: options.legendPosition === 'left' ? '15%' : '8%',
+        right: options.legendPosition === 'right' ? '15%' : '10%',
+        top: options.legendPosition === 'top' ? '15%' : '10%',
+        bottom: options.legendPosition === 'bottom' ? '15%' : '10%',
+      }
     // get properties
     const option = {
       tooltip: {
@@ -174,10 +228,10 @@ export default class Visual extends WynVisual {
         }
       },
       legend: {
-        data: [this.ActualValue, { name: options.legendName, icon: 'circle' }],
+        data: [lengendBarName, { name: options.legendName, icon: 'circle' }],
         show: options.showLegend,
-        left: options.legendVerticalPosition,
-        top: options.legendHorizontalPosition,
+        left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
+        top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
         align: 'auto',
         icon: 'roundRect',
         textStyle: {
@@ -189,6 +243,7 @@ export default class Visual extends WynVisual {
         },
         orient: orient,
       },
+      grid: gridPosition,
       xAxis: [
         {
           show: options.xAxis,
@@ -224,8 +279,14 @@ export default class Visual extends WynVisual {
       yAxis: [
         {
           type: 'value',
+          max: Number(options.yMax) || null,
+          min: Number(options.yMin) || null,
+          interval: Number(options.interval) || null,
           axisLabel: {
             show: options.leftAxisLabel,
+            formatter: (value) => {
+              return this.formatUnit(value, options.dataUnit)
+            },
             color: options.leftTextStyle.color,
             fontStyle: options.leftTextStyle.fontStyle,
             fontWeight: options.leftTextStyle.fontWeight,
@@ -238,11 +299,13 @@ export default class Visual extends WynVisual {
           axisLine: {
             show: options.leftAxisLine
           },
-          splitLine: options.leftSplitLine
+          splitLine: {
+            show: options.leftSplitLine
+          }
         },
         {
           type: 'value',
-          max: 100,
+          // max: 100,
           axisLabel: {
             formatter: `{value}(%)`,
             show: options.rightAxisLabel,
@@ -260,28 +323,34 @@ export default class Visual extends WynVisual {
           axisLine: {
             show: options.rightAxisLine
           },
-          splitLine: options.rightSplitLine
+          splitLine: {
+            show: options.rightSplitLine
+          }
         }
       ],
       series: [
         {
-          name: this.ActualValue || '质量',
+          name: lengendBarName,
           type: 'bar',
           xAxisIndex: 0,
           yAxisIndex: 0,
           barCategoryGap: `${options.barCategoryGap}%`,
           itemStyle: {
+            opacity: options.opacity / 100,
             color: options.chartColors[0].colorStops ? options.chartColors[0].colorStops[0] : options.chartColors[0]
           },
           label: {
             color: options.leftTextStyle.color,
             normal: {
-              show: true,
-              position: 'top',
+              show: options.dataindicate,
+              position: options.dataindicatePosition,
               formatter: '{c}',
               textStyle: {
-                // fontWeight: 'bold',
-                fontSize: 14
+                color: options.dataindicateTextStyle.color,
+                fontStyle: options.dataindicateTextStyle.fontStyle,
+                fontWeight: options.dataindicateTextStyle.fontWeight,
+                fontFamily: options.dataindicateTextStyle.fontFamily,
+                fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
               }
             }
           },
@@ -298,6 +367,7 @@ export default class Visual extends WynVisual {
           symbolSize: 9,
           itemStyle: {
             normal: {
+              opacity: options.opacity / 100,
               color: options.chartColors[1].colorStops ? options.chartColors[1].colorStops[0] : options.chartColors[1],
               //borderColor:,
               borderWidth: 3,
@@ -313,8 +383,6 @@ export default class Visual extends WynVisual {
         }
       ]
     };
-
-
     this.chart.setOption(option)
 
   }
@@ -330,8 +398,23 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     if (!options.properties.showLegend) {
-      return ['legendName', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle']
+      return ['legendName', 'legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle']
+    } else {
+
+      if (options.properties.legendPosition === 'top' || options.properties.legendPosition === 'bottom') {
+        return ['legendHorizontalPosition']
+      }
+
+      if (options.properties.legendPosition === 'right' || options.properties.legendPosition === 'left') {
+        return ['legendVerticalPosition']
+      }
+
     }
+
+    if (!options.properties.dataindicate) {
+      return ['dataindicatePosition', 'dataindicateTextStyle']
+    }
+
     return null;
   }
 
