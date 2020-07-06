@@ -56,22 +56,90 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
-                        "name": "pointEffect",
+                        "name": "heatType",
+                        "type": "Enum",
+                        "displayName": "点的形状",
+                        "items": [
+                            {
+                                "value": "scatter",
+                                "displayNameKey": "气泡"
+                            },
+                            {
+                                "value": "heatmap",
+                                "displayNameKey": "方块"
+                            }
+                        ],
+                        "defaultValue": "scatter"
+                    },
+                    {
+                        "name": "heatFillType",
+                        "type": "Enum",
+                        "displayName": "填充方式",
+                        "items": [
+                            {
+                                "value": "single",
+                                "displayNameKey": "单色填充"
+                            },
+                            {
+                                "value": "multiple",
+                                "displayNameKey": "多色填充"
+                            }
+                        ],
+                        "defaultValue": "single"
+                    },
+                    {
+                        "name": "pointColorSingle",
+                        "type": "Color",
+                        "displayName": "气泡颜色",
+                        "defaultValue": "#ffde76"
+                    },
+                    {
+                        "name": "pointColorMultiple",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "defaultValue": "[#fff4d1, #ffe9a4, #ffde76, #ffd348, #bf9e36, #806a24]"
+                    },
+                    {
+                        "name": "symbolSizeMin",
+                        "type": "Integer",
+                        "displayNameKey": "气泡最小值",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "symbolSizeMax",
+                        "type": "Integer",
+                        "displayNameKey": "气泡最大值",
+                        "defaultValue": 70
+                    },
+                    {
+                        "name": "maxNumber",
                         "type": "Boolean",
-                        "displayName": "圆点发散",
+                        "displayNameKey": "最大三个值发散",
                         "defaultValue": false
                     },
                     {
-                        "name": "pointColor",
-                        "type": "Color",
-                        "displayName": "圆点颜色",
-                        "defaultValue": "#b66033"
+                        "name": "minNumber",
+                        "type": "Boolean",
+                        "displayNameKey": "最小三个值发散",
+                        "defaultValue": false
                     },
                     {
-                        "name": "symbolSize",
-                        "type": "Percentage",
-                        "displayNameKey": "圆点大小",
-                        "defaultValue": 50
+                        "name": "startNumber",
+                        "type": "Boolean",
+                        "displayNameKey": "前三个值发散",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "endNumber",
+                        "type": "Boolean",
+                        "displayNameKey": "后三个值发散",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "customColor",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "defaultValue": "[#fff4d1, #ffe9a4, #ffde76, #ffd348, #bf9e36, #806a24]"
                     },
                     {
                         "name": "textStyle",
@@ -95,6 +163,25 @@
             }
         ]
     },
-    "actions": [],
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
     "analysis": []
 }
