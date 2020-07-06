@@ -8,12 +8,12 @@
             },
             {
                 "name": "dimension",
-                "displayNameKey": "分类",
+                "displayNameKey": "X 轴",
                 "kind": "grouping"
             },
             {
                 "name": "series",
-                "displayNameKey": "系列",
+                "displayNameKey": "Y 轴",
                 "kind": "grouping"
             }
         ],
@@ -109,31 +109,35 @@
                         "name": "symbolSizeMax",
                         "type": "Integer",
                         "displayNameKey": "气泡最大值",
-                        "defaultValue": 70
+                        "defaultValue": 30
                     },
                     {
-                        "name": "maxNumber",
+                        "name": "openEffect",
                         "type": "Boolean",
-                        "displayNameKey": "最大三个值发散",
+                        "displayNameKey": "开启条件格式",
                         "defaultValue": false
                     },
                     {
-                        "name": "minNumber",
-                        "type": "Boolean",
-                        "displayNameKey": "最小三个值发散",
-                        "defaultValue": false
+                        "name": "effectNumber",
+                        "type": "Integer",
+                        "displayNameKey": "格式数据位数",
+                        "defaultValue": 3
                     },
                     {
-                        "name": "startNumber",
-                        "type": "Boolean",
-                        "displayNameKey": "前三个值发散",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "endNumber",
-                        "type": "Boolean",
-                        "displayNameKey": "后三个值发散",
-                        "defaultValue": false
+                        "name": "effectType",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "max",
+                                "displayNameKey": "最大值"
+                            },
+                            {
+                                "value": "min",
+                                "displayNameKey": "最小值"
+                            }
+                        ],
+                        "displayNameKey": "格式类型",
+                        "defaultValue": "max"
                     },
                     {
                         "name": "customColor",
@@ -143,6 +147,110 @@
                     },
                     {
                         "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "name": "showLegend",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "legendPosition",
+                        "type": "Enum",
+                        "displayName": "位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "水平位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "legendHorizontalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "middle",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
+                    {
+                        "name": "dataindicate",
+                        "type": "Boolean",
+                        "displayName": "显示数据标注",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dataindicateTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
@@ -166,9 +274,6 @@
     "actions": [
         {
             "type": "focus"
-        },
-        {
-            "type": "sort"
         },
         {
             "type": "export"

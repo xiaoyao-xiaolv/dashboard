@@ -140,8 +140,9 @@ export default class Visual extends WynVisual {
     this.chart.clear();
     const isMock = !this.items.length
     const options = this.properties;
-    this.container.style.opacity = isMock ? '0.3' : '1';
 
+    this.container.style.opacity = isMock ? '0.3' : '1';
+    const textStyle = options.textStyle
     let values = [];
     for (let i = 0; i < (Visual.mockItems[0].length * Visual.mockItems[1].length); i++) {
       values.push(i);
@@ -164,18 +165,37 @@ export default class Visual extends WynVisual {
 
     initData.map((value: any, index: any) => data[index][2] = value || '-')
 
-    const max3 = data.sort((a, b) => b[2] - a[2]).slice(0, 3);
-    const min3 = data.sort((a, b) => a[2] - b[2]).slice(0, 3);
-    const start3 = data.slice(0, 3);
-    const end3 = data.slice(data.length - 3, data.length);
+    const max3 = data.sort((a, b) => b[2] - a[2]).slice(0, options.effectNumber);
+    const min3 = data.sort((a, b) => a[2] - b[2]).slice(0, options.effectNumber);
+    const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
+    let legendName = ''
+    if (options.heatType === 'scatter' && options.openEffect) {
+      legendName = options.effectType === 'max' ? '最大值' : '最小值'
+    }
     const option = {
       tooltip: {
         position: 'top'
       },
       animation: false,
+      legend: {
+        data: [this.ActualValue, { name: legendName, icon: 'circle' }],
+        show: options.showLegend,
+        left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
+        top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
+        align: 'auto',
+        icon: 'roundRect',
+        textStyle: {
+          color: options.legendTextStyle.color,
+          fontStyle: options.legendTextStyle.fontStyle,
+          fontWeight: options.legendTextStyle.fontWeight,
+          fontFamily: options.legendTextStyle.fontFamily,
+          fontSize: parseFloat(options.legendTextStyle.fontSize)
+        },
+        orient: orient,
+      },
       grid: {
         // left: '5%',
-        top: '5%',
+        top: '10%',
         // right: '5%',
         bottom: '17%'
       },
@@ -183,14 +203,14 @@ export default class Visual extends WynVisual {
         type: 'category',
         data: dx,
         splitArea: {
-          show: true
+          show: options.heatType === 'heatmap' ? true : false
         }
       },
       yAxis: {
         type: 'category',
         data: dy,
         splitArea: {
-          show: true
+          show: options.heatType === 'heatmap' ? true : false
         }
       },
       visualMap: {
@@ -202,13 +222,7 @@ export default class Visual extends WynVisual {
         orient: 'horizontal',
         left: 'center',
         bottom: '0%',
-        textStyle: {
-          color: options.textStyle.color,
-          fontStyle: options.textStyle.fontStyle,
-          fontWeight: options.textStyle.fontWeight,
-          fontFamily: options.textStyle.fontFamily,
-          fontSize: parseFloat(options.textStyle.fontSize)
-        },
+        textStyle: textStyle,
         inRange: {
           color: visualMapColor,
           symbolSize: [options.symbolSizeMin, options.symbolSizeMax]
@@ -218,21 +232,22 @@ export default class Visual extends WynVisual {
           color: ['rgba(255,255,255,.2)']
         },
       },
-      textStyle: {
-        color: options.textStyle.color,
-        fontStyle: options.textStyle.fontStyle,
-        fontWeight: options.textStyle.fontWeight,
-        fontFamily: options.textStyle.fontFamily,
-        fontSize: parseFloat(options.textStyle.fontSize)
-      },
+      textStyle: textStyle,
       series: [{
-        name: 'Punch Card',
+        name: this.ActualValue || '数量',
         type: options.heatType,
         xAxisIndex: 0,
         yAxisIndex: 0,
         data: data,
         label: {
-          show: true
+          show: options.dataindicate,
+          textStyle: {
+            color: options.dataindicateTextStyle.color,
+            fontStyle: options.dataindicateTextStyle.fontStyle,
+            fontWeight: options.dataindicateTextStyle.fontWeight,
+            fontFamily: options.dataindicateTextStyle.fontFamily,
+            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
+          }
         },
         emphasis: {
           itemStyle: {
@@ -242,11 +257,11 @@ export default class Visual extends WynVisual {
         }
       },
       {
-        name: 'max',
+        name: '最大值',
         type: 'effectScatter',
         xAxisIndex: 0,
         yAxisIndex: 0,
-        data: options.maxNumber ? max3 : '',
+        data: options.openEffect && options.effectType === 'max' && options.heatType === 'scatter' ? max3 : '',
         label: {
           show: true
         },
@@ -257,41 +272,11 @@ export default class Visual extends WynVisual {
           }
         }
       }, {
-        name: 'min',
+        name: '最小值',
         type: 'effectScatter',
         xAxisIndex: 0,
         yAxisIndex: 0,
-        data: options.minNumber ? min3 : '',
-        label: {
-          show: true
-        },
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }, {
-        name: 'start',
-        type: 'effectScatter',
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        data: options.startNumber ? start3 : '',
-        label: {
-          show: true
-        },
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }, {
-        name: 'end',
-        type: 'effectScatter',
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-        data: options.endNumber ? end3 : '',
+        data: options.openEffect && options.effectType === 'min' && options.heatType === 'scatter' ? min3 : '',
         label: {
           show: true
         },
@@ -316,16 +301,42 @@ export default class Visual extends WynVisual {
     this.render();
   }
 
-  public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    if (options.properties.heatType === 'scatter') {
-      const color = options.properties.heatFillType === 'single' ? ['pointColorMultiple'] : ['pointColorSingle']
-      return ['customColor'].concat(color)
+  public getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[] {
+    let legend = [];
+
+    if (!updateOptions.properties.showLegend) {
+      legend = ['legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle']
+    } else {
+
+      if (updateOptions.properties.legendPosition === 'top' || updateOptions.properties.legendPosition === 'bottom') {
+        legend = ['legendHorizontalPosition']
+      }
+
+      if (updateOptions.properties.legendPosition === 'right' || updateOptions.properties.legendPosition === 'left') {
+        legend = ['legendVerticalPosition']
+      }
+
     }
 
-    if (options.properties.heatType == 'heatmap') {
+    if (updateOptions.properties.heatType == 'scatter') {
 
-      return ['pointColorSingle', 'pointColorMultiple', 'symbolSizeMin', 'symbolSizeMax', 'heatFillType', 'maxNumber', 'minNumber', 'startNumber', 'endNumber']
+      const effect = updateOptions.properties.openEffect ? [''] : ['effectNumber', 'effectType']
+      const color = updateOptions.properties.heatFillType === 'single' ? effect.concat(['pointColorMultiple']) : effect.concat(['pointColorSingle'])
+      const dataindicate = updateOptions.properties.dataindicate ? [''] : ['dataindicateTextStyle']
+
+      return ['customColor'].concat(color, dataindicate, legend)
     }
+
+
+    if (updateOptions.properties.heatType == 'heatmap') {
+
+      return ['pointColorSingle', 'pointColorMultiple', 'symbolSizeMin', 'symbolSizeMax', 'heatFillType', 'openEffect', 'effectNumber', 'effectType'].concat(legend)
+    }
+
+
+
+
+
 
     return null;
   }
