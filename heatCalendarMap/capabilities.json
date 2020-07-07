@@ -1,0 +1,133 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "ActualValue",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "years",
+                "displayNameKey": "年份",
+                "kind": "grouping"
+            },
+            {
+                "name": "months",
+                "displayNameKey": "月份",
+                "kind": "grouping"
+            },
+            {
+                "name": "days",
+                "displayNameKey": "日期",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "ActualValue": {
+                                "min": 1
+                            },
+                            "years": {
+                                "min": 1
+                            },
+                            "months": {
+                                "min": 1
+                            },
+                            "days": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "ActualValue": {
+                    "max": 1
+                },
+                "years": {
+                    "max": 1
+                },
+                "months": {
+                    "max": 1
+                },
+                "days": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "pointColorMultiple",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "defaultValue": "[#fff4d1, #ffe9a4, #ffde76, #ffd348, #bf9e36, #806a24]"
+                    },
+                    {
+                        "name": "showDay",
+                        "type": "Boolean",
+                        "displayName": "显示日期",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showMonth",
+                        "type": "Boolean",
+                        "displayName": "显示月份",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showYear",
+                        "type": "Boolean",
+                        "displayName": "显示年份",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
