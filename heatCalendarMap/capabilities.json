@@ -79,16 +79,64 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "dayPosition",
+                        "type": "Enum",
+                        "displayName": "日期位置",
+                        "items": [
+                            {
+                                "value": "start",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "end",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "start"
+                    },
+                    {
                         "name": "showMonth",
                         "type": "Boolean",
                         "displayName": "显示月份",
                         "defaultValue": true
                     },
                     {
+                        "name": "monthPosition",
+                        "type": "Enum",
+                        "displayName": "月份位置",
+                        "items": [
+                            {
+                                "value": "start",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "end",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "start"
+                    },
+                    {
                         "name": "showYear",
                         "type": "Boolean",
                         "displayName": "显示年份",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "yearPosition",
+                        "type": "Enum",
+                        "displayName": "年份位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "left"
                     },
                     {
                         "name": "textStyle",

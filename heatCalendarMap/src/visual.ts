@@ -146,7 +146,7 @@ export default class Visual extends WynVisual {
     const isMock = !this.items.length
     const options = this.properties;
 
-    this.container.style.opacity = isMock ? '1' : '1';
+    this.container.style.opacity = isMock ? '0.3' : '1';
     const textStyle = options.textStyle
     const visualMapColor = isMock ? ["#fff4d1", "#ffe9a4", "#ffde76", "#ffd348", "#bf9e36", "#806a24"] : options.pointColorMultiple
     const getVirtulData = (year) => {
@@ -184,26 +184,32 @@ export default class Visual extends WynVisual {
     }
 
     const getCalendar = () => {
-      const ranges = isMock ? ['2017', '2018', '2019'] : Array.from(new Set(this.items[1]))
+      const ranges = isMock ? ['2018', '2019'] : Array.from(new Set(this.items[1]))
       return ranges.map((range: string, index: number) => {
+
         return {
           top: index === 0 ? '5%' : ((100 / ranges.length)) * (index) + 5 + '%',
           range: `${range}`,
           cellSize: ['auto', 20],
           height: ranges.length === 1 ? '100%' : `${(100 / (ranges.length + 1))}%`,
+          right: options.dayPosition === 'end' || options.showYear === 'right' ? '5%' : 'auto',
+          bottom: options.monthPosition === 'bottom' ? '5%' : 'auto',
           dayLabel: {
             show: options.showDay,
             firstDay: 1,
+            position: options.dayPosition,
             nameMap: 'cn',
             ...textStyle
           },
           monthLabel: {
             show: options.showMonth,
             nameMap: 'cn',
+            position: options.monthPosition,
             ...textStyle
           },
           yearLabel: {
             show: options.showYear,
+            position: options.yearPosition,
             ...textStyle
           }
         }
@@ -212,7 +218,7 @@ export default class Visual extends WynVisual {
 
     const getSeries = () => {
 
-      const series = isMock ? ['2017', '2018', '2019'] : Array.from(new Set(this.items[1]))
+      const series = isMock ? ['2018', '2019'] : Array.from(new Set(this.items[1]))
       return series.map((item: number, index: number) => {
         return {
           type: 'heatmap',
@@ -227,7 +233,7 @@ export default class Visual extends WynVisual {
       tooltip: {
         position: 'top',
         formatter: (value) => {
-          return `${this.year}:${value.data[0]}<br />${this.ActualValue}:${value.data[1]}`
+          return `${this.year || '时间'}:${value.data[0]}<br />${this.ActualValue || '数量'}:${value.data[1]}`
         }
       },
       visualMap: {
@@ -263,7 +269,21 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[] {
 
-    return null;
+    let position = []
+    if (!updateOptions.properties.showDay) {
+      position.push('dayPosition')
+    }
+
+    if (!updateOptions.properties.showMonth) {
+      position.push('monthPosition')
+
+    }
+
+    if (!updateOptions.properties.showYear) {
+      position.push('yearPosition')
+    }
+
+    return position;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
