@@ -1,0 +1,120 @@
+body{ 
+    margin: 0;
+    background: black;
+    overflow: hidden;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 100%;
+    height: 50%;
+    perspective: 800px;
+    perspective-origin: 50% -50%;
+    clear:both;
+    z-index: 1;
+}
+
+.main {
+    position: absolute;
+    top: 5%;
+    left: 38%;
+    z-index:3;
+    transform-style: preserve-3d;
+}
+
+.figure, .total-item{
+    position: absolute;
+    color: white;
+    background: rgba(44, 44, 107, 0.8);
+    font-size: 2em;
+    text-align: center;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.total-item {
+    z-index: 5;
+    position: absolute;
+    left: 250px;
+    top: 50px;
+    width: 300px;
+    height: 120px;
+}
+
+.line-container {
+    z-index: 4;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+
+.big-circle {
+    background-image: url("../img/big-circle.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    transform: rotateX(90deg) translateZ(-70px);
+    background-size: 100% 100%;
+}
+
+.small-circle {
+    background-image: url("../img/small-circle.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    transform: rotateX(90deg) translateZ(0px);
+    background-size: 100% 100%;
+}
+
+.all-lights1 {
+    background-image: url("../img/all-lights1.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    z-index: 20;
+    background-size: 100%;
+    transform: rotateX(50deg);
+}
+
+.all-lights2 {
+    background-image: url("../img/all-lights2.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    z-index: 18;
+    background-size: 100%;
+    transform: rotateX(50deg);
+}
+
+.earth {
+    background-image: url("../img/earth.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    z-index: 19;
+    background-size: 100%;
+}
+
+.steps {
+    background-image: url("../img/steps.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    background-size: 100%;
+}
+
+.frame {
+    background-image: url("../img/frame.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    background-size: 100% 100%;
+}

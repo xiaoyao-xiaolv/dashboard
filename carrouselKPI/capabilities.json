@@ -1,0 +1,60 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "实际值",
+                "kind": "value"
+            },
+            {
+                "name": "contrast",
+                "displayNameKey": "对比值",
+                "kind": "value"
+            },
+            {
+                "name": "dimensions",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "rotateSpeed",
+                        "type": "Integer",
+                        "displayName": "旋转速度",
+                        "defaultValue": 2
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}
