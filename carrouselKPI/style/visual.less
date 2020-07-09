@@ -1,6 +1,5 @@
 body{ 
     margin: 0;
-    background: black;
     overflow: hidden;
 }
 
@@ -24,17 +23,45 @@ body{
     transform-style: preserve-3d;
 }
 
-.figure, .total-item{
+.figure {
     position: absolute;
-    color: white;
     background: rgba(44, 44, 107, 0.8);
-    font-size: 2em;
     text-align: center;
     overflow: auto;
+}
+.total-item{
+    position: absolute;
+    background: rgba(44, 44, 107, 0.8);
+    text-align: center;
+    overflow: auto;
+}
+.figure-values {
+    display: flex;
+    flex: 2 1;
+    flex-direction: row;
+    // justify-content: center;
+    // align-items: center;
+}
+
+.figure-title {
+   display: flex;
+//    justify-content: center;
+   align-items: center;
+   padding: 15px;
+   box-sizing: border-box;
+}
+
+.figure-title-only {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 15px;
+   box-sizing: border-box;
+}
+
+.figure-value, .figure-rate {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .total-item {

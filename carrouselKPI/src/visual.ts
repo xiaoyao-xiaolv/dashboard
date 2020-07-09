@@ -13,19 +13,20 @@ export default class Visual extends WynVisual {
   private static mockDimensionFields = [{ display: 'name' }];
 
   private static mockItems = [
-    { name: "Dept. 1", rate: 100 },
-    { name: "Dept. 2", rate: 153 },
-    { name: "Dept. 3", rate: 94 },
-    { name: "Dept. 4", rate: 60 },
-    { name: "Dept. 5", rate: 65 },
-    { name: "Dept. 6", rate: 55 },
-    { name: "Dept. 7", rate: 120 },
-    { name: "Dept. 8", rate: 52 },
+    { name: "Dept. 1", '实际值': 100, '对比值': 100 },
+    { name: "Dept. 2", '实际值': 153, '对比值': 95 },
+    { name: "Dept. 3", '实际值': 94, '对比值': 10 },
+    { name: "Dept. 4", '实际值': 60, '对比值': 80 },
+    { name: "Dept. 5", '实际值': 65, '对比值': 52 },
+    { name: "Dept. 6", '实际值': 55, '对比值': 62 },
+    { name: "Dept. 7", '实际值': 120, '对比值': 71 },
+    { name: "Dept. 8", '实际值': 52, '对比值': 66 },
   ];
 
   private root: JQuery<HTMLElement>;
   private items = [];
-  private totalItem;
+  private totalItem: any;
+  private totalContrastItem: any
   private isMock = true;
   private options: any
   private visualHost: any;
@@ -35,9 +36,14 @@ export default class Visual extends WynVisual {
   private static elementWidth = 200;
   private static elementHeight = 100;
 
-  static dimensions: any;
-  static value: any;
-  static contrast: any;
+  private isDimensions: boolean;
+  private isValue: boolean;
+  private isContrast: boolean;
+  private isRate: boolean;
+
+  private dimensions: any;
+  private value: any;
+  private contrast: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -47,9 +53,9 @@ export default class Visual extends WynVisual {
     this.visualHost = host;
   }
 
-  private static format(format: any, data: any): string {
-    if (Visual.contrast) {
-      // return `${data[this.dimensions] || '汇总'}    ${data[this.value]} | ${data[this.contrast]} `
+  private format(format: any, data: any): string {
+    if (this.isMock) {
+
     }
     return `${data[this.dimensions] || '汇总'}: ${data[this.value]}`
   }
@@ -83,31 +89,45 @@ export default class Visual extends WynVisual {
     const options = updateOptions;
     const dataView = options.dataViews[0];
 
-    this.isMock = !(dataView &&
-      dataView.plain.profile.values.values.length &&
-      dataView.plain.profile.dimensions.values.length && dataView.plain.profile.contrast.values.length);
-    let valueFields, dimensionFields, contrastFields;
+
+    this.isMock = !(dataView && dataView.plain.profile.dimensions.values.length);
     const plainData: any = this.isMock ? {} : dataView.plain;
 
-    Visual.value = this.isMock ? Visual.mockValueFields[0].display : plainData.profile.values.values[0].display;
-    Visual.dimensions = this.isMock ? Visual.mockDimensionFields[0].display : plainData.profile.dimensions.values[0].display;
-    Visual.contrast = this.isMock ? '' : plainData.profile.contrast.values[0].display;
-    this.items = this.isMock ? Visual.mockItems : plainData.data;
-    valueFields = this.isMock ? Visual.mockValueFields : plainData.profile.values.values;
-    dimensionFields = this.isMock ? Visual.mockDimensionFields : plainData.profile.dimensions.values;
-    contrastFields = this.isMock ? '' : plainData.profile.contrast.values;
+    this.isValue = !!(dataView && dataView.plain.profile.values.values.length);
+    this.isContrast = !!(dataView && dataView.plain.profile.contrast.values.length);
+    this.isRate = this.isValue && this.isContrast
 
-    const totalValues = this.items.map(item => item[Visual.value])
-    this.totalItem = { [Visual.value]: _.sum(totalValues) };
+    if (this.isMock) {
+      this.dimensions = 'name';
+      this.value = '实际值'
+      this.contrast = '对比值'
+      this.items = Visual.mockItems
+    } else {
+      this.dimensions = !this.isMock && plainData.profile.dimensions.values[0].display || '';
+      this.value = this.isValue && plainData.profile.values.values[0].display || '';
+      this.contrast = this.isContrast && plainData.profile.contrast.values[0].display || '';
+      this.items = plainData.data
+    }
+
+    if (this.value) {
+      const totalValues = this.items.map(item => item[this.value])
+      this.totalItem = { [this.value]: _.sum(totalValues) };
+    }
+
+    if (this.contrast) {
+      const totalContrasts = this.items.map(item => item[this.contrast])
+      this.totalContrastItem = { [this.contrast]: _.sum(totalContrasts) }
+    }
+
 
     this.options = options.properties;
 
     if (!this.options.dataFormat) {
-      this.options.dataFormat = `${Visual.dimensions}: ${Visual.value}`;
+      this.options.dataFormat = `${this.dimensions}: ${this.value}`;
     }
 
     if (!this.options.totalDataFormat) {
-      this.options.totalDataFormat = `汇总: ${Visual.value}`;
+      this.options.totalDataFormat = `汇总: ${this.value}`;
     }
 
     this.render();
@@ -116,6 +136,8 @@ export default class Visual extends WynVisual {
   public render() {
     this.root.html('').width(Visual.width).height(Visual.height).css('position', 'relative');
     const options = this.options
+
+    console.log(this.items, ' ====this.itms')
     let container = $('<div class="container">').appendTo(this.root),
       element = $('<div class="main">').appendTo(container),
       lineContainer = $('<div class="line-container">').appendTo(this.root).width(Visual.width).height(Visual.height),
@@ -144,11 +166,68 @@ export default class Visual extends WynVisual {
       msg = this.options.dataFormat;
 
     for (var i = 0; i < rotateY.length; i++) {
-      var text = Visual.format(msg, this.items[i]);
-      $("<div>").attr('class', 'figure frame').text(text)
+      // var text = this.format(msg, this.items[i]);
+
+      let dataText = this.items[i]
+      let figureTitle;
+      let figureValues;
+
+      if (this.isMock || this.isRate) {
+
+        figureTitle = $("<div class='figure-title'>")
+          .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
+          .width(width).text(dataText[this.dimensions])
+
+        let figureValue = $("<div class='figure-value'>")
+          .width(width * (2 / 3))
+
+
+        let figureRate = $("<div class='figure-rate'>")
+          .width(width * (1 / 3))
+
+
+        figureValues = $("<div class='figure-values'>")
+          .width(width)
+          .append(figureValue, figureRate)
+
+        const actualValue = $('<span></span>').text(`${this.value}: ${dataText[this.value]}`);
+        const contrastValue = $('<span></span>').text(`${this.contrast}: ${dataText[this.contrast]}`);
+        const rateText = $('<span></span>').text('完成率');
+        const rate = (dataText[this.value] / dataText[this.contrast] * 100).toFixed(2) + '%'
+        const rateValue = $('<span></span>').text(rate);
+
+        figureValue.css({ ...options.valueTextStyle }).append(actualValue, contrastValue);
+        figureRate.css({ ...options.rateTextStyle }).append(rateText, rateValue)
+      } else {
+        if (this.isValue || this.isContrast) {
+          figureTitle = $("<div class='figure-title'>")
+            .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
+            .width(width)
+            .height(height / 2)
+            .text(dataText[this.dimensions])
+          figureValues = $("<div> class='figure-value-only'>")
+            .css({ ...options.valueTextStyle })
+            .width(width)
+            .height(height / 2)
+            .text(dataText[this.value] || dataText[this.contrast])
+        } else {
+          figureTitle = $("<div class='figure-title-only'>")
+            .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
+            .width(width)
+            .height(height)
+            .text(dataText[this.dimensions])
+          figureValues = ''
+        }
+      }
+
+
+      let figureElement = $("<div>").attr('class', 'figure frame')
         .css({ 'transform': 'rotateY(' + rotateY[i] + 'deg) translateZ(' + translateZ + 'px)' })
         .height(height).width(width).data('rotateY', rotateY[i])
+        .append(figureTitle, figureValues)
         .appendTo(element);
+      // custom rotate image
+      options.rotateFigureImage && figureElement.css('backgroundImage', `url(${options.rotateFigureImage})`)
     }
 
     container.on("mouseover", ".figure", () => {
@@ -181,7 +260,8 @@ export default class Visual extends WynVisual {
       .css('top', -Visual.height * 0.2)
       .css('left', (Visual.width - earthElementSide) / 2)
       .appendTo(container);
-
+    // custom rotate image
+    options.rotateCenterImage && earthElement.css('backgroundImage', `url(${options.rotateCenterImage})`)
 
     var stepsSide = Visual.width * 0.4;
     var stepsElement = $("<div class='steps fixed-element'>")
@@ -191,10 +271,76 @@ export default class Visual extends WynVisual {
       .css('left', (Visual.elementWidth - stepsSide) / 2)
       .appendTo(element);
 
+
+
     var totalElement = $('<idv class="total-item frame">').appendTo(this.root);
-    if (this.totalItem) {
-      var totalItemText = Visual.format(totalMsg, this.totalItem);
-      totalElement.text(totalItemText);
+    // custom rotate image
+    options.rotateFigureImage && totalElement.css('backgroundImage', `url(${options.rotateFigureImage})`)
+
+
+    if (this.totalItem || this.totalContrastItem) {
+
+      let figureTitle;
+      let figureValues;
+      const width = 300;
+      const height = 120;
+      if (this.isMock || this.isRate) {
+
+        figureTitle = $("<div class='figure-title'>")
+          .css({ ...options.textStyleTotalText, 'justifyContent': options.titlePosition })
+          .width(width)
+          .height(height / 2)
+          .text(options.totalName)
+
+        let figureValue = $("<div class='figure-value'>")
+          .height(height / 2)
+          .width(width * (2 / 3))
+
+
+        let figureRate = $("<div class='figure-rate'>")
+          .height(height / 2)
+          .width(width * (1 / 3))
+
+
+        figureValues = $("<div class='figure-values'>")
+          .width(width)
+          .append(figureValue, figureRate)
+
+        const actualValue = $('<span></span>').text(`${this.value}: ${this.totalItem[this.value]}`);
+        const contrastValue = $('<span></span>').text(`${this.contrast}: ${this.totalContrastItem[this.contrast]}`);
+        const rateText = $('<span></span>').text('完成率');
+        const rate = (this.totalItem[this.value] / this.totalContrastItem[this.contrast] * 100).toFixed(2) + '%'
+        const rateValue = $('<span></span>').text(rate);
+
+        figureValue.css({ ...options.valueTextStyleTotalValue }).append(actualValue, contrastValue);
+        figureRate.css({ ...options.rateTextStyleTotalRate }).append(rateText, rateValue)
+      } else {
+        if (this.isValue || this.isContrast) {
+          figureTitle = $("<div class='figure-title'>")
+            .css({ ...options.textStyleTotalText, 'justifyContent': options.titlePosition })
+            .width(width)
+            .height(height / 2)
+            .text(options.totalName)
+          figureValues = $("<div> class='figure-value-only'>")
+            .css({ ...options.valueTextStyleTotalValue })
+            .width(width)
+            .height(height / 2)
+            .text(this.totalItem[this.value] || this.totalContrastItem[this.contrast])
+        } else {
+          figureTitle = $("<div class='figure-title-only'>")
+            .css({ ...options.textStyleTotalText, 'justifyContent': options.titlePosition })
+            .width(width)
+            .height(height)
+            .text(options.totalName)
+          figureValues = ''
+        }
+      }
+      totalElement
+        .append(figureTitle, figureValues)
+    } else {
+      totalElement.text(options.totalName)
+        .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
+        .addClass('figure-title')
     }
 
     var self = this;
@@ -259,10 +405,10 @@ export default class Visual extends WynVisual {
   };
 
   public onDestroy() {
-    // if (this.renderTimer != null) {
-    //   cancelAnimationFrame(this.renderTimer);
-    //   this.renderTimer = null;
-    // }
+    if (this.renderTimer != null) {
+      cancelAnimationFrame(this.renderTimer);
+      this.renderTimer = null;
+    }
   }
 
   public onResize() {

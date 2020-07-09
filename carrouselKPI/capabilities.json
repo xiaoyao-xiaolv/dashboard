@@ -22,7 +22,7 @@
                 "plain": {
                     "required": [
                         {
-                            "values": {
+                            "dimensions": {
                                 "min": 1
                             }
                         }
@@ -41,6 +41,101 @@
                         "type": "Integer",
                         "displayName": "旋转速度",
                         "defaultValue": 2
+                    },
+                    {
+                        "name": "titlePosition",
+                        "type": "Enum",
+                        "displayName": "分类位置",
+                        "items": [
+                            {
+                                "value": "flex-start",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "flex-end",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "rotateCenterImage",
+                        "type": "Image",
+                        "displayName": "旋转中心图片"
+                    },
+                    {
+                        "name": "rotateFigureImage",
+                        "type": "Image",
+                        "displayName": "旋转体图片"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "分类字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.5x"
+                        }
+                    },
+                    {
+                        "name": "valueTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "数值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.0x"
+                        }
+                    },
+                    {
+                        "name": "rateTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "比值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.0x"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "汇总",
+                "properties": [
+                    {
+                        "name": "textStyleTotalText",
+                        "type": "TextStyle",
+                        "displayName": "汇总字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "2.5x"
+                        }
+                    },
+                    {
+                        "name": "valueTextStyleTotalValue",
+                        "type": "TextStyle",
+                        "displayName": "数值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.2x"
+                        }
+                    },
+                    {
+                        "name": "rateTextStyleTotalRate",
+                        "type": "TextStyle",
+                        "displayName": "比值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.2x"
+                        }
+                    },
+                    {
+                        "name": "totalName",
+                        "type": "Input",
+                        "displayName": "汇总名称",
+                        "defaultValue": "汇总"
                     }
                 ]
             },
