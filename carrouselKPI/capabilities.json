@@ -4,6 +4,12 @@
             {
                 "name": "values",
                 "displayNameKey": "实际值",
+                "options": [
+                    {
+                        "name": "数据格式",
+                        "type": "format"
+                    }
+                ],
                 "kind": "value"
             },
             {
@@ -45,7 +51,7 @@
                     {
                         "name": "titlePosition",
                         "type": "Enum",
-                        "displayName": "分类位置",
+                        "displayName": "标题位置",
                         "items": [
                             {
                                 "value": "flex-start",
@@ -73,45 +79,134 @@
                         "displayName": "旋转体图片"
                     },
                     {
-                        "name": "textStyle",
-                        "type": "TextStyle",
-                        "displayName": "分类字体",
-                        "inheritFrom": "dashboard.textStyle",
-                        "defaultValue": {
-                            "fontSize": "1.5x"
-                        }
+                        "name": "customFontFamily",
+                        "type": "Input",
+                        "displayName": "自定义字体名称",
+                        "defaultValue": ""
                     },
                     {
-                        "name": "valueTextStyle",
-                        "type": "TextStyle",
-                        "displayName": "数值字体",
-                        "inheritFrom": "dashboard.textStyle",
-                        "defaultValue": {
-                            "fontSize": "1.0x"
-                        }
-                    },
-                    {
-                        "name": "rateTextStyle",
-                        "type": "TextStyle",
-                        "displayName": "比值字体",
-                        "inheritFrom": "dashboard.textStyle",
-                        "defaultValue": {
-                            "fontSize": "1.0x"
-                        }
+                        "name": "customFontFamilyURL",
+                        "type": "Input",
+                        "displayName": "自定义字体连接",
+                        "defaultValue": ""
                     }
                 ]
             },
             {
-                "displayName": "汇总",
+                "displayName": "汇总样式",
                 "properties": [
+                    {
+                        "name": "totalShow",
+                        "type": "Boolean",
+                        "displayName": "显示汇总",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "totalName",
+                        "type": "Input",
+                        "displayName": "汇总标题",
+                        "defaultValue": "汇总"
+                    },
                     {
                         "name": "textStyleTotalText",
                         "type": "TextStyle",
-                        "displayName": "汇总字体",
+                        "displayName": "标题字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
                             "fontSize": "2.5x"
                         }
+                    },
+                    {
+                        "name": "totalValueType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "totalValueUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    },
+                    {
+                        "name": "totalValuePosition",
+                        "type": "Enum",
+                        "displayName": "数值位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "center"
                     },
                     {
                         "name": "valueTextStyleTotalValue",
@@ -130,12 +225,130 @@
                         "defaultValue": {
                             "fontSize": "1.2x"
                         }
+                    }
+                ]
+            },
+            {
+                "displayName": "详细样式",
+                "properties": [
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "标题字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.5x"
+                        }
                     },
                     {
-                        "name": "totalName",
-                        "type": "Input",
-                        "displayName": "汇总名称",
-                        "defaultValue": "汇总"
+                        "name": "detailValueType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "detailValueUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    },
+                    {
+                        "name": "detailValuePosition",
+                        "type": "Enum",
+                        "displayName": "数值位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "valueTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "数值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.0x"
+                        }
+                    },
+                    {
+                        "name": "rateTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "比值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.0x"
+                        }
                     }
                 ]
             },

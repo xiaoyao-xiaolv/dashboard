@@ -51,6 +51,17 @@ export default class Visual extends WynVisual {
     this.totalItem = null;
     this.isMock = true;
     this.visualHost = host;
+
+    //  custom font famliy
+    var newStyle = document.createElement('style');
+    newStyle.appendChild(document.createTextNode("\
+      @font-face {\
+        font-family: " + options.properties.customFontFamily + ";\
+        src: url('/api/dashboards/webcontents/fonts/gatha/Gatha-Sans.ttf') format('truetype');\
+    }\
+    "));
+
+    document.head.appendChild(newStyle);
   }
 
   private format(format: any, data: any): string {
@@ -84,7 +95,6 @@ export default class Visual extends WynVisual {
 
 
   public update(updateOptions: VisualNS.IVisualUpdateOptions) {
-    console.log(updateOptions, '=====update options');
 
     const options = updateOptions;
     const dataView = options.dataViews[0];
@@ -159,7 +169,7 @@ export default class Visual extends WynVisual {
     for (var i = 0; i < length; i++) {
       rotateY.push(i * deltaAngle);
     }
-    console.log(origin, '===origin')
+
     element.css('transform-origin', `${origin}px 0px -${elementZ}px`).height(height).width(width);
 
     let totalMsg = this.options.totalDataFormat,
@@ -190,13 +200,13 @@ export default class Visual extends WynVisual {
           .width(width)
           .append(figureValue, figureRate)
 
-        const actualValue = $('<span></span>').text(`${this.value}: ${dataText[this.value]}`);
-        const contrastValue = $('<span></span>').text(`${this.contrast}: ${dataText[this.contrast]}`);
+        const actualValue = $('<span></span>').text(`${this.value}: ${this.formatData(dataText[this.value], options.detailValueUnit, options.detailValueType)}`);
+        const contrastValue = $('<span></span>').text(`${this.contrast}: ${this.formatData(dataText[this.contrast], options.detailValueUnit, options.detailValueType)}`);
         const rateText = $('<span></span>').text('完成率');
         const rate = (dataText[this.value] / dataText[this.contrast] * 100).toFixed(2) + '%'
         const rateValue = $('<span></span>').text(rate);
 
-        figureValue.css({ ...options.valueTextStyle }).append(actualValue, contrastValue);
+        figureValue.css({ ...options.valueTextStyle, 'textAlign': options.detailValuePosition }).append(actualValue, contrastValue);
         figureRate.css({ ...options.rateTextStyle }).append(rateText, rateValue)
       } else {
         if (this.isValue || this.isContrast) {
@@ -206,10 +216,10 @@ export default class Visual extends WynVisual {
             .height(height / 2)
             .text(dataText[this.dimensions])
           figureValues = $("<div> class='figure-value-only'>")
-            .css({ ...options.valueTextStyle })
+            .css({ ...options.valueTextStyle, 'textAlign': options.detailValuePosition })
             .width(width)
             .height(height / 2)
-            .text(dataText[this.value] || dataText[this.contrast])
+            .text(this.formatData(dataText[this.value], options.detailValueUnit, options.detailValueType) || this.formatData(dataText[this.contrast], options.detailValueUnit, options.detailValueType))
         } else {
           figureTitle = $("<div class='figure-title-only'>")
             .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
@@ -227,7 +237,7 @@ export default class Visual extends WynVisual {
         .append(figureTitle, figureValues)
         .appendTo(element);
       // custom rotate image
-      options.rotateFigureImage && figureElement.css('backgroundImage', `url(${options.rotateFigureImage})`)
+      options.rotateFigureImage && figureElement.css({ 'background': 'transparent', 'background-image': `url(${options.rotateFigureImage})`, 'backgroundSize': '100% 100%' })
     }
 
     container.on("mouseover", ".figure", () => {
@@ -273,10 +283,11 @@ export default class Visual extends WynVisual {
 
 
 
-    var totalElement = $('<idv class="total-item frame">').appendTo(this.root);
+    var totalElement = $('<idv class="total-item frame">')
+      .appendTo(this.root)
+      .css({ 'visibility': options.totalShow ? 'visiable' : 'hidden' });
     // custom rotate image
-    options.rotateFigureImage && totalElement.css('backgroundImage', `url(${options.rotateFigureImage})`)
-
+    options.rotateFigureImage && totalElement.css({ 'background': 'transparent', 'backgroundImage': `url(${options.rotateFigureImage})`, 'backgroundSize': '100% 100%' })
 
     if (this.totalItem || this.totalContrastItem) {
 
@@ -305,30 +316,32 @@ export default class Visual extends WynVisual {
         figureValues = $("<div class='figure-values'>")
           .width(width)
           .append(figureValue, figureRate)
+        //  format data
 
-        const actualValue = $('<span></span>').text(`${this.value}: ${this.totalItem[this.value]}`);
-        const contrastValue = $('<span></span>').text(`${this.contrast}: ${this.totalContrastItem[this.contrast]}`);
+
+        const actualValue = $('<span></span>').text(`${this.value}: ${this.formatData(this.totalItem[this.value], options.totalValueUnit, options.totalValueType)}`);
+        const contrastValue = $('<span></span>').text(`${this.contrast}: ${this.formatData(this.totalContrastItem[this.contrast], options.totalValueUnit, options.totalValueType)}`);
         const rateText = $('<span></span>').text('完成率');
         const rate = (this.totalItem[this.value] / this.totalContrastItem[this.contrast] * 100).toFixed(2) + '%'
         const rateValue = $('<span></span>').text(rate);
 
-        figureValue.css({ ...options.valueTextStyleTotalValue }).append(actualValue, contrastValue);
+        figureValue.css({ ...options.valueTextStyleTotalValue, 'textAlign': options.totalValuePosition }).append(actualValue, contrastValue);
         figureRate.css({ ...options.rateTextStyleTotalRate }).append(rateText, rateValue)
       } else {
         if (this.isValue || this.isContrast) {
           figureTitle = $("<div class='figure-title'>")
-            .css({ ...options.textStyleTotalText, 'justifyContent': options.titlePosition })
+            .css({ ...options.textStyleTotalText, 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
             .width(width)
             .height(height / 2)
             .text(options.totalName)
           figureValues = $("<div> class='figure-value-only'>")
-            .css({ ...options.valueTextStyleTotalValue })
+            .css({ ...options.valueTextStyleTotalValue, 'textAlign': options.totalValuePosition })
             .width(width)
             .height(height / 2)
-            .text(this.totalItem[this.value] || this.totalContrastItem[this.contrast])
+            .text(this.formatData(this.totalItem[this.value], options.totalValueUnit, options.totalValueType) || this.formatData(this.totalContrastItem[this.contrast], options.totalValueUnit, options.totalValueType))
         } else {
           figureTitle = $("<div class='figure-title-only'>")
-            .css({ ...options.textStyleTotalText, 'justifyContent': options.titlePosition })
+            .css({ 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
             .width(width)
             .height(height)
             .text(options.totalName)
@@ -339,7 +352,7 @@ export default class Visual extends WynVisual {
         .append(figureTitle, figureValues)
     } else {
       totalElement.text(options.totalName)
-        .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
+        .css({ 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
         .addClass('figure-title')
     }
 
@@ -374,6 +387,54 @@ export default class Visual extends WynVisual {
     }
 
     this.resize();
+  }
+
+  public formatData = (number, dataUnit, dataType) => {
+    let format = number
+    // const dataUnit = options.totalValueUnit
+    const units = [{
+      value: 1,
+      unit: ''
+    },
+    {
+      value: 100,
+      unit: '百'
+    }, {
+      value: 1000,
+      unit: '千'
+    }, {
+      value: 10000,
+      unit: '万'
+    }, {
+      value: 100000,
+      unit: '十万'
+    }, {
+      value: 1000000,
+      unit: '百万'
+    }, {
+      value: 10000000,
+      unit: '千万'
+    }, {
+      value: 100000000,
+      unit: '亿'
+    }, {
+      value: 1000000000,
+      unit: '十亿'
+    }, {
+      value: 100000000000,
+      unit: '万亿'
+    }]
+    const formatUnit = units.find((item) => item.value === Number(dataUnit))
+    format = format / formatUnit.value
+
+    if (dataType === 'number') {
+      format = format.toLocaleString()
+    } else if (dataType === '%') {
+      format = format + dataType
+    } else {
+      format = dataType + format
+    }
+    return format + formatUnit.unit
   }
 
   private static drawLines(container, lineContainer) {

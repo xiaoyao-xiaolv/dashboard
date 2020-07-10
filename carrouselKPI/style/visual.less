@@ -1,7 +1,13 @@
 body{ 
     margin: 0;
     overflow: hidden;
+   
 }
+#visualDom {
+    margin: 0 auto;
+}
+
+::-webkit-scrollbar {display:none}
 
 .container {
     position: absolute;
@@ -28,17 +34,21 @@ body{
     background: rgba(44, 44, 107, 0.8);
     text-align: center;
     overflow: auto;
+    // background-size: 100% 100%;
 }
 .total-item{
     position: absolute;
     background: rgba(44, 44, 107, 0.8);
     text-align: center;
     overflow: auto;
+    // background-size: 100% 100%;
 }
 .figure-values {
     display: flex;
     flex: 2 1;
     flex-direction: row;
+    padding:  0 10px;
+    box-sizing: border-box;
     // justify-content: center;
     // align-items: center;
 }
@@ -62,6 +72,12 @@ body{
 .figure-value, .figure-rate {
     display: flex;
     flex-direction: column;
+}
+
+.figure-value span {
+    white-space: nowrap;  
+    text-overflow:ellipsis; 
+    overflow:hidden;
 }
 
 .total-item {
