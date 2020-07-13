@@ -82,13 +82,13 @@
                         "name": "customFontFamily",
                         "type": "Input",
                         "displayName": "自定义字体名称",
-                        "defaultValue": ""
+                        "defaultValue": "Gatha-Sans"
                     },
                     {
                         "name": "customFontFamilyURL",
                         "type": "Input",
                         "displayName": "自定义字体连接",
-                        "defaultValue": ""
+                        "defaultValue": "gatha/Gatha-Sans.ttf"
                     }
                 ]
             },

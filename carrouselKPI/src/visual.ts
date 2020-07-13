@@ -42,7 +42,7 @@ export default class Visual extends WynVisual {
   private isRate: boolean;
 
   private dimensions: any;
-  private value: any;
+  private value: any; customFontFamily
   private contrast: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
@@ -53,11 +53,12 @@ export default class Visual extends WynVisual {
     this.visualHost = host;
 
     //  custom font famliy
+    console.log(options.properties, '==options.properties')
     var newStyle = document.createElement('style');
     newStyle.appendChild(document.createTextNode("\
       @font-face {\
-        font-family: " + options.properties.customFontFamily + ";\
-        src: url('/api/dashboards/webcontents/fonts/gatha/Gatha-Sans.ttf') format('truetype');\
+        font-family: "+ options.properties.customFontFamily + ";\
+        src: url('/api/dashboards/webcontents/fonts/" + options.properties.customFontFamilyURL + "') format('truetype');\
     }\
     "));
 
@@ -147,11 +148,10 @@ export default class Visual extends WynVisual {
     this.root.html('').width(Visual.width).height(Visual.height).css('position', 'relative');
     const options = this.options
 
-    console.log(this.items, ' ====this.itms')
     let container = $('<div class="container">').appendTo(this.root),
       element = $('<div class="main">').appendTo(container),
       lineContainer = $('<div class="line-container">').appendTo(this.root).width(Visual.width).height(Visual.height),
-      tick = 0.05,
+      tick = 0.001,
       isActive = true,
       tX = 0,
       width = 200,
@@ -172,11 +172,7 @@ export default class Visual extends WynVisual {
 
     element.css('transform-origin', `${origin}px 0px -${elementZ}px`).height(height).width(width);
 
-    let totalMsg = this.options.totalDataFormat,
-      msg = this.options.dataFormat;
-
     for (var i = 0; i < rotateY.length; i++) {
-      // var text = this.format(msg, this.items[i]);
 
       let dataText = this.items[i]
       let figureTitle;
@@ -230,12 +226,13 @@ export default class Visual extends WynVisual {
         }
       }
 
-
       let figureElement = $("<div>").attr('class', 'figure frame')
         .css({ 'transform': 'rotateY(' + rotateY[i] + 'deg) translateZ(' + translateZ + 'px)' })
         .height(height).width(width).data('rotateY', rotateY[i])
         .append(figureTitle, figureValues)
         .appendTo(element);
+
+
       // custom rotate image
       options.rotateFigureImage && figureElement.css({ 'background': 'transparent', 'background-image': `url(${options.rotateFigureImage})`, 'backgroundSize': '100% 100%' })
     }
@@ -364,27 +361,40 @@ export default class Visual extends WynVisual {
         if (tX < -360) {
           tX += 360;
         }
-        rotateY.map(rotate => {
-          if (tX > - (rotate - 5) && tX < - rotate) {
-            return tX = - rotate
-          } else {
-            return tX
-          }
-        })
-        renderCore()
+        options.totalShow && Visual.drawLines(container, lineContainer);
       } else {
         isActive = false;
       }
     })();
 
-    function renderCore() {
-      element.css("transform", 'rotateY(' + tX + 'deg) translateZ(-' + elementZ + 'px)');
-      element.find('.fixed-element').each((index, item) => {
-        $(item).css("transform", 'rotateY(' + (-tX) + 'deg) rotateX(-30deg)');
-      });
+    const retateY = (tX = 0) => {
 
-      Visual.drawLines(container, lineContainer);
+
+
+      if (isActive) {
+        element.css("transform", 'rotateY(' + tX + 'deg) translateZ(-' + elementZ + 'px) ')
+          .css({ 'transition': 'transform 10s ease' })
+        element.find('.fixed-element').each((index, item) => {
+          $(item).css("transform", 'rotateY(' + (-tX) + 'deg) rotateX(-30deg)').css({ 'transition': 'transform 10s ease' });
+        });
+      }
+
+      setTimeout(() => {
+        if (!isActive) {
+          isActive = false
+        }
+
+        tX += -(deltaAngle)
+        if (tX < -360) {
+          tX += 0
+        }
+        retateY(tX);
+      }, 3000);
+
+
+
     }
+    retateY(-deltaAngle)
 
     this.resize();
   }
@@ -425,7 +435,7 @@ export default class Visual extends WynVisual {
       unit: '万亿'
     }]
     const formatUnit = units.find((item) => item.value === Number(dataUnit))
-    format = format / formatUnit.value
+    format = (format / formatUnit.value).toFixed(2)
 
     if (dataType === 'number') {
       format = format.toLocaleString()
@@ -438,20 +448,22 @@ export default class Visual extends WynVisual {
   }
 
   private static drawLines(container, lineContainer) {
-    var svg = $(`<svg viewBox="0 0 ${Visual.width} ${Visual.height}" xmlns="http://www.w3.org/2000/svg"></svg>`);
-    var totalPoint = { left: Visual.width / 2, top: 170 };
-    var subs = container.find('.figure');
+    let svg = $(`<svg viewBox="0 0 ${Visual.width} ${Visual.height}" xmlns="http://www.w3.org/2000/svg"></svg>`);
+    let totalPoint = { left: Visual.width / 2, top: 170 };
+    let subs = container.find('.figure');
     subs.each((index, item) => {
-      var lineInfo = Visual.createLine(totalPoint, item);
+      let lineInfo = Visual.createLine(totalPoint, item);
       lineInfo.y2 += 15;
       lineInfo.stroke = 'rgba(0,126,255,0.8)';
-      var line = $('<line>').attr(lineInfo);
+
+      let line = $('<line>').attr(lineInfo);
       svg.append(line);
     });
 
-    var svgHtml = Visual.escapeHTML(svg[0].outerHTML);
-    var bg = `url('data:image/svg+xml, ${svgHtml}')`;
-    lineContainer.css('background-image', bg);
+    let svgHtml = Visual.escapeHTML(svg[0].outerHTML);
+    let bg = `url('data:image/svg+xml, ${svgHtml}')`;
+    lineContainer
+      .css('background-image', bg);
   };
 
   private static createLine(start, endEle): any {
