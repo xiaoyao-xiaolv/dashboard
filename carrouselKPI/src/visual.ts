@@ -42,8 +42,9 @@ export default class Visual extends WynVisual {
   private isRate: boolean;
 
   private dimensions: any;
-  private value: any; customFontFamily
+  private value: any;
   private contrast: any;
+  private isCurrentPage = !document.hidden
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -53,23 +54,16 @@ export default class Visual extends WynVisual {
     this.visualHost = host;
 
     //  custom font famliy
-    console.log(options.properties, '==options.properties')
     var newStyle = document.createElement('style');
     newStyle.appendChild(document.createTextNode("\
       @font-face {\
         font-family: "+ options.properties.customFontFamily + ";\
-        src: url('/api/dashboards/webcontents/fonts/" + options.properties.customFontFamilyURL + "') format('truetype');\
+        src: url('/fonts/"+ options.properties.customFontFamilyURL + ".ttf') format('truetype'),\
+        url('/fonts/"+ options.properties.customFontFamilyURL + ".otf') format('otf')\
     }\
     "));
 
     document.head.appendChild(newStyle);
-  }
-
-  private format(format: any, data: any): string {
-    if (this.isMock) {
-
-    }
-    return `${data[this.dimensions] || '汇总'}: ${data[this.value]}`
   }
 
   private static escapeHTML(a) {
@@ -145,11 +139,14 @@ export default class Visual extends WynVisual {
   }
 
   public render() {
+
+    if (!this.isCurrentPage) return
+
     this.root.html('').width(Visual.width).height(Visual.height).css('position', 'relative');
     const options = this.options
 
     let container = $('<div class="container">').appendTo(this.root),
-      element = $('<div class="main">').appendTo(container),
+      element = $('<div class="main">').appendTo(container).css('transform', 'translateZ(-200px)'),
       lineContainer = $('<div class="line-container">').appendTo(this.root).width(Visual.width).height(Visual.height),
       tick = 0.001,
       isActive = true,
@@ -211,11 +208,12 @@ export default class Visual extends WynVisual {
             .width(width)
             .height(height / 2)
             .text(dataText[this.dimensions])
+          const currentFigureVlaue = this.isValue && dataText[this.value] || this.isContrast && dataText[this.contrast]
           figureValues = $("<div> class='figure-value-only'>")
             .css({ ...options.valueTextStyle, 'textAlign': options.detailValuePosition })
             .width(width)
             .height(height / 2)
-            .text(this.formatData(dataText[this.value], options.detailValueUnit, options.detailValueType) || this.formatData(dataText[this.contrast], options.detailValueUnit, options.detailValueType))
+            .text(this.formatData(currentFigureVlaue, options.detailValueUnit, options.detailValueType))
         } else {
           figureTitle = $("<div class='figure-title-only'>")
             .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
@@ -270,13 +268,13 @@ export default class Visual extends WynVisual {
     // custom rotate image
     options.rotateCenterImage && earthElement.css('backgroundImage', `url(${options.rotateCenterImage})`)
 
-    var stepsSide = Visual.width * 0.4;
+    var stepsSide = Visual.width / 5;
     var stepsElement = $("<div class='steps fixed-element'>")
       .width(stepsSide)
       .height(stepsSide)
-      .css('top', -40)
-      .css('left', (Visual.elementWidth - stepsSide) / 2)
-      .appendTo(element);
+      .css('left', '50%')
+      .css('transform', 'translateX(-50%)')
+      .appendTo(container);
 
 
 
@@ -295,7 +293,7 @@ export default class Visual extends WynVisual {
       if (this.isMock || this.isRate) {
 
         figureTitle = $("<div class='figure-title'>")
-          .css({ ...options.textStyleTotalText, 'justifyContent': options.titlePosition })
+          .css({ ...options.textStyleTotalText, 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
           .width(width)
           .height(height / 2)
           .text(options.totalName)
@@ -331,14 +329,16 @@ export default class Visual extends WynVisual {
             .width(width)
             .height(height / 2)
             .text(options.totalName)
+          const currentValue = this.isValue && this.totalItem[this.value] || this.isContrast && this.totalContrastItem[this.contrast]
+
           figureValues = $("<div> class='figure-value-only'>")
             .css({ ...options.valueTextStyleTotalValue, 'textAlign': options.totalValuePosition })
             .width(width)
             .height(height / 2)
-            .text(this.formatData(this.totalItem[this.value], options.totalValueUnit, options.totalValueType) || this.formatData(this.totalContrastItem[this.contrast], options.totalValueUnit, options.totalValueType))
+            .text(this.formatData(currentValue, options.totalValueUnit, options.totalValueType))
         } else {
           figureTitle = $("<div class='figure-title-only'>")
-            .css({ 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
+            .css({ ...options.textStyleTotalText, 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
             .width(width)
             .height(height)
             .text(options.totalName)
@@ -349,7 +349,7 @@ export default class Visual extends WynVisual {
         .append(figureTitle, figureValues)
     } else {
       totalElement.text(options.totalName)
-        .css({ 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
+        .css({ ...options.textStyleTotalText, 'fontFamily': options.customFontFamily, 'justifyContent': options.titlePosition })
         .addClass('figure-title')
     }
 
@@ -357,10 +357,6 @@ export default class Visual extends WynVisual {
     (function animloop() {
       self.renderTimer = requestAnimationFrame(animloop);
       if (isActive) {
-        tX += tick * - Number(options.rotateSpeed);
-        if (tX < -360) {
-          tX += 360;
-        }
         options.totalShow && Visual.drawLines(container, lineContainer);
       } else {
         isActive = false;
@@ -368,31 +364,22 @@ export default class Visual extends WynVisual {
     })();
 
     const retateY = (tX = 0) => {
-
-
-
       if (isActive) {
         element.css("transform", 'rotateY(' + tX + 'deg) translateZ(-' + elementZ + 'px) ')
-          .css({ 'transition': 'transform 10s ease' })
-        element.find('.fixed-element').each((index, item) => {
-          $(item).css("transform", 'rotateY(' + (-tX) + 'deg) rotateX(-30deg)').css({ 'transition': 'transform 10s ease' });
-        });
-      }
+          .css({ 'transition': 'transform .5s ease-in-out' })
 
+      }
       setTimeout(() => {
         if (!isActive) {
           isActive = false
-        }
-
-        tX += -(deltaAngle)
-        if (tX < -360) {
-          tX += 0
+        } else {
+          tX += -(deltaAngle)
+          if (tX < -360) {
+            tX += 0
+          }
         }
         retateY(tX);
-      }, 3000);
-
-
-
+      }, Number(options.rotateStopTime) * 1000);
     }
     retateY(-deltaAngle)
 

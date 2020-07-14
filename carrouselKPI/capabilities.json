@@ -43,10 +43,10 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
-                        "name": "rotateSpeed",
+                        "name": "rotateStopTime",
                         "type": "Integer",
-                        "displayName": "旋转速度",
-                        "defaultValue": 2
+                        "displayName": "暂停时长",
+                        "defaultValue": 3
                     },
                     {
                         "name": "titlePosition",
@@ -88,7 +88,7 @@
                         "name": "customFontFamilyURL",
                         "type": "Input",
                         "displayName": "自定义字体连接",
-                        "defaultValue": "gatha/Gatha-Sans.ttf"
+                        "defaultValue": "gatha/Gatha-Sans"
                     }
                 ]
             },
