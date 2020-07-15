@@ -1,0 +1,286 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "实际值",
+                "options": [
+                    {
+                        "name": "数据格式",
+                        "type": "format"
+                    }
+                ],
+                "kind": "value"
+            },
+            {
+                "name": "contrast",
+                "displayNameKey": "对比值",
+                "kind": "value"
+            },
+            {
+                "name": "dimensions",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "dimensions": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "rotateType",
+                        "type": "Enum",
+                        "displayName": "动画效果",
+                        "items": [
+                            {
+                                "value": "continuous",
+                                "displayNameKey": "连续旋转"
+                            },
+                            {
+                                "value": "pause",
+                                "displayNameKey": "停顿旋转"
+                            }
+                        ],
+                        "defaultValue": "pause"
+                    },
+                    {
+                        "name": "rotateDirection",
+                        "type": "Enum",
+                        "displayName": "转盘旋转方向",
+                        "items": [
+                            {
+                                "value": "positive",
+                                "displayNameKey": "顺时针"
+                            },
+                            {
+                                "value": "negative",
+                                "displayNameKey": "逆时针"
+                            }
+                        ],
+                        "defaultValue": "negative"
+                    },
+                    {
+                        "name": "rotateTime",
+                        "type": "Integer",
+                        "displayName": "动画时长",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "titlePosition",
+                        "type": "Enum",
+                        "displayName": "标题位置",
+                        "items": [
+                            {
+                                "value": "flex-start",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "flex-end",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "rotateCenterImage",
+                        "type": "Image",
+                        "displayName": "旋转中心图片"
+                    },
+                    {
+                        "name": "rotateFigureImage",
+                        "type": "Image",
+                        "displayName": "旋转体图片"
+                    },
+                    {
+                        "name": "customFontFamily",
+                        "type": "Input",
+                        "displayName": "自定义字体名称",
+                        "defaultValue": "Gatha-Sans"
+                    },
+                    {
+                        "name": "customFontFamilyURL",
+                        "type": "Input",
+                        "displayName": "自定义字体连接",
+                        "defaultValue": "gatha/Gatha-Sans"
+                    }
+                ]
+            },
+            {
+                "displayName": "详情样式",
+                "properties": [
+                    {
+                        "name": "detailtRotateDeg",
+                        "type": "Integer",
+                        "displayName": "详情倾斜角度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "detailtRotateDirection",
+                        "type": "Enum",
+                        "displayName": "详情旋转方向",
+                        "items": [
+                            {
+                                "value": "positive",
+                                "displayNameKey": "顺时针"
+                            },
+                            {
+                                "value": "negative",
+                                "displayNameKey": "逆时针"
+                            }
+                        ],
+                        "defaultValue": "positive"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "标题字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.5x"
+                        }
+                    },
+                    {
+                        "name": "detailValueType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "detailValueUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    },
+                    {
+                        "name": "detailValuePosition",
+                        "type": "Enum",
+                        "displayName": "数值位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "valueTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "数值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.0x"
+                        }
+                    },
+                    {
+                        "name": "rateTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "比值字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.0x"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}
