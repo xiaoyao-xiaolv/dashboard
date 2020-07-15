@@ -71,12 +71,12 @@ export default class Visual extends WynVisual {
     return a.replace(/"/g, "%22").replace(/</g, "%3C").replace(/>/g, "%3E");
   }
 
-  private drawCircles(element) {
+  private drawCircles(circleContainer) {
     var side = Visual.width + Visual.elementWidth * 2;
     $("<div class='big-circle'>").width(side).height(side)
       .css('top', (Visual.elementHeight - side) / 2)
       .css('left', (Visual.elementWidth - side) / 2)
-      .appendTo(element);
+      .appendTo(circleContainer);
 
 
     var smallSide = Visual.width * 0.75;
@@ -85,7 +85,7 @@ export default class Visual extends WynVisual {
       .height(smallSide)
       .css('top', (Visual.elementHeight - smallSide) / 2)
       .css('left', (Visual.elementWidth - smallSide) / 2)
-      .appendTo(element);
+      .appendTo(circleContainer);
   };
 
 
@@ -140,16 +140,16 @@ export default class Visual extends WynVisual {
 
   public render() {
 
-    if (!this.isCurrentPage) return
 
     this.root.html('').width(Visual.width).height(Visual.height).css('position', 'relative');
     const options = this.options
 
     let container = $('<div class="container">').appendTo(this.root),
       element = $('<div class="main">').appendTo(container).css('transform', 'translateZ(-200px)'),
+      circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
       lineContainer = $('<div class="line-container">').appendTo(this.root).width(Visual.width).height(Visual.height),
-      tick = 0.001,
-      isActive = true,
+      tick = 0.05,
+      isActive = this.isCurrentPage,
       tX = 0,
       width = 200,
       origin = width / 2,
@@ -160,7 +160,8 @@ export default class Visual extends WynVisual {
       length = this.items.length;
 
     // start draw circle 
-    this.drawCircles(element);
+
+    this.drawCircles(circleContainer);
     var deltaAngle = 360 / length;
 
     for (var i = 0; i < length; i++) {
@@ -353,11 +354,30 @@ export default class Visual extends WynVisual {
         .addClass('figure-title')
     }
 
+    const renderCore = (tX) => {
+      const elementDirection = options.detailtRotateDirection === 'negative' ? - tX : tX;
+      element.css("transform", `rotateY(${elementDirection}deg) translateZ(${-elementZ}px)`);
+      // pause  animate type
+      options.rotateType === 'pause' && element.css({ 'transition': 'transform .5s ease-in-out' });
+      options.totalShow && Visual.drawLines(container, lineContainer);
+    }
+
     var self = this;
     (function animloop() {
       self.renderTimer = requestAnimationFrame(animloop);
       if (isActive) {
-        options.totalShow && Visual.drawLines(container, lineContainer);
+        tX += tick * - Number(options.rotateTime);
+        if (options.rotateType === 'continuous') {
+          if (tX < -360) {
+            tX += 360;
+          }
+          renderCore(tX)
+        } else {
+          options.totalShow && Visual.drawLines(container, lineContainer);
+        }
+        const circleDirection = options.rotateDirection === 'negative' ? - tX : tX;
+        $(".big-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${-70}px)`)
+        $(".small-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${0}px)`)
       } else {
         isActive = false;
       }
@@ -365,9 +385,7 @@ export default class Visual extends WynVisual {
 
     const retateY = (tX = 0) => {
       if (isActive) {
-        element.css("transform", 'rotateY(' + tX + 'deg) translateZ(-' + elementZ + 'px) ')
-          .css({ 'transition': 'transform .5s ease-in-out' })
-
+        renderCore(tX)
       }
       setTimeout(() => {
         if (!isActive) {
@@ -379,9 +397,10 @@ export default class Visual extends WynVisual {
           }
         }
         retateY(tX);
-      }, Number(options.rotateStopTime) * 1000);
+      }, Number(options.rotateTime) * 1000);
     }
-    retateY(-deltaAngle)
+
+    options.rotateType === 'pause' && retateY(-deltaAngle)
 
     this.resize();
   }
@@ -447,6 +466,7 @@ export default class Visual extends WynVisual {
       svg.append(line);
     });
 
+
     let svgHtml = Visual.escapeHTML(svg[0].outerHTML);
     let bg = `url('data:image/svg+xml, ${svgHtml}')`;
     lineContainer
@@ -488,6 +508,9 @@ export default class Visual extends WynVisual {
   };
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+    if (!options.properties.totalShow) {
+      return ['totalName', 'textStyleTotalText', 'totalValueType', 'totalValueUnit', 'totalValuePosition', 'valueTextStyleTotalValue', 'rateTextStyleTotalRate']
+    }
     return null;
   }
 

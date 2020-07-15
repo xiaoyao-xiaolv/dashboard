@@ -23,6 +23,13 @@ body {
   z-index: 3;
   transform-style: preserve-3d;
 }
+.circle-container {
+  position: absolute;
+  top: 5%;
+  left: 38%;
+  z-index: 1;
+  transform-style: preserve-3d;
+}
 .figure {
   position: absolute;
   background: rgba(44, 44, 107, 0.8);
