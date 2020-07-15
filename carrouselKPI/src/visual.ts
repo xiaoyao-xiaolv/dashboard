@@ -44,7 +44,6 @@ export default class Visual extends WynVisual {
   private dimensions: any;
   private value: any;
   private contrast: any;
-  private isCurrentPage = !document.hidden
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -149,7 +148,7 @@ export default class Visual extends WynVisual {
       circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
       lineContainer = $('<div class="line-container">').appendTo(this.root).width(Visual.width).height(Visual.height),
       tick = 0.05,
-      isActive = this.isCurrentPage,
+      isActive = true,
       tX = 0,
       width = 200,
       origin = width / 2,
@@ -388,13 +387,8 @@ export default class Visual extends WynVisual {
         renderCore(tX)
       }
       setTimeout(() => {
-        if (!isActive) {
-          isActive = false
-        } else {
+        if (isActive && !document.hidden) {
           tX += -(deltaAngle)
-          if (tX < -360) {
-            tX += 0
-          }
         }
         retateY(tX);
       }, Number(options.rotateTime) * 1000);
@@ -407,7 +401,6 @@ export default class Visual extends WynVisual {
 
   public formatData = (number, dataUnit, dataType) => {
     let format = number
-    // const dataUnit = options.totalValueUnit
     const units = [{
       value: 1,
       unit: ''

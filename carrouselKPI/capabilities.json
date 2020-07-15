@@ -72,7 +72,7 @@
                                 "displayNameKey": "逆时针"
                             }
                         ],
-                        "defaultValue": "pause"
+                        "defaultValue": "negative"
                     },
                     {
                         "name": "rotateTime",
