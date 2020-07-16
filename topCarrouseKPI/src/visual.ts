@@ -120,6 +120,7 @@ export default class Visual extends WynVisual {
       elemnetBox = $('<div class="box">').appendTo(container).css('transform', `rotateX(${options.detailtRotateDeg}deg)`),
       element = $('<div class="main">').appendTo(elemnetBox).css('transform', 'translateZ(-200px)'),
       circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
+      staticContainer = $('<div class="static-container">').appendTo(container),
       tick = 0.05,
       isActive = true,
       tX = 0,
@@ -128,7 +129,7 @@ export default class Visual extends WynVisual {
       height = 100,
       rotateY = [],
       elementZ = 400,
-      translateZ = 600,
+      translateZ = 500,
       length = this.items.length;
 
     // start draw circle 
@@ -221,7 +222,7 @@ export default class Visual extends WynVisual {
       .height(allLightsElementSide)
       .css('top', (-allLightsElementSide) * 0.1)
       .css('left', (allLightsElementSide) * 3.5)
-      .appendTo(container);
+      .appendTo(staticContainer);
 
     var allLights2ElementSide = Visual.width / 12;
     var allLights2Element = $("<div class='all-lights2'>")
@@ -229,7 +230,7 @@ export default class Visual extends WynVisual {
       .height(allLights2ElementSide)
       .css('top', '10px')
       .css('left', (Visual.width - allLights2ElementSide) / 2)
-      .appendTo(container);
+      .appendTo(staticContainer);
 
     var earthElementSide = Visual.width / 10;
     var earthElement = $("<div class='earth'>")
@@ -237,7 +238,7 @@ export default class Visual extends WynVisual {
       .height(earthElementSide)
       .css('top', '10px')
       .css('left', earthElementSide * 4.5)
-      .appendTo(container);
+      .appendTo(staticContainer);
     // custom rotate image
     options.rotateCenterImage && earthElement.css('backgroundImage', `url(${options.rotateCenterImage})`)
 
@@ -248,9 +249,32 @@ export default class Visual extends WynVisual {
       .css('left', '50%')
       .css('top', '33%')
       .css('transform', 'translateX(-50%)')
-      .appendTo(container);
+      .appendTo(staticContainer);
+
+    // start animate
+    const startReder = () => {
+      // 1. first rotate circle
+      console.log(new Date().getTime(), '1111')
+      $(".big-circle")
+        .css('opacity', 1)
+        // .addClass('big')
+        // .css("transform", `rotateY(360deg) rotateX(${90}deg) translateZ(${-70}px)`)
+        .css({ 'transition': 'opacity .5s ease' })
+      // 2. after 2.5s, all rotate
+      setTimeout(() => {
+        console.log(new Date().getTime(), '33333')
+        const boxName = ['main', 'static-container', 'small-circle']
+        boxName.map((item) => {
+          $(`.${item}`).css('opacity', 1)
+        })
+        options.rotateType === 'pause' && retateY()
+        animloop()
+      }, 1000)
+    }
+    startReder()
 
     const renderCore = (tX) => {
+
       const elementDirection = options.detailtRotateDirection === 'negative' ? - tX : tX;
       element.css("transform", `rotateY(${elementDirection}deg) translateZ(${-elementZ}px)`);
       // pause  animate type
@@ -259,8 +283,9 @@ export default class Visual extends WynVisual {
     }
 
     var self = this;
-    (function animloop() {
+    const animloop = () => {
       self.renderTimer = requestAnimationFrame(animloop);
+
       if (isActive) {
         tX += tick * - Number(options.rotateTime);
         if (options.rotateType === 'continuous') {
@@ -272,27 +297,27 @@ export default class Visual extends WynVisual {
         const circleDirection = options.rotateDirection === 'negative' ? - tX : tX;
         $(".big-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${-70}px)`)
         $(".small-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${0}px)`)
+
       } else {
         isActive = false;
       }
-    })();
+    };
 
-    const retateY = (tX = 0) => {
+    const retateY = (deg = 0) => {
       if (isActive) {
-        renderCore(tX)
+        renderCore(deg)
       }
       setTimeout(() => {
         if (isActive && !document.hidden) {
-          tX += -(deltaAngle)
+          deg += -(deltaAngle)
 
         }
 
-        retateY(tX);
+        retateY(deg);
       }, Number(options.rotateTime) * 1000);
 
     }
 
-    options.rotateType === 'pause' && retateY(-deltaAngle)
 
     this.resize();
   }
