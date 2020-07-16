@@ -55,19 +55,19 @@ export default class Visual extends WynVisual {
   }
 
   private drawCircles(circleContainer) {
-    var side = Visual.width + Visual.elementWidth * 2;
+    var side = Visual.elementWidth * 3.5;
     $("<div class='big-circle'>").width(side).height(side)
-      .css('top', (Visual.elementHeight - side) / 2)
-      .css('left', (Visual.elementWidth - side) / 2)
+      .css('top', -side / 2.8)
+      .css('left', -side / 2.8)
       .appendTo(circleContainer);
 
 
-    var smallSide = Visual.width * 0.75;
+    var smallSide = Visual.elementWidth * 1.5;;
     $("<div class='small-circle'>")
       .width(smallSide)
       .height(smallSide)
-      .css('top', (Visual.elementHeight - smallSide) / 2)
-      .css('left', (Visual.elementWidth - smallSide) / 2)
+      .css('top', (- smallSide) * 0.1)
+      .css('left', (- smallSide) / 6)
       .appendTo(circleContainer);
   };
 
@@ -127,8 +127,8 @@ export default class Visual extends WynVisual {
       origin = width / 2,
       height = 100,
       rotateY = [],
-      elementZ = 200,
-      translateZ = 400,
+      elementZ = 400,
+      translateZ = 600,
       length = this.items.length;
 
     // start draw circle 
@@ -215,37 +215,38 @@ export default class Visual extends WynVisual {
     });
 
 
-    var allLightsElementSide = Visual.width / 4;
+    var allLightsElementSide = Visual.width / 8;
     var allLightsElement = $("<div class='all-lights1'>")
       .width(allLightsElementSide)
       .height(allLightsElementSide)
-      .css('top', -allLightsElementSide / 2 - 10)
-      .css('left', (Visual.width - allLightsElementSide) / 2)
+      .css('top', (-allLightsElementSide) * 0.1)
+      .css('left', (allLightsElementSide) * 3.5)
       .appendTo(container);
 
-    var allLights2ElementSide = Visual.width / 6;
+    var allLights2ElementSide = Visual.width / 12;
     var allLights2Element = $("<div class='all-lights2'>")
       .width(allLights2ElementSide)
       .height(allLights2ElementSide)
-      .css('top', -allLightsElementSide / 2 + 10)
+      .css('top', '10px')
       .css('left', (Visual.width - allLights2ElementSide) / 2)
       .appendTo(container);
 
-    var earthElementSide = Visual.width / 5;
+    var earthElementSide = Visual.width / 10;
     var earthElement = $("<div class='earth'>")
       .width(earthElementSide)
       .height(earthElementSide)
-      .css('top', -Visual.height * 0.2)
-      .css('left', (Visual.width - earthElementSide) / 2)
+      .css('top', '10px')
+      .css('left', earthElementSide * 4.5)
       .appendTo(container);
     // custom rotate image
     options.rotateCenterImage && earthElement.css('backgroundImage', `url(${options.rotateCenterImage})`)
 
-    var stepsSide = Visual.width / 5;
+    var stepsSide = Visual.width / 10;
     var stepsElement = $("<div class='steps fixed-element'>")
       .width(stepsSide)
       .height(stepsSide)
       .css('left', '50%')
+      .css('top', '33%')
       .css('transform', 'translateX(-50%)')
       .appendTo(container);
 
@@ -283,7 +284,7 @@ export default class Visual extends WynVisual {
       setTimeout(() => {
         if (isActive && !document.hidden) {
           tX += -(deltaAngle)
-          console.log(isActive, 'isAxtive111')
+
         }
 
         retateY(tX);
