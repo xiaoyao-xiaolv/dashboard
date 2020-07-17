@@ -4,14 +4,16 @@ body{
     position: relative;
 }
 #visualDom {
-    // margin: 0 auto;
     position:  absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-::-webkit-scrollbar {display:none}
+#visualDom::-webkit-scrollbar {display:none}
+#visualDom::-ms-scrollbar {display:none}
+#visualDom::-moz-scrollbar {display:none}
+#visualDom::-o-scrollbar {display:none}
 
 .container {
     position: absolute;
@@ -25,7 +27,7 @@ body{
     z-index: 1;
 }
 
-.box {
+.element-box {
     position: absolute;
     top: -65%;
     left: 0px;
@@ -59,13 +61,11 @@ body{
 
 .figure {
     position: absolute;
-    background: rgba(44, 44, 107, 0.8);
     text-align: center;
     overflow: auto;
 }
 .total-item{
     position: absolute;
-    background: rgba(44, 44, 107, 0.8);
     text-align: center;
     overflow: auto;
     // background-size: 100% 100%;
@@ -76,13 +76,10 @@ body{
     flex-direction: row;
     padding:  0 10px;
     box-sizing: border-box;
-    // justify-content: center;
-    // align-items: center;
 } 
 
 .figure-title {
    display: flex;
-//    justify-content: center;
    align-items: center;
    padding: 15px;
    box-sizing: border-box;
@@ -101,7 +98,7 @@ body{
     flex-direction: column;
 }
 
-.figure-value span {
+.figure-values span {
     white-space: nowrap;  
     text-overflow:ellipsis; 
     overflow:hidden;
@@ -131,8 +128,15 @@ body{
     background-repeat: no-repeat;
     background-position: center center;
     position: absolute;
-    transform: rotateX(90deg) translateZ(-70px);
     background-size: 100% 100%;
+}
+
+.rotate-start {
+    animation: rotateStart 1s linear;
+    -webkit-animation:rotateStart 1s linear;
+    -moz-animation:rotateStart 1s linear;
+    -o-animation:rotateStart 1s linear;
+    -ms-animation:rotateStart 1s linear;
 }
 
 .small-circle {
@@ -140,7 +144,6 @@ body{
     background-repeat: no-repeat;
     background-position: center center;
     position: absolute;
-    transform: rotateX(90deg) translateZ(0px);
     background-size: 100% 100%;
     opacity: 0;
 }
@@ -195,12 +198,23 @@ body{
     -webkit-animation:rotateImg 20s linear infinite;
 }
 
-@keyframes rotateImg {   
-    0% {transform : rotateY(0deg) translateZ(-200px);}   
-    100% {transform : rotateY(360deg) translateZ(-200px);} 
+@keyframes rotateStart {   
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
 } 
-@-webkit-keyframes rotateImg {     
-    0%{-webkit-transform : rotateY(0deg) translateZ(-200px) ;}  
-        100%{-webkit-transform : rotateY(360deg) translateZ(-200px) ;
-    } 
+@-webkit-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+}
+@-moz-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+}
+@-o-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+}
+@-ms-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
 }

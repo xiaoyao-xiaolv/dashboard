@@ -56,7 +56,7 @@
                                 "displayNameKey": "停顿旋转"
                             }
                         ],
-                        "defaultValue": "pause"
+                        "defaultValue": "continuous"
                     },
                     {
                         "name": "rotateDirection",
@@ -131,7 +131,7 @@
                         "name": "detailtRotateDeg",
                         "type": "Integer",
                         "displayName": "详情倾斜角度",
-                        "defaultValue": 10
+                        "defaultValue": 13
                     },
                     {
                         "name": "detailtRotateDirection",
@@ -155,7 +155,8 @@
                         "displayName": "标题字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "1.5x"
+                            "fontSize": "1.0x",
+                            "color": "#3eb2ff"
                         }
                     },
                     {
@@ -256,7 +257,8 @@
                         "displayName": "数值字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "1.0x"
+                            "fontSize": "1.2x",
+                            "color": "#eca538"
                         }
                     },
                     {

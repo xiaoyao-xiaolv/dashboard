@@ -117,7 +117,7 @@ export default class Visual extends WynVisual {
     const options = this.options
 
     let container = $('<div class="container">').appendTo(this.root),
-      elemnetBox = $('<div class="box">').appendTo(container).css('transform', `rotateX(${options.detailtRotateDeg}deg)`),
+      elemnetBox = $('<div class="element-box">').appendTo(container).css('transform', `rotateX(${options.detailtRotateDeg}deg)`),
       element = $('<div class="main">').appendTo(elemnetBox).css('transform', 'translateZ(-200px)'),
       circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
       staticContainer = $('<div class="static-container">').appendTo(container),
@@ -254,19 +254,18 @@ export default class Visual extends WynVisual {
     // start animate
     const startReder = () => {
       // 1. first rotate circle
-      console.log(new Date().getTime(), '1111')
       $(".big-circle")
         .css('opacity', 1)
-        // .addClass('big')
-        // .css("transform", `rotateY(360deg) rotateX(${90}deg) translateZ(${-70}px)`)
+        .addClass('rotate-start')
         .css({ 'transition': 'opacity .5s ease' })
       // 2. after 2.5s, all rotate
       setTimeout(() => {
-        console.log(new Date().getTime(), '33333')
+
         const boxName = ['main', 'static-container', 'small-circle']
         boxName.map((item) => {
           $(`.${item}`).css('opacity', 1)
         })
+        $(".big-circle").removeClass('rotate-start')
         options.rotateType === 'pause' && retateY()
         animloop()
       }, 1000)
