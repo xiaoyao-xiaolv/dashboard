@@ -258,9 +258,8 @@ export default class Visual extends WynVisual {
         .css('opacity', 1)
         .addClass('rotate-start')
         .css({ 'transition': 'opacity .5s ease' })
-      // 2. after 2.5s, all rotate
+      // 2. after 1s, all rotate
       setTimeout(() => {
-
         const boxName = ['main', 'static-container', 'small-circle']
         boxName.map((item) => {
           $(`.${item}`).css('opacity', 1)
@@ -273,7 +272,6 @@ export default class Visual extends WynVisual {
     startReder()
 
     const renderCore = (tX) => {
-
       const elementDirection = options.detailtRotateDirection === 'negative' ? - tX : tX;
       element.css("transform", `rotateY(${elementDirection}deg) translateZ(${-elementZ}px)`);
       // pause  animate type
@@ -309,14 +307,15 @@ export default class Visual extends WynVisual {
       setTimeout(() => {
         if (isActive && !document.hidden) {
           deg += -(deltaAngle)
-
         }
 
+        if (deg < -360) {
+          deg += 360;
+        }
         retateY(deg);
       }, Number(options.rotateTime) * 1000);
 
     }
-
 
     this.resize();
   }
@@ -368,7 +367,6 @@ export default class Visual extends WynVisual {
     }
     return format + formatUnit.unit
   }
-
 
   public onDestroy() {
     if (this.renderTimer != null) {
