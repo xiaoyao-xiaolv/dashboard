@@ -1,0 +1,195 @@
+body{ 
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+#visualDom {
+    position:  absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#visualDom::-webkit-scrollbar {display:none}
+#visualDom::-ms-scrollbar {display:none}
+#visualDom::-moz-scrollbar {display:none}
+#visualDom::-o-scrollbar {display:none}
+// custom icon
+.container {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 100%;
+    height: 50%;
+    perspective: 900px;
+    perspective-origin: 50% -50%;
+    clear:both;
+    z-index: 1;
+}
+
+.element-box {
+    position: absolute;
+    top: -65%;
+    left: 0px;
+    width: 100%;
+    height: 50%;
+    transform-style: preserve-3d;
+    z-index: 9;
+}
+
+.main {
+    position: absolute;
+    top: 5%;
+    left: 38%;
+    z-index:3;
+    transform: translateZ(-700px);
+    transform-style: preserve-3d;
+    opacity: 0;
+}
+
+.figure {
+    position: absolute;
+    transform-style: preserve-3d;
+   
+}
+
+.figure-title {
+    position: absolute;
+    text-align: center;
+    color: red;
+    font-size: 24px;
+}
+.figure-logo {
+    text-align: center;
+}
+
+.figure-circle {
+    width: 420px;
+    height: 420px;
+    text-align: center;
+    background-image: url("../img/big-circle.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    left: 50%;
+    transform:  rotateX(90deg) translateX(-50%);
+    background-size: 100% 100%;
+}
+
+.figure-logo {
+    text-align: center;
+}
+
+.figure-pyramid  {
+    position: absolute;
+
+ 
+}
+
+.pyramid-axis {
+    position: relative;
+    width: 200px;
+
+    transform-style: preserve-3d;
+    // animation: spin 16s infinite linear;
+}
+
+.top-container {
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.bottom-container {
+    position: relative;
+    top: 200px;
+    transform: rotateX(-180deg) rotateY(15deg);
+    transform-style: preserve-3d;
+
+}
+
+.pyramid-wall {
+    position: absolute;
+    border: 100px solid transparent;
+}
+
+
+
+.front {
+    bottom: -0px;
+    border-bottom: 400px solid rgba(102, 167, 219, 0.5);
+    transform: translateZ(-100px) rotateX(-14.5deg);
+    transform-origin: bottom center;
+}
+
+.back {
+    bottom: -0px;
+    border-bottom: 400px solid rgba(102, 167, 219, 0.5);
+    transform: translateZ(100px) rotateY(180deg) rotateX(-14.5deg);
+    transform-origin: bottom center;
+}
+
+.left {
+    bottom: -0px;
+    /* left: 0%; */
+    border-bottom: 400px solid rgba(102, 167, 219, 0.5);
+    transform: rotateY(270deg) translateZ(-100px) rotateX(-14.5deg);
+    transform-origin: bottom center;
+}
+
+.right {
+    bottom: -0px;
+
+    border-bottom: 400px solid rgba(102, 167, 219, 0.5);
+    transform: rotateY(-270deg) translateZ(-100px) rotateX(-14.5deg);
+    transform-origin: top right;
+    transform-origin: bottom center;
+}
+
+.bottom {
+    width: 200px;
+    height: 200px;
+    background: rgba(49, 132, 201, 0.5);
+    transform: rotateX(90deg) translateY(100px);
+    transform-origin: bottom center;
+}
+
+
+.rotate-start {
+    animation: rotateStart 1s linear;
+    -webkit-animation:rotateStart 1s linear;
+    -moz-animation:rotateStart 1s linear;
+    -o-animation:rotateStart 1s linear;
+    -ms-animation:rotateStart 1s linear;
+}
+
+.frame {
+
+    position: absolute;
+    background-size: 100% 100%;
+}
+
+.rotateY {
+    animation: rotateImg 20s linear infinite;
+    -webkit-animation:rotateImg 20s linear infinite;
+}
+
+@keyframes rotateStart {   
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+} 
+@-webkit-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+}
+@-moz-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+}
+@-o-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+}
+@-ms-keyframes rotateStart {     
+    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+}
