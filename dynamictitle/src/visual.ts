@@ -26,6 +26,16 @@ export default class Visual {
   }
 
   public update(options: any) {
+    const dataView = options.dataViews[0];
+    this.items = [];
+    if (dataView &&
+      dataView.plain.profile.dimensions.values.length) {
+      const plainData = dataView.plain;
+      let dimensions = plainData.profile.dimensions.values;
+      this.items = plainData.data.map(function (item) {
+        return item[dimensions[0].display];
+      });
+    }
     this.properties = options.properties;;
 
     this.render();
@@ -34,7 +44,8 @@ export default class Visual {
   public render () {
     this.container.innerHTML = "";
     const options = this.properties;
-    const items = options.customText
+    const isMock = !this.items.length;
+    const items = isMock ? options.customText : this.items[0];
     let dowebok: any = document.createElement("div");
 
     let p1: any = document.createElement("h1");
