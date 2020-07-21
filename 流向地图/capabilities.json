@@ -12,8 +12,28 @@
                 "kind": "grouping"
             },
             {
+                "name": "departurelong",
+                "displayNameKey": "起始经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "departurelat",
+                "displayNameKey": "起始纬度",
+                "kind": "grouping"
+            },
+            {
                 "name": "destination",
                 "displayNameKey": "目标地点",
+                "kind": "grouping"
+            },
+            {
+                "name": "destinationlong",
+                "displayNameKey": "目标经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "destinationlat",
+                "displayNameKey": "目标纬度",
                 "kind": "grouping"
             }
         ],
@@ -46,6 +66,18 @@
                 },
                 "destination": {
                     "max": 1
+                },
+                "departurelong": {
+                    "max": 1
+                },
+                "departurelat": {
+                    "max": 1
+                },
+                "destinationlong": {
+                    "max": 1
+                },
+                "destinationlat": {
+                    "max": 1
                 }
             }
         ]
@@ -53,7 +85,7 @@
     "options": {
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "地图设置",
                 "properties": [
                     {
                         "name": "roam",
@@ -61,6 +93,49 @@
                         "displayName": "是否允许缩放",
                         "defaultValue": true
                     },
+                    {
+                        "name": "showLegend",
+                        "type": "Boolean",
+                        "displayName": "是否显示图例",
+                        "defaultValue": false
+                    },
+                    {
+                        "displayNameKey": "地图名称",
+                        "name": "mapName",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            },
+                            {
+                                "value": "pentagon",
+                                "displayNameKey": "五边形"
+                            },
+                            {
+                                "value": "star",
+                                "displayNameKey": "星形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形-直立"
+                            },
+                            {
+                                "value": "triangle-forward",
+                                "displayNameKey": "三角形-侧向"
+                            }
+                        ],
+                        "defaultValue": "china"
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
                     {
                         "name": "palette",
                         "type": "Palette",
@@ -74,12 +149,6 @@
                         "defaultValue": 10
                     },
                     {
-                        "name": "showLegend",
-                        "type": "Boolean",
-                        "displayName": "是否显示图例",
-                        "defaultValue": false
-                    },
-                    {
                         "name": "effect",
                         "type": "Boolean",
                         "displayName": "是否自定义特效",
@@ -90,7 +159,12 @@
                         "type": "Text",
                         "displayName": "特效图形",
                         "defaultValue": "path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z"
-                    },
+                    }
+                ]
+            },
+            {
+                "displayName": "图表样式",
+                "properties": [
                     {
                         "name": "borderColor",
                         "type": "Color",

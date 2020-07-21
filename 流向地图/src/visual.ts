@@ -1,8 +1,7 @@
 import '../style/visual.less';
-import chinaMap from './china.json';
+import * as echarts from 'echarts';
+import "echarts/map/js/china.js"
 import geoCoordMap from './geoCoordMap.json';
-const echarts = require('echarts');
-echarts.registerMap('china', chinaMap, {});
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
