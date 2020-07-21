@@ -208,7 +208,7 @@ export default class Visual {
             data: item.map(function (dataItem) {
               return {
                 name: dataItem[1].name,
-                value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+                value: geoCoordMap[dataItem[1].name]
               };
             })
           }, {
@@ -245,6 +245,7 @@ export default class Visual {
         });
       }
     });
+    console.log(series);
     var option = {
       tooltip: {
         trigger: 'item',
