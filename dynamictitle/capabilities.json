@@ -1,5 +1,24 @@
 {
     "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "dimensions",
+                "displayNameKey": "字段",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {}
+            }
+        ],
+        "conditions": [
+            {
+                "dimensions": {
+                    "max": 1
+                }
+            }
+        ]
     },
     "options": {
         "common": {
@@ -209,6 +228,9 @@
                         "defaultValue": "repeat-1"
                     }
                 ]
+            },
+            {
+                "type": "interaction"
             },
             {
                 "type": "appearance"
