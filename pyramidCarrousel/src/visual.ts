@@ -17,6 +17,7 @@ export default class Visual extends WynVisual {
   private items = [];
 
   private isMock = true;
+  private isFirstRender: boolean;
   private options: any
   private visualHost: any;
   private renderTimer: any;
@@ -36,14 +37,25 @@ export default class Visual extends WynVisual {
     this.root = $(dom);
     this.isMock = true;
     this.visualHost = host;
+    this.isFirstRender = true;
   }
+
+  private drawCircles(circleContainer, options) {
+    var side = Visual.elementWidth * 3.5;
+    $("<div class='big-circle'>").width(side).height(side)
+      .css('top', -side / 2.3)
+      .css('left', -side / 2.8)
+      .appendTo(circleContainer);
+    // custom rotate image
+    options.circleImage && $(".big-circle").css('backgroundImage', `url(${options.circleImage})`)
+
+  };
 
   public update(updateOptions: VisualNS.IVisualUpdateOptions) {
 
     const options = updateOptions;
     const dataView = options.dataViews[0];
 
-    console.log(dataView, '====dataView')
     this.isMock = !(dataView && dataView.plain.profile.values.values.length);
     const plainData: any = this.isMock ? {} : dataView.plain;
 
@@ -70,7 +82,7 @@ export default class Visual extends WynVisual {
     let container = $('<div class="container">').appendTo(this.root),
       elemnetBox = $('<div class="element-box">').appendTo(container).css('transform', `rotateX(${-options.detailtRotateDeg}deg)`),
       element = $('<div class="main">').appendTo(elemnetBox),
-
+      circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
       tick = 0.05,
       isActive = true,
       tX = 0,
@@ -82,6 +94,7 @@ export default class Visual extends WynVisual {
       translateZ = this.items.length > 3 ? 400 : 350,
       length = this.items.length;
 
+    this.drawCircles(circleContainer, options);
     var deltaAngle = 360 / length;
 
     for (var i = 0; i < length; i++) {
@@ -119,7 +132,6 @@ export default class Visual extends WynVisual {
           right: options.bigPyramidBgColor[1].colorStops ? options.bigPyramidBgColor[1].colorStops[0] : options.bigPyramidBgColor[1]
         }
 
-        console.log(bgColor, '==bgColor')
         if (size) {
           $("<div class='pyramid-wall-small front-small'>")
             .css({ 'borderBottomColor': options.smallPyramidBgColor, ...opacity })
@@ -189,15 +201,20 @@ export default class Visual extends WynVisual {
 
     // start animate
     const startReder = () => {
-      const boxName = ['main']
-      boxName.map((item) => {
-        $(`.main`).addClass('element-animate')
-      })
+      const time = this.isFirstRender ? 1500 : 0;
+      this.isFirstRender && $(`.main`).addClass('element-animate')
+
       setTimeout(() => {
-        $(`.main`).removeClass('element-animate')
+        this.isFirstRender && $(`.main`).removeClass('element-animate')
+        // bottom circle
+        $('.circle-container').css('opacity', options.showBottom ? 1 : 0);
+        const circleDirection = options.circleRotateDirection === 'negative' ? 'rotateCircle' : 'rotateCirclePositive';
+        $(".big-circle").css({ 'animation': `${circleDirection} ${options.circleRotateTime}s infinite linear` });
+
+        this.isFirstRender = false;
         options.rotateType === 'pause' && retateY()
         animloop()
-      }, 1500)
+      }, time)
     }
     startReder()
 
@@ -220,7 +237,6 @@ export default class Visual extends WynVisual {
           }
           renderCore(tX)
         }
-        $(".figure-text").css({ 'transform': `rotateY(${-0}deg)` })
       } else {
         isActive = false;
       }
@@ -314,6 +330,9 @@ export default class Visual extends WynVisual {
   };
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+    if (!options.properties.showBottom) {
+      return ['circleRotateDirection', 'circleRotateTime', 'circleImage']
+    }
     return null;
   }
 

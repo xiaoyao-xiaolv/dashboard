@@ -36,11 +36,11 @@ body{
     z-index: 9;
 }
 .element-animate {
-    animation: rotateStart 1.5s linear;
-    -webkit-animation:rotateStart 1.5s linear;
-    -moz-animation:rotateStart 1.5s linear;
-    -o-animation:rotateStart 1.5s linear;
-    -ms-animation:rotateStart 1.5s linear;
+    animation: rotateStart 1.5s linear  infinite;
+    -webkit-animation:rotateStart 1.5s linear  infinite;
+    -moz-animation:rotateStart 1.5s linear infinite;
+    -o-animation:rotateStart 1.5s linear infinite;
+    -ms-animation:rotateStart 1.5s linear infinite;
 }
 
 .main {
@@ -48,14 +48,33 @@ body{
     top: 5%;
     left: 38%;
     z-index:3;
-    // transform: translateZ(-700px);
+    transform: translateZ(-500px);
     transform-style: preserve-3d;
     opacity: 1;
 }
 
+.circle-container {
+    position: absolute;
+    top: 5%;
+    left: 38%;
+    z-index:1;
+    opacity: 0;
+    transform-style: preserve-3d;
+}
+
+.big-circle {
+    background-image: url("../img/big-circle.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    transform: rotateX(90deg) translateZ(-70px);
+    background-size: 100% 100%;
+    border-radius: 50%;
+    // animation: rotateCircle 20s infinite linear;
+}
+
 .figure {
     position: absolute;
-    // background-image: url("../img/frame.png");
     transform-style: preserve-3d;
 }
 
@@ -72,17 +91,14 @@ body{
 }
 .figure-value,
 .figure-label {
-    // position: absolute;
     text-align: center;
-    // top: 50px;
-    // font-size: 16px;
 }
 
 .figure-circle {
     width: 200px;
     height: 200px;
     text-align: center;
-    background-image: url("../img/big-circle.png");
+    background-image: url("../img/figure-circle.png");
     background-repeat: no-repeat;
     background-position: center center;
     position: absolute;
@@ -245,24 +261,68 @@ body{
 }
 
 @keyframes rotateStart {   
-    0% {transform : translateZ(0px)}   
-    100% {transform :  translateZ(-500px);} 
+    0% {transform : translateZ(-1500px)  scaleY(0) }   
+    100% {transform : translateZ(-500px) scaleY(1) } 
 } 
 @-webkit-keyframes rotateStart {     
-    0% {transform :  translateZ(0px)}   
-    100% {transform :  translateZ(-500px);} 
+    0% {transform :   translateZ(-1500px) scaleY(0)}   
+    100% {transform :  translateZ(-500px)  scaleY(1)} 
 }
 @-moz-keyframes rotateStart {     
-    0% {transform : translateZ(0px)}   
-    100% {transform : translateZ(-500px);} 
+    0% {transform :   translateZ(-1500px) scaleY(0)}   
+    100% {transform :  translateZ(-500px)  scaleY(1)} 
 }
 @-o-keyframes rotateStart {     
-    0% {transform : translateZ(0px)}   
-    100% {transform : translateZ(-500px);} 
+    0% {transform :   translateZ(-1500px) scaleY(0)}   
+    100% {transform :  translateZ(-500px)  scaleY(1)} 
 }
 @-ms-keyframes rotateStart {     
-    0% {transform :  translateZ(0px)}   
-    100% {transform :  translateZ(-500px);} 
+    0% {transform :   translateZ(-1500px) scaleY(0)}   
+    100% {transform :  translateZ(-500px)  scaleY(1)} 
+}
+
+// negative
+@keyframes rotateCircle {   
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg) translateZ(-70px)} 
+} 
+@-webkit-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg)} 
+}
+@-moz-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-o-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-ms-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg)}   
+    100% {transform : rotateY(360deg) rotateX(90deg)} 
+}
+
+// positive
+@keyframes rotateCirclePositive {   
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(-70px)} 
+} 
+@-webkit-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg)} 
+}
+@-moz-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-o-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-ms-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg)} 
 }
 
 @keyframes spin {
@@ -275,6 +335,33 @@ body{
     }
 }
 @-webkit-keyframes spin {
+    from {
+        transform: rotateY(0);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
+}
+@-moz-keyframes spin {
+    from {
+        transform: rotateY(0);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
+}
+@-o-keyframes spin {
+    from {
+        transform: rotateY(0);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
+}
+@-ms-keyframes spin {
     from {
         transform: rotateY(0);
     }
