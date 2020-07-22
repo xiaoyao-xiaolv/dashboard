@@ -65,7 +65,6 @@ export default class Visual {
       emphasisColor: '#389BB7',
     };
   }
-
   public update(options: any) {
     const dataView = options.dataViews[0];
     this.items = [];
@@ -100,15 +99,26 @@ export default class Visual {
           });
       }
     }
+    console.log(this.items)
     this.properties = options.properties;
     this.render();
   }
-  private convertData(data: number[]) {
+
+  private queryData = (keyWord: string) => {
+    var reg = new RegExp(keyWord);
+    for (var i = 0; i < geoCoordMap.length; i++) {
+      if (reg.test(geoCoordMap[i].name)) {
+        return [geoCoordMap[i].lng, geoCoordMap[i].lat];
+      }
+    }
+  }
+
+  private convertData = (data: number[]) => {
     var res = [];
     for (var i = 0; i < data.length; i++) {
       var dataItem = data[i];
-      var fromCoord = geoCoordMap[dataItem[0].name];
-      var toCoord = geoCoordMap[dataItem[1].name];
+      var fromCoord = this.queryData(dataItem[0].name);
+      var toCoord = this.queryData(dataItem[1].name);
       if (fromCoord && toCoord) {
         res.push({
           fromName: dataItem[0].name,
@@ -137,26 +147,27 @@ export default class Visual {
     items.map(function (item: number[], i: number) {
       if (item.length) {
         let j = i % color.length;
-        series.push({
-          name: item[0][0].name,
-          type: 'lines',
-          zlevel: 1,
-          effect: {
-            show: true,
-            period: 6,
-            trailLength: 0.7,
-            color: '#fff',
-            symbolSize: 3
+        series.push(
+          {
+            name: item[0][0].name,
+            type: 'lines',
+            zlevel: 1,
+            effect: {
+              show: true,
+              period: 6,
+              trailLength: 0.7,
+              color: '#fff',
+              symbolSize: 3
+            },
+            lineStyle: {
+              normal: {
+                color: color[j],
+                width: 0,
+                curveness: 0.2
+              }
+            },
+            data: convertData(item)
           },
-          lineStyle: {
-            normal: {
-              color: color[j],
-              width: 0,
-              curveness: 0.2
-            }
-          },
-          data: convertData(item)
-        },
           {
             name: item[0][0].name,
             type: 'lines',
@@ -211,41 +222,10 @@ export default class Visual {
                 value: geoCoordMap[dataItem[1].name]
               };
             })
-          }, {
-          name: item[0][0].name,
-          type: 'effectScatter',
-          coordinateSystem: 'geo',
-          zlevel: 2,
-          rippleEffect: {
-            brushType: 'stroke'
-          },
-          label: {
-            normal: {
-              show: true,
-              position: "right", //显示位置
-              offset: [5, 0], //偏移设置
-              formatter: "{b}" //圆环显示文字
-            },
-            emphasis: {
-              show: true
-            }
-          },
-          symbolSize: options.symbolSize,
-          itemStyle: {
-            normal: {
-              color: color[j]
-            }
-          },
-          data: item.map(function (dataItem) {
-            return {
-              name: dataItem[0].name,
-              value: geoCoordMap[dataItem[0].name]
-            };
-          })
-        });
+          }
+        );
       }
     });
-    console.log(series);
     var option = {
       tooltip: {
         trigger: 'item',
