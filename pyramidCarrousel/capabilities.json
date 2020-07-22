@@ -11,6 +11,11 @@
                     }
                 ],
                 "kind": "value"
+            },
+            {
+                "name": "dimensions",
+                "displayNameKey": "分类",
+                "kind": "grouping"
             }
         ],
         "dataViewMappings": [
@@ -20,9 +25,22 @@
                         {
                             "dimensions": {
                                 "min": 1
+                            },
+                            "values": {
+                                "min": 1
                             }
                         }
                     ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "dimensions": {
+                    "max": 1
+                },
+                "values": {
+                    "max": 1
                 }
             }
         ]
@@ -75,6 +93,23 @@
                         "type": "Integer",
                         "displayName": "动画时长",
                         "defaultValue": 3
+                    },
+                    {
+                        "name": "bigPyramidBgColor",
+                        "type": "Palette",
+                        "displayName": "调色板"
+                    },
+                    {
+                        "name": "pyramidOpacity",
+                        "type": "Percentage",
+                        "displayName": "棱锥透明度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "smallPyramidBgColor",
+                        "type": "Color",
+                        "displayName": "内部棱锥",
+                        "defaultValue": "#47F4c6"
                     }
                 ]
             },
@@ -84,10 +119,20 @@
                     {
                         "name": "textStyle",
                         "type": "TextStyle",
-                        "displayName": "标注字体",
+                        "displayName": "数值字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "5.5x",
+                            "fontSize": "3.0x",
+                            "color": "#eca538"
+                        }
+                    },
+                    {
+                        "name": "dimensionsTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "分类字体",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.5x",
                             "color": "#3eb2ff"
                         }
                     },
@@ -162,26 +207,6 @@
                             }
                         ],
                         "defaultValue": "1"
-                    },
-                    {
-                        "name": "detailValuePosition",
-                        "type": "Enum",
-                        "displayName": "数值位置",
-                        "items": [
-                            {
-                                "value": "left",
-                                "displayNameKey": "左侧"
-                            },
-                            {
-                                "value": "center",
-                                "displayNameKey": "中间"
-                            },
-                            {
-                                "value": "right",
-                                "displayNameKey": "右侧"
-                            }
-                        ],
-                        "defaultValue": "center"
                     }
                 ]
             },

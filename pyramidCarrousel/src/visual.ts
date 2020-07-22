@@ -1,17 +1,16 @@
 import '../style/visual.less';
+// import '../img';
 import _ = require('lodash');
 import * as $ from 'jquery';
 
 export default class Visual extends WynVisual {
   private static mockItems = [
-    { name: "Dept. 1", '实际值': 100, '对比值': 100 },
-    { name: "Dept. 2", '实际值': 153, '对比值': 95 },
-    { name: "Dept. 3", '实际值': 94, '对比值': 10 },
-    // { name: "Dept. 4", '实际值': 60, '对比值': 80 },
-    // { name: "Dept. 5", '实际值': 65, '对比值': 52 },
-    // { name: "Dept. 6", '实际值': 55, '对比值': 62 },
-    // { name: "Dept. 7", '实际值': 120, '对比值': 71 },
-    // { name: "Dept. 8", '实际值': 52, '对比值': 66 },
+    { name: "Dept. 1", value: 100 },
+    { name: "Dept. 2", value: 153 },
+    { name: "Dept. 3", value: 94 },
+    { name: "Dept. 4", value: 60 },
+    { name: "Dept. 5", value: 65 },
+    { name: "Dept. 5", value: 65 }
   ];
 
   private root: JQuery<HTMLElement>;
@@ -29,36 +28,15 @@ export default class Visual extends WynVisual {
 
   private isValue: boolean;
 
-  private value: any;
+  private value: string;
+  private dimensions: string;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.root = $(dom);
     this.isMock = true;
     this.visualHost = host;
-
-    //  custom font famliy
-    var newStyle = document.createElement('style');
-    newStyle.appendChild(document.createTextNode("\
-      @font-face {\
-        font-family: "+ options.properties.customFontFamily + ";\
-        src: url('/fonts/"+ options.properties.customFontFamilyURL + ".ttf') format('truetype'),\
-        url('/fonts/"+ options.properties.customFontFamilyURL + ".otf') format('otf')\
-    }\
-    "));
-
-    document.head.appendChild(newStyle);
   }
-
-  // private drawCircles(circleContainer) {
-  //   var side = Visual.elementWidth * 3.5;
-  //   $("<div class='big-circle'>").width(side).height(side)
-  //     .css('top', -side / 2.8)
-  //     .css('left', -side / 2.8)
-  //     .appendTo(circleContainer);
-
-  // };
-
 
   public update(updateOptions: VisualNS.IVisualUpdateOptions) {
 
@@ -70,12 +48,12 @@ export default class Visual extends WynVisual {
     const plainData: any = this.isMock ? {} : dataView.plain;
 
     if (this.isMock) {
-
-      this.value = '实际值'
-      this.items = Visual.mockItems
+      this.value = 'value';
+      this.dimensions = 'name';
+      this.items = Visual.mockItems;
     } else {
-
       this.value = plainData.profile.values.values[0].display || '';
+      this.dimensions = plainData.profile.dimensions.values[0].display || ''
       this.items = plainData.data
     }
     this.options = options.properties;
@@ -87,11 +65,11 @@ export default class Visual extends WynVisual {
 
 
     this.root.html('').width(Visual.width).height(Visual.height).css('position', 'relative');
-    const options = this.options
+    const options = this.options;
 
     let container = $('<div class="container">').appendTo(this.root),
       elemnetBox = $('<div class="element-box">').appendTo(container).css('transform', `rotateX(${-options.detailtRotateDeg}deg)`),
-      element = $('<div class="main">').appendTo(elemnetBox).css('transform', 'translateZ(-0px)'),
+      element = $('<div class="main">').appendTo(elemnetBox),
 
       tick = 0.05,
       isActive = true,
@@ -100,13 +78,10 @@ export default class Visual extends WynVisual {
       origin = width / 2,
       height = 100,
       rotateY = [],
-      elementZ = 700,
-      translateZ = 350,
+      elementZ = 500,
+      translateZ = this.items.length > 3 ? 400 : 350,
       length = this.items.length;
 
-    // start draw circle 
-
-    // this.drawCircles(circleContainer);
     var deltaAngle = 360 / length;
 
     for (var i = 0; i < length; i++) {
@@ -118,40 +93,90 @@ export default class Visual extends WynVisual {
     for (var i = 0; i < rotateY.length; i++) {
 
       let dataText = this.items[i]
-      let figureTitle;
-      let figureLogo;
+
+      let figureText;
       let figureCircle;
       let figurePyramid;
-      figureTitle = $("<div class='figure-title'>")
-        .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
-        .width(width)
-        .height(height / 6)
-        .text(dataText[this.value])
 
-      const side = Visual.elementWidth * 2;
-      // figureCircle = $("<div class='figure-circle'>").width(side).height(side)
+      figureText = $("<div class='figure-text'>")
 
+      $("<div class='figure-value'>")
+        .css({ ...options.textStyle })
+        .text(`${this.formatData(dataText[this.value], options.detailValueUnit, options.detailValueType)}`)
+        .appendTo(figureText)
+
+      $("<div class='figure-label'>")
+        .css({ ...options.dimensionsTextStyle })
+        .text(dataText[this.dimensions])
+        .appendTo(figureText)
+      figureCircle = $("<div class='figure-circle'>")
+      const drawPyramid = (pyramid, size?) => {
+        const opacity = { opacity: options.pyramidOpacity / 100 };
+        const bgColor = {
+          front: options.bigPyramidBgColor[0].colorStops ? options.bigPyramidBgColor[0].colorStops[0] : options.bigPyramidBgColor[0],
+          back: options.bigPyramidBgColor[0].colorStops ? options.bigPyramidBgColor[0].colorStops[0] : options.bigPyramidBgColor[0],
+          left: options.bigPyramidBgColor[1].colorStops ? options.bigPyramidBgColor[1].colorStops[0] : options.bigPyramidBgColor[1],
+          right: options.bigPyramidBgColor[1].colorStops ? options.bigPyramidBgColor[1].colorStops[0] : options.bigPyramidBgColor[1]
+        }
+
+        console.log(bgColor, '==bgColor')
+        if (size) {
+          $("<div class='pyramid-wall-small front-small'>")
+            .css({ 'borderBottomColor': options.smallPyramidBgColor, ...opacity })
+            .appendTo(pyramid);
+          $("<div class='pyramid-wall-small back-small'>")
+            .css({ 'borderBottomColor': options.smallPyramidBgColor, ...opacity })
+            .appendTo(pyramid)
+          $("<div class='pyramid-wall-small left-small'>")
+            .css({ 'borderBottomColor': options.smallPyramidBgColor, ...opacity })
+            .appendTo(pyramid)
+          $("<div class='pyramid-wall-small right-small'>")
+            .css({ 'borderBottomColor': options.smallPyramidBgColor, ...opacity })
+            .appendTo(pyramid)
+          $("<div class='bottom-small'>")
+            .css({ 'background': options.smallPyramidBgColor, ...opacity })
+            .appendTo(pyramid)
+        } else {
+          $("<div class='pyramid-wall front'>")
+            .css({ 'borderBottomColor': bgColor.front, ...opacity })
+            .appendTo(pyramid);
+          $("<div class='pyramid-wall back'>")
+            .css({ 'borderBottomColor': bgColor.back, ...opacity })
+            .appendTo(pyramid)
+          $("<div class='pyramid-wall left'>")
+            .css({ 'borderBottomColor': bgColor.left, ...opacity })
+            .appendTo(pyramid)
+          $("<div class='pyramid-wall right'>")
+            .css({ 'borderBottomColor': bgColor.right, ...opacity })
+            .appendTo(pyramid)
+
+          $("<div class='bottom'>").appendTo(pyramid)
+        }
+
+      }
       //pyramid
-
       figurePyramid = $("<div class='figure-pyramid '>")
-        .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
         .width(width)
         .height(height / (4 / 6))
 
       const pyramidAxis = $("<div class='pyramid-axis'>").appendTo(figurePyramid)
       const bottomContainer = $("<div class='bottom-container'>").appendTo(pyramidAxis)
-      // wall
-      $("<div class='figure-circle'>").appendTo(bottomContainer)
-      $("<div class='pyramid-wall front'>").appendTo(bottomContainer);
-      $("<div class='pyramid-wall back'>").appendTo(bottomContainer)
-      $("<div class='pyramid-wall left'>").appendTo(bottomContainer)
-      $("<div class='pyramid-wall right'>").appendTo(bottomContainer)
-      $("<div class='bottom'>").appendTo(bottomContainer)
+      drawPyramid(bottomContainer)
+
+      // small pyramid
+      const smallPyramid = $("<div class='figure-pyramid'>").appendTo(figurePyramid);
+      const pyramidAxisSmall = $("<div class='pyramid-axis-small'>").appendTo(smallPyramid);
+      const bottomContainerSmall = $("<div class='bottom-container-small'>").appendTo(pyramidAxisSmall);
+      const topContainerSmall = $("<div class='top-container-small'>").appendTo(pyramidAxisSmall)
+      // top
+      drawPyramid(topContainerSmall, 'small')
+      // bottom
+      drawPyramid(bottomContainerSmall, 'smal')
 
       let figureElement = $("<div>").attr('class', 'figure frame')
         .css({ 'transform': 'rotateY(' + rotateY[i] + 'deg) translateZ(' + translateZ + 'px)' })
         .height(height * 4).width(width).data('rotateY', rotateY[i])
-        .append(figureTitle, figureLogo, figureCircle, figurePyramid)
+        .append(figureText, figureCircle, figurePyramid)
         .appendTo(element);
 
     }
@@ -164,15 +189,15 @@ export default class Visual extends WynVisual {
 
     // start animate
     const startReder = () => {
-
+      const boxName = ['main']
+      boxName.map((item) => {
+        $(`.main`).addClass('element-animate')
+      })
       setTimeout(() => {
-        const boxName = ['main']
-        boxName.map((item) => {
-          $(`.${item}`).css('opacity', 1)
-        })
+        $(`.main`).removeClass('element-animate')
         options.rotateType === 'pause' && retateY()
         animloop()
-      }, 1000)
+      }, 1500)
     }
     startReder()
 
@@ -181,7 +206,6 @@ export default class Visual extends WynVisual {
       element.css("transform", `rotateY(${elementDirection}deg) translateZ(${-elementZ}px)`);
       // pause  animate type
       options.rotateType === 'pause' && element.css({ 'transition': 'transform .5s ease-in-out' });
-
     }
 
     var self = this;
@@ -196,8 +220,7 @@ export default class Visual extends WynVisual {
           }
           renderCore(tX)
         }
-        // const circleDirection = options.rotateDirection === 'negative' ? - tX : tX;
-        // $(".big-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${-70}px)`)
+        $(".figure-text").css({ 'transform': `rotateY(${-0}deg)` })
       } else {
         isActive = false;
       }
@@ -211,7 +234,6 @@ export default class Visual extends WynVisual {
         if (isActive && !document.hidden) {
           deg += -(deltaAngle)
         }
-
         retateY(deg);
       }, Number(options.rotateTime) * 1000);
 
