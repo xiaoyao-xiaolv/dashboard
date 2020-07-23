@@ -18,6 +18,7 @@ export default class Visual extends WynVisual {
   private items = [];
 
   private isMock = true;
+  private isFirstRender: boolean;
   private options: any
   private visualHost: any;
   private renderTimer: any;
@@ -40,7 +41,7 @@ export default class Visual extends WynVisual {
     this.root = $(dom);
     this.isMock = true;
     this.visualHost = host;
-
+    this.isFirstRender = true;
     //  custom font famliy
     var newStyle = document.createElement('style');
     newStyle.appendChild(document.createTextNode("\
@@ -118,7 +119,7 @@ export default class Visual extends WynVisual {
 
     let container = $('<div class="container">').appendTo(this.root),
       elemnetBox = $('<div class="element-box">').appendTo(container).css('transform', `rotateX(${options.detailtRotateDeg}deg)`),
-      element = $('<div class="main">').appendTo(elemnetBox).css('transform', 'translateZ(-200px)'),
+      element = $('<div class="main">').appendTo(elemnetBox).css('transform', 'translateZ(-400px)'),
       circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
       staticContainer = $('<div class="static-container">').appendTo(container),
       tick = 0.05,
@@ -254,20 +255,23 @@ export default class Visual extends WynVisual {
     // start animate
     const startReder = () => {
       // 1. first rotate circle
-      $(".big-circle")
+      const time = this.isFirstRender ? 2000 : 0;
+      this.isFirstRender && $(".big-circle")
         .css('opacity', 1)
         .addClass('rotate-start')
-        .css({ 'transition': 'opacity .5s ease' })
+        .css({ 'transition': 'opacity .5s ease' });
+
       // 2. after 1s, all rotate
       setTimeout(() => {
         const boxName = ['main', 'static-container', 'small-circle']
         boxName.map((item) => {
           $(`.${item}`).css('opacity', 1)
         })
-        $(".big-circle").removeClass('rotate-start')
+        this.isFirstRender && $(".big-circle").removeClass('rotate-start');
+        this.isFirstRender = false
         options.rotateType === 'pause' && retateY()
         animloop()
-      }, 1000)
+      }, time)
     }
     startReder()
 
@@ -307,10 +311,6 @@ export default class Visual extends WynVisual {
       setTimeout(() => {
         if (isActive && !document.hidden) {
           deg += -(deltaAngle)
-        }
-
-        if (deg < -360) {
-          deg += 360;
         }
         retateY(deg);
       }, Number(options.rotateTime) * 1000);

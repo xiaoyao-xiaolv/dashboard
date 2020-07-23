@@ -77,7 +77,7 @@
                     {
                         "name": "rotateTime",
                         "type": "Integer",
-                        "displayName": "动画时长",
+                        "displayName": "旋转速度",
                         "defaultValue": 3
                     },
                     {
