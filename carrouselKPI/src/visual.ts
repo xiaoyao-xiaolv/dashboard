@@ -140,7 +140,9 @@ export default class Visual extends WynVisual {
       circleContainer = $('<div class="circle-container">')
         .appendTo(container)
         .css({ 'transform': 'translateZ(-200px)', 'visibility': options.showBottom ? 'visiable' : 'hidden' }),
-      staticContainer = $('<div class="static-container">').appendTo(container).css({ 'visibility': options.showBottom ? 'visiable' : 'hidden' }),
+      staticContainer = $('<div class="static-container">')
+        .appendTo(container)
+        .css({ 'visibility': options.showBottom ? 'visiable' : 'hidden' }),
       lineContainer = $('<div class="line-container">').appendTo(this.root).width(Visual.width).height(Visual.height),
       tick = 0.05,
       isActive = true,
@@ -247,7 +249,6 @@ export default class Visual extends WynVisual {
       .width(allLightsElementSide)
       .height(allLightsElementSide)
       .css({ 'top': -allLightsElementSide / 2 - 10, 'left': (Visual.width - allLightsElementSide) / 2, 'visibility': options.showBottomLight ? 'visiable' : 'hidden' })
-
       .appendTo(staticContainer);
 
 
@@ -380,10 +381,12 @@ export default class Visual extends WynVisual {
 
         const circleBigDirection = options.circleRotateDirection === 'negative' ? 'rotateCircle' : 'rotateCirclePositive';
         const circlesmallDirection = options.circleRotateDirection === 'negative' ? 'rotateSmallCircle' : 'rotateSmallCirclePositive';
-        // $(".big-circle").css({ 'animation': `${circleBigDirection} ${options.circleRotateTime}s infinite linear` });
-        // $(".small-circle").css({ 'animation': `${circlesmallDirection} ${options.circleRotateTime}s infinite linear` });
+        $(".big-circle").css({ 'animation': `${circleBigDirection} ${options.circleRotateTime}s infinite linear` });
+        $(".small-circle").css({ 'animation': `${circlesmallDirection} ${options.circleRotateTime}s infinite linear` });
       } else {
         isActive = false;
+        $(".big-circle").css({ 'animationPlayState': `paused` });
+        $(".small-circle").css({ 'animationPlayState': `paused` });
       }
     })();
 

@@ -43,6 +43,50 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
+                        "name": "rotateType",
+                        "type": "Enum",
+                        "displayName": "动画效果",
+                        "items": [
+                            {
+                                "value": "continuous",
+                                "displayNameKey": "连续旋转"
+                            },
+                            {
+                                "value": "pause",
+                                "displayNameKey": "停顿旋转"
+                            }
+                        ],
+                        "defaultValue": "pause"
+                    },
+                    {
+                        "name": "rotateSpeed",
+                        "type": "Integer",
+                        "displayName": "旋转速度",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "stopSpeed",
+                        "type": "Integer",
+                        "displayName": "停顿时长",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "detailtRotateDirection",
+                        "type": "Enum",
+                        "displayName": "旋转方向",
+                        "items": [
+                            {
+                                "value": "positive",
+                                "displayNameKey": "顺时针"
+                            },
+                            {
+                                "value": "negative",
+                                "displayNameKey": "逆时针"
+                            }
+                        ],
+                        "defaultValue": "positive"
+                    },
+                    {
                         "name": "titlePosition",
                         "type": "Enum",
                         "displayName": "标题位置",
@@ -247,50 +291,6 @@
             {
                 "displayName": "详情样式",
                 "properties": [
-                    {
-                        "name": "rotateType",
-                        "type": "Enum",
-                        "displayName": "动画效果",
-                        "items": [
-                            {
-                                "value": "continuous",
-                                "displayNameKey": "连续旋转"
-                            },
-                            {
-                                "value": "pause",
-                                "displayNameKey": "停顿旋转"
-                            }
-                        ],
-                        "defaultValue": "pause"
-                    },
-                    {
-                        "name": "rotateSpeed",
-                        "type": "Integer",
-                        "displayName": "旋转速度",
-                        "defaultValue": 3
-                    },
-                    {
-                        "name": "stopSpeed",
-                        "type": "Integer",
-                        "displayName": "停顿时长",
-                        "defaultValue": 3
-                    },
-                    {
-                        "name": "detailtRotateDirection",
-                        "type": "Enum",
-                        "displayName": "详情旋转方向",
-                        "items": [
-                            {
-                                "value": "positive",
-                                "displayNameKey": "顺时针"
-                            },
-                            {
-                                "value": "negative",
-                                "displayNameKey": "逆时针"
-                            }
-                        ],
-                        "defaultValue": "positive"
-                    },
                     {
                         "name": "detailBg",
                         "type": "Enum",
