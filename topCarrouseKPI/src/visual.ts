@@ -381,14 +381,19 @@ export default class Visual extends WynVisual {
   }
 
   private resize() {
-    var width = Visual.width,
+    let width = Visual.width,
       height = Visual.height,
       winWidth = $(window).width(),
       winHeight = $(window).height(),
       xZoom = winWidth / width,
       yZoom = winHeight / height,
       zoom = Math.min(xZoom, yZoom);
-    this.root.css("zoom", zoom);
+    const ua = navigator.userAgent;
+    if (ua.indexOf("Firefox") != -1) {
+      this.root.css({ 'transform': `scale(${zoom}) translate(-50%, -50%)`, 'transformOrigin': 'top left' });
+    } else {
+      this.root.css({ "zoom": zoom });
+    }
   };
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
