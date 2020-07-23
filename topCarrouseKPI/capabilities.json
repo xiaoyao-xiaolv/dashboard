@@ -73,9 +73,62 @@
                     {
                         "name": "detailtRotateDeg",
                         "type": "Integer",
-                        "displayName": "详情倾斜角度",
+                        "displayName": "倾斜角度",
                         "defaultValue": 13
                     },
+                    {
+                        "name": "detailtRotateDirection",
+                        "type": "Enum",
+                        "displayName": "旋转方向",
+                        "items": [
+                            {
+                                "value": "positive",
+                                "displayNameKey": "顺时针"
+                            },
+                            {
+                                "value": "negative",
+                                "displayNameKey": "逆时针"
+                            }
+                        ],
+                        "defaultValue": "positive"
+                    },
+                    {
+                        "name": "titlePosition",
+                        "type": "Enum",
+                        "displayName": "标题位置",
+                        "items": [
+                            {
+                                "value": "flex-start",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "flex-end",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "customFontFamily",
+                        "type": "Input",
+                        "displayName": "自定义字体名称",
+                        "defaultValue": "Gatha-Sans"
+                    },
+                    {
+                        "name": "customFontFamilyURL",
+                        "type": "Input",
+                        "displayName": "自定义字体连接",
+                        "defaultValue": "gatha/Gatha-Sans"
+                    }
+                ]
+            },
+            {
+                "displayName": "详情样式",
+                "properties": [
                     {
                         "name": "detailBg",
                         "type": "Enum",
@@ -100,22 +153,6 @@
                         "name": "detailImage",
                         "type": "Image",
                         "displayName": "背景图片"
-                    },
-                    {
-                        "name": "detailtRotateDirection",
-                        "type": "Enum",
-                        "displayName": "详情旋转方向",
-                        "items": [
-                            {
-                                "value": "positive",
-                                "displayNameKey": "顺时针"
-                            },
-                            {
-                                "value": "negative",
-                                "displayNameKey": "逆时针"
-                            }
-                        ],
-                        "defaultValue": "positive"
                     },
                     {
                         "name": "detailBgColor",
