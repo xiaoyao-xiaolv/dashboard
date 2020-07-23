@@ -18,6 +18,7 @@ export default class Visual extends WynVisual {
   private items = [];
 
   private isMock = true;
+  private isFirstRender: boolean;
   private options: any
   private visualHost: any;
   private renderTimer: any;
@@ -40,7 +41,7 @@ export default class Visual extends WynVisual {
     this.root = $(dom);
     this.isMock = true;
     this.visualHost = host;
-
+    this.isFirstRender = true;
     //  custom font famliy
     var newStyle = document.createElement('style');
     newStyle.appendChild(document.createTextNode("\
@@ -54,13 +55,13 @@ export default class Visual extends WynVisual {
     document.head.appendChild(newStyle);
   }
 
-  private drawCircles(circleContainer) {
+  private drawCircles(circleContainer, options) {
     var side = Visual.elementWidth * 3.5;
     $("<div class='big-circle'>").width(side).height(side)
       .css('top', -side / 2.8)
       .css('left', -side / 2.8)
       .appendTo(circleContainer);
-
+    options.circleBigImage && $(".big-circle").css('backgroundImage', `url(${options.circleBigImage})`)
 
     var smallSide = Visual.elementWidth * 1.5;;
     $("<div class='small-circle'>")
@@ -69,6 +70,7 @@ export default class Visual extends WynVisual {
       .css('top', (- smallSide) * 0.1)
       .css('left', (- smallSide) / 6)
       .appendTo(circleContainer);
+    options.circleSmallImage && $(".small-circle").css('backgroundImage', `url(${options.circleSmallImage})`)
   };
 
 
@@ -118,9 +120,13 @@ export default class Visual extends WynVisual {
 
     let container = $('<div class="container">').appendTo(this.root),
       elemnetBox = $('<div class="element-box">').appendTo(container).css('transform', `rotateX(${options.detailtRotateDeg}deg)`),
-      element = $('<div class="main">').appendTo(elemnetBox).css('transform', 'translateZ(-200px)'),
-      circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
-      staticContainer = $('<div class="static-container">').appendTo(container),
+      element = $('<div class="main">').appendTo(elemnetBox).css('transform', 'translateZ(-400px)'),
+      circleContainer = $('<div class="circle-container">')
+        .appendTo(container)
+        .css({ 'transform': 'translateZ(-200px)', 'visibility': options.showBottom ? 'visiable' : 'hidden' }),
+      staticContainer = $('<div class="static-container">')
+        .css({ 'visibility': options.showBottom ? 'visiable' : 'hidden' })
+        .appendTo(container),
       tick = 0.05,
       isActive = true,
       tX = 0,
@@ -134,7 +140,7 @@ export default class Visual extends WynVisual {
 
     // start draw circle 
 
-    this.drawCircles(circleContainer);
+    this.drawCircles(circleContainer, options);
     var deltaAngle = 360 / length;
 
     for (var i = 0; i < length; i++) {
@@ -206,7 +212,12 @@ export default class Visual extends WynVisual {
 
 
       // custom rotate image
-      options.rotateFigureImage && figureElement.css({ 'background': 'transparent', 'background-image': `url(${options.rotateFigureImage})`, 'backgroundSize': '100% 100%' })
+      // custom rotate image
+      if (options.detailBg) {
+        options.detailBg === 'image'
+          ? options.detailImage && figureElement.css('backgroundImage', `url(${options.detailImage})`)
+          : options.detailBgColor && figureElement.css({ 'backgroundColor': options.detailBgColor, 'backgroundImage': 'none' })
+      }
     }
 
     container.on("mouseover", ".figure", () => {
@@ -216,34 +227,32 @@ export default class Visual extends WynVisual {
     });
 
 
-    var allLightsElementSide = Visual.width / 8;
-    var allLightsElement = $("<div class='all-lights1'>")
+    let allLightsElementSide = Visual.width / 8;
+    let allLightsElement = $("<div class='all-lights1'>")
       .width(allLightsElementSide)
       .height(allLightsElementSide)
-      .css('top', (-allLightsElementSide) * 0.1)
-      .css('left', (allLightsElementSide) * 3.5)
+      .css({ 'top': (-allLightsElementSide) * 0.1, 'left': (allLightsElementSide) * 3.5, 'visibility': options.showBottomLight ? 'visiable' : 'hidden' })
       .appendTo(staticContainer);
 
-    var allLights2ElementSide = Visual.width / 12;
-    var allLights2Element = $("<div class='all-lights2'>")
+    let allLights2ElementSide = Visual.width / 12;
+    let allLights2Element = $("<div class='all-lights2'>")
       .width(allLights2ElementSide)
       .height(allLights2ElementSide)
-      .css('top', '10px')
-      .css('left', (Visual.width - allLights2ElementSide) / 2)
+      .css({ 'top': '10px', 'left': (Visual.width - allLights2ElementSide) / 2, 'visibility': options.showBottomLight ? 'visiable' : 'hidden' })
       .appendTo(staticContainer);
 
-    var earthElementSide = Visual.width / 10;
-    var earthElement = $("<div class='earth'>")
+    let earthElementSide = Visual.width / 10;
+    let earthElement = $("<div class='earth'>")
       .width(earthElementSide)
       .height(earthElementSide)
       .css('top', '10px')
       .css('left', earthElementSide * 4.5)
       .appendTo(staticContainer);
     // custom rotate image
-    options.rotateCenterImage && earthElement.css('backgroundImage', `url(${options.rotateCenterImage})`)
+    options.circleCenterImage && earthElement.css('backgroundImage', `url(${options.circleCenterImage})`)
 
-    var stepsSide = Visual.width / 10;
-    var stepsElement = $("<div class='steps fixed-element'>")
+    let stepsSide = Visual.width / 10;
+    let stepsElement = $("<div class='steps fixed-element'>")
       .width(stepsSide)
       .height(stepsSide)
       .css('left', '50%')
@@ -254,20 +263,23 @@ export default class Visual extends WynVisual {
     // start animate
     const startReder = () => {
       // 1. first rotate circle
-      $(".big-circle")
+      const time = this.isFirstRender ? 2000 : 0;
+      this.isFirstRender && $(".big-circle")
         .css('opacity', 1)
         .addClass('rotate-start')
-        .css({ 'transition': 'opacity .5s ease' })
+        .css({ 'transition': 'opacity .5s ease' });
+
       // 2. after 1s, all rotate
       setTimeout(() => {
         const boxName = ['main', 'static-container', 'small-circle']
         boxName.map((item) => {
           $(`.${item}`).css('opacity', 1)
         })
-        $(".big-circle").removeClass('rotate-start')
+        this.isFirstRender && $(".big-circle").removeClass('rotate-start');
+        this.isFirstRender = false
         options.rotateType === 'pause' && retateY()
         animloop()
-      }, 1000)
+      }, time)
     }
     startReder()
 
@@ -284,19 +296,22 @@ export default class Visual extends WynVisual {
       self.renderTimer = requestAnimationFrame(animloop);
 
       if (isActive) {
-        tX += tick * - Number(options.rotateTime);
+        tX += tick * - Number(options.rotateSpeed);
         if (options.rotateType === 'continuous') {
           if (tX < -360) {
             tX += 360;
           }
           renderCore(tX)
         }
-        const circleDirection = options.rotateDirection === 'negative' ? - tX : tX;
-        $(".big-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${-70}px)`)
-        $(".small-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${0}px)`)
+        const circleBigDirection = options.circleRotateDirection === 'negative' ? 'rotateCircle' : 'rotateCirclePositive';
+        const circlesmallDirection = options.circleRotateDirection === 'negative' ? 'rotateSmallCircle' : 'rotateSmallCirclePositive';
+        $(".big-circle").css({ 'animation': `${circleBigDirection} ${options.circleRotateTime}s infinite linear` });
+        $(".small-circle").css({ 'animation': `${circlesmallDirection} ${options.circleRotateTime}s infinite linear` });
 
       } else {
         isActive = false;
+        $(".big-circle").css({ 'animationPlayState': `paused` });
+        $(".small-circle").css({ 'animationPlayState': `paused` });
       }
     };
 
@@ -308,12 +323,8 @@ export default class Visual extends WynVisual {
         if (isActive && !document.hidden) {
           deg += -(deltaAngle)
         }
-
-        if (deg < -360) {
-          deg += 360;
-        }
         retateY(deg);
-      }, Number(options.rotateTime) * 1000);
+      }, Number(options.stopSpeed) * 1000);
 
     }
 
@@ -381,18 +392,46 @@ export default class Visual extends WynVisual {
   }
 
   private resize() {
-    var width = Visual.width,
+    let width = Visual.width,
       height = Visual.height,
       winWidth = $(window).width(),
       winHeight = $(window).height(),
       xZoom = winWidth / width,
       yZoom = winHeight / height,
       zoom = Math.min(xZoom, yZoom);
-    this.root.css("zoom", zoom);
+    const ua = navigator.userAgent;
+    if (ua.indexOf("Firefox") != -1) {
+      this.root.css({ 'transform': `scale(${zoom}) translate(-50%, -50%)`, 'transformOrigin': 'top left' });
+    } else {
+      this.root.css({ "zoom": zoom });
+    }
   };
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    return null;
+    let hiddenOptions: Array<any> = [];
+    if (options.properties.detailBg === 'image') {
+      hiddenOptions = hiddenOptions.concat(['detailBgColor'])
+    }
+
+    if (options.properties.detailBg === 'color') {
+      hiddenOptions = hiddenOptions.concat(['detailImage'])
+    }
+    if (!options.properties.detailBg) {
+      hiddenOptions = hiddenOptions.concat(['detailBgColor', 'detailImage'])
+    }
+    // detail 
+    if (options.properties.rotateType === 'continuous') {
+      hiddenOptions = hiddenOptions.concat(['stopSpeed'])
+    }
+
+    if (options.properties.rotateType === 'pause') {
+      hiddenOptions = hiddenOptions.concat(['rotateSpeed'])
+    }
+    // bottom
+    if (!options.properties.showBottom) {
+      hiddenOptions = hiddenOptions.concat(['circleRotateDirection', 'showBottomLight', 'circleRotateTime', 'circleCenterImage', 'circleSmallImage', 'circleBigImage'])
+    }
+    return hiddenOptions;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {

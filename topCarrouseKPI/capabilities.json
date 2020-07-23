@@ -40,7 +40,7 @@
     "options": {
         "visual": [
             {
-                "displayName": "图表样式",
+                "displayName": "图标样式",
                 "properties": [
                     {
                         "name": "rotateType",
@@ -59,9 +59,27 @@
                         "defaultValue": "continuous"
                     },
                     {
-                        "name": "rotateDirection",
+                        "name": "rotateSpeed",
+                        "type": "Integer",
+                        "displayName": "旋转速度",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "stopSpeed",
+                        "type": "Integer",
+                        "displayName": "停顿时长",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "detailtRotateDeg",
+                        "type": "Integer",
+                        "displayName": "倾斜角度",
+                        "defaultValue": 13
+                    },
+                    {
+                        "name": "detailtRotateDirection",
                         "type": "Enum",
-                        "displayName": "转盘旋转方向",
+                        "displayName": "旋转方向",
                         "items": [
                             {
                                 "value": "positive",
@@ -72,13 +90,7 @@
                                 "displayNameKey": "逆时针"
                             }
                         ],
-                        "defaultValue": "negative"
-                    },
-                    {
-                        "name": "rotateTime",
-                        "type": "Integer",
-                        "displayName": "动画时长",
-                        "defaultValue": 3
+                        "defaultValue": "positive"
                     },
                     {
                         "name": "titlePosition",
@@ -101,16 +113,6 @@
                         "defaultValue": "center"
                     },
                     {
-                        "name": "rotateCenterImage",
-                        "type": "Image",
-                        "displayName": "旋转中心图片"
-                    },
-                    {
-                        "name": "rotateFigureImage",
-                        "type": "Image",
-                        "displayName": "旋转体图片"
-                    },
-                    {
                         "name": "customFontFamily",
                         "type": "Input",
                         "displayName": "自定义字体名称",
@@ -128,26 +130,34 @@
                 "displayName": "详情样式",
                 "properties": [
                     {
-                        "name": "detailtRotateDeg",
-                        "type": "Integer",
-                        "displayName": "详情倾斜角度",
-                        "defaultValue": 13
-                    },
-                    {
-                        "name": "detailtRotateDirection",
+                        "name": "detailBg",
                         "type": "Enum",
-                        "displayName": "详情旋转方向",
+                        "displayName": "详情背景",
                         "items": [
                             {
-                                "value": "positive",
-                                "displayNameKey": "顺时针"
+                                "value": "",
+                                "displayNameKey": "默认"
                             },
                             {
-                                "value": "negative",
-                                "displayNameKey": "逆时针"
+                                "value": "color",
+                                "displayNameKey": "背景色"
+                            },
+                            {
+                                "value": "image",
+                                "displayNameKey": "背景图片"
                             }
                         ],
-                        "defaultValue": "positive"
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "detailImage",
+                        "type": "Image",
+                        "displayName": "背景图片"
+                    },
+                    {
+                        "name": "detailBgColor",
+                        "type": "Color",
+                        "displayName": "背景色"
                     },
                     {
                         "name": "textStyle",
@@ -269,6 +279,92 @@
                         "defaultValue": {
                             "fontSize": "1.0x"
                         }
+                    },
+                    {
+                        "name": "titlePosition",
+                        "type": "Enum",
+                        "displayName": "标题位置",
+                        "items": [
+                            {
+                                "value": "flex-start",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "中间"
+                            },
+                            {
+                                "value": "flex-end",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "customFontFamily",
+                        "type": "Input",
+                        "displayName": "自定义字体名称",
+                        "defaultValue": "Gatha-Sans"
+                    },
+                    {
+                        "name": "customFontFamilyURL",
+                        "type": "Input",
+                        "displayName": "自定义字体连接",
+                        "defaultValue": "gatha/Gatha-Sans"
+                    }
+                ]
+            },
+            {
+                "displayName": "底部样式",
+                "properties": [
+                    {
+                        "name": "showBottom",
+                        "type": "Boolean",
+                        "displayName": "显示底部",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "circleRotateDirection",
+                        "type": "Enum",
+                        "displayName": "旋转方向",
+                        "items": [
+                            {
+                                "value": "positive",
+                                "displayNameKey": "顺时针"
+                            },
+                            {
+                                "value": "negative",
+                                "displayNameKey": "逆时针"
+                            }
+                        ],
+                        "defaultValue": "negative"
+                    },
+                    {
+                        "name": "showBottomLight",
+                        "type": "Boolean",
+                        "displayName": "显示灯光",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "circleRotateTime",
+                        "type": "Integer",
+                        "displayName": "动画时长",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "circleCenterImage",
+                        "type": "Image",
+                        "displayName": "底部中心图片"
+                    },
+                    {
+                        "name": "circleSmallImage",
+                        "type": "Image",
+                        "displayName": "底部小转盘图片"
+                    },
+                    {
+                        "name": "circleBigImage",
+                        "type": "Image",
+                        "displayName": "底部大转盘图片"
                     }
                 ]
             },
@@ -276,7 +372,10 @@
                 "type": "interaction"
             },
             {
-                "type": "title"
+                "type": "title",
+                "defaultValue": {
+                    "show": false
+                }
             },
             {
                 "type": "appearance"

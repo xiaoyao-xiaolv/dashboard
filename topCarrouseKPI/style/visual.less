@@ -1,3 +1,9 @@
+::-webkit-scrollbar {display:none}
+::-ms-scrollbar {display:none}
+::-moz-scrollbar {display:none}
+::-o-scrollbar {display:none}
+
+
 body{ 
     margin: 0;
     overflow: hidden;
@@ -10,10 +16,6 @@ body{
     transform: translate(-50%, -50%);
 }
 
-#visualDom::-webkit-scrollbar {display:none}
-#visualDom::-ms-scrollbar {display:none}
-#visualDom::-moz-scrollbar {display:none}
-#visualDom::-o-scrollbar {display:none}
 
 .container {
     position: absolute;
@@ -41,6 +43,7 @@ body{
     position: absolute;
     top: 5%;
     left: 38%;
+    transform: translateZ(-400px);
     z-index:3;
     transform-style: preserve-3d;
     opacity: 0;
@@ -128,15 +131,17 @@ body{
     background-repeat: no-repeat;
     background-position: center center;
     position: absolute;
+    transform: translateZ(-70px);
     background-size: 100% 100%;
+    border-radius: 50%;
 }
 
 .rotate-start {
-    animation: rotateStart 1s linear;
-    -webkit-animation:rotateStart 1s linear;
-    -moz-animation:rotateStart 1s linear;
-    -o-animation:rotateStart 1s linear;
-    -ms-animation:rotateStart 1s linear;
+    animation: rotateStart 2s linear;
+    -webkit-animation:rotateStart 2s linear;
+    -moz-animation:rotateStart 2s linear;
+    -o-animation:rotateStart 2s linear;
+    -ms-animation:rotateStart 2s linear;
 }
 
 .small-circle {
@@ -146,6 +151,7 @@ body{
     position: absolute;
     background-size: 100% 100%;
     opacity: 0;
+    border-radius: 50%;
 }
 
 .all-lights1 {
@@ -199,22 +205,109 @@ body{
 }
 
 @keyframes rotateStart {   
-    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
-    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+    0% {transform :  rotateX(90deg) scaleX(0)}   
+    100% {transform :  rotateX(90deg) scaleX(1);} 
 } 
 @-webkit-keyframes rotateStart {     
-    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
-    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+    0% {transform :    rotateX(90deg) scaleX(0)}   
+    100% {transform :    rotateX(90deg) scaleX(1);} 
 }
 @-moz-keyframes rotateStart {     
-    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
-    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+    0% {transform :  rotateX(90deg) scaleX(0)}   
+    100% {transform :  rotateX(90deg) scaleX(1);} 
 }
 @-o-keyframes rotateStart {     
-    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
-    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+    0% {transform :  rotateX(90deg) scaleX(0)}   
+    100% {transform :  rotateX(90deg) scaleX(1);} 
 }
 @-ms-keyframes rotateStart {     
-    0% {transform : scale(0) rotateY(0deg)  rotateX(90deg) translateZ(-70px)}   
-    100% {transform : scale(1) rotateY(180deg) rotateX(90deg) translateZ(-70px);} 
+    0% {transform :  rotateX(90deg) scaleX(0)}   
+    100% {transform :  rotateX(90deg) scaleX(1);} 
+}
+// negative
+@keyframes rotateCircle {   
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg) translateZ(-70px)} 
+} 
+@-webkit-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg)} 
+}
+@-moz-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-o-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-ms-keyframes rotateCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg)}   
+    100% {transform : rotateY(360deg) rotateX(90deg)} 
+}
+
+// positive
+@keyframes rotateCirclePositive {   
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(-70px)} 
+} 
+@-webkit-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg)} 
+}
+@-moz-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-o-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(-70px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(-70px)} 
+}
+@-ms-keyframes rotateCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg)} 
+}
+
+// small negative
+@keyframes rotateSmallCircle {   
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)}  
+} 
+@-webkit-keyframes rotateSmallCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+}
+@-moz-keyframes rotateSmallCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+}
+@-o-keyframes rotateSmallCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+}
+@-ms-keyframes rotateSmallCircle {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+}
+
+// positive
+@keyframes rotateSmallCirclePositive {   
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+} 
+@-webkit-keyframes rotateSmallCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+}
+@-moz-keyframes rotateSmallCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+}
+@-o-keyframes rotateSmallCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
+}
+@-ms-keyframes rotateSmallCirclePositive {     
+    0% {transform : rotateY(0)  rotateX(90deg) translateZ(0px)}   
+    100% {transform : rotateY(-360deg) rotateX(90deg) translateZ(0px)} 
 }

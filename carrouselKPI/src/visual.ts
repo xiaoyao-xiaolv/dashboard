@@ -3,15 +3,6 @@ import _ = require('lodash');
 import * as $ from 'jquery';
 
 export default class Visual extends WynVisual {
-  private static defaultOptions = {
-    dataFormat: "{name}: {rate}",
-    totalDataFormat: "Total: {rate}",
-  };
-
-  private static mockValueFields = [{ display: 'rate' }];
-
-  private static mockDimensionFields = [{ display: 'name' }];
-
   private static mockItems = [
     { name: "Dept. 1", '实际值': 100, '对比值': 100 },
     { name: "Dept. 2", '实际值': 153, '对比值': 95 },
@@ -70,21 +61,22 @@ export default class Visual extends WynVisual {
     return a.replace(/"/g, "%22").replace(/</g, "%3C").replace(/>/g, "%3E");
   }
 
-  private drawCircles(circleContainer) {
-    var side = Visual.width + Visual.elementWidth * 2;
+  private drawCircles(circleContainer, options) {
+    let side = Visual.width + Visual.elementWidth * 2;
     $("<div class='big-circle'>").width(side).height(side)
-      .css('top', (Visual.elementHeight - side) / 2)
-      .css('left', (Visual.elementWidth - side) / 2)
+      .css({ 'top': (Visual.elementHeight - side) / 2, 'left': (Visual.elementWidth - side) / 2 })
       .appendTo(circleContainer);
+    options.circleBigImage && $(".big-circle").css('backgroundImage', `url(${options.circleBigImage})`)
 
-
-    var smallSide = Visual.width * 0.75;
+    let smallSide = Visual.width * 0.75;
     $("<div class='small-circle'>")
       .width(smallSide)
       .height(smallSide)
       .css('top', (Visual.elementHeight - smallSide) / 2)
       .css('left', (Visual.elementWidth - smallSide) / 2)
       .appendTo(circleContainer);
+
+    options.circleSmallImage && $(".small-circle").css('backgroundImage', `url(${options.circleSmallImage})`)
   };
 
 
@@ -145,7 +137,12 @@ export default class Visual extends WynVisual {
 
     let container = $('<div class="container">').appendTo(this.root),
       element = $('<div class="main">').appendTo(container).css('transform', 'translateZ(-200px)'),
-      circleContainer = $('<div class="circle-container">').appendTo(container).css('transform', 'translateZ(-200px)'),
+      circleContainer = $('<div class="circle-container">')
+        .appendTo(container)
+        .css({ 'transform': 'translateZ(-200px)', 'visibility': options.showBottom ? 'visiable' : 'hidden' }),
+      staticContainer = $('<div class="static-container">')
+        .appendTo(container)
+        .css({ 'visibility': options.showBottom ? 'visiable' : 'hidden' }),
       lineContainer = $('<div class="line-container">').appendTo(this.root).width(Visual.width).height(Visual.height),
       tick = 0.05,
       isActive = true,
@@ -160,7 +157,7 @@ export default class Visual extends WynVisual {
 
     // start draw circle 
 
-    this.drawCircles(circleContainer);
+    this.drawCircles(circleContainer, options);
     var deltaAngle = 360 / length;
 
     for (var i = 0; i < length; i++) {
@@ -232,7 +229,12 @@ export default class Visual extends WynVisual {
 
 
       // custom rotate image
-      options.rotateFigureImage && figureElement.css({ 'background': 'transparent', 'background-image': `url(${options.rotateFigureImage})`, 'backgroundSize': '100% 100%' })
+      if (options.detailBg) {
+        options.detailBg === 'image'
+          ? options.detailImage && figureElement.css('backgroundImage', `url(${options.detailImage})`)
+          : options.detailBgColor && figureElement.css({ 'backgroundColor': options.detailBgColor, 'backgroundImage': 'none' })
+      }
+
     }
 
     container.on("mouseover", ".figure", () => {
@@ -242,47 +244,49 @@ export default class Visual extends WynVisual {
     });
 
 
-    var allLightsElementSide = Visual.width / 4;
-    var allLightsElement = $("<div class='all-lights1'>")
+    let allLightsElementSide = Visual.width / 4;
+    let allLightsElement = $("<div class='all-lights1'>")
       .width(allLightsElementSide)
       .height(allLightsElementSide)
-      .css('top', -allLightsElementSide / 2 - 10)
-      .css('left', (Visual.width - allLightsElementSide) / 2)
-      .appendTo(container);
+      .css({ 'top': -allLightsElementSide / 2 - 10, 'left': (Visual.width - allLightsElementSide) / 2, 'visibility': options.showBottomLight ? 'visiable' : 'hidden' })
+      .appendTo(staticContainer);
 
-    var allLights2ElementSide = Visual.width / 6;
-    var allLights2Element = $("<div class='all-lights2'>")
+
+    let allLights2ElementSide = Visual.width / 6;
+    let allLights2Element = $("<div class='all-lights2'>")
       .width(allLights2ElementSide)
       .height(allLights2ElementSide)
-      .css('top', -allLightsElementSide / 2 + 10)
-      .css('left', (Visual.width - allLights2ElementSide) / 2)
-      .appendTo(container);
+      .css({ 'top': -allLightsElementSide / 2 + 10, 'left': (Visual.width - allLights2ElementSide) / 2, 'visibility': options.showBottomLight ? 'visiable' : 'hidden' })
+      .appendTo(staticContainer);
 
-    var earthElementSide = Visual.width / 5;
-    var earthElement = $("<div class='earth'>")
+    let earthElementSide = Visual.width / 5;
+    let earthElement = $("<div class='earth'>")
       .width(earthElementSide)
       .height(earthElementSide)
       .css('top', -Visual.height * 0.2)
       .css('left', (Visual.width - earthElementSide) / 2)
-      .appendTo(container);
+      .appendTo(staticContainer);
     // custom rotate image
-    options.rotateCenterImage && earthElement.css('backgroundImage', `url(${options.rotateCenterImage})`)
+    options.circleCenterImage && earthElement.css('backgroundImage', `url(${options.circleCenterImage})`)
 
-    var stepsSide = Visual.width / 5;
-    var stepsElement = $("<div class='steps fixed-element'>")
+    let stepsSide = Visual.width / 5;
+    let stepsElement = $("<div class='steps fixed-element'>")
       .width(stepsSide)
       .height(stepsSide)
       .css('left', '50%')
       .css('transform', 'translateX(-50%)')
-      .appendTo(container);
+      .appendTo(staticContainer);
 
 
 
     var totalElement = $('<idv class="total-item frame">')
       .appendTo(this.root)
       .css({ 'visibility': options.totalShow ? 'visiable' : 'hidden' });
+
     // custom rotate image
-    options.rotateFigureImage && totalElement.css({ 'background': 'transparent', 'backgroundImage': `url(${options.rotateFigureImage})`, 'backgroundSize': '100% 100%' })
+    if (options.totalBg) {
+      options.totalBg === 'image' ? options.totalImage && totalElement.css('backgroundImage', `url(${options.totalImage})`) : options.BgColo && totalElement.css({ 'backgroundColor': options.BgColor, 'backgroundImage': 'none' })
+    }
 
     if (this.totalItem || this.totalContrastItem) {
 
@@ -358,27 +362,31 @@ export default class Visual extends WynVisual {
       element.css("transform", `rotateY(${elementDirection}deg) translateZ(${-elementZ}px)`);
       // pause  animate type
       options.rotateType === 'pause' && element.css({ 'transition': 'transform .5s ease-in-out' });
-      options.totalShow && Visual.drawLines(container, lineContainer);
+      // options.totalShow && options.totalLineShow && Visual.drawLines(container, lineContainer);
     }
 
     var self = this;
     (function animloop() {
       self.renderTimer = requestAnimationFrame(animloop);
       if (isActive) {
-        tX += tick * - Number(options.rotateTime);
+        tX += tick * - Number(options.rotateSpeed);
         if (options.rotateType === 'continuous') {
           if (tX < -360) {
             tX += 360;
           }
           renderCore(tX)
         } else {
-          options.totalShow && Visual.drawLines(container, lineContainer);
+          // options.totalShow && options.totalLineShow && Visual.drawLines(container, lineContainer);
         }
-        const circleDirection = options.rotateDirection === 'negative' ? - tX : tX;
-        $(".big-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${-70}px)`)
-        $(".small-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${0}px)`)
+
+        const circleBigDirection = options.circleRotateDirection === 'negative' ? 'rotateCircle' : 'rotateCirclePositive';
+        const circlesmallDirection = options.circleRotateDirection === 'negative' ? 'rotateSmallCircle' : 'rotateSmallCirclePositive';
+        $(".big-circle").css({ 'animation': `${circleBigDirection} ${options.circleRotateTime}s infinite linear` });
+        $(".small-circle").css({ 'animation': `${circlesmallDirection} ${options.circleRotateTime}s infinite linear` });
       } else {
         isActive = false;
+        $(".big-circle").css({ 'animationPlayState': `paused` });
+        $(".small-circle").css({ 'animationPlayState': `paused` });
       }
     })();
 
@@ -391,7 +399,7 @@ export default class Visual extends WynVisual {
           tX += -(deltaAngle)
         }
         retateY(tX);
-      }, Number(options.rotateTime) * 1000);
+      }, Number(options.stopSpeed) * 1000);
     }
 
     options.rotateType === 'pause' && retateY(-deltaAngle)
@@ -446,36 +454,36 @@ export default class Visual extends WynVisual {
     return format + formatUnit.unit
   }
 
-  private static drawLines(container, lineContainer) {
-    let svg = $(`<svg viewBox="0 0 ${Visual.width} ${Visual.height}" xmlns="http://www.w3.org/2000/svg"></svg>`);
-    let totalPoint = { left: Visual.width / 2, top: 170 };
-    let subs = container.find('.figure');
-    subs.each((index, item) => {
-      let lineInfo = Visual.createLine(totalPoint, item);
-      lineInfo.y2 += 15;
-      lineInfo.stroke = 'rgba(0,126,255,0.8)';
+  // private static drawLines(container, lineContainer) {
+  //   let svg = $(`<svg viewBox="0 0 ${Visual.width} ${Visual.height}" xmlns="http://www.w3.org/2000/svg"></svg>`);
+  //   let totalPoint = { left: Visual.width / 2, top: 170 };
+  //   let subs = container.find('.figure');
+  //   subs.each((index, item) => {
+  //     let lineInfo = Visual.createLine(totalPoint, item);
+  //     lineInfo.y2 += 15;
+  //     lineInfo.stroke = 'rgba(0,126,255,0.8)';
 
-      let line = $('<line>').attr(lineInfo);
-      svg.append(line);
-    });
+  //     let line = $('<line>').attr(lineInfo);
+  //     svg.append(line);
+  //   });
 
 
-    let svgHtml = Visual.escapeHTML(svg[0].outerHTML);
-    let bg = `url('data:image/svg+xml, ${svgHtml}')`;
-    lineContainer
-      .css('background-image', bg);
-  };
+  //   let svgHtml = Visual.escapeHTML(svg[0].outerHTML);
+  //   let bg = `url('data:image/svg+xml, ${svgHtml}')`;
+  //   lineContainer
+  //     .css('background-image', bg);
+  // };
 
-  private static createLine(start, endEle): any {
-    var end = endEle.getBoundingClientRect();
-    var line = {
-      x1: start.left,
-      y1: start.top,
-      x2: end.left + end.width / 2,
-      y2: end.top
-    };
-    return line;
-  };
+  // private static createLine(start, endEle): any {
+  //   var end = endEle.getBoundingClientRect();
+  //   var line = {
+  //     x1: start.left,
+  //     y1: start.top,
+  //     x2: end.left + end.width / 2,
+  //     y2: end.top
+  //   };
+  //   return line;
+  // };
 
   public onDestroy() {
     if (this.renderTimer != null) {
@@ -497,14 +505,55 @@ export default class Visual extends WynVisual {
       xZoom = winWidth / width,
       yZoom = winHeight / height,
       zoom = Math.min(xZoom, yZoom);
-    this.root.css("zoom", zoom);
+    const ua = navigator.userAgent;
+    if (ua.indexOf("Firefox") != -1) {
+      this.root.css({ 'transform': `scale(${zoom})`, 'transformOrigin': 'top left' });
+    } else {
+      this.root.css({ "zoom": zoom });
+    }
+
   };
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+    let hiddenOptions: Array<any> = []
     if (!options.properties.totalShow) {
-      return ['totalName', 'textStyleTotalText', 'totalValueType', 'totalValueUnit', 'totalValuePosition', 'valueTextStyleTotalValue', 'rateTextStyleTotalRate']
+      hiddenOptions = hiddenOptions.concat(['totalBg', 'totalImage', 'BgColor', 'totalName', 'textStyleTotalText', 'totalValueType', 'totalValueUnit', 'totalValuePosition', 'valueTextStyleTotalValue', 'rateTextStyleTotalRate'])
     }
-    return null;
+
+    if (options.properties.totalBg === 'image') {
+      hiddenOptions = hiddenOptions.concat(['BgColor'])
+    }
+
+    if (options.properties.totalBg === 'color') {
+      hiddenOptions = hiddenOptions.concat(['totalImage'])
+    }
+    if (!options.properties.totalBg) {
+      hiddenOptions = hiddenOptions.concat(['BgColor', 'totalImage'])
+    }
+
+    if (options.properties.detailBg === 'image') {
+      hiddenOptions = hiddenOptions.concat(['detailBgColor'])
+    }
+
+    if (options.properties.detailBg === 'color') {
+      hiddenOptions = hiddenOptions.concat(['detailImage'])
+    }
+    if (!options.properties.detailBg) {
+      hiddenOptions = hiddenOptions.concat(['detailBgColor', 'detailImage'])
+    }
+    // detail 
+    if (options.properties.rotateType === 'continuous') {
+      hiddenOptions = hiddenOptions.concat(['stopSpeed'])
+    }
+
+    if (options.properties.rotateType === 'pause') {
+      hiddenOptions = hiddenOptions.concat(['rotateSpeed'])
+    }
+    // bottom
+    if (!options.properties.showBottom) {
+      hiddenOptions = hiddenOptions.concat(['circleRotateDirection', 'showBottomLight', 'circleRotateTime', 'circleCenterImage', 'circleSmallImage', 'circleBigImage'])
+    }
+    return hiddenOptions;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {

@@ -112,7 +112,12 @@ export default class Visual extends WynVisual {
       let figurePyramid;
 
       figureText = $("<div class='figure-text'>")
-
+      // custom rotate image
+      if (options.detailBg) {
+        options.detailBg === 'image'
+          ? options.detailImage && figureText.css('backgroundImage', `url(${options.detailImage})`)
+          : options.detailBgColor && figureText.css({ 'backgroundColor': options.detailBgColor, 'backgroundImage': 'none' })
+      }
       $("<div class='figure-value'>")
         .css({ ...options.textStyle })
         .text(`${this.formatData(dataText[this.value], options.detailValueUnit, options.detailValueType)}`)
@@ -208,8 +213,6 @@ export default class Visual extends WynVisual {
         this.isFirstRender && $(`.main`).removeClass('element-animate')
         // bottom circle
         $('.circle-container').css('opacity', options.showBottom ? 1 : 0);
-        const circleDirection = options.circleRotateDirection === 'negative' ? 'rotateCircle' : 'rotateCirclePositive';
-        $(".big-circle").css({ 'animation': `${circleDirection} ${options.circleRotateTime}s infinite linear` });
 
         this.isFirstRender = false;
         options.rotateType === 'pause' && retateY()
@@ -230,15 +233,18 @@ export default class Visual extends WynVisual {
       self.renderTimer = requestAnimationFrame(animloop);
 
       if (isActive) {
-        tX += tick * - Number(options.rotateTime);
+        tX += tick * - Number(options.rotateSpeed);
         if (options.rotateType === 'continuous') {
           if (tX < -360) {
             tX += 360;
           }
           renderCore(tX)
         }
+        const circleDirection = options.circleRotateDirection === 'negative' ? 'rotateCircle' : 'rotateCirclePositive';
+        $(".big-circle").css({ 'animation': `${circleDirection} ${options.circleRotateTime}s infinite linear` });
       } else {
         isActive = false;
+        $(".big-circle").css({ 'animationPlayState': `paused` });
       }
     };
 
@@ -251,7 +257,7 @@ export default class Visual extends WynVisual {
           deg += -(deltaAngle)
         }
         retateY(deg);
-      }, Number(options.rotateTime) * 1000);
+      }, Number(options.stopSpeed) * 1000);
 
     }
 
@@ -326,14 +332,43 @@ export default class Visual extends WynVisual {
       xZoom = winWidth / width,
       yZoom = winHeight / height,
       zoom = Math.min(xZoom, yZoom);
-    this.root.css("zoom", zoom);
+    const ua = navigator.userAgent;
+    if (ua.indexOf("Firefox") != -1) {
+      this.root.css({ 'transform': `scale(${zoom}) translate(-50%, -50%)`, 'transformOrigin': 'top left' });
+    } else {
+      this.root.css({ "zoom": zoom });
+    }
   };
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+    let hiddenOptions: Array<any> = []
+    // bottom
     if (!options.properties.showBottom) {
-      return ['circleRotateDirection', 'circleRotateTime', 'circleImage']
+      hiddenOptions = hiddenOptions.concat(['circleRotateDirection', 'circleRotateTime', 'circleImage'])
     }
-    return null;
+    // detail
+    if (options.properties.rotateType === 'continuous') {
+      hiddenOptions = hiddenOptions.concat(['stopSpeed'])
+    }
+
+    if (options.properties.rotateType === 'pause') {
+      hiddenOptions = hiddenOptions.concat(['rotateSpeed'])
+    }
+
+    if (options.properties.detailBg === 'image') {
+      hiddenOptions = hiddenOptions.concat(['detailBgColor'])
+    }
+
+    if (options.properties.detailBg === 'color') {
+      hiddenOptions = hiddenOptions.concat(['detailImage'])
+    }
+
+    if (!options.properties.detailBg) {
+      hiddenOptions = hiddenOptions.concat(['detailBgColor', 'detailImage'])
+    }
+
+
+    return hiddenOptions;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {

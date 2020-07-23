@@ -67,6 +67,18 @@
                         "defaultValue": "continuous"
                     },
                     {
+                        "name": "rotateSpeed",
+                        "type": "Integer",
+                        "displayName": "旋转速度",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "stopSpeed",
+                        "type": "Integer",
+                        "displayName": "停顿时长",
+                        "defaultValue": 3
+                    },
+                    {
                         "name": "detailtRotateDeg",
                         "type": "Integer",
                         "displayName": "倾斜角度",
@@ -89,12 +101,6 @@
                         "defaultValue": "negative"
                     },
                     {
-                        "name": "rotateTime",
-                        "type": "Integer",
-                        "displayName": "动画时长",
-                        "defaultValue": 3
-                    },
-                    {
                         "name": "bigPyramidBgColor",
                         "type": "Palette",
                         "displayName": "调色板"
@@ -114,46 +120,38 @@
                 ]
             },
             {
-                "displayName": "底部样式",
+                "displayName": "详情样式",
                 "properties": [
                     {
-                        "name": "showBottom",
-                        "type": "Boolean",
-                        "displayName": "显示底部",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "circleRotateDirection",
+                        "name": "detailBg",
                         "type": "Enum",
-                        "displayName": "旋转方向",
+                        "displayName": "详情背景",
                         "items": [
                             {
-                                "value": "positive",
-                                "displayNameKey": "顺时针"
+                                "value": "",
+                                "displayNameKey": "默认"
                             },
                             {
-                                "value": "negative",
-                                "displayNameKey": "逆时针"
+                                "value": "color",
+                                "displayNameKey": "背景色"
+                            },
+                            {
+                                "value": "image",
+                                "displayNameKey": "背景图片"
                             }
                         ],
-                        "defaultValue": "negative"
+                        "defaultValue": ""
                     },
                     {
-                        "name": "circleRotateTime",
-                        "type": "Integer",
-                        "displayName": "动画时长",
-                        "defaultValue": 20
-                    },
-                    {
-                        "name": "circleImage",
+                        "name": "detailImage",
                         "type": "Image",
-                        "displayName": "底部图片"
-                    }
-                ]
-            },
-            {
-                "displayName": "数据标注",
-                "properties": [
+                        "displayName": "背景图片"
+                    },
+                    {
+                        "name": "detailBgColor",
+                        "type": "Color",
+                        "displayName": "背景色"
+                    },
                     {
                         "name": "textStyle",
                         "type": "TextStyle",
@@ -249,10 +247,51 @@
                 ]
             },
             {
+                "displayName": "底部样式",
+                "properties": [
+                    {
+                        "name": "showBottom",
+                        "type": "Boolean",
+                        "displayName": "显示底部",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "circleRotateDirection",
+                        "type": "Enum",
+                        "displayName": "旋转方向",
+                        "items": [
+                            {
+                                "value": "positive",
+                                "displayNameKey": "顺时针"
+                            },
+                            {
+                                "value": "negative",
+                                "displayNameKey": "逆时针"
+                            }
+                        ],
+                        "defaultValue": "negative"
+                    },
+                    {
+                        "name": "circleRotateTime",
+                        "type": "Integer",
+                        "displayName": "动画时长",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "circleImage",
+                        "type": "Image",
+                        "displayName": "底部图片"
+                    }
+                ]
+            },
+            {
                 "type": "interaction"
             },
             {
-                "type": "title"
+                "type": "title",
+                "defaultValue": {
+                    "show": false
+                }
             },
             {
                 "type": "appearance"
