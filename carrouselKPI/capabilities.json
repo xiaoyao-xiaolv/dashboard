@@ -134,6 +134,12 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "totalLineShow",
+                        "type": "Boolean",
+                        "displayName": "显示连接线",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "totalName",
                         "type": "Input",
                         "displayName": "汇总标题",
@@ -145,7 +151,8 @@
                         "displayName": "标题字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "2.5x"
+                            "fontSize": "2.5x",
+                            "color": "#3eb2ff"
                         }
                     },
                     {
@@ -246,7 +253,8 @@
                         "displayName": "数值字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "1.2x"
+                            "fontSize": "1.2x",
+                            "color": "#eca538"
                         }
                     },
                     {
@@ -285,7 +293,8 @@
                         "displayName": "标题字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "1.5x"
+                            "fontSize": "1.5x",
+                            "color": "#3eb2ff"
                         }
                     },
                     {
@@ -386,7 +395,8 @@
                         "displayName": "数值字体",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "1.0x"
+                            "fontSize": "1.0x",
+                            "color": "#eca538"
                         }
                     },
                     {

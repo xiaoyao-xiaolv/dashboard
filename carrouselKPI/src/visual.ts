@@ -3,15 +3,6 @@ import _ = require('lodash');
 import * as $ from 'jquery';
 
 export default class Visual extends WynVisual {
-  private static defaultOptions = {
-    dataFormat: "{name}: {rate}",
-    totalDataFormat: "Total: {rate}",
-  };
-
-  private static mockValueFields = [{ display: 'rate' }];
-
-  private static mockDimensionFields = [{ display: 'name' }];
-
   private static mockItems = [
     { name: "Dept. 1", '实际值': 100, '对比值': 100 },
     { name: "Dept. 2", '实际值': 153, '对比值': 95 },
@@ -358,7 +349,7 @@ export default class Visual extends WynVisual {
       element.css("transform", `rotateY(${elementDirection}deg) translateZ(${-elementZ}px)`);
       // pause  animate type
       options.rotateType === 'pause' && element.css({ 'transition': 'transform .5s ease-in-out' });
-      options.totalShow && Visual.drawLines(container, lineContainer);
+      options.totalShow && options.totalLineShow && Visual.drawLines(container, lineContainer);
     }
 
     var self = this;
@@ -372,7 +363,7 @@ export default class Visual extends WynVisual {
           }
           renderCore(tX)
         } else {
-          options.totalShow && Visual.drawLines(container, lineContainer);
+          options.totalShow && options.totalLineShow && Visual.drawLines(container, lineContainer);
         }
         const circleDirection = options.rotateDirection === 'negative' ? - tX : tX;
         $(".big-circle").css("transform", `rotateY(${circleDirection}deg) rotateX(${90}deg) translateZ(${-70}px)`)
@@ -497,12 +488,18 @@ export default class Visual extends WynVisual {
       xZoom = winWidth / width,
       yZoom = winHeight / height,
       zoom = Math.min(xZoom, yZoom);
-    this.root.css("zoom", zoom);
+    const ua = navigator.userAgent;
+    if (ua.indexOf("Firefox") != -1) {
+      this.root.css({ 'transform': `scale(${zoom})`, 'transformOrigin': 'top left' });
+    } else {
+      this.root.css({ "zoom": zoom });
+    }
+
   };
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     if (!options.properties.totalShow) {
-      return ['totalName', 'textStyleTotalText', 'totalValueType', 'totalValueUnit', 'totalValuePosition', 'valueTextStyleTotalValue', 'rateTextStyleTotalRate']
+      return ['totalLineShow', 'totalName', 'textStyleTotalText', 'totalValueType', 'totalValueUnit', 'totalValuePosition', 'valueTextStyleTotalValue', 'rateTextStyleTotalRate']
     }
     return null;
   }
