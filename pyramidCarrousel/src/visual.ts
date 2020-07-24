@@ -113,11 +113,10 @@ export default class Visual extends WynVisual {
 
       figureText = $("<div class='figure-text'>")
       // custom rotate image
-      if (options.detailBg) {
-        options.detailBg === 'image'
-          ? options.detailImage && figureText.css('backgroundImage', `url(${options.detailImage})`)
-          : options.detailBgColor && figureText.css({ 'backgroundColor': options.detailBgColor, 'backgroundImage': 'none' })
-      }
+      options.detailImage && figureText.css('backgroundImage', `url(${options.detailImage})`)
+      options.detailBgColor && figureText.css({ 'backgroundColor': options.detailBgColor })
+
+
       $("<div class='figure-value'>")
         .css({ ...options.textStyle })
         .text(`${this.formatData(dataText[this.value], options.detailValueUnit, options.detailValueType)}`)
@@ -354,19 +353,6 @@ export default class Visual extends WynVisual {
     if (options.properties.rotateType === 'pause') {
       hiddenOptions = hiddenOptions.concat(['rotateSpeed'])
     }
-
-    if (options.properties.detailBg === 'image') {
-      hiddenOptions = hiddenOptions.concat(['detailBgColor'])
-    }
-
-    if (options.properties.detailBg === 'color') {
-      hiddenOptions = hiddenOptions.concat(['detailImage'])
-    }
-
-    if (!options.properties.detailBg) {
-      hiddenOptions = hiddenOptions.concat(['detailBgColor', 'detailImage'])
-    }
-
 
     return hiddenOptions;
   }

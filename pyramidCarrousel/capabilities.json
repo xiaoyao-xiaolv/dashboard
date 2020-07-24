@@ -82,7 +82,7 @@
                         "name": "detailtRotateDeg",
                         "type": "Integer",
                         "displayName": "倾斜角度",
-                        "defaultValue": 7
+                        "defaultValue": 3
                     },
                     {
                         "name": "detailtRotateDirection",
@@ -98,7 +98,7 @@
                                 "displayNameKey": "逆时针"
                             }
                         ],
-                        "defaultValue": "negative"
+                        "defaultValue": "positive"
                     },
                     {
                         "name": "bigPyramidBgColor",
@@ -115,33 +115,13 @@
                         "name": "smallPyramidBgColor",
                         "type": "Color",
                         "displayName": "内部棱锥",
-                        "defaultValue": "#47F4c6"
+                        "defaultValue": "#00ff33"
                     }
                 ]
             },
             {
                 "displayName": "详情样式",
                 "properties": [
-                    {
-                        "name": "detailBg",
-                        "type": "Enum",
-                        "displayName": "详情背景",
-                        "items": [
-                            {
-                                "value": "",
-                                "displayNameKey": "默认"
-                            },
-                            {
-                                "value": "color",
-                                "displayNameKey": "背景色"
-                            },
-                            {
-                                "value": "image",
-                                "displayNameKey": "背景图片"
-                            }
-                        ],
-                        "defaultValue": ""
-                    },
                     {
                         "name": "detailImage",
                         "type": "Image",
