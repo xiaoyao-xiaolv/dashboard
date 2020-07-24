@@ -6,8 +6,11 @@ export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
   private properties: any;
+  private legendData: any;
+  private destinationName: string;
+  private valuesName: string;
+  private departureName: string;
   private items: any;
-  private departureValue: any;
   static mockItems = [
     [
       [{ name: '北京' }, { name: '上海', value: 95 }],
@@ -51,12 +54,14 @@ export default class Visual {
     this.container = dom;
     this.chart = echarts.init(dom)
     this.items = [];
-    this.departureValue = [];
     this.properties = {
       roam: true,
       showLegend: false,
       effect: false,
-      symbolSize: 10,
+      pointSize: 6,
+      symbolSize: 12,
+      period: 6,
+      symbolStyle: 'pin',
       symbol: 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z',
       borderColor: 'rgba(147, 235, 248, 1)',
       startColor: 'rgba(147, 235, 248, 0)',
@@ -64,44 +69,6 @@ export default class Visual {
       shadowColor: 'rgba(128, 217, 248, 1)',
       emphasisColor: '#389BB7',
     };
-  }
-  public update(options: any) {
-    const dataView = options.dataViews[0];
-    this.items = [];
-    if (dataView &&
-      dataView.plain.profile.values.values.length && dataView.plain.profile.departure.values.length && dataView.plain.profile.destination.values.length) {
-      const plainData = dataView.plain;
-      let destinationName = plainData.profile.destination.values[0].display
-      let valuesName = plainData.profile.values.values[0].display;
-      let departureName = plainData.profile.departure.values[0].display
-      let departureValue = plainData.sort[departureName].order;
-      this.departureValue = departureValue;
-      for (let i = 0; i < departureValue.length; i++) {
-        this.items[i] = plainData.data.map(function (item) {
-          if (departureValue[i] == item[departureName]) {
-            return [
-              { name: item[departureName] },
-              {
-                name: item[destinationName],
-                value: item[valuesName] || 0,
-              }];
-          }
-        })
-          .filter(function (item) {
-            if (!(typeof item == "undefined")) {
-              return [
-                { name: item[departureName] },
-                {
-                  name: item[destinationName],
-                  value: item[valuesName] || 0,
-                }];
-            }
-          });
-      }
-    }
-    console.log(this.items)
-    this.properties = options.properties;
-    this.render();
   }
 
   private queryData = (keyWord: string) => {
@@ -117,69 +84,115 @@ export default class Visual {
     var res = [];
     for (var i = 0; i < data.length; i++) {
       var dataItem = data[i];
-      var fromCoord = this.queryData(dataItem[0].name);
-      var toCoord = this.queryData(dataItem[1].name);
+      var fromCoord = this.queryData(dataItem[this.departureName]);
+      var toCoord = this.queryData(dataItem[this.destinationName]);
       if (fromCoord && toCoord) {
         res.push({
-          fromName: dataItem[0].name,
-          toName: dataItem[1].name,
+          fromName: dataItem[this.departureName],
+          toName: dataItem[this.destinationName],
           coords: [fromCoord, toCoord],
-          value: dataItem[1].value
+          value: dataItem[this.valuesName]
         });
       }
     }
     return res;
   };
 
+  private classify = (arr: any) => {
+    let obj = {}
+    arr.map(v => {
+      obj[v[this.departureName]] = 0
+    })
+    let nameArr = Object.keys(obj)
+    this.legendData = nameArr
+    let result = [];
+    nameArr.map(v => {
+      let temp = this.convertData(arr.filter(_v => v == _v[this.departureName]));
+      if (temp.length) {
+        result.push(temp)
+      }
+    })
+    return result
+  }
 
-  private render() {
+  private parseData = (arr: any) => {
+    let result = [];
+    arr.map(a => {
+      result.push({
+        name: a.toName,
+        value: a.coords[1].concat(a.value)
+      })
+    });
+    result.push({
+      name: arr[0].fromName,
+      value: arr[0].coords[0].concat(0)
+    })
+    return result
+  }
+
+  public update(options: any) {
+    const dataView = options.dataViews[0];
+    this.items = [];
+    if (dataView &&
+      dataView.plain.profile.values.values.length && dataView.plain.profile.departure.values.length && dataView.plain.profile.destination.values.length) {
+      const plainData = dataView.plain;
+      this.destinationName = plainData.profile.destination.values[0].display
+      this.valuesName = plainData.profile.values.values[0].display;
+      this.departureName = plainData.profile.departure.values[0].display
+      this.items = this.classify(plainData.data);
+      console.log(this.items)
+    }
+
+    this.properties = options.properties;
+    this.render();
+  }
+
+  public render() {
     this.chart.clear();
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items;
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
-    var convertData = this.convertData;
-    let planePath = options.effect ? options.symbol : 'circle';
-    let symbolSize = options.effect ? 15 : 5;
-    let departureValue = isMock ? ['北京', '上海', '广州市'] : this.departureValue;
+    let planePath = options.effect ? options.symbol : options.symbolStyle;
+    let departureValue = isMock ? ['北京', '上海', '广州市'] : this.legendData;
     let color = isMock ? ['#a6c84c', '#ffa022', '#46bee9'] : options.palette;
     var series = [];
-    items.map(function (item: number[], i: number) {
+    items.map((item: any, i: number) => {
       if (item.length) {
         let j = i % color.length;
         series.push(
           {
-            name: item[0][0].name,
+            name: item[0].fromName,
             type: 'lines',
             zlevel: 1,
             effect: {
               show: true,
-              period: 6,
+              period: options.period,
               trailLength: 0.7,
-              color: '#fff',
-              symbolSize: 3
+              color: color[j],
+              symbolSize: 4
             },
             lineStyle: {
               normal: {
                 color: color[j],
-                width: 0,
+                width: 0.1,
                 curveness: 0.2
               }
             },
-            data: convertData(item)
+            data: item
           },
           {
-            name: item[0][0].name,
+            name: item[0].fromName,
             type: 'lines',
             zlevel: 2,
             symbol: ['none', 'arrow'],
             symbolSize: 10,
             effect: {
               show: true,
-              period: 6,
+              period: options.period,
               trailLength: 0,
               symbol: planePath,
-              symbolSize: symbolSize
+              symbolSize: options.symbolSize
             },
             lineStyle: {
               normal: {
@@ -189,10 +202,10 @@ export default class Visual {
                 curveness: 0.2
               }
             },
-            data: convertData(item)
+            data: item
           },
           {
-            name: item[0][0].name,
+            name: item[0].fromName,
             type: 'effectScatter',
             coordinateSystem: 'geo',
             zlevel: 2,
@@ -210,18 +223,13 @@ export default class Visual {
                 show: true
               }
             },
-            symbolSize: options.symbolSize,
+            symbolSize: options.pointSize,
             itemStyle: {
               normal: {
                 color: color[j]
               }
             },
-            data: item.map(function (dataItem) {
-              return {
-                name: dataItem[1].name,
-                value: geoCoordMap[dataItem[1].name]
-              };
-            })
+            data: this.parseData(item)
           }
         );
       }
@@ -303,7 +311,7 @@ export default class Visual {
     if (!updateOptions.properties.effect) {
       return ['symbol'];
     }
-    return null;
+    return ['symbolStyle'];
   }
 
   // 功能按钮可见性
