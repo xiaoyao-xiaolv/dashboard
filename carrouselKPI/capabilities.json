@@ -130,34 +130,14 @@
                         "defaultValue": true
                     },
                     {
-                        "name": "totalBg",
-                        "type": "Enum",
-                        "displayName": "汇总背景",
-                        "items": [
-                            {
-                                "value": "",
-                                "displayNameKey": "默认"
-                            },
-                            {
-                                "value": "color",
-                                "displayNameKey": "背景色"
-                            },
-                            {
-                                "value": "image",
-                                "displayNameKey": "背景图片"
-                            }
-                        ],
-                        "defaultValue": "image"
-                    },
-                    {
                         "name": "totalImage",
                         "type": "Image",
                         "displayName": "背景图片"
                     },
                     {
-                        "name": "BgColor",
+                        "name": "totalBgColor",
                         "type": "Color",
-                        "displayName": "背景色"
+                        "displayName": "背景演示"
                     },
                     {
                         "name": "totalName",
@@ -292,26 +272,6 @@
                 "displayName": "详情样式",
                 "properties": [
                     {
-                        "name": "detailBg",
-                        "type": "Enum",
-                        "displayName": "详情背景",
-                        "items": [
-                            {
-                                "value": "",
-                                "displayNameKey": "默认"
-                            },
-                            {
-                                "value": "color",
-                                "displayNameKey": "背景色"
-                            },
-                            {
-                                "value": "image",
-                                "displayNameKey": "背景图片"
-                            }
-                        ],
-                        "defaultValue": ""
-                    },
-                    {
                         "name": "detailImage",
                         "type": "Image",
                         "displayName": "背景图片"
@@ -319,7 +279,7 @@
                     {
                         "name": "detailBgColor",
                         "type": "Color",
-                        "displayName": "背景色"
+                        "displayName": "背景演示"
                     },
                     {
                         "name": "textStyle",

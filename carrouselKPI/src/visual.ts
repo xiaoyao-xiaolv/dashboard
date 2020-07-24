@@ -229,11 +229,8 @@ export default class Visual extends WynVisual {
 
 
       // custom rotate image
-      if (options.detailBg) {
-        options.detailBg === 'image'
-          ? options.detailImage && figureElement.css('backgroundImage', `url(${options.detailImage})`)
-          : options.detailBgColor && figureElement.css({ 'backgroundColor': options.detailBgColor, 'backgroundImage': 'none' })
-      }
+      options.detailImage && figureElement.css('backgroundImage', `url(${options.detailImage})`);
+      options.detailBgColor && figureElement.css({ 'backgroundColor': options.detailBgColor });
 
     }
 
@@ -284,9 +281,8 @@ export default class Visual extends WynVisual {
       .css({ 'visibility': options.totalShow ? 'visiable' : 'hidden' });
 
     // custom rotate image
-    if (options.totalBg) {
-      options.totalBg === 'image' ? options.totalImage && totalElement.css('backgroundImage', `url(${options.totalImage})`) : options.BgColo && totalElement.css({ 'backgroundColor': options.BgColor, 'backgroundImage': 'none' })
-    }
+    options.totalImage && totalElement.css('backgroundImage', `url(${options.totalImage})`)
+    options.totalBgColor && totalElement.css({ 'backgroundColor': options.totalBgColor })
 
     if (this.totalItem || this.totalContrastItem) {
 
@@ -507,7 +503,7 @@ export default class Visual extends WynVisual {
       zoom = Math.min(xZoom, yZoom);
     const ua = navigator.userAgent;
     if (ua.indexOf("Firefox") != -1) {
-      this.root.css({ 'transform': `scale(${zoom})`, 'transformOrigin': 'top left' });
+      this.root.css({ 'transform': `scale(${zoom}) translateY(-50%)`, 'transformOrigin': 'top left' });
     } else {
       this.root.css({ "zoom": zoom });
     }
@@ -517,30 +513,9 @@ export default class Visual extends WynVisual {
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     let hiddenOptions: Array<any> = []
     if (!options.properties.totalShow) {
-      hiddenOptions = hiddenOptions.concat(['totalBg', 'totalImage', 'BgColor', 'totalName', 'textStyleTotalText', 'totalValueType', 'totalValueUnit', 'totalValuePosition', 'valueTextStyleTotalValue', 'rateTextStyleTotalRate'])
+      hiddenOptions = hiddenOptions.concat(['totalImage', 'totalBgColor', 'totalName', 'textStyleTotalText', 'totalValueType', 'totalValueUnit', 'totalValuePosition', 'valueTextStyleTotalValue', 'rateTextStyleTotalRate'])
     }
 
-    if (options.properties.totalBg === 'image') {
-      hiddenOptions = hiddenOptions.concat(['BgColor'])
-    }
-
-    if (options.properties.totalBg === 'color') {
-      hiddenOptions = hiddenOptions.concat(['totalImage'])
-    }
-    if (!options.properties.totalBg) {
-      hiddenOptions = hiddenOptions.concat(['BgColor', 'totalImage'])
-    }
-
-    if (options.properties.detailBg === 'image') {
-      hiddenOptions = hiddenOptions.concat(['detailBgColor'])
-    }
-
-    if (options.properties.detailBg === 'color') {
-      hiddenOptions = hiddenOptions.concat(['detailImage'])
-    }
-    if (!options.properties.detailBg) {
-      hiddenOptions = hiddenOptions.concat(['detailBgColor', 'detailImage'])
-    }
     // detail 
     if (options.properties.rotateType === 'continuous') {
       hiddenOptions = hiddenOptions.concat(['stopSpeed'])
