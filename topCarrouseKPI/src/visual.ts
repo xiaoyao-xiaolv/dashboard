@@ -210,14 +210,9 @@ export default class Visual extends WynVisual {
         .append(figureTitle, figureValues)
         .appendTo(element);
 
-
       // custom rotate image
-      // custom rotate image
-      if (options.detailBg) {
-        options.detailBg === 'image'
-          ? options.detailImage && figureElement.css('backgroundImage', `url(${options.detailImage})`)
-          : options.detailBgColor && figureElement.css({ 'backgroundColor': options.detailBgColor, 'backgroundImage': 'none' })
-      }
+      options.detailImage && figureElement.css('backgroundImage', `url(${options.detailImage})`)
+      options.detailBgColor && figureElement.css({ 'backgroundColor': options.detailBgColor })
     }
 
     container.on("mouseover", ".figure", () => {
@@ -409,16 +404,7 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     let hiddenOptions: Array<any> = [];
-    if (options.properties.detailBg === 'image') {
-      hiddenOptions = hiddenOptions.concat(['detailBgColor'])
-    }
 
-    if (options.properties.detailBg === 'color') {
-      hiddenOptions = hiddenOptions.concat(['detailImage'])
-    }
-    if (!options.properties.detailBg) {
-      hiddenOptions = hiddenOptions.concat(['detailBgColor', 'detailImage'])
-    }
     // detail 
     if (options.properties.rotateType === 'continuous') {
       hiddenOptions = hiddenOptions.concat(['stopSpeed'])
