@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@types/jquery": "^3.5.0",
+    "@types/lodash": "^4.14.158",
     "jquery": "^3.5.1"
   }
 }

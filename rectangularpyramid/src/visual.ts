@@ -1,20 +1,22 @@
 import '../style/visual.less';
+import _ = require('lodash');
 import * as $ from 'jquery';
 
 export default class Visual extends WynVisual {
   private static mockItems = [
-    { name: "Dept. 1", '实际值': 100, '对比值': 100 },
-    { name: "Dept. 2", '实际值': 153, '对比值': 95 },
-    { name: "Dept. 3", '实际值': 94, '对比值': 10 },
-    { name: "Dept. 4", '实际值': 60, '对比值': 80 },
-    { name: "Dept. 5", '实际值': 65, '对比值': 52 },
-    { name: "", '实际值': '', '对比值': '' }
+    { name: "Dept. 1", '实际值': 100 },
+    { name: "Dept. 2", '实际值': 97 },
+    { name: "Dept. 3", '实际值': 94 },
+    { name: "Dept. 4", '实际值': 65 },
+    { name: "Dept. 5", '实际值': 60 },
+    { name: "", '实际值': '' }
   ];
 
   private root: JQuery<HTMLElement>;
   private items = [];
   private isMock = true;
   private isFirstRender: boolean;
+  private renderTimer: any;
   private options: any;
 
   private isValue: boolean;
@@ -34,8 +36,9 @@ export default class Visual extends WynVisual {
 
   public update(updateOptions: VisualNS.IVisualUpdateOptions) {
     const options = updateOptions;
-    const dataView = options.dataViews[0];
 
+    const dataView = options.dataViews[0];
+    console.log(dataView, '====dataview')
 
     this.isMock = !(dataView && dataView.plain.profile.dimensions.values.length);
     const plainData: any = this.isMock ? {} : dataView.plain;
@@ -55,7 +58,20 @@ export default class Visual extends WynVisual {
       this.dimensions = !this.isMock && plainData.profile.dimensions.values[0].display || '';
       this.value = this.isValue && plainData.profile.values.values[0].display || '';
       // this.contrast = this.isContrast && plainData.profile.contrast.values[0].display || '';
-      this.items = plainData.data
+      // sort data
+      // this.items = _.sortBy(plainData.data, (item) => -item[this.value])
+      let items = plainData.data;
+      const isSort = plainData.sort[this.dimensions].priority === 0 ? true : false;
+
+      // data sort 
+      if (isSort) {
+        const sortFlage = plainData.sort[this.dimensions].order;
+        let newItems: any = sortFlage.map((flage) => {
+          return newItems = items.find((item) => item[this.dimensions] === flage && item)
+        })
+        items = newItems.filter((item) => item)
+      }
+      this.items = items
       this.items.push({ [this.dimensions]: '', [this.value]: '' })
     }
 
@@ -69,32 +85,49 @@ export default class Visual extends WynVisual {
     this.root.html('').width(800).height(400).css('position', 'relative');
     let container = $('<div class="container">').appendTo(this.root);
     let isActive = true;
+
     container.on("mouseover", ".s2d", () => {
       isActive = false;
     }).on("mouseout", () => {
       isActive = true;
     });
+
     const options = this.options;
     let length = this.items.length;
 
     // pyramid container
     const rotateDirection = options.rotateDirection === 'positive' ? 'positiveR' : 'negativeR';
-    let pyramidContainer = $('<div class="a3d">').appendTo(container);
+    let pyramidContainer = $('<div class="a3d">').css({ 'transform': `rotateY(${options.showAnimate ? 0 : -options.yRotateDeg}deg)` }).appendTo(container);
 
-    const retateY = (deg = 0) => {
+    const pauseRetateY = (deg = 0) => {
       if (isActive) {
         const rotateDirection = options.rotateDirection === 'positive' ? deg : -deg;
         pyramidContainer.css({ "transform": `rotateY(${rotateDirection}deg)`, 'transition': `transform 3s ease` })
       }
       setTimeout(() => {
         if (isActive && !document.hidden) {
-          deg += -(90)
+          deg += -(45)
         }
-        retateY(deg);
+        pauseRetateY(deg);
       }, Number(options.stopSpeed) * 1000);
 
     }
-    options.rotateType === 'pause' ? retateY(0) : pyramidContainer.css({ 'animation': `${rotateDirection} ${options.rotateSpeed}s linear infinite` })
+    const self = this;
+    const continuousRetateY = () => {
+      self.renderTimer = requestAnimationFrame(continuousRetateY);
+      if (isActive) {
+        pyramidContainer
+          .css({ 'animation': `${rotateDirection} ${options.rotateSpeed}s linear infinite` })
+      } else {
+        pyramidContainer.css({ 'animationPlayState': `paused` })
+      }
+    }
+    // control rotate type
+    if (options.showAnimate) {
+      options.rotateType === 'pause' ? pauseRetateY(0) : continuousRetateY();
+    }
+
+
     let xInterval = 1 / (2 * length) * 100;
     let yInterval = 1 / (length) * 100;
     const drawS3d = (pyramidContainer, index, options) => {
@@ -133,19 +166,22 @@ export default class Visual extends WynVisual {
             .text(this.items[index][this.dimensions])
             .css({ ...options.dimensionsTextStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
             .appendTo(s2d);
-          i === 2 && $('<div class="s2d-text">')
+          i === 1 && $('<div class="s2d-text">')
             .text(this.formatData(this.items[index][this.value], options.detailValueUnit, options.detailValueType))
             .css({ ...options.textStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
             .appendTo(s2d);
+        } else {
+          s2d.css({ 'visibility': options.pyramidSharp ? 'visiable' : 'hidden' })
         }
       }
 
       $('<div class="s2d">')
         .css({
           ...s2dBgColor,
-          'width': `${(x1 - x0) * 0.01 * 0}em`,
-          'height': `${(x1 - x0) * 0.01 * 0}em`,
-          'transform': `translateY(${12 * (index + 1)}%) rotateX(90deg) translateX(${-12 * (index + 1)}%)`
+          // 'background': '#000',
+          'width': `${(x1 - x0) * 0.01 * 17.5}em`,
+          'height': `${(x1 - x0) * 0.01 * 17.5}em`,
+          'transform': `translateY(${-(17 + 9 * index)}%) rotateX(90deg) translateX(${-(43 - (2 * index + 1))}%)`
         })
         .appendTo(s3dContainer);
 
@@ -205,7 +241,10 @@ export default class Visual extends WynVisual {
   }
 
   public onDestroy() {
-
+    if (this.renderTimer != null) {
+      cancelAnimationFrame(this.renderTimer);
+      this.renderTimer = null;
+    }
   }
 
   public onResize() {
@@ -214,7 +253,7 @@ export default class Visual extends WynVisual {
   }
 
   private resize() {
-    let width = 700,
+    let width = 500,
       height = 350,
       winWidth = $(window).width(),
       winHeight = $(window).height(),
@@ -232,9 +271,12 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     let hiddenOptions: Array<any> = []
-
-    // detail
-    if (options.properties.rotateType === 'continuous') {
+    // animate
+    if (!options.properties.showAnimate) {
+      hiddenOptions = hiddenOptions.concat(['rotateType', 'rotateSpeed', 'stopSpeed', 'rotateDirection'])
+    }
+    // rotate type
+    if (!options.properties.showAnimate) {
       hiddenOptions = hiddenOptions.concat(['stopSpeed'])
     }
 

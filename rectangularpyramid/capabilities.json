@@ -42,6 +42,18 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
+                        "name": "yRotateDeg",
+                        "type": "Integer",
+                        "displayName": "Y轴旋转角度",
+                        "defaultValue": 45
+                    },
+                    {
+                        "name": "showAnimate",
+                        "type": "Boolean",
+                        "displayName": "加载动画",
+                        "defaultValue": false
+                    },
+                    {
                         "name": "rotateType",
                         "type": "Enum",
                         "displayName": "动画效果",
@@ -70,12 +82,6 @@
                         "defaultValue": 3
                     },
                     {
-                        "name": "yInterval",
-                        "type": "Integer",
-                        "displayName": "间隔",
-                        "defaultValue": 3
-                    },
-                    {
                         "name": "rotateDirection",
                         "type": "Enum",
                         "displayName": "旋转方向",
@@ -92,6 +98,12 @@
                         "defaultValue": "positive"
                     },
                     {
+                        "name": "yInterval",
+                        "type": "Integer",
+                        "displayName": "间隔",
+                        "defaultValue": 3
+                    },
+                    {
                         "name": "pyramidBgColor",
                         "type": "Palette",
                         "displayName": "调色板"
@@ -100,7 +112,13 @@
                         "name": "pyramidOpacity",
                         "type": "Percentage",
                         "displayName": "透明度",
-                        "defaultValue": 50
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "pyramidSharp",
+                        "type": "Boolean",
+                        "displayName": "显示顶部",
+                        "defaultValue": false
                     }
                 ]
             },
@@ -207,6 +225,16 @@
             }
         ]
     },
-    "actions": [],
+    "actions": [
+        {
+            "type": "sort"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
     "analysis": []
 }

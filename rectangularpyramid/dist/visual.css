@@ -16,7 +16,7 @@
 }
 .container {
   overflow: hidden;
-  height: 400px;
+  height: 100%;
   width: 100% ;
   top: 0%;
   left: 0%;
@@ -24,6 +24,9 @@
   perspective: 1050px;
   -webkit-perspective-origin: 50% calc(50% - 13em);
   perspective-origin: 50% calc(50% - 13em);
+}
+.a3d {
+  top: 40%;
 }
 @-webkit-keyframes positiveR {
   to {
@@ -58,13 +61,6 @@ div,
   transform-style: preserve-3d;
 }
 /* top face */
-.s3d:nth-child(1) .s2d:last-child {
-  margin: -4.3em;
-  width: 8.6em;
-  height: 8.6em;
-  -webkit-transform: translateY(60%) rotateX(90deg);
-  transform: translateY(60%) rotateX(90deg);
-}
 /* 4 surface */
 .s3d:nth-child(1) .s2d:nth-child(-n + 4) {
   background-color: #807e00;
@@ -94,13 +90,6 @@ div,
   }
 }
 /* two floor */
-.s3d:nth-child(2) .s2d:last-child {
-  margin: -2.1em;
-  width: 4.3em;
-  height: 4.3em;
-  -webkit-transform: translateY(25%) rotateX(90deg);
-  transform: translateY(25%) rotateX(90deg);
-}
 .s3d:nth-child(2) .s2d:nth-child(-n + 4) {
   background-color: #80004f;
 }
@@ -134,10 +123,6 @@ div,
 }
 .s3d:nth-child(3) .s2d:last-child {
   /* margin: -2.16em; */
-  width: 3.3em;
-  height: 3.3em;
-  -webkit-transform: translateY(-125%) rotateX(90deg);
-  transform: translateY(-125%) rotateX(90deg);
 }
 .s3d:nth-child(3) .s2d:nth-child(-n + 4) {
   background-color: #0d0080;
@@ -148,8 +133,6 @@ div,
 .s2d {
   overflow: hidden;
   text-align: center;
-  /* -webkit-backface-visibility: hidden;
-            backface-visibility: hidden; */
   /* background: url(https://upload.wikimedia.org/wikipedia/commons/2/20/Light_brown_stone_texture.jpg) 50%/cover; */
 }
 .s2d-text {
@@ -173,20 +156,24 @@ div,
   transform-origin: 50% 11.25833em;
   /* background: url(https://upload.wikimedia.org/wikipedia/commons/2/20/Light_brown_stone_texture.jpg) 50%/cover, url(https://upload.wikimedia.org/wikipedia/commons/a/a7/Stone_gimp.png) 0/13em, url(https://upload.wikimedia.org/wikipedia/commons/a/a7/Stone_gimp.png) 0/13em; */
   background-blend-mode: lighten;
-  /* -webkit-animation: shine 1.25s linear infinite;
-            animation: shine 1.25s linear infinite; */
+  -webkit-animation: shine 1.25s linear infinite;
+  animation: shine 1.25s linear infinite;
 }
 .s2d:nth-child(-n + 4):before {
   opacity: 0.01;
-  /* -webkit-animation: shade 2.5s linear infinite alternate;
-            animation: shade 2.5s linear infinite alternate; */
+  -webkit-animation: shade 2.5s linear infinite alternate;
+  animation: shade 2.5s linear infinite alternate;
+}
+.s2d:nth-child(5) {
+  -webkit-transform: rotateX(90deg);
+  transform: rotateX(90deg);
 }
 .s2d:nth-child(5):before {
   opacity: 0.85;
-  /* -webkit-transform: scale(0.95);
-            transform: scale(0.95);
-    -webkit-animation: shadow 10s ease-in infinite alternate;
-            animation: shadow 10s ease-in infinite alternate; */
+  -webkit-transform: scale(0.95);
+  transform: scale(0.95);
+  -webkit-animation: shadow 10s ease-in infinite alternate;
+  animation: shadow 10s ease-in infinite alternate;
 }
 .s2d:nth-child(1) {
   -webkit-transform: rotateY(0deg) translateZ(6.5em) rotateX(35.26439deg);
