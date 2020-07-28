@@ -1,6 +1,42 @@
 import '../style/visual.less';
 import * as echarts from 'echarts';
-import "echarts/map/js/china.js"
+import "echarts/map/js/china.js";
+import "echarts/map/js/world.js";
+import "echarts/map/js/province/anhui.js";
+import "echarts/map/js/province/aomen.js";
+import "echarts/map/js/province/beijing.js";
+import "echarts/map/js/province/chongqing.js";
+import "echarts/map/js/province/fujian.js";
+import "echarts/map/js/province/gansu.js";
+import "echarts/map/js/province/guangdong.js";
+import "echarts/map/js/province/guangxi.js";
+import "echarts/map/js/province/guizhou.js";
+import "echarts/map/js/province/hainan.js";
+import "echarts/map/js/province/hebei.js";
+import "echarts/map/js/province/heilongjiang.js";
+import "echarts/map/js/province/henan.js";
+import "echarts/map/js/province/hubei.js";
+import "echarts/map/js/province/hunan.js";
+import "echarts/map/js/province/jiangsu.js";
+import "echarts/map/js/province/jiangxi.js";
+import "echarts/map/js/province/jilin.js";
+import "echarts/map/js/province/liaoning.js";
+import "echarts/map/js/province/neimenggu.js";
+import "echarts/map/js/province/ningxia.js";
+import "echarts/map/js/province/qinghai.js";
+import "echarts/map/js/province/shandong.js";
+import "echarts/map/js/province/shanghai.js";
+import "echarts/map/js/province/shanxi.js";
+import "echarts/map/js/province/shanxi1.js";
+import "echarts/map/js/province/sichuan.js";
+import "echarts/map/js/province/taiwan.js";
+import "echarts/map/js/province/tianjin.js";
+import "echarts/map/js/province/xianggang.js";
+import "echarts/map/js/province/xinjiang.js";
+import "echarts/map/js/province/xizang.js";
+import "echarts/map/js/province/yunnan.js";
+import "echarts/map/js/province/zhejiang.js";
+
 import geoCoordMap from './geoCoordMap.json';
 export default class Visual {
   private container: HTMLDivElement;
@@ -10,43 +46,47 @@ export default class Visual {
   private destinationName: string;
   private valuesName: string;
   private departureName: string;
+  private destinationlatName: string;
+  private destinationlongName: string;
+  private departurelatName: string;
+  private departurelongName: string;
   private items: any;
   static mockItems = [
     [
-      [{ name: '北京' }, { name: '上海', value: 95 }],
-      [{ name: '北京' }, { name: '广州市', value: 90 }],
-      [{ name: '北京' }, { name: '大连市', value: 80 }],
-      [{ name: '北京' }, { name: '南宁市', value: 70 }],
-      [{ name: '北京' }, { name: '南昌市', value: 60 }],
-      [{ name: '北京' }, { name: '拉萨市', value: 50 }],
-      [{ name: '北京' }, { name: '长春市', value: 40 }],
-      [{ name: '北京' }, { name: '包头市', value: 30 }],
-      [{ name: '北京' }, { name: '重庆', value: 20 }],
-      [{ name: '北京' }, { name: '常州市', value: 10 }]
+      { fromName: "广州", toName: "福州", coords: [[113.280637, 23.125178], [119.306239, 26.075302]], value: 13 }
+      , { fromName: "广州", toName: "太原", coords: [[113.280637, 23.125178], [112.549248, 37.857014]], value: 71 }
+      , { fromName: "广州", toName: "长春", coords: [[113.280637, 23.125178], [125.3245, 43.886841]], value: 82 }
+      , { fromName: "广州", toName: "重庆", coords: [[113.280637, 23.125178], [106.504962, 29.533155]], value: 56 }
+      , { fromName: "广州", toName: "西安", coords: [[113.280637, 23.125178], [125.14904, 42.927]], value: 80 }
+      , { fromName: "广州", toName: "成都", coords: [[113.280637, 23.125178], [104.065735, 30.659462]], value: 71 }
+      , { fromName: "广州", toName: "常州", coords: [[113.280637, 23.125178], [119.946973, 31.772752]], value: 30 }
+      , { fromName: "广州", toName: "北京", coords: [[113.280637, 23.125178], [116.405285, 39.904989]], value: 69 }
+      , { fromName: "广州", toName: "北海", coords: [[113.280637, 23.125178], [118.016974, 37.383542]], value: 27 }
+      , { fromName: "广州", toName: "海口", coords: [[113.280637, 23.125178], [110.33119, 20.031971]], value: 8 }
     ],
     [
-      [{ name: '上海' }, { name: '包头市', value: 95 }],
-      [{ name: '上海' }, { name: '昆明市', value: 90 }],
-      [{ name: '上海' }, { name: '广州市', value: 80 }],
-      [{ name: '上海' }, { name: '郑州市', value: 70 }],
-      [{ name: '上海' }, { name: '长春市', value: 60 }],
-      [{ name: '上海' }, { name: '重庆', value: 50 }],
-      [{ name: '上海' }, { name: '长沙市', value: 40 }],
-      [{ name: '上海' }, { name: '北京', value: 30 }],
-      [{ name: '上海' }, { name: '丹东市', value: 20 }],
-      [{ name: '上海' }, { name: '大连市', value: 10 }]
+      { fromName: "上海", toName: "长春", coords: [[121.472644, 31.231706], [125.3245, 43.886841]], value: 77 }
+      , { fromName: "上海", toName: "重庆", coords: [[121.472644, 31.231706], [106.504962, 29.533155]], value: 21 }
+      , { fromName: "上海", toName: "北京", coords: [[121.472644, 31.231706], [116.405285, 39.904989]], value: 95 }
+      , { fromName: "上海", toName: "包头", coords: [[121.472644, 31.231706], [109.840405, 40.658168]], value: 83 }
+      , { fromName: "上海", toName: "昆明", coords: [[121.472644, 31.231706], [102.712251, 25.040609]], value: 55 }
+      , { fromName: "上海", toName: "广州", coords: [[121.472644, 31.231706], [113.280637, 23.125178]], value: 2 }
+      , { fromName: "上海", toName: "郑州", coords: [[121.472644, 31.231706], [113.665412, 34.757975]], value: 92 }
+      , { fromName: "上海", toName: "长沙", coords: [[121.472644, 31.231706], [112.982279, 28.19409]], value: 7 }
+      , { fromName: "上海", toName: "丹东", coords: [[121.472644, 31.231706], [124.383044, 40.124296]], value: 17 }
+      , { fromName: "上海", toName: "大连", coords: [[121.472644, 31.231706], [121.618622, 38.91459]], value: 9 }
     ],
     [
-      [{ name: '广州市' }, { name: '福州市', value: 95 }],
-      [{ name: '广州市' }, { name: '太原市', value: 90 }],
-      [{ name: '广州市' }, { name: '长春市', value: 80 }],
-      [{ name: '广州市' }, { name: '重庆', value: 70 }],
-      [{ name: '广州市' }, { name: '西安市', value: 60 }],
-      [{ name: '广州市' }, { name: '成都市', value: 50 }],
-      [{ name: '广州市' }, { name: '常州市', value: 40 }],
-      [{ name: '广州市' }, { name: '北京', value: 30 }],
-      [{ name: '广州市' }, { name: '北海市', value: 20 }],
-      [{ name: '广州市' }, { name: '海口市', value: 10 }]
+      { fromName: "北京", toName: "长春", coords: [[116.405285, 39.904989], [125.3245, 43.886841]], value: 15 }
+      , { fromName: "北京", toName: "重庆", coords: [[116.405285, 39.904989], [106.504962, 29.533155]], value: 31 }
+      , { fromName: "北京", toName: "常州", coords: [[116.405285, 39.904989], [119.946973, 31.772752]], value: 99 }
+      , { fromName: "北京", toName: "包头", coords: [[116.405285, 39.904989], [109.840405, 40.658168]], value: 20 }
+      , { fromName: "北京", toName: "广州", coords: [[116.405285, 39.904989], [113.280637, 23.125178]], value: 60 }
+      , { fromName: "北京", toName: "大连", coords: [[116.405285, 39.904989], [121.618622, 38.91459]], value: 98 }
+      , { fromName: "北京", toName: "上海", coords: [[116.405285, 39.904989], [121.472644, 31.231706]], value: 63 }
+      , { fromName: "北京", toName: "南宁", coords: [[116.405285, 39.904989], [108.320004, 22.82402]], value: 14 }
+      , { fromName: "北京", toName: "南昌", coords: [[116.405285, 39.904989], [115.892151, 28.676493]], value: 34 }
+      , { fromName: "北京", toName: "拉萨", coords: [[116.405285, 39.904989], [91.132212, 29.660361]], value: 82 }
     ]
   ]
 
@@ -61,6 +101,7 @@ export default class Visual {
       pointSize: 6,
       symbolSize: 12,
       period: 6,
+      mapName:'china',
       symbolStyle: 'pin',
       symbol: 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z',
       borderColor: 'rgba(147, 235, 248, 1)',
@@ -115,6 +156,40 @@ export default class Visual {
     return result
   }
 
+  private convertData1 = (data: number[]) => {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+      var dataItem = data[i];
+      var fromCoord = [dataItem[this.departurelongName],dataItem[this.departurelatName]];
+      var toCoord = [dataItem[this.destinationlongName],dataItem[this.destinationlatName]];
+      if (fromCoord && toCoord) {
+        res.push({
+          fromName: dataItem[this.departureName],
+          toName: dataItem[this.destinationName],
+          coords: [fromCoord, toCoord],
+          value: dataItem[this.valuesName]
+        });
+      }
+    }
+    return res;
+  };
+  private classify1 = (arr: any) => {
+    let obj = {}
+    arr.map(v => {
+      obj[v[this.departureName]] = 0
+    })
+    let nameArr = Object.keys(obj)
+    this.legendData = nameArr
+    let result = [];
+    nameArr.map(v => {
+      let temp = this.convertData1(arr.filter(_v => v == _v[this.departureName]));
+      if (temp.length) {
+        result.push(temp)
+      }
+    })
+    return result
+  }
+
   private parseData = (arr: any) => {
     let result = [];
     arr.map(a => {
@@ -134,13 +209,24 @@ export default class Visual {
     const dataView = options.dataViews[0];
     this.items = [];
     if (dataView &&
-      dataView.plain.profile.values.values.length && dataView.plain.profile.departure.values.length && dataView.plain.profile.destination.values.length) {
+      dataView.plain.profile.values.values.length && dataView.plain.profile.departure.values.length && dataView.plain.profile.destination.values.length &&
+      dataView.plain.profile.departurelat.values.length && dataView.plain.profile.departurelong.values.length &&
+      dataView.plain.profile.destinationlong.values.length && dataView.plain.profile.destinationlat.values.length) {
+      const plainData = dataView.plain;
+      this.destinationName = plainData.profile.destination.values[0].display
+      this.valuesName = plainData.profile.values.values[0].display;
+      this.departureName = plainData.profile.departure.values[0].display
+      this.destinationlatName = plainData.profile.destinationlat.values[0].display
+      this.destinationlongName = plainData.profile.destinationlong.values[0].display;
+      this.departurelatName = plainData.profile.departurelat.values[0].display
+      this.departurelongName = plainData.profile.departurelong.values[0].display
+      this.items = this.classify1(plainData.data);
+    } else if (dataView) {
       const plainData = dataView.plain;
       this.destinationName = plainData.profile.destination.values[0].display
       this.valuesName = plainData.profile.values.values[0].display;
       this.departureName = plainData.profile.departure.values[0].display
       this.items = this.classify(plainData.data);
-      console.log(this.items)
     }
 
     this.properties = options.properties;
@@ -258,7 +344,7 @@ export default class Visual {
         selectedMode: 'multiple',
       },
       geo: {
-        map: 'china',
+        map: options.mapName,
         label: {
           emphasis: {
             sfalsehow: true,
