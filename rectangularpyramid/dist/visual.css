@@ -4,15 +4,13 @@
 ::-ms-scrollbar {
   display: none;
 }
-::-moz-scrollbar {
-  display: none;
-}
 ::-o-scrollbar {
   display: none;
 }
 #visualDom {
   position: absolute;
   transform: translate(-50%, -50%);
+  scrollbar-width: none;
 }
 .container {
   overflow: hidden;

@@ -162,14 +162,16 @@ export default class Visual extends WynVisual {
         'backgroundColor': index < 6 ? options.pyramidBgColor[index] : backgroundColor
       }
       // Y animate
+      const xRotateDeg = Math.abs(options.xRotateDeg) < 90 || Math.abs(options.xRotateDeg) > 270 ? 0 : 180;
+      const zRotateDeg = Math.abs(options.zRotateDeg) < 90 || Math.abs(options.zRotateDeg) > 270 ? 0 : 180;
 
       for (let i = 0; i < 4; i++) {
         const positionText = options.statePyramid === 'dynamic'
           ? {
-            'transform': `translateX(-50%) rotateX(${0}deg) rotateY(${0}deg) rotateZ(${0}deg)`
+            'transform': `translateX(-50%) rotateX(${0}deg) rotateZ(${0}deg)`
           }
           : {
-            'transform': `translateX(-50%) rotateX(${-options.xRotateDeg}deg) rotateY(${-options.yRotateDeg}deg) rotateZ(${-options.zRotateDeg}deg)`
+            'transform': `translateX(-50%) rotateX(${0}deg) rotateZ(${zRotateDeg === xRotateDeg ? 0 : zRotateDeg || xRotateDeg}deg)`
           }
         let s2d = $('<div class="s2d">')
           .css({ ...s2dBgColor, 'clipPath': `polygon(${x0}% ${y0}%,  ${x1}% ${y0}%, ${x2}% ${y1}% , ${x3}% ${y1}%)` })
