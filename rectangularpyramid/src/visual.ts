@@ -139,11 +139,26 @@ export default class Visual extends WynVisual {
     let yInterval = 1 / (length) * 100;
     const drawS3d = (pyramidContainer, index, options) => {
       // s3d
-      const translateY = {
-        "transform": `translateY(${-index * Number(options.yInterval) * 0.1}em)`,
-        "transition": `transform 1s ease`
+
+      let s3dContainer = $('<div class="s3d">').appendTo(pyramidContainer);
+
+
+
+      const stretchAnimate = (interval) => {
+
+        const yInterval = interval ? 0 : options.yInterval;
+
+        const translateY = {
+          "transform": `translateY(${-index * Number(yInterval) * 0.1}em)`,
+          "transition": `transform ${options.pyramidTime}s ease`
+        }
+
+        setTimeout(() => {
+          s3dContainer.css({ ...translateY });
+          yInterval ? stretchAnimate(yInterval) : stretchAnimate(0);
+        }, 3000)
       }
-      let s3dContainer = $('<div class="s3d">').css({ ...translateY }).appendTo(pyramidContainer)
+      options.statePyramid === 'stretch' && stretchAnimate(0);
       // s2d
       let x0 = (index + 1) * xInterval;
       let x1 = (100 - (index + 1) * xInterval);
@@ -289,10 +304,15 @@ export default class Visual extends WynVisual {
 
     // state pyramid
     if (options.properties.statePyramid === 'static') {
-      hiddenOptions = hiddenOptions.concat(['rotateType', 'rotateSpeed', 'stopSpeed', 'rotateDirection'])
+      hiddenOptions = hiddenOptions.concat(['rotateType', 'rotateSpeed', 'stopSpeed', 'rotateDirection', 'yInterval', 'pyramidTime'])
     }
+
     if (options.properties.statePyramid === 'dynamic') {
-      hiddenOptions = hiddenOptions.concat(['xRotateDeg', 'yRotateDeg', 'zRotateDeg', 'rotateDirection'])
+      hiddenOptions = hiddenOptions.concat(['xRotateDeg', 'yRotateDeg', 'zRotateDeg', 'rotateDirection', 'yInterval', 'pyramidTime'])
+    }
+
+    if (options.properties.statePyramid === 'stretch') {
+      hiddenOptions = hiddenOptions.concat(['rotateType', 'rotateSpeed', 'stopSpeed', 'rotateDirection', 'xRotateDeg', 'yRotateDeg', 'zRotateDeg', 'rotateDirection'])
     }
 
     // rotate type

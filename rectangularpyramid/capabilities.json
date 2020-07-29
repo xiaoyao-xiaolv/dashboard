@@ -53,6 +53,10 @@
                             {
                                 "value": "dynamic",
                                 "displayNameKey": "动态"
+                            },
+                            {
+                                "value": "stretch",
+                                "displayNameKey": "延展"
                             }
                         ],
                         "defaultValue": "static"
@@ -120,12 +124,6 @@
                         "defaultValue": "positive"
                     },
                     {
-                        "name": "yInterval",
-                        "type": "Integer",
-                        "displayName": "间隔",
-                        "defaultValue": 3
-                    },
-                    {
                         "name": "pyramidBgColor",
                         "type": "Palette",
                         "displayName": "调色板"
@@ -141,6 +139,18 @@
                         "type": "Boolean",
                         "displayName": "显示顶部",
                         "defaultValue": false
+                    },
+                    {
+                        "name": "yInterval",
+                        "type": "Integer",
+                        "displayName": "间隔",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "pyramidTime",
+                        "type": "Integer",
+                        "displayName": "延展时长",
+                        "defaultValue": 5
                     }
                 ]
             },
