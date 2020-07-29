@@ -42,16 +42,38 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
+                        "name": "statePyramid",
+                        "type": "Enum",
+                        "displayName": "状态",
+                        "items": [
+                            {
+                                "value": "static",
+                                "displayNameKey": "静态"
+                            },
+                            {
+                                "value": "dynamic",
+                                "displayNameKey": "动态"
+                            }
+                        ],
+                        "defaultValue": "static"
+                    },
+                    {
+                        "name": "xRotateDeg",
+                        "type": "Integer",
+                        "displayName": "X轴旋转角度",
+                        "defaultValue": 0
+                    },
+                    {
                         "name": "yRotateDeg",
                         "type": "Integer",
                         "displayName": "Y轴旋转角度",
-                        "defaultValue": 45
+                        "defaultValue": -45
                     },
                     {
-                        "name": "showAnimate",
-                        "type": "Boolean",
-                        "displayName": "加载动画",
-                        "defaultValue": false
+                        "name": "zRotateDeg",
+                        "type": "Integer",
+                        "displayName": "Z轴旋转角度",
+                        "defaultValue": 0
                     },
                     {
                         "name": "rotateType",

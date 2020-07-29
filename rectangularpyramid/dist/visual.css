@@ -22,11 +22,8 @@
   left: 0%;
   -webkit-perspective: 1050px;
   perspective: 1050px;
-  -webkit-perspective-origin: 50% calc(50% - 13em);
-  perspective-origin: 50% calc(50% - 13em);
-}
-.a3d {
-  top: 40%;
+  -webkit-perspective-origin: 50% calc(50% - 0em);
+  perspective-origin: 50% calc(50% - 0em);
 }
 @-webkit-keyframes positiveR {
   to {

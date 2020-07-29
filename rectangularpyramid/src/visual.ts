@@ -38,7 +38,6 @@ export default class Visual extends WynVisual {
     const options = updateOptions;
 
     const dataView = options.dataViews[0];
-    console.log(dataView, '====dataview')
 
     this.isMock = !(dataView && dataView.plain.profile.dimensions.values.length);
     const plainData: any = this.isMock ? {} : dataView.plain;
@@ -82,7 +81,7 @@ export default class Visual extends WynVisual {
 
   public render() {
     this.resize();
-    this.root.html('').width(800).height(400).css('position', 'relative');
+    this.root.html('').width(800).height(800).css('position', 'relative');
     let container = $('<div class="container">').appendTo(this.root);
     let isActive = true;
 
@@ -97,7 +96,14 @@ export default class Visual extends WynVisual {
 
     // pyramid container
     const rotateDirection = options.rotateDirection === 'positive' ? 'positiveR' : 'negativeR';
-    let pyramidContainer = $('<div class="a3d">').css({ 'transform': `rotateY(${options.showAnimate ? 0 : -options.yRotateDeg}deg)` }).appendTo(container);
+    const pyramidRotate = options.statePyramid === 'dynamic'
+      ? {
+        'transform': `rotateX(${0}deg) rotateY(${0}deg) rotateZ(${0}deg)`
+      }
+      : {
+        'transform': `rotateX(${options.xRotateDeg}deg) rotateY(${options.yRotateDeg}deg) rotateZ(${options.zRotateDeg}deg)`
+      }
+    let pyramidContainer = $('<div class="a3d">').css({ ...pyramidRotate }).appendTo(container);
 
     const pauseRetateY = (deg = 0) => {
       if (isActive) {
@@ -123,7 +129,8 @@ export default class Visual extends WynVisual {
       }
     }
     // control rotate type
-    if (options.showAnimate) {
+
+    if (options.statePyramid == 'dynamic') {
       options.rotateType === 'pause' ? pauseRetateY(0) : continuousRetateY();
     }
 
@@ -157,18 +164,24 @@ export default class Visual extends WynVisual {
       // Y animate
 
       for (let i = 0; i < 4; i++) {
-
+        const positionText = options.statePyramid === 'dynamic'
+          ? {
+            'transform': `translateX(-50%) rotateX(${0}deg) rotateY(${0}deg) rotateZ(${0}deg)`
+          }
+          : {
+            'transform': `translateX(-50%) rotateX(${-options.xRotateDeg}deg) rotateY(${-options.yRotateDeg}deg) rotateZ(${-options.zRotateDeg}deg)`
+          }
         let s2d = $('<div class="s2d">')
           .css({ ...s2dBgColor, 'clipPath': `polygon(${x0}% ${y0}%,  ${x1}% ${y0}%, ${x2}% ${y1}% , ${x3}% ${y1}%)` })
           .appendTo(s3dContainer);
         if (index < length - 1) {
           i === 0 && $('<div class="s2d-text">')
             .text(this.items[index][this.dimensions])
-            .css({ ...options.dimensionsTextStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
+            .css({ ...positionText, ...options.dimensionsTextStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
             .appendTo(s2d);
           i === 1 && $('<div class="s2d-text">')
             .text(this.formatData(this.items[index][this.value], options.detailValueUnit, options.detailValueType))
-            .css({ ...options.textStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
+            .css({ ...positionText, ...options.textStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
             .appendTo(s2d);
         } else {
           s2d.css({ 'visibility': options.pyramidSharp ? 'visiable' : 'hidden' })
@@ -253,8 +266,8 @@ export default class Visual extends WynVisual {
   }
 
   private resize() {
-    let width = 500,
-      height = 350,
+    let width = 400,
+      height = 500,
       winWidth = $(window).width(),
       winHeight = $(window).height(),
       xZoom = winWidth / width,
@@ -271,12 +284,17 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     let hiddenOptions: Array<any> = []
-    // animate
-    if (!options.properties.showAnimate) {
+
+    // state pyramid
+    if (options.properties.statePyramid === 'static') {
       hiddenOptions = hiddenOptions.concat(['rotateType', 'rotateSpeed', 'stopSpeed', 'rotateDirection'])
     }
+    if (options.properties.statePyramid === 'dynamic') {
+      hiddenOptions = hiddenOptions.concat(['xRotateDeg', 'yRotateDeg', 'zRotateDeg', 'rotateDirection'])
+    }
+
     // rotate type
-    if (!options.properties.showAnimate) {
+    if (!options.properties.rotateType) {
       hiddenOptions = hiddenOptions.concat(['stopSpeed'])
     }
 
