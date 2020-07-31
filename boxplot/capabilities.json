@@ -8,11 +8,6 @@
             },
             {
                 "name": "dimension",
-                "displayNameKey": "分组",
-                "kind": "grouping"
-            },
-            {
-                "name": "series",
                 "displayNameKey": "分类",
                 "kind": "grouping"
             }
@@ -27,9 +22,6 @@
                             },
                             "dimension": {
                                 "min": 1
-                            },
-                            "series": {
-                                "min": 1
                             }
                         }
                     ]
@@ -39,9 +31,6 @@
         "conditions": [
             {
                 "dimension": {
-                    "max": 1
-                },
-                "series": {
                     "max": 1
                 }
             }
@@ -159,6 +148,147 @@
                 ]
             },
             {
+                "displayName": "区域缩放",
+                "properties": [
+                    {
+                        "name": "showDataZoom",
+                        "type": "Boolean",
+                        "displayName": "显示缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "dataStart",
+                        "type": "Percentage",
+                        "displayName": "起始",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "dataEnd",
+                        "type": "Percentage",
+                        "displayName": "结束",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "dataZoomBgColor",
+                        "type": "Color",
+                        "displayName": "颜色",
+                        "defaultValue": "#c1c2cb"
+                    }
+                ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+                    {
+                        "name": "xAxis",
+                        "type": "Boolean",
+                        "displayName": "显示轴",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "xAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "xAxisTick",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标记",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "xAxisLine",
+                        "type": "Boolean",
+                        "displayName": "显示轴线",
+                        "defaultValue": false
+                    }
+                ]
+            },
+            {
+                "displayName": "数值轴",
+                "properties": [
+                    {
+                        "name": "leftAxis",
+                        "type": "Boolean",
+                        "displayName": "显示轴",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisTick",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标记",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisLine",
+                        "type": "Boolean",
+                        "displayName": "显示轴线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftSplitLine",
+                        "type": "Boolean",
+                        "displayName": "显示网格线",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dataUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    }
+                ]
+            },
+            {
                 "type": "interaction"
             },
             {
@@ -178,9 +308,6 @@
         },
         {
             "type": "filter"
-        },
-        {
-            "type": "rank"
         },
         {
             "type": "annotation"

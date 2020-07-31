@@ -42,16 +42,14 @@ export default class Visual extends WynVisual {
   // toolTip
   private showTooltip = _.debounce((params, asModel = false) => {
     if (asModel) isTooltipModelShown = true;
+    const fieldsName = [params.name + (params.seriesName), 'Min', 'Q1', 'Median', 'Q3', 'Max']
+    const fields = params.data.map((item, index) => { return { label: fieldsName[index], value: index ? item : '' } })
     this.host.toolTipService.show({
       position: {
         x: params.event.event.x,
         y: params.event.event.y,
       },
-
-      fields: [{
-        label: this.ActualValue,
-        value: params.data,
-      }],
+      fields,
       selected: this.selectionManager.getSelectionIds(),
       menu: true,
     }, 10);
@@ -97,7 +95,6 @@ export default class Visual extends WynVisual {
         seriesIndex: params.seriesIndex,
         dataIndex: params.dataIndex,
       };
-
       if (this.items[3][params.dataIndex]) {
         const sid = this.items[3][params.dataIndex];
         this.selectionManager.select(sid, true);
@@ -111,27 +108,24 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-
     this.items = [];
     if (dataView &&
-      dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length && dataView.plain.profile.series.values.length) {
+      dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
       const plainData = dataView.plain;
 
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
-      // this.ActualValue = plainData.profile.ActualValue.values[0].display;
       this.ActualValue = plainData.profile.ActualValue.values.map((item) => item.display);
-      this.Series = plainData.profile.series.values[0].display || '';
+
       this.items[0] = plainData.data.map((item) => item[this.dimension]);
       this.items[1] = plainData.data.map((item) => item[this.Series]);
-
 
       // get data
       this.items[2] = [];
       this.ActualValue.map((item, index) => {
         const data = [];
 
-        if (this.Series) {
+        if (this.dimension) {
           const dimensionData = Array.from(new Set(this.items[0]));
           dimensionData.map((dimension, dimensionIndex) => {
             const dimensionTag = plainData.data.filter((item) => item[this.dimension] === dimension);
@@ -146,15 +140,14 @@ export default class Visual extends WynVisual {
       })
 
 
-      // const getSelectionId = (item) => {
-      //   const selectionId = this.createSelectionId();
+      const getSelectionId = (item) => {
+        const selectionId = this.createSelectionId();
 
-      //   this.dimension && selectionId.withDimension(plainData.profile.dimension.values[0], item);
-      //   this.Series && selectionId.withDimension(plainData.profile.series.values[0], item);
-      //   // this.ActualValue && selectionId.withDimension(plainData.profile.ActualValue.values[0], item);
-      //   return selectionId
-      // }
-      // this.items[3] = plainData.data.map((item) => getSelectionId(item));
+        this.dimension && selectionId.withDimension(plainData.profile.dimension.values[0], item);
+        return selectionId
+      }
+      this.items[3] = plainData.data.map((item) => getSelectionId(item));
+      this.items[3] = _.uniqWith(this.items[3], _.isEqual)
     } else {
       this.isMock = true;
     }
@@ -163,14 +156,55 @@ export default class Visual extends WynVisual {
     this.render()
   }
 
+  public formatUnit = (value: any, dataUnit) => {
+    if (value) {
+      const units = [{
+        value: 1,
+        unit: ''
+      },
+      {
+        value: 100,
+        unit: '百'
+      }, {
+        value: 1000,
+        unit: '千'
+      }, {
+        value: 10000,
+        unit: '万'
+      }, {
+        value: 100000,
+        unit: '十万'
+      }, {
+        value: 1000000,
+        unit: '百万'
+      }, {
+        value: 10000000,
+        unit: '千万'
+      }, {
+        value: 100000000,
+        unit: '亿'
+      }, {
+        value: 1000000000,
+        unit: '十亿'
+      }, {
+        value: 100000000000,
+        unit: '万亿'
+      }]
+      const format = units.find((item) => item.value === Number(dataUnit))
+      return value / format.value + format.unit
+    } else {
+      return value
+    }
+  }
+
+
   public render() {
     this.chart.clear();
     const isMock = !this.items.length
     const options = this.properties;
 
     this.container.style.opacity = isMock ? '0.3' : '1';
-    const textStyle = options.textStyle
-
+    const textStyle = { ...options.textStyle };
 
     let data: any = [];
     for (var seriesIndex = 0; seriesIndex < 5; seriesIndex++) {
@@ -221,6 +255,12 @@ export default class Visual extends WynVisual {
     data = this.isMock ? data : this.items[2];
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
     const legendTextStyle = options.legendTextStyle;
+    const gridStyle = {
+      left: options.legendPosition === 'left' ? '10%' : '8%',
+      top: options.legendPosition === 'top' ? '10%' : '5%',
+      right: options.legendPosition === 'right' ? '10%' : '3%',
+      bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '10%' : '5%')
+    };
     const option = {
       legend: {
         data: this.isMock ? ['分类1', '分类2', '分类3', '分类4', '分类5'] : this.ActualValue,
@@ -238,53 +278,64 @@ export default class Visual extends WynVisual {
           type: 'shadow'
         }
       },
-      grid: {
-        left: '10%',
-        top: '20%',
-        right: '10%',
-        bottom: '15%'
-      },
+      grid: gridStyle,
       xAxis: {
         type: 'category',
+        show: options.xAxis,
+        axisTick: {
+          show: options.xAxisTick
+        },
+        axisLine: {
+          show: options.xAxisLine
+        },
+        axisLabel: {
+          show: options.xAxisLabel,
+          formatter: '{value}',
+          ...textStyle,
+          fontSize: parseFloat(options.textStyle.fontSize),
+        },
         data: this.isMock ? data[0].axisData : Array.from(new Set(this.items[0])),
         boundaryGap: true,
-        nameGap: 30,
-        // splitArea: {
-        //   show: true
-        // },
-        axisLabel: {
-          formatter: '{value}'
-        },
-        splitLine: {
-          show: false
-        },
-
+        nameGap: 30
       },
       yAxis: {
         type: 'value',
-        min: -400,
-        splitArea: {
-          show: false
+        show: options.leftAxis,
+        axisLabel: {
+          show: options.leftAxisLabel,
+          formatter: (value) => {
+            return this.formatUnit(value, options.dataUnit)
+          },
+          ...textStyle,
+          fontSize: parseFloat(options.textStyle.fontSize),
+
+        },
+        axisTick: {
+          show: options.leftAxisTick
+        },
+        axisLine: {
+          show: options.leftAxisLine
         },
         splitLine: {
-          show: false
+          show: options.leftSplitLine
         }
       },
-      textStyle: textStyle,
+
       dataZoom: [
         {
           type: 'inside',
-          start: 0,
-          end: 20
+          start: Number(options.dataStart),
+          end: options.showDataZoom ? Number(options.dataEnd) : 100
         },
         {
-          show: true,
+          show: options.showDataZoom,
           height: 20,
           type: 'slider',
-          top: '90%',
+          top: options.legendPosition === 'bottom' ? '80%' : '90%',
+          fillerColor: options.dataZoomBgColor,
           xAxisIndex: [0],
-          start: 0,
-          end: 20
+          start: Number(options.dataStart),
+          end: options.showDataZoom ? Number(options.dataEnd) : 100
         }
       ],
       series: [
@@ -293,14 +344,14 @@ export default class Visual extends WynVisual {
       ]
     };
 
-    function formatter(param) {
+    const formatter = (param) => {
       return [
         `${'分类'}` + param.name + ': ',
-        '上边缘: ' + param.data[0],
-        '上四分位数: ' + param.data[1],
-        '中位数: ' + param.data[2],
-        '下四分位数: ' + param.data[3],
-        '下边缘: ' + param.data[4]
+        'Max: ' + param.data[5],
+        'Q3: ' + param.data[4],
+        'Median: ' + param.data[3],
+        'Q1: ' + param.data[2],
+        'Min: ' + param.data[1]
       ].join('<br/>')
     }
 
@@ -317,8 +368,29 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[] {
+    let hiddenOptions: Array<string> = [''];
+    // legend
+    if (!updateOptions.properties.showLegend) {
+      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
+    }
+    if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
+      hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
+    } else {
+      hiddenOptions = hiddenOptions.concat(['legendHorizontalPosition'])
+    }
+    // data zoom
+    if (!updateOptions.properties.showDataZoom) {
+      hiddenOptions = hiddenOptions.concat(['dataStart', 'dataEnd', 'dataZoomBgColor'])
+    }
+    //axis
+    if (!updateOptions.properties.xAxis) {
+      hiddenOptions = hiddenOptions.concat(['xAxisLabel', 'xAxisTick', 'xAxisLine'])
+    }
 
-    return null;
+    if (!updateOptions.properties.leftAxis) {
+      hiddenOptions = hiddenOptions.concat(['leftAxisLabel', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])
+    }
+    return hiddenOptions;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
