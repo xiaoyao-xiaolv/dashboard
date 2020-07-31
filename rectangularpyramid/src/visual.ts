@@ -283,8 +283,8 @@ export default class Visual extends WynVisual {
   }
 
   private resize() {
-    let width = 400,
-      height = 500,
+    let width = 600,
+      height = 274,
       winWidth = $(window).width(),
       winHeight = $(window).height(),
       xZoom = winWidth / width,
@@ -293,9 +293,9 @@ export default class Visual extends WynVisual {
 
     const ua = navigator.userAgent;
     if (ua.indexOf("Firefox") != -1) {
-      this.root.css({ 'transform': `scale(${zoom}) translate(-50%, -50%)`, 'transformOrigin': 'top left' });
+      this.root.css({ 'transform': `scaleX(${xZoom}) scaleY(${yZoom}) translate(-50%, -50%)`, 'transformOrigin': 'top left' });
     } else {
-      this.root.css({ "zoom": zoom });
+      this.root.css({ 'transform': ` scaleX(${xZoom}) scaleY(${yZoom}) translate(-50%, -50%)`, 'transformOrigin': 'top left' });
     }
   };
 
@@ -312,7 +312,7 @@ export default class Visual extends WynVisual {
     }
 
     if (options.properties.statePyramid === 'stretch') {
-      hiddenOptions = hiddenOptions.concat(['rotateType', 'rotateSpeed', 'stopSpeed', 'rotateDirection', 'xRotateDeg', 'yRotateDeg', 'zRotateDeg', 'rotateDirection'])
+      hiddenOptions = hiddenOptions.concat(['rotateType', 'rotateSpeed', 'stopSpeed', 'rotateDirection', 'rotateDirection'])
     }
 
     // rotate type
