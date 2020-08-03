@@ -1,0 +1,272 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "实际值",
+                "kind": "value"
+            },
+            {
+                "name": "dimensions",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "dimensions": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "dimensions": {
+                    "max": 1
+                },
+                "values": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "statePyramid",
+                        "type": "Enum",
+                        "displayName": "状态",
+                        "items": [
+                            {
+                                "value": "static",
+                                "displayNameKey": "静态"
+                            },
+                            {
+                                "value": "dynamic",
+                                "displayNameKey": "动态"
+                            },
+                            {
+                                "value": "stretch",
+                                "displayNameKey": "延展"
+                            }
+                        ],
+                        "defaultValue": "static"
+                    },
+                    {
+                        "name": "xRotateDeg",
+                        "type": "Integer",
+                        "displayName": "X轴旋转角度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "yRotateDeg",
+                        "type": "Integer",
+                        "displayName": "Y轴旋转角度",
+                        "defaultValue": -45
+                    },
+                    {
+                        "name": "zRotateDeg",
+                        "type": "Integer",
+                        "displayName": "Z轴旋转角度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "rotateType",
+                        "type": "Enum",
+                        "displayName": "动画效果",
+                        "items": [
+                            {
+                                "value": "continuous",
+                                "displayNameKey": "连续旋转"
+                            },
+                            {
+                                "value": "pause",
+                                "displayNameKey": "停顿旋转"
+                            }
+                        ],
+                        "defaultValue": "continuous"
+                    },
+                    {
+                        "name": "rotateSpeed",
+                        "type": "Integer",
+                        "displayName": "旋转时长",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "stopSpeed",
+                        "type": "Integer",
+                        "displayName": "停顿时长",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "rotateDirection",
+                        "type": "Enum",
+                        "displayName": "旋转方向",
+                        "items": [
+                            {
+                                "value": "positive",
+                                "displayNameKey": "顺时针"
+                            },
+                            {
+                                "value": "negative",
+                                "displayNameKey": "逆时针"
+                            }
+                        ],
+                        "defaultValue": "positive"
+                    },
+                    {
+                        "name": "pyramidBgColor",
+                        "type": "Palette",
+                        "displayName": "调色板"
+                    },
+                    {
+                        "name": "pyramidOpacity",
+                        "type": "Percentage",
+                        "displayName": "透明度",
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "pyramidSharp",
+                        "type": "Boolean",
+                        "displayName": "显示顶部",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "yInterval",
+                        "type": "Integer",
+                        "displayName": "间隔",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "pyramidTime",
+                        "type": "Integer",
+                        "displayName": "延展时长",
+                        "defaultValue": 5
+                    }
+                ]
+            },
+            {
+                "displayName": "详情样式",
+                "properties": [
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "数值字体",
+                        "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "name": "dimensionsTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "分类字体",
+                        "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "name": "detailValueType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "detailValueUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title",
+                "defaultValue": {
+                    "show": false
+                }
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "sort"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

@@ -1,0 +1,317 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "ActualValue",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "dimension",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "ActualValue": {
+                                "min": 1
+                            },
+                            "dimension": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "dimension": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "boxBorderColor",
+                        "type": "Palette",
+                        "displayName": "调色板"
+                    },
+                    {
+                        "name": "boxFillColor",
+                        "type": "Color",
+                        "displayName": "填充色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "name": "showLegend",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "legendPosition",
+                        "type": "Enum",
+                        "displayName": "位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "水平位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "legendHorizontalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "middle",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "区域缩放",
+                "properties": [
+                    {
+                        "name": "showDataZoom",
+                        "type": "Boolean",
+                        "displayName": "显示缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "dataStart",
+                        "type": "Percentage",
+                        "displayName": "起始",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "dataEnd",
+                        "type": "Percentage",
+                        "displayName": "结束",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "dataZoomBgColor",
+                        "type": "Color",
+                        "displayName": "颜色",
+                        "defaultValue": "#c1c2cb"
+                    }
+                ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+                    {
+                        "name": "xAxis",
+                        "type": "Boolean",
+                        "displayName": "显示轴",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "xAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "xAxisTick",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标记",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "xAxisLine",
+                        "type": "Boolean",
+                        "displayName": "显示轴线",
+                        "defaultValue": false
+                    }
+                ]
+            },
+            {
+                "displayName": "数值轴",
+                "properties": [
+                    {
+                        "name": "leftAxis",
+                        "type": "Boolean",
+                        "displayName": "显示轴",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisTick",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标记",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftAxisLine",
+                        "type": "Boolean",
+                        "displayName": "显示轴线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftSplitLine",
+                        "type": "Boolean",
+                        "displayName": "显示网格线",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dataUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
