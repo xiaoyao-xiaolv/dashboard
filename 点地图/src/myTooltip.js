@@ -1,5 +1,5 @@
-import {TimelineMax} from "gsap";
-import 'script-loader!createjs/builds/1.0.0/createjs.min.js';
+import { TimelineMax } from "gsap"
+import 'script-loader!createjs/builds/1.0.0/createjs.min.js'
 import _ from 'lodash'
 
 /**
@@ -14,7 +14,7 @@ import _ from 'lodash'
  */
 
 export class myTooltipC {
-    constructor (boxId, config = {}) {
+    constructor(boxId, config = {}) {
         if (!boxId) throw Error('boxId为必传项')
         this.boxId = boxId
         this.config = {
@@ -52,7 +52,7 @@ export class myTooltipC {
             top: false
         })
     }
-    getPosOrSize (type, point) {
+    getPosOrSize(type, point) {
         let x1 = this.config.L1.long * Math.sin(Math.PI / 4)
         let width = x1 + this.config.L2.long + this.config.text.width
         let height = x1 + this.config.text.height / 2
@@ -93,17 +93,17 @@ export class myTooltipC {
             }
         }
     }
-    getTooltipDom (text) {
+    getTooltipDom(text) {
         if (!text) throw Error('text为必传项')
         return this.clickTrigger(text)
     }
-    createTooltip (text) {
+    createTooltip(text) {
         let me = this
         setTimeout(_ => {
             me.t = new createTooltip('tCanvas', me.config, text)
         }, 0)
     }
-    clickTrigger (text) {
+    clickTrigger(text) {
         this.createTooltip(text)
         let size = this.getPosOrSize('size')
         return `<canvas id="tCanvas" width="${size.width}" height="${size.height}"></canvas>`
@@ -111,7 +111,7 @@ export class myTooltipC {
 }
 
 export class createTooltip {
-    constructor (id, config, text) {
+    constructor(id, config, text) {
         this.config = config
         this.text = text
         this.totalTime = 0
@@ -128,7 +128,7 @@ export class createTooltip {
         this.begin()
         this.update()
     }
-    init () {
+    init() {
         // 根据不同展示位置计算起点位置
         this.start = [0, 0]
         if (this.config.left) {
@@ -138,12 +138,12 @@ export class createTooltip {
             this.start[1] = this.config.height
         }
     }
-    begin () {
+    begin() {
         this.L1()
         this.L2()
         this.addText()
     }
-    L1 () {
+    L1() {
         let me = this
         let c = me.config
         let tl = new TimelineMax()
@@ -164,7 +164,7 @@ export class createTooltip {
         }
         tl.to(scale, c.L1.time, {
             s: 1,
-            onUpdate () {
+            onUpdate() {
                 let s = scale.s
                 if (me.config.left) {
                     if (me.config.top) {
@@ -185,7 +185,7 @@ export class createTooltip {
         this.timeline.add(tl, this.totalTime)
         this.totalTime += c.L1.time
     }
-    L2 () {
+    L2() {
         // 只跟左右有关，只判断this.config.left
         let me = this
         let c = me.config
@@ -193,7 +193,7 @@ export class createTooltip {
         let scale = { s: 0 }
         tl.to(scale, c.L2.time, {
             s: 1,
-            onUpdate () {
+            onUpdate() {
                 let s = scale.s
                 if (me.config.left) {
                     me.g.c().s(c.lineColor).mt(...me.start).lt(...me.L1End).lt(me.L1End[0] - c.L2.long * s, me.L1End[1])
@@ -206,7 +206,7 @@ export class createTooltip {
         this.timeline.add(tl, this.totalTime)
         this.totalTime += c.L2.time
     }
-    addText () {
+    addText() {
         // text框只与L2end有关，只需判断left即可，top不影响
         let me = this
         let c = me.config
@@ -218,7 +218,7 @@ export class createTooltip {
         }
         tl.to(scale, c.text.time, {
             s: 1,
-            onStart () {
+            onStart() {
                 let x = 0
                 if (me.config.left) {
                     x = L2End[0] - c.text.width
@@ -243,19 +243,19 @@ export class createTooltip {
                 me.textShape.alpha = 0
                 me.update()
             },
-            onUpdate () {
+            onUpdate() {
                 if (!me.textC) return
                 me.textC.alpha = scale.s
                 me.textShape.alpha = Math.sin(scale.s * Math.PI * 2.5)
                 me.update()
             },
-            onComplete () {
+            onComplete() {
                 me.over = true
             }
         })
         this.timeline.add(tl, this.totalTime)
     }
-    textBorder (w, h) {
+    textBorder(w, h) {
         let me = this
         let borderWidth = 1
         let borderAngle = new createjs.Shape()
@@ -277,27 +277,27 @@ export class createTooltip {
             .mt(w - angle.long, h).lt(w - skew, h - skew).lt(w - skew, h - angle.long)
         tl.to(scale, this.config.text.time / 4, {
             s: 1,
-            onUpdate () {
+            onUpdate() {
                 let s = scale.s
                 border.graphics.c().s(color).ss(borderWidth).mt(skew, skew).lt((w - skew) * s, skew)
             }
         }).to(scale, this.config.text.time / 4, {
             s: 0,
-            onUpdate () {
+            onUpdate() {
                 let s = 1 - scale.s
                 border.graphics.c().s(color).ss(borderWidth).mt(skew, skew)
                     .lt(w - skew, skew).lt(w - skew, (h - skew) * s)
             }
         }).to(scale, this.config.text.time / 4, {
             s: 1,
-            onUpdate () {
+            onUpdate() {
                 let s = scale.s
                 border.graphics.c().s(color).ss(borderWidth).mt(skew, skew)
                     .lt(w - skew, skew).lt(w - skew, h - skew).lt(w - skew - (w - 2 * skew) * s, h - skew)
             }
         }).to(scale, this.config.text.time / 4, {
             s: 0,
-            onUpdate () {
+            onUpdate() {
                 let s = 1 - scale.s
                 border.graphics.c().s(color).ss(borderWidth).mt(skew, skew)
                     .lt(w - skew, skew).lt(w - skew, h - skew).lt(skew, h - skew).lt(skew, h - skew - (h - 2 * skew) * s)
@@ -305,7 +305,7 @@ export class createTooltip {
         })
         this.timeline.add(tl, this.totalTime)
     }
-    update () {
+    update() {
         this.stage.update()
     }
 }

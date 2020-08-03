@@ -1,5 +1,5 @@
 import '../style/visual.less';
-import { myTooltipC, createTooltip } from './myTooltip.js'
+import { myTooltipC } from './myTooltip.js'
 import * as echarts from 'echarts';
 import "echarts/map/js/china.js";
 import "echarts/map/js/world.js";
@@ -46,6 +46,8 @@ export default class Visual extends WynVisual {
   private myTooltip: any;
   private locationName: any;
   private valuesName: any;
+  private long: any;
+  private lat: any;
   private items: any;
   static mockItems = [
     { name: "福州", value: [119.306239, 26.075302, 13] }
@@ -64,11 +66,13 @@ export default class Visual extends WynVisual {
     , { name: "郑州", value: [113.665412, 34.757975, 7] }
     , { name: "长沙", value: [112.982279, 28.19409, 95] }
   ];
+  static hourIndex = 0;
+  static fhourTime = null;
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
-    this.chart = echarts.init(dom)
-    this.myTooltip = new myTooltipC('visualDom')
+    this.chart = echarts.init(dom);
+    this.myTooltip = new myTooltipC('visualDom');
     this.items = [];
     this.properties = {
     };
@@ -100,12 +104,31 @@ export default class Visual extends WynVisual {
     return res;
   };
 
+  private convertData1 = (data: any) => {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+      var dataItem = data[i];
+      var geoCoord = [dataItem[this.long], dataItem[this.lat]];
+      if (geoCoord) {
+        res.push({
+          name: dataItem[this.locationName],
+          value: geoCoord.concat(dataItem[this.valuesName])
+        });
+      }
+    }
+    return res;
+  };
+
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
     this.items = [];
-    if (dataView && dataView.plain.profile.long.values.length) {
+    if (dataView && dataView.plain.profile.long.values.length && dataView.plain.profile.lat.values.length) {
       const plainData = dataView.plain;
-      console.log(plainData)
+      this.locationName = plainData.profile.location.values[0].display
+      this.valuesName = plainData.profile.values.values[0].display;
+      this.long = plainData.profile.long.values[0].display
+      this.lat = plainData.profile.lat.values[0].display;
+      this.items = this.convertData1(plainData.data);
     } else if (dataView) {
       const plainData = dataView.plain;
       this.locationName = plainData.profile.location.values[0].display
@@ -116,25 +139,90 @@ export default class Visual extends WynVisual {
     this.properties = options.properties;
     this.render();
   }
+
   public render() {
     this.chart.clear();
     let myTooltip = this.myTooltip;
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items;
-    console.log(items)
+    let locationName = isMock ? '地点' : this.locationName;
+    let valuesName = isMock ? '数量' : this.valuesName;
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
+    let series = [
+      {
+        name: '气泡地图',
+        type: 'effectScatter',
+        coordinateSystem: 'geo',
+        data: items,
+        symbolSize: function (val) {
+          return val[2] / options.pointSize > options.pointMaxSize ? options.pointMaxSize : val[2] / options.pointSize > options.pointMinSize ? val[2] / options.pointSize : options.pointMinSize;
+        },
+        showEffectOn: 'render',
+        rippleEffect: {
+          brushType: 'stroke'
+        },
+        hoverAnimation: true,
+        label: {
+          normal: {
+            formatter: '{b}',
+            position: 'right',
+            show: true
+          }
+        },
+        itemStyle: {
+          normal: {
+            color: options.symbolColor,
+            shadowBlur: 10,
+            shadowColor: '#333'
+          }
+        },
+        zlevel: 1
+      },
+      {
+        name: '点地图',
+        type: 'scatter',
+        coordinateSystem: 'geo',
+        symbol: 'pin',
+        symbolSize: [50, 50],
+        label: {
+          normal: {
+            show: options.showLabel,
+            textStyle: {
+              color: options.textColor,
+              fontSize: options.textFont,
+            },
+            formatter(value) {
+              return value.data.value[2]
+            }
+          }
+        },
+        itemStyle: {
+          normal: {
+            color: options.symbolColor, //标志颜色
+          }
+        },
+        data: items,
+        showEffectOn: 'render',
+        rippleEffect: {
+          brushType: 'stroke'
+        },
+        hoverAnimation: true,
+        zlevel: 1
+      }];
+    let temp = options.symbolStyle == 'effectScatter' ? series[0] : series[1]
+
     var option = {
       tooltip: {
         trigger: 'item',
-        triggerOn: 'click',
+        // triggerOn: 'click',
         backgroundColor: 'transparent',
-        position(pos) {
+        position(pos: any) {
           let position = myTooltip.getPosOrSize('pos', pos)
           return position
         },
-        formatter(params) {
-          let text = `地点：${params.name}\n数量：${params.value[2]}`
+        formatter(params: any) {
+          let text = locationName + ' : ' + params.name + '\n' + valuesName + ' : ' + params.value[2];
           let tooltipDom = myTooltip.getTooltipDom(text)
           return tooltipDom
         }
@@ -182,42 +270,80 @@ export default class Visual extends WynVisual {
           }
         }
       },
-      series: [
-        {
-          name: 'Tooltip Test',
-          type: 'effectScatter',
-          coordinateSystem: 'geo',
-          data: items,
-          symbolSize: function (val) {
-            return val[2] / 20;
-          },
-          showEffectOn: 'render',
-          rippleEffect: {
-            brushType: 'stroke'
-          },
-          hoverAnimation: true,
-          label: {
-            normal: {
-              formatter: '{b}',
-              position: 'right',
-              show: true
-            }
-          },
-          itemStyle: {
-            normal: {
-              color: '#f4e925',
-              shadowBlur: 10,
-              shadowColor: '#333'
-            }
-          },
-          zlevel: 1
-        }
-      ]
+      series: temp
     }
     this.chart.setOption(option);
+    this.auto_tooltip();
   }
-  public onDestroy() {
 
+  private auto_tooltip(){
+    Visual.fhourTime = setTimeout(() =>  {
+      this.chart.dispatchAction({
+        type: "downplay",
+        seriesIndex: 0,
+
+      });
+      this.chart.dispatchAction({
+        type: "highlight",
+        seriesIndex: 0,
+        dataIndex: Visual.hourIndex
+      });
+      this.chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: Visual.hourIndex
+      });
+      Visual.hourIndex++;
+      if (Visual.hourIndex > this.items.length) {
+        Visual.hourIndex = 0;
+      }
+    }, 3000);
+    //鼠标移入停止轮播
+    this.chart.on("mousemove", (e) =>  {
+      clearTimeout(Visual.fhourTime)
+      this.chart.dispatchAction({
+        type: "downplay",
+        seriesIndex: 0,
+      });
+      this.chart.dispatchAction({
+        type: "highlight",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
+      this.chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
+    })
+    //鼠标移出恢复轮播
+    this.chart.on("mouseout", () =>  {
+      Visual.fhourTime = setTimeout(() =>  {
+        this.chart.dispatchAction({
+          type: "downplay",
+          seriesIndex: 0,
+
+        });
+        this.chart.dispatchAction({
+          type: "highlight",
+          seriesIndex: 0,
+          dataIndex: Visual.hourIndex
+        });
+        this.chart.dispatchAction({
+          type: "showTip",
+          seriesIndex: 0,
+          dataIndex: Visual.hourIndex
+        });
+        Visual.hourIndex++;
+        if (Visual.hourIndex > this.items.length) {
+          Visual.hourIndex = 0;
+        }
+      }, 3000);
+    })
+    setTimeout(() => {this.auto_tooltip()}, 3000);
+  }
+
+  public onDestroy() {
   }
 
   public onResize() {
@@ -225,7 +351,10 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    return null;
+    if (!(options.properties.symbolStyle == 'effectScatter')) {
+      return ['pointSize', 'pointMaxSize', 'pointMinSize'];
+    }
+    return ['showLabel','textColor','textFont']
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
