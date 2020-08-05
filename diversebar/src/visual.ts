@@ -43,8 +43,9 @@ export default class Visual extends WynVisual {
   // toolTip
   private showTooltip = _.debounce((params, asModel = false) => {
     if (asModel) isTooltipModelShown = true;
+
     const fieldsName = [params.name + (params.seriesName), 'Min', 'Q1', 'Median', 'Q3', 'Max']
-    const fields = params.data.map((item, index) => { return { label: fieldsName[index], value: index ? item : '' } })
+    const fields = [{ label: params.name, value: '' }, { label: params.seriesName, value: params.data }]
     this.host.toolTipService.show({
       position: {
         x: params.event.event.x,
@@ -77,6 +78,11 @@ export default class Visual extends WynVisual {
         this.selectionManager.clear();
         return;
       }
+    })
+
+    this.container.addEventListener('mouseenter', (e: any) => {
+      if (isTooltipModelShown) return;
+      this.hideTooltip();
     })
 
     this.container.addEventListener('mouseleave', (e: any) => {
@@ -443,7 +449,15 @@ export default class Visual extends WynVisual {
     }
 
     const option = {
-      tooltip: {},
+      tooltip: {
+        trigger: 'item',
+        // axisPointer: {
+        //   type: 'shadow'
+        // },
+        formatter: (item) => {
+          return `${item.name || '月份'}<br />${item.seriesName || '数量'}:${item.data}`
+        }
+      },
       grid: gridStyle,
       legend: {
         data: this.isMock ? ['销量'] : this.ActualValue,
@@ -563,7 +577,7 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['barColor', 'barCategoryGap', 'barGap'])
     }
     if (updateOptions.properties.barType === 'hill') {
-      hiddenOptions = hiddenOptions.concat(['barColor', 'showColumnBottom'])
+      hiddenOptions = hiddenOptions.concat(['barColor', 'showColumnBottom', 'columnWidth'])
     }
     return hiddenOptions;
   }
