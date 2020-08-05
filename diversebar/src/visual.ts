@@ -196,6 +196,52 @@ export default class Visual extends WynVisual {
     }
   }
 
+  public formatData = (number, dataUnit, dataType) => {
+    let format = number
+    const units = [{
+      value: 1,
+      unit: ''
+    },
+    {
+      value: 100,
+      unit: '百'
+    }, {
+      value: 1000,
+      unit: '千'
+    }, {
+      value: 10000,
+      unit: '万'
+    }, {
+      value: 100000,
+      unit: '十万'
+    }, {
+      value: 1000000,
+      unit: '百万'
+    }, {
+      value: 10000000,
+      unit: '千万'
+    }, {
+      value: 100000000,
+      unit: '亿'
+    }, {
+      value: 1000000000,
+      unit: '十亿'
+    }, {
+      value: 100000000000,
+      unit: '万亿'
+    }]
+    const formatUnit = units.find((item) => item.value === Number(dataUnit))
+    format = (format / formatUnit.value).toFixed(2)
+
+    if (dataType === 'number') {
+      format = format.toLocaleString()
+    } else if (dataType === '%') {
+      format = format + dataType
+    } else {
+      format = dataType + format
+    }
+    return format + formatUnit.unit
+  }
 
   public render() {
     this.chart.clear();
@@ -203,7 +249,6 @@ export default class Visual extends WynVisual {
     const options = this.properties;
 
     this.container.style.opacity = isMock ? '0.3' : '1';
-    const textStyle = { ...options.textStyle };
     const legendTextStyle = { ...options.legendTextStyle };
 
     const datas: any = this.isMock ? Visual.mockItems[1] : this.items[1];
@@ -213,31 +258,43 @@ export default class Visual extends WynVisual {
       left: options.legendPosition === 'left' ? '10%' : '8%',
       top: options.legendPosition === 'top' ? '10%' : '5%',
       right: options.legendPosition === 'right' ? '10%' : '3%',
-      bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '15%' : '10%')
+      bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '20%' : '15%')
     };
-    const barWidth = 60;
 
+    const bar = [{
+      barWidth: 15,
+      barHeight: 5,
+      yOffset: 3,
+      interval: 10,
+      ratio: 20,
+      margin: 8
+    }, {
+      barWidth: 30,
+      barHeight: 7.5,
+      yOffset: 5,
+      interval: 20,
+      ratio: 38,
+      margin: 15
+    }, {
+      barWidth: 60,
+      barHeight: 16,
+      yOffset: 10,
+      interval: 40,
+      ratio: 78,
+      margin: 20
+    }]
     // column bar data 
     const drawColumnBar = () => {
-      const topData = datas.map((item) => {
-        return {
-          value: item,
-          symbolPosition: 'end'
-        }
-      })
       const getSymbolOffset = (index: number) => {
         let median = 0;
         let xOffset
         if (datas.length % 2 === 0) {
           median = datas.length / 2;
-          console.log(median, '==median', datas.length)
-          xOffset = index > median - 1 ? 40 + (index - median) * 78 : - 40 + ((median - (index + 1)) * -78)
-          console.log(xOffset, '===', index)
+          xOffset = index > median - 1 ? bar[Number(options.columnWidth)].interval + (index - median) * bar[Number(options.columnWidth)].ratio : - bar[Number(options.columnWidth)].interval + ((median - (index + 1)) * -bar[Number(options.columnWidth)].ratio)
         } else {
           median = (datas.length - 1) / 2;
           if (index === median) return xOffset = 0;
-          console.log(median, 'index', index)
-          xOffset = index > median ? (index - median) * 78 : -(median - index) * 78
+          xOffset = index > median ? (index - median) * bar[Number(options.columnWidth)].ratio : -(median - index) * bar[Number(options.columnWidth)].ratio
         }
         return xOffset
       }
@@ -247,14 +304,16 @@ export default class Visual extends WynVisual {
           name: "",
           type: 'pictorialBar',
           silent: true,
-          symbolSize: [60, 16],
-          symbolOffset: [getSymbolOffset(index), -10],
+          symbolSize: [bar[Number(options.columnWidth)].barWidth, bar[Number(options.columnWidth)].barHeight],
+          symbolOffset: [getSymbolOffset(index), -bar[Number(options.columnWidth)].yOffset],
           symbolPosition: 'end',
           z: 12,
-          //"barWidth": "20",
           label: {
             show: options.dataindicate,
             position: options.dataindicatePosition,
+            formatter: (item) => {
+              return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
+            },
             ...options.dataindicateTextStyle,
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
           },
@@ -271,8 +330,8 @@ export default class Visual extends WynVisual {
           name: '',
           silent: true,
           type: 'pictorialBar',
-          symbolSize: [60, 16],
-          symbolOffset: [getSymbolOffset(index), 10],
+          symbolSize: [bar[Number(options.columnWidth)].barWidth, bar[Number(options.columnWidth)].barHeight],
+          symbolOffset: [getSymbolOffset(index), bar[Number(options.columnWidth)].yOffset],
           // "barWidth": "20",
           z: 12,
           itemStyle: {
@@ -287,10 +346,11 @@ export default class Visual extends WynVisual {
         {
           name: '',
           type: 'pictorialBar',
-          symbolSize: [90, 30],
-          symbolOffset: [getSymbolOffset(index), 20],
+          symbolSize: [bar[Number(options.columnWidth)].barWidth + 30, bar[Number(options.columnWidth)].barHeight * 2],
+          symbolOffset: [getSymbolOffset(index), bar[Number(options.columnWidth)].yOffset * 2],
           z: 10,
           silent: true,
+
           itemStyle: {
             normal: {
               color: 'transparent',
@@ -301,7 +361,7 @@ export default class Visual extends WynVisual {
           },
           // barGap: `${options.barGap}%`,
           // barCategoryGap: `${options.barCategoryGap}%`,
-          data: data
+          data: options.showColumnBottom ? data : []
         },
         {
           name: this.isMock ? '销量' : this.ActualValue[index],
@@ -312,7 +372,7 @@ export default class Visual extends WynVisual {
               opacity: .7
             }
           },
-          barWidth,
+          barWidth: bar[Number(options.columnWidth)].barWidth,
           // barGap: `${options.barGap}%`,
           // barCategoryGap: `${options.barCategoryGap}%`,
           data: data,
@@ -405,17 +465,20 @@ export default class Visual extends WynVisual {
           show: options.xAxisTick
         },
         axisLine: {
-          show: options.xAxisLine
+          show: options.xAxisLine,
+          lineStyle: {
+            color: options.xAxisLineColor
+          }
         },
         axisLabel: {
           show: options.xAxisLabel,
-          ...textStyle,
-          fontSize: parseFloat(options.textStyle.fontSize),
+          margin: options.barType === 'column' && options.showColumnBottom ? bar[Number(options.columnWidth)].margin : 8,
+          ...options.xAxisTextStyle,
+          fontSize: parseFloat(options.xAxisTextStyle.fontSize),
         }
       },
       yAxis: {
         show: options.leftAxis,
-        min: -100,
         splitLine: {
           show: options.leftSplitLine
         },
@@ -423,15 +486,18 @@ export default class Visual extends WynVisual {
           show: options.leftAxisTick
         },
         axisLine: {
-          show: options.leftAxisLine
+          show: options.leftAxisLine,
+          lineStyle: {
+            color: options.leftColor
+          }
         },
         axisLabel: {
           show: options.leftAxisLabel,
           formatter: (value) => {
             return this.formatUnit(value, options.dataUnit)
           },
-          ...textStyle,
-          fontSize: parseFloat(options.textStyle.fontSize),
+          ...options.leftTextStyle,
+          fontSize: parseFloat(options.leftTextStyle.fontSize),
         }
       },
       dataZoom: [
@@ -453,17 +519,6 @@ export default class Visual extends WynVisual {
       ],
       series: getSeries()
     };
-
-    const formatter = (param) => {
-      return [
-        `${'分类'}` + param.name + ': ',
-        'Max: ' + param.data[5],
-        'Q3: ' + param.data[4],
-        'Median: ' + param.data[3],
-        'Q1: ' + param.data[2],
-        'Min: ' + param.data[1]
-      ].join('<br/>')
-    }
 
     this.chart.setOption(option)
   }
@@ -498,7 +553,7 @@ export default class Visual extends WynVisual {
     }
     //dataindicate
     if (!updateOptions.properties.dataindicate) {
-      hiddenOptions = hiddenOptions.concat(['dataindicatePosition', 'dataindicateTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['dataindicatePosition', 'dataindicateTextStyle', 'dataindicateType', 'dataindicateUnit'])
     }
     if (!updateOptions.properties.leftAxis) {
       hiddenOptions = hiddenOptions.concat(['leftAxisLabel', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])
@@ -508,7 +563,7 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['barColor', 'barCategoryGap', 'barGap'])
     }
     if (updateOptions.properties.barType === 'hill') {
-      hiddenOptions = hiddenOptions.concat(['barColor'])
+      hiddenOptions = hiddenOptions.concat(['barColor', 'showColumnBottom'])
     }
     return hiddenOptions;
   }

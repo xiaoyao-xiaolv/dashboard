@@ -70,24 +70,41 @@
                     },
                     {
                         "name": "barCategoryGap",
-                        "type": "Percentage",
+                        "type": "Integer",
                         "displayName": "分类间隔%",
                         "defaultValue": 20
                     },
                     {
                         "name": "barGap",
-                        "type": "Percentage",
+                        "type": "Integer",
                         "displayName": "系列间隔%",
                         "defaultValue": 0
                     },
                     {
-                        "name": "textStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle",
-                        "defaultValue": {
-                            "fontSize": "14px"
-                        }
+                        "name": "columnWidth",
+                        "type": "Enum",
+                        "displayName": "圆柱尺寸",
+                        "items": [
+                            {
+                                "value": "0",
+                                "displayNameKey": "1.X"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "2.X"
+                            },
+                            {
+                                "value": "2",
+                                "displayNameKey": "3.X"
+                            }
+                        ],
+                        "defaultValue": "0"
+                    },
+                    {
+                        "name": "showColumnBottom",
+                        "type": "Boolean",
+                        "displayName": "显示底部",
+                        "defaultValue": true
                     }
                 ]
             },
@@ -182,7 +199,7 @@
                         "name": "showDataZoom",
                         "type": "Boolean",
                         "displayName": "显示缩放",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "dataStart",
@@ -219,15 +236,99 @@
                         "items": [
                             {
                                 "value": "top",
-                                "displayNameKey": "还绕"
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
                             },
                             {
                                 "value": "inside",
-                                "displayNameKey": "数据点内"
+                                "displayNameKey": "中间"
                             }
                         ],
                         "displayNameKey": "位置",
                         "defaultValue": "top"
+                    },
+                    {
+                        "name": "dataindicateType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "dataindicateUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
                     },
                     {
                         "name": "dataindicateTextStyle",
@@ -265,7 +366,22 @@
                         "name": "xAxisLine",
                         "type": "Boolean",
                         "displayName": "显示轴线",
-                        "defaultValue": false
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "xAxisLineColor",
+                        "type": "Color",
+                        "displayName": "轴线颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "xAxisTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
                     }
                 ]
             },
@@ -349,6 +465,21 @@
                             }
                         ],
                         "defaultValue": "1"
+                    },
+                    {
+                        "name": "leftColor",
+                        "type": "Color",
+                        "displayName": "轴线颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "leftTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
                     }
                 ]
             },
