@@ -12,7 +12,7 @@ const echarts = {
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
 
-  private static mockItems = [['一月', '二月', '三月'], [100,50,20]];
+  private static mockItems = [['一月', '二月', '三月'], [[100, 50, 20]]];
 
   private container: HTMLDivElement;
   private host: any;
@@ -23,7 +23,7 @@ export default class Visual extends WynVisual {
   private selectionManager: any;
   private selection: any[] = [];
   private dimension: string
-  private ActualValue: string
+  private ActualValue: Array<any>
   private Series: string
 
 
@@ -109,6 +109,7 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
+
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
@@ -116,10 +117,27 @@ export default class Visual extends WynVisual {
 
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
-      this.ActualValue = plainData.profile.ActualValue.values[0].display;
+      this.ActualValue = plainData.profile.ActualValue.values.map((item) => item.display);
 
-      this.items[0] = plainData.data.map((item) => item[this.dimension]);
-      this.items[1] = plainData.data.map((item) => item[this.ActualValue]);
+      let items = plainData.data;
+      const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
+
+      // data sort 
+      if (isSort) {
+        const sortFlage = plainData.sort[this.dimension].order;
+        let newItems: any = sortFlage.map((flage) => {
+          return newItems = items.find((item) => item[this.dimension] === flage && item)
+        })
+        items = newItems.filter((item) => item)
+      }
+
+      this.items[0] = items.map((item) => item[this.dimension]);
+      const data = [];
+      this.ActualValue.map((item, index) => {
+        data[index] = items.map((item) => item[this.ActualValue[index]])
+      })
+      this.items[1] = data;
+      // this.items[1] = items.map((item) => item[this.ActualValue]);
 
       // get data
       const getSelectionId = (item) => {
@@ -127,7 +145,7 @@ export default class Visual extends WynVisual {
         this.dimension && selectionId.withDimension(plainData.profile.dimension.values[0], item);
         return selectionId
       }
-      this.items[2] = plainData.data.map((item) => getSelectionId(item));
+      this.items[2] = items.map((item) => getSelectionId(item));
 
     } else {
       this.isMock = true;
@@ -186,192 +204,235 @@ export default class Visual extends WynVisual {
 
     this.container.style.opacity = isMock ? '0.3' : '1';
     const textStyle = { ...options.textStyle };
+    const legendTextStyle = { ...options.legendTextStyle };
 
- 
-
-    const data = this.isMock ? Visual.mockItems[1] : this.items[1];
+    const datas: any = this.isMock ? Visual.mockItems[1] : this.items[1];
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
-    const legendTextStyle = options.legendTextStyle;
+
     const gridStyle = {
       left: options.legendPosition === 'left' ? '10%' : '8%',
       top: options.legendPosition === 'top' ? '10%' : '5%',
       right: options.legendPosition === 'right' ? '10%' : '3%',
-      bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '10%' : '5%')
+      bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '15%' : '10%')
     };
-    const barWidth = 100;
+    const barWidth = 60;
 
     // column bar data 
     const drawColumnBar = () => {
-      const topData = data.map((item) => {return {
-        value: item,
-        symbolPosition: 'end'
-    }})
-      return [
+      const topData = datas.map((item) => {
+        return {
+          value: item,
+          symbolPosition: 'end'
+        }
+      })
+      const getSymbolOffset = (index: number) => {
+        let median = 0;
+        let xOffset
+        if (datas.length % 2 === 0) {
+          median = datas.length / 2;
+          console.log(median, '==median', datas.length)
+          xOffset = index > median - 1 ? 40 + (index - median) * 78 : - 40 + ((median - (index + 1)) * -78)
+          console.log(xOffset, '===', index)
+        } else {
+          median = (datas.length - 1) / 2;
+          if (index === median) return xOffset = 0;
+          console.log(median, 'index', index)
+          xOffset = index > median ? (index - median) * 78 : -(median - index) * 78
+        }
+        return xOffset
+      }
+      const serise = [];
+      datas.map((data, index) => {
+        const serisedata = [{
+          name: "",
+          type: 'pictorialBar',
+          silent: true,
+          symbolSize: [60, 16],
+          symbolOffset: [getSymbolOffset(index), -10],
+          symbolPosition: 'end',
+          z: 12,
+          //"barWidth": "20",
+          label: {
+            show: options.dataindicate,
+            position: options.dataindicatePosition,
+            ...options.dataindicateTextStyle,
+            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
+          },
+          itemStyle: {
+            normal: {
+              color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+            }
+          },
+          // barGap: `${options.barGap}%`,
+          // barCategoryGap: `${options.barCategoryGap}%`,
+          data: data
+        },
         {
-          name: '年报上报率3',
+          name: '',
+          silent: true,
           type: 'pictorialBar',
-          symbolSize: [barWidth, 45],
-          symbolOffset: [0, -20],
+          symbolSize: [60, 16],
+          symbolOffset: [getSymbolOffset(index), 10],
+          // "barWidth": "20",
           z: 12,
           itemStyle: {
-              normal: {
-                  color: options.barColor
-              }
+            normal: {
+              color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+            }
           },
-          data:topData
-      }, {
-          name: '年报上报率2',
-          type: 'pictorialBar',
-          symbolSize: [barWidth, 45],
-          symbolOffset: [0, 20],
-          z: 12,
-          itemStyle: {
-              normal: {
-                  color:  options.barColor
-              }
-          },
+          // barGap: `${options.barGap}%`,
+          // barCategoryGap: `${options.barCategoryGap}%`,
           data: data
-      }, {
-          name: '年报上报率1',
+        },
+        {
+          name: '',
           type: 'pictorialBar',
-          symbolSize: [150, 75],
-          symbolOffset: [0, 37],
-          z: 11,
-          itemStyle: {
-              normal: {
-                  color: 'transparent',
-                  borderColor:  options.barColor,
-                  borderWidth: 5
-              }
-          },
-          data: data
-      }, {
-          name: '年报上报率',
-          type: 'pictorialBar',
-          symbolSize: [100, barWidth],
-          symbolOffset: [0, 50],
+          symbolSize: [90, 30],
+          symbolOffset: [getSymbolOffset(index), 20],
           z: 10,
+          silent: true,
           itemStyle: {
-              normal: {
-                  color: 'transparent',
-                  borderColor:  options.barColor,
-                  borderType: 'dashed',
-                  borderWidth: 5
-              }
+            normal: {
+              color: 'transparent',
+              borderColor: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+              borderType: 'dashed',
+              borderWidth: 5
+            }
           },
-          // data: data
-      }, {
+          // barGap: `${options.barGap}%`,
+          // barCategoryGap: `${options.barCategoryGap}%`,
+          data: data
+        },
+        {
+          name: this.isMock ? '销量' : this.ActualValue[index],
           type: 'bar',
           itemStyle: {
-              normal: {
-                  color:  options.barColor,
-                  opacity: .7
+            normal: {
+              color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+              opacity: .7
+            }
+          },
+          barWidth,
+          // barGap: `${options.barGap}%`,
+          // barCategoryGap: `${options.barCategoryGap}%`,
+          data: data,
+        }]
+        serise.push(...serisedata)
+      })
+      return serise
+    }
+
+    //  hill bar 
+    const drawHillBar = () => {
+
+      const serise = [];
+      datas.map((data, index) => {
+        const serisedata = [{
+          name: this.isMock ? '销量' : this.ActualValue[index],
+          type: 'pictorialBar',
+          symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
+          label: {
+            show: options.dataindicate,
+            position: options.dataindicatePosition,
+            distance: 15,
+            ...options.dataindicateTextStyle,
+            // color: options.barGradientColor[1].colorStops ? options.barGradientColor[1].colorStops[0] : options.barGradientColor[1],
+            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
+          },
+          itemStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0,
+                  color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index], //  0%  处的颜色
+
+                },
+                {
+                  offset: 1,
+                  color: options.barGradientColor[index + 1].colorStops ? options.barGradientColor[index + 1].colorStops[0] : options.barGradientColor[index + 1], //  100%  处的颜色
+
+                }
+                ],
+                global: false //  缺省为  false
               }
+            },
+            emphasis: {
+              opacity: 1
+            }
           },
-          silent: true,
-          show: true,
-          position: 'top',
-          barWidth: barWidth,
-          // barGap: '-100%', // Make series be overlap
-          data: data
-      }
-      ]
+          barGap: options.barGap && `${options.barGap}%` || 0,
+          barCategoryGap: options.barCategoryGap && `${options.barCategoryGap}%` || 0,
+          data: data,
+          z: 10
+        }]
+        serise.push(...serisedata)
+      })
+      return serise
     }
-
-  //  hill bar 
-  const drawHillBar = () => {
-    return [{
-      name: 'hill',
-      type: 'pictorialBar',
-      barCategoryGap: '0%',
-      symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
-      label: {
-    show: options.dataindicate,
-    position: options.dataindicatePosition,
-    distance: 15,
-    color: options.barGradientColor[1],
-    fontWeight: 'bolder',
-    fontSize: 20,
-  },
-      itemStyle: {
-          normal: {
-      color: {
-        type: 'linear',
-        x: 0,
-        y: 0,
-        x2: 0,
-        y2: 1,
-        colorStops: [{
-            offset: 0,
-            color: options.barGradientColor[0], //  0%  处的颜色
-
-          },
-          {
-            offset: 1,
-            color: options.barGradientColor[1], //  100%  处的颜色
-
-          }
-        ],
-        global: false //  缺省为  false
-      }
-    },
-    emphasis: {
-      opacity: 1
-    }
-      },
-      data: data,
-      z: 10
-  }]
-  }
 
     const getSeries = () => {
-      let  serise ;
-      if(options.barType == 'column') serise = drawColumnBar()
-      if(options.barType == 'hill') serise = drawHillBar()
+      let serise;
+      if (options.barType == 'column') serise = drawColumnBar()
+      if (options.barType == 'hill') serise = drawHillBar()
       return serise
-    } 
+    }
 
     const option = {
       tooltip: {},
       grid: gridStyle,
       legend: {
-        data: this.isMock ? Visual.mockItems[0] : this.items[0],
+        data: this.isMock ? ['销量'] : this.ActualValue,
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
         align: 'auto',
         icon: 'roundRect',
-        textStyle: legendTextStyle,
+        textStyle: {
+          ...legendTextStyle,
+          fontSize: parseFloat(options.legendTextStyle.fontSize),
+        },
         orient: orient,
       },
       xAxis: {
-          data: this.isMock ? Visual.mockItems[0] : this.items[0],
-          axisTick: {
-              show: false
-          },
-          axisLine: {
-              show: false
-          },
-          axisLabel: {
-              show: false,
-              textStyle: {
-                  color: '#e54035'
-              }
-          }
+        data: this.isMock ? Visual.mockItems[0] : this.items[0],
+        show: options.xAxis,
+        axisTick: {
+          show: options.xAxisTick
+        },
+        axisLine: {
+          show: options.xAxisLine
+        },
+        axisLabel: {
+          show: options.xAxisLabel,
+          ...textStyle,
+          fontSize: parseFloat(options.textStyle.fontSize),
+        }
       },
       yAxis: {
-          splitLine: {
-              show: false
+        show: options.leftAxis,
+        min: -100,
+        splitLine: {
+          show: options.leftSplitLine
+        },
+        axisTick: {
+          show: options.leftAxisTick
+        },
+        axisLine: {
+          show: options.leftAxisLine
+        },
+        axisLabel: {
+          show: options.leftAxisLabel,
+          formatter: (value) => {
+            return this.formatUnit(value, options.dataUnit)
           },
-          axisTick: {
-              show: false
-          },
-          axisLine: {
-              show: false
-          },
-          axisLabel: {
-              show: false
-          }
+          ...textStyle,
+          fontSize: parseFloat(options.textStyle.fontSize),
+        }
       },
       dataZoom: [
         {
@@ -391,7 +452,7 @@ export default class Visual extends WynVisual {
         }
       ],
       series: getSeries()
-  };
+    };
 
     const formatter = (param) => {
       return [
@@ -417,7 +478,7 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[] {
-    let hiddenOptions: Array<string> = ['showLegend'];
+    let hiddenOptions: Array<string> = [''];
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
@@ -437,14 +498,14 @@ export default class Visual extends WynVisual {
     }
     //dataindicate
     if (!updateOptions.properties.dataindicate) {
-      hiddenOptions = hiddenOptions.concat(['xAxisLabel', 'dataindicateTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['dataindicatePosition', 'dataindicateTextStyle'])
     }
     if (!updateOptions.properties.leftAxis) {
-      hiddenOptions = hiddenOptions.concat(['dataindicatePosition', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])
+      hiddenOptions = hiddenOptions.concat(['leftAxisLabel', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])
     }
     // bar type
     if (updateOptions.properties.barType === 'column') {
-      hiddenOptions = hiddenOptions.concat(['barGradientColor'])
+      hiddenOptions = hiddenOptions.concat(['barColor', 'barCategoryGap', 'barGap'])
     }
     if (updateOptions.properties.barType === 'hill') {
       hiddenOptions = hiddenOptions.concat(['barColor'])

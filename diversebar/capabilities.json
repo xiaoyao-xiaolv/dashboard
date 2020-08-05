@@ -69,6 +69,18 @@
                         "defaultValue": "#14b1eb"
                     },
                     {
+                        "name": "barCategoryGap",
+                        "type": "Percentage",
+                        "displayName": "分类间隔%",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "barGap",
+                        "type": "Percentage",
+                        "displayName": "系列间隔%",
+                        "defaultValue": 0
+                    },
+                    {
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -354,6 +366,9 @@
     "actions": [
         {
             "type": "focus"
+        },
+        {
+            "type": "sort"
         },
         {
             "type": "export"
