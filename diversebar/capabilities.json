@@ -10,6 +10,11 @@
                 "name": "dimension",
                 "displayNameKey": "分类",
                 "kind": "grouping"
+            },
+            {
+                "name": "series",
+                "displayNameKey": "系列",
+                "kind": "grouping"
             }
         ],
         "dataViewMappings": [
@@ -32,6 +37,25 @@
             {
                 "dimension": {
                     "max": 1
+                },
+                "series": {
+                    "max": 0
+                }
+            },
+            {
+                "series": {
+                    "min": 1
+                },
+                "ActualValue": {
+                    "max": 1
+                }
+            },
+            {
+                "ActualValue": {
+                    "min": 2
+                },
+                "series": {
+                    "max": 0
                 }
             }
         ]
@@ -99,6 +123,12 @@
                             }
                         ],
                         "defaultValue": "0"
+                    },
+                    {
+                        "name": "fillColumn",
+                        "type": "Boolean",
+                        "displayName": "填充模式",
+                        "defaultValue": true
                     },
                     {
                         "name": "showColumnBottom",

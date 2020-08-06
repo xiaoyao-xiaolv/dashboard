@@ -22,11 +22,13 @@ export default class Visual extends WynVisual {
   private items: any = [];
   private selectionManager: any;
   private selection: any[] = [];
-  private dimension: string
-  private ActualValue: Array<any>
-  private Series: string
-
-
+  private dimension: string;
+  private ActualValue: Array<any>;
+  private Series: string;
+  private MaxFillNumber: number;
+  private YLabelOffset: number;
+  private lengendLabelOffset: number;
+  private lengendLabeIndex: number;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -43,8 +45,6 @@ export default class Visual extends WynVisual {
   // toolTip
   private showTooltip = _.debounce((params, asModel = false) => {
     if (asModel) isTooltipModelShown = true;
-
-    const fieldsName = [params.name + (params.seriesName), 'Min', 'Q1', 'Median', 'Q3', 'Max']
     const fields = [{ label: params.name, value: '' }, { label: params.seriesName, value: params.data }]
     this.host.toolTipService.show({
       position: {
@@ -115,7 +115,6 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
@@ -136,15 +135,31 @@ export default class Visual extends WynVisual {
         })
         items = newItems.filter((item) => item)
       }
+      this.Series = plainData.profile.series.values.length ? plainData.profile.series.values[0].display : '';
+      const seriesData = []
+      if (this.Series) {
+        const seriesFlage = plainData.sort[this.Series].order;
+        const datas = []
+        seriesFlage.map((serise, index) => {
+          datas[index] = items.filter((item) => item[this.Series] === serise && item[this.ActualValue[0]])
+        })
+        datas.map((item, index) => {
+          seriesData[index] = item.map(data => data[this.ActualValue[0]])
+        })
+      }
 
       this.items[0] = items.map((item) => item[this.dimension]);
+
       const data = [];
       this.ActualValue.map((item, index) => {
         data[index] = items.map((item) => item[this.ActualValue[index]])
       })
-      this.items[1] = data;
-      // this.items[1] = items.map((item) => item[this.ActualValue]);
 
+      if (this.Series) {
+        this.items[1] = seriesData
+      } else {
+        this.items[1] = data;
+      }
       // get data
       const getSelectionId = (item) => {
         const selectionId = this.createSelectionId();
@@ -152,9 +167,17 @@ export default class Visual extends WynVisual {
         return selectionId
       }
       this.items[2] = items.map((item) => getSelectionId(item));
+      this.items[2] = _.uniqWith(this.items[2], _.isEqual)
+      // get max 
+      const maxData = this.items[1].map(data => _.max(data));
+      this.MaxFillNumber = _.max(maxData);
+      //  get max legend
+      const lengendLabe = this.ActualValue.map((item) => item.length)
+      this.lengendLabeIndex = lengendLabe.indexOf(_.max(lengendLabe));
 
     } else {
       this.isMock = true;
+      this.MaxFillNumber = 200;
     }
     this.properties = options.properties;
 
@@ -260,10 +283,31 @@ export default class Visual extends WynVisual {
     const datas: any = this.isMock ? Visual.mockItems[1] : this.items[1];
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
 
+    const getYLbaelOffset = (str, y: string) => {
+      const yLabelOffset = document.createElement('span');
+      yLabelOffset.innerText = str;
+      yLabelOffset.className = `ylabeloffset${y}`;
+      this.container.appendChild(yLabelOffset);
+      const offsetWidth = document.querySelector(`.ylabeloffset${y}`);
+      let width = 0;
+      if (offsetWidth instanceof HTMLElement) width = offsetWidth.offsetWidth + 10;
+      yLabelOffset.remove()
+      return width
+    }
+    this.YLabelOffset = getYLbaelOffset(isMock ? '200' : this.MaxFillNumber, 'y');
+    this.lengendLabelOffset = getYLbaelOffset(isMock ? '月份' : this.ActualValue[this.lengendLabeIndex], 'leg');
+    const getOffset = (left: boolean, position) => {
+      let legend = 0;
+      let label = 0;
+      if (left) legend = options.leftAxis ? this.YLabelOffset : 0;
+      label = options.showLegend && options.legendPosition === position ? this.lengendLabelOffset : 0;
+      return `${legend + label}px`;
+    }
+
     const gridStyle = {
-      left: options.legendPosition === 'left' ? '10%' : '8%',
+      left: getOffset(true, 'left'),
       top: options.legendPosition === 'top' ? '10%' : '5%',
-      right: options.legendPosition === 'right' ? '10%' : '3%',
+      right: getOffset(false, 'right'),
       bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '20%' : '15%')
     };
 
@@ -288,7 +332,28 @@ export default class Visual extends WynVisual {
       interval: 40,
       ratio: 78,
       margin: 20
-    }]
+    }];
+
+    const getColors = (index) => {
+      let backgroundColor = ''
+      const barGradientColor = options.barGradientColor;
+      if (index < barGradientColor.length - 1) {
+        backgroundColor = barGradientColor[index].colorStops ? barGradientColor[index].colorStops[0] : barGradientColor[index]
+      } else {
+        backgroundColor = barGradientColor[Math.floor((Math.random() * barGradientColor.length))].colorStops
+          ? barGradientColor[Math.floor((Math.random() * barGradientColor.length))].colorStops[0]
+          : barGradientColor[Math.floor((Math.random() * barGradientColor.length))]
+      }
+      return backgroundColor
+    }
+
+    const getFillData = (length) => {
+      let data = []
+      for (let i = 0; i < length; i++) {
+        data.push(this.MaxFillNumber)
+      }
+      return data
+    }
     // column bar data 
     const drawColumnBar = () => {
       const getSymbolOffset = (index: number) => {
@@ -304,6 +369,7 @@ export default class Visual extends WynVisual {
         }
         return xOffset
       }
+
       const serise = [];
       datas.map((data, index) => {
         const serisedata = [{
@@ -325,12 +391,46 @@ export default class Visual extends WynVisual {
           },
           itemStyle: {
             normal: {
-              color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+              color: getColors(index),
             }
           },
           // barGap: `${options.barGap}%`,
           // barCategoryGap: `${options.barCategoryGap}%`,
           data: data
+        }, {
+          name: "",
+          type: 'pictorialBar',
+          silent: true,
+          symbolSize: [bar[Number(options.columnWidth)].barWidth, bar[Number(options.columnWidth)].barHeight],
+          symbolOffset: [getSymbolOffset(index), -bar[Number(options.columnWidth)].yOffset],
+          symbolPosition: 'end',
+          z: 12,
+          itemStyle: {
+            normal: {
+              color: getColors(index),
+              opacity: .6
+            }
+          },
+          // barGap: `${options.barGap}%`,
+          // barCategoryGap: `${options.barCategoryGap}%`,
+          data: options.fillColumn ? getFillData(data.length) : []
+        },
+        {
+          name: "",
+          type: 'pictorialBar',
+          silent: true,
+          symbol: 'rect',
+          symbolSize: [bar[Number(options.columnWidth)].barWidth, '100%'],
+          symbolOffset: [getSymbolOffset(index), -bar[Number(options.columnWidth)].yOffset / 3],
+          symbolPosition: 'start',
+          z: 12,
+          itemStyle: {
+            normal: {
+              color: getColors(index),
+              opacity: .6
+            }
+          },
+          data: options.fillColumn ? getFillData(data.length) : []
         },
         {
           name: '',
@@ -342,7 +442,7 @@ export default class Visual extends WynVisual {
           z: 12,
           itemStyle: {
             normal: {
-              color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+              color: getColors(index),
             }
           },
           // barGap: `${options.barGap}%`,
@@ -360,7 +460,7 @@ export default class Visual extends WynVisual {
           itemStyle: {
             normal: {
               color: 'transparent',
-              borderColor: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+              borderColor: getColors(index),
               borderType: 'dashed',
               borderWidth: 5
             }
@@ -374,7 +474,7 @@ export default class Visual extends WynVisual {
           type: 'bar',
           itemStyle: {
             normal: {
-              color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index],
+              color: getColors(index),
               opacity: .7
             }
           },
@@ -415,12 +515,12 @@ export default class Visual extends WynVisual {
                 y2: 1,
                 colorStops: [{
                   offset: 0,
-                  color: options.barGradientColor[index].colorStops ? options.barGradientColor[index].colorStops[0] : options.barGradientColor[index], //  0%  处的颜色
+                  color: getColors(index), //  0%  处的颜色
 
                 },
                 {
                   offset: 1,
-                  color: options.barGradientColor[index + 1].colorStops ? options.barGradientColor[index + 1].colorStops[0] : options.barGradientColor[index + 1], //  100%  处的颜色
+                  color: getColors(index + 1), //  100%  处的颜色
 
                 }
                 ],
@@ -473,7 +573,7 @@ export default class Visual extends WynVisual {
         orient: orient,
       },
       xAxis: {
-        data: this.isMock ? Visual.mockItems[0] : this.items[0],
+        data: this.isMock ? Visual.mockItems[0] : Array.from(new Set(this.items[0])),
         show: options.xAxis,
         axisTick: {
           show: options.xAxisTick
@@ -577,12 +677,10 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['barColor', 'barCategoryGap', 'barGap'])
     }
     if (updateOptions.properties.barType === 'hill') {
-      hiddenOptions = hiddenOptions.concat(['barColor', 'showColumnBottom', 'columnWidth'])
+      hiddenOptions = hiddenOptions.concat(['barColor', 'showColumnBottom', 'columnWidth', 'fillColumn'])
     }
     return hiddenOptions;
   }
-
-
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     return null;
