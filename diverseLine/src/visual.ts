@@ -290,7 +290,7 @@ export default class Visual extends WynVisual {
     const getSeries = () => {
       return datas.map((data, index) => {
         return {
-          name: "访问量",
+          name: this.ActualValue[index],
           type: "line",
           symbolSize: 10,
           itemStyle: {
