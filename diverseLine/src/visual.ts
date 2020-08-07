@@ -12,7 +12,7 @@ const echarts = {
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
 
-  private static mockItems = [['一月', '二月', '三月'], [[100, 50, 20]]];
+  private static mockItems = [['一月', '二月', '三月', '四月', '五月', '六月'], [[60, 80, 20, 66, 22, 75]]];
 
   private container: HTMLDivElement;
   private host: any;
@@ -290,7 +290,7 @@ export default class Visual extends WynVisual {
     const getSeries = () => {
       return datas.map((data, index) => {
         return {
-          name: this.ActualValue[index],
+          name: this.isMock ? ['访问量'] : this.ActualValue[index],
           type: "line",
           symbolSize: 10,
           itemStyle: {
@@ -317,8 +317,10 @@ export default class Visual extends WynVisual {
             symbolSize: options.markPointSize,
             label: {
               normal: {
+                show: options.showMackPointLabel,
                 textStyle: {
-                  color: '#fff'
+                  ...options.markPointSizeTextStyle,
+                  fontSize: parseFloat(options.markPointSizeTextStyle.fontSize)
                 },
                 formatter: (item) => {
                   if (options.dataindicate) {
@@ -468,6 +470,10 @@ export default class Visual extends WynVisual {
     if (!updateOptions.properties.leftAxis) {
       hiddenOptions = hiddenOptions.concat(['leftAxisLabel', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])
     }
+    if (!updateOptions.properties.showMackPointLabel) {
+      hiddenOptions = hiddenOptions.concat(['markPointSizeTextStyle'])
+    }
+
     return hiddenOptions;
   }
 

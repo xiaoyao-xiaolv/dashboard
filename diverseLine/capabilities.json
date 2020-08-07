@@ -71,6 +71,32 @@
                         "displayName": "调色板"
                     },
                     {
+                        "name": "borderWidth",
+                        "type": "Integer",
+                        "displayName": "折线宽度",
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "borderType",
+                        "type": "Enum",
+                        "displayName": "折线样式",
+                        "items": [
+                            {
+                                "value": "solid",
+                                "displayNameKey": "实线"
+                            },
+                            {
+                                "value": "dashed",
+                                "displayNameKey": "虚线"
+                            },
+                            {
+                                "value": "dotted",
+                                "displayNameKey": "点线"
+                            }
+                        ],
+                        "defaultValue": "solid"
+                    },
+                    {
                         "name": "markPoint",
                         "type": "Enum",
                         "displayName": "标记样式",
@@ -114,33 +140,22 @@
                         "name": "markPointSize",
                         "type": "Integer",
                         "displayName": "标记大小",
-                        "defaultValue": 50
+                        "defaultValue": 20
                     },
                     {
-                        "name": "borderWidth",
-                        "type": "Integer",
-                        "displayName": "折线宽度",
-                        "defaultValue": 2
+                        "name": "showMackPointLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标注",
+                        "defaultValue": false
                     },
                     {
-                        "name": "borderType",
-                        "type": "Enum",
-                        "displayName": "折线样式",
-                        "items": [
-                            {
-                                "value": "solid",
-                                "displayNameKey": "实线"
-                            },
-                            {
-                                "value": "dashed",
-                                "displayNameKey": "虚线"
-                            },
-                            {
-                                "value": "dotted",
-                                "displayNameKey": "点线"
-                            }
-                        ],
-                        "defaultValue": "solid"
+                        "name": "markPointSizeTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
                     }
                 ]
             },
