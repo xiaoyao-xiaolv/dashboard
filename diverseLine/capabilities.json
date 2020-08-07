@@ -111,6 +111,12 @@
                         "defaultValue": "pin"
                     },
                     {
+                        "name": "markPointSize",
+                        "type": "Integer",
+                        "displayName": "标记大小",
+                        "defaultValue": 50
+                    },
+                    {
                         "name": "borderWidth",
                         "type": "Integer",
                         "displayName": "折线宽度",
@@ -447,6 +453,30 @@
                         "type": "Boolean",
                         "displayName": "显示网格线",
                         "defaultValue": false
+                    },
+                    {
+                        "name": "dataType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": ""
                     },
                     {
                         "name": "dataUnit",

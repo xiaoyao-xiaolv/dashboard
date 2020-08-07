@@ -25,7 +25,7 @@ export default class Visual extends WynVisual {
   private dimension: string;
   private ActualValue: Array<any>;
   private Series: string;
-  private MaxFillNumber: number;
+  private MaxFillNumber: number | string;
   private YLabelOffset: number;
   private lengendLabelOffset: number;
   private lengendLabeIndex: number;
@@ -184,46 +184,6 @@ export default class Visual extends WynVisual {
     this.render()
   }
 
-  public formatUnit = (value: any, dataUnit) => {
-    if (value) {
-      const units = [{
-        value: 1,
-        unit: ''
-      },
-      {
-        value: 100,
-        unit: '百'
-      }, {
-        value: 1000,
-        unit: '千'
-      }, {
-        value: 10000,
-        unit: '万'
-      }, {
-        value: 100000,
-        unit: '十万'
-      }, {
-        value: 1000000,
-        unit: '百万'
-      }, {
-        value: 10000000,
-        unit: '千万'
-      }, {
-        value: 100000000,
-        unit: '亿'
-      }, {
-        value: 1000000000,
-        unit: '十亿'
-      }, {
-        value: 100000000000,
-        unit: '万亿'
-      }]
-      const format = units.find((item) => item.value === Number(dataUnit))
-      return value / format.value + format.unit
-    } else {
-      return value
-    }
-  }
 
   public formatData = (number, dataUnit, dataType) => {
     let format = number
@@ -266,6 +226,8 @@ export default class Visual extends WynVisual {
       format = format.toLocaleString()
     } else if (dataType === '%') {
       format = format + dataType
+    } else if (dataType === 'none') {
+      format = Number(format).toFixed(0)
     } else {
       format = dataType + format
     }
@@ -294,8 +256,8 @@ export default class Visual extends WynVisual {
       yLabelOffset.remove()
       return width
     }
-    this.YLabelOffset = getYLbaelOffset(isMock ? '200' : this.MaxFillNumber, 'y');
-    this.lengendLabelOffset = getYLbaelOffset(isMock ? '访问量' : this.ActualValue[this.lengendLabeIndex], 'leg');
+    this.YLabelOffset = getYLbaelOffset(isMock ? this.formatData(200, options.dataUnit, options.dataType) : this.formatData(this.MaxFillNumber, options.dataUnit, options.dataType), 'y');
+    this.lengendLabelOffset = getYLbaelOffset(isMock ? '访问量' : `${this.ActualValue[this.lengendLabeIndex]}${options.dataType !== '' ? '%' : ''}`, 'leg');
     const getOffset = (left: boolean, position) => {
       let legend = 0;
       let label = 0;
@@ -311,29 +273,6 @@ export default class Visual extends WynVisual {
       bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '20%' : '15%')
     };
 
-    const bar = [{
-      barWidth: 15,
-      barHeight: 5,
-      yOffset: 3,
-      interval: 10,
-      ratio: 20,
-      margin: 8
-    }, {
-      barWidth: 30,
-      barHeight: 7.5,
-      yOffset: 5,
-      interval: 20,
-      ratio: 38,
-      margin: 15
-    }, {
-      barWidth: 60,
-      barHeight: 16,
-      yOffset: 10,
-      interval: 40,
-      ratio: 78,
-      margin: 20
-    }];
-
     const getColors = (index) => {
       let backgroundColor = ''
       const lineColor = options.lineColor;
@@ -347,199 +286,6 @@ export default class Visual extends WynVisual {
       return backgroundColor
     }
 
-    const getFillData = (length) => {
-      let data = []
-      for (let i = 0; i < length; i++) {
-        data.push(this.MaxFillNumber)
-      }
-      return data
-    }
-    // column bar data 
-    const drawColumnBar = () => {
-      const getSymbolOffset = (index: number) => {
-        let median = 0;
-        let xOffset
-        if (datas.length % 2 === 0) {
-          median = datas.length / 2;
-          xOffset = index > median - 1 ? bar[Number(options.columnWidth)].interval + (index - median) * bar[Number(options.columnWidth)].ratio : - bar[Number(options.columnWidth)].interval + ((median - (index + 1)) * -bar[Number(options.columnWidth)].ratio)
-        } else {
-          median = (datas.length - 1) / 2;
-          if (index === median) return xOffset = 0;
-          xOffset = index > median ? (index - median) * bar[Number(options.columnWidth)].ratio : -(median - index) * bar[Number(options.columnWidth)].ratio
-        }
-        return xOffset
-      }
-
-      const serise = [];
-      datas.map((data, index) => {
-        const serisedata = [{
-          name: "",
-          type: 'pictorialBar',
-          silent: true,
-          symbolSize: [bar[Number(options.columnWidth)].barWidth, bar[Number(options.columnWidth)].barHeight],
-          symbolOffset: [getSymbolOffset(index), -bar[Number(options.columnWidth)].yOffset],
-          symbolPosition: 'end',
-          z: 12,
-          label: {
-            show: options.dataindicate,
-            position: options.dataindicatePosition,
-            formatter: (item) => {
-              return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
-            },
-            ...options.dataindicateTextStyle,
-            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
-          },
-          itemStyle: {
-            normal: {
-              color: getColors(index),
-            }
-          },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
-          data: data
-        }, {
-          name: "",
-          type: 'pictorialBar',
-          silent: true,
-          symbolSize: [bar[Number(options.columnWidth)].barWidth, bar[Number(options.columnWidth)].barHeight],
-          symbolOffset: [getSymbolOffset(index), -bar[Number(options.columnWidth)].yOffset],
-          symbolPosition: 'end',
-          z: 12,
-          itemStyle: {
-            normal: {
-              color: getColors(index),
-              opacity: .6
-            }
-          },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
-          data: options.fillColumn ? getFillData(data.length) : []
-        },
-        {
-          name: "",
-          type: 'pictorialBar',
-          silent: true,
-          symbol: 'rect',
-          symbolSize: [bar[Number(options.columnWidth)].barWidth, '100%'],
-          symbolOffset: [getSymbolOffset(index), -bar[Number(options.columnWidth)].yOffset / 3],
-          symbolPosition: 'start',
-          z: 12,
-          itemStyle: {
-            normal: {
-              color: getColors(index),
-              opacity: .6
-            }
-          },
-          data: options.fillColumn ? getFillData(data.length) : []
-        },
-        {
-          name: '',
-          silent: true,
-          type: 'pictorialBar',
-          symbolSize: [bar[Number(options.columnWidth)].barWidth, bar[Number(options.columnWidth)].barHeight],
-          symbolOffset: [getSymbolOffset(index), bar[Number(options.columnWidth)].yOffset],
-          // "barWidth": "20",
-          z: 12,
-          itemStyle: {
-            normal: {
-              color: getColors(index),
-            }
-          },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
-          data: data
-        },
-        {
-          name: '',
-          type: 'pictorialBar',
-          symbolSize: [bar[Number(options.columnWidth)].barWidth + 30, bar[Number(options.columnWidth)].barHeight * 2],
-          symbolOffset: [getSymbolOffset(index), bar[Number(options.columnWidth)].yOffset * 2],
-          z: 10,
-          silent: true,
-
-          itemStyle: {
-            normal: {
-              color: 'transparent',
-              borderColor: getColors(index),
-              borderType: 'dashed',
-              borderWidth: 5
-            }
-          },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
-          data: options.showColumnBottom ? data : []
-        },
-        {
-          name: this.isMock ? '销量' : this.ActualValue[index],
-          type: 'bar',
-          itemStyle: {
-            normal: {
-              color: getColors(index),
-              opacity: .7
-            }
-          },
-          barWidth: bar[Number(options.columnWidth)].barWidth,
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
-          data: data,
-        }]
-        serise.push(...serisedata)
-      })
-      return serise
-    }
-
-    //  hill bar 
-    const drawHillBar = () => {
-
-      const serise = [];
-      datas.map((data, index) => {
-        const serisedata = [{
-          name: this.isMock ? '销量' : this.ActualValue[index],
-          type: 'pictorialBar',
-          symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
-          label: {
-            show: options.dataindicate,
-            position: options.dataindicatePosition,
-            distance: 15,
-            ...options.dataindicateTextStyle,
-            // color: options.barGradientColor[1].colorStops ? options.barGradientColor[1].colorStops[0] : options.barGradientColor[1],
-            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
-          },
-          itemStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0,
-                  color: getColors(index), //  0%  处的颜色
-
-                },
-                {
-                  offset: 1,
-                  color: getColors(index + 1), //  100%  处的颜色
-
-                }
-                ],
-                global: false //  缺省为  false
-              }
-            },
-            emphasis: {
-              opacity: 1
-            }
-          },
-          barGap: options.barGap && `${options.barGap}%` || 0,
-          barCategoryGap: options.barCategoryGap && `${options.barCategoryGap}%` || 0,
-          data: data,
-          z: 10
-        }]
-        serise.push(...serisedata)
-      })
-      return serise
-    }
 
     const getSeries = () => {
       return datas.map((data, index) => {
@@ -548,29 +294,38 @@ export default class Visual extends WynVisual {
           type: "line",
           symbolSize: 10,
           itemStyle: {
-            normal: {
-              color: getColors(index),
-              lineStyle: {
-                color: getColors(index),
-                width: options.borderWidth,
-                type: options.borderType
-              },
-            }
+            color: getColors(index),
+          },
+          lineStyle: {
+            color: getColors(index),
+            width: options.borderWidth,
+            type: options.borderType
           },
           label: {
             show: options.dataindicate,
             position: options.dataindicatePosition,
             distance: 15,
             ...options.dataindicateTextStyle,
+            formatter: (item) => {
+              return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
+            },
             // color: options.barGradientColor[1].colorStops ? options.barGradientColor[1].colorStops[0] : options.barGradientColor[1],
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
           },
           markPoint: {
             symbol: options.markPoint,
+            symbolSize: options.markPointSize,
             label: {
               normal: {
                 textStyle: {
                   color: '#fff'
+                },
+                formatter: (item) => {
+                  if (options.dataindicate) {
+                    return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
+                  } else {
+                    return item.value
+                  }
                 }
               }
             },
@@ -586,27 +341,16 @@ export default class Visual extends WynVisual {
           data: data
         }
       })
-      // let serise;
-      // if (options.barType == 'column') serise = drawColumnBar()
-      // if (options.barType == 'hill') serise = drawHillBar()
-      // return serise
-    }
-    var xData = function () {
-      var data = [];
-      for (var i = 1; i < 7; i++) {
-        data.push(i + "日");
-      }
-      return data;
-    }();
+    };
+
     const option = {
       tooltip: {
-        trigger: "axis",
+        trigger: "item",
         axisPointer: {
           type: "shadow",
           textStyle: {
             color: "#fff"
           }
-
         },
       },
       grid: gridStyle,
@@ -639,7 +383,6 @@ export default class Visual extends WynVisual {
         },
         axisLabel: {
           show: options.xAxisLabel,
-          margin: options.barType === 'column' && options.showColumnBottom ? bar[Number(options.columnWidth)].margin : 8,
           ...options.xAxisTextStyle,
           fontSize: parseFloat(options.xAxisTextStyle.fontSize),
         }
@@ -661,7 +404,7 @@ export default class Visual extends WynVisual {
         axisLabel: {
           show: options.leftAxisLabel,
           formatter: (value) => {
-            return this.formatUnit(value, options.dataUnit)
+            return this.formatData(value, options.dataUnit, options.dataType)
           },
           ...options.leftTextStyle,
           fontSize: parseFloat(options.leftTextStyle.fontSize),
@@ -724,13 +467,6 @@ export default class Visual extends WynVisual {
     }
     if (!updateOptions.properties.leftAxis) {
       hiddenOptions = hiddenOptions.concat(['leftAxisLabel', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])
-    }
-    // bar type
-    if (updateOptions.properties.barType === 'column') {
-      hiddenOptions = hiddenOptions.concat(['barColor', 'barCategoryGap', 'barGap'])
-    }
-    if (updateOptions.properties.barType === 'hill') {
-      hiddenOptions = hiddenOptions.concat(['barColor', 'showColumnBottom', 'columnWidth', 'fillColumn'])
     }
     return hiddenOptions;
   }
