@@ -96,6 +96,18 @@
                             }
                         ],
                         "defaultValue": "scale"
+                    },
+                    {
+                        "name": "startAngle",
+                        "type": "Integer",
+                        "displayName": "起始角度",
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "minAngle",
+                        "type": "Integer",
+                        "displayName": "最小扇形角度",
+                        "defaultValue": 0
                     }
                 ]
             },
@@ -215,6 +227,18 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "showLabelValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showLabelPercent",
+                        "type": "Boolean",
+                        "displayName": "显示比值",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "labelDataType",
                         "type": "Enum",
                         "displayName": "数据格式",
@@ -325,5 +349,14 @@
             "type": "annotation"
         }
     ],
-    "analysis": []
+    "analysis": [
+        {
+            "type": "drill",
+            "rule": {
+                "roles": [
+                    "dimensions"
+                ]
+            }
+        }
+    ]
 }

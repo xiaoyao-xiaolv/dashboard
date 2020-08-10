@@ -46,7 +46,7 @@ export default class Visual extends WynVisual {
   // toolTip
   private showTooltip = _.debounce((params, asModel = false) => {
     if (asModel) isTooltipModelShown = true;
-    const fields = [{ label: params.seriesName, value: '' }, { label: params.name, value: params.value }]
+    const fields = [{ label: this.dimension, value: '' }, { label: params.name, value: params.value }]
     this.host.toolTipService.show({
       position: {
         x: params.event.event.x,
@@ -299,9 +299,11 @@ export default class Visual extends WynVisual {
           return {
             name: '',
             type: 'pie',
-            radius: '55%',
+            radius: options.labelPosition === 'inside' ? '100%' : '55%',
             center: ['50%', '50%'],
             data: data,
+            startAngle: options.startAngle,
+            minAngle: options.minAngle,
             roseType: options.pieRoseType === 'rose' ? options.pieType : '',
             label: {
               show: options.showLabel,
@@ -309,13 +311,13 @@ export default class Visual extends WynVisual {
               fontSize: parseFloat(options.labelTextStyle.fontSize),
               position: options.labelPosition,
               formatter: (params) => {
-                if (options.labelPosition === 'outside') {
-                  const value = this.formatData(params.value, options.labelDataUnit, options.labelDataType)
-                  return `{b|${params.name}} \n{hr|}\n {c|${value}(${params.percent}%)}`
-                } else {
+                if (options.labelPosition === 'inside' || (!options.showLabelValue && !options.showLabelPercent)) {
                   return `{b|${params.name}}`
+                } else {
+                  const value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
+                  const percent = options.showLabelPercent ? `(${params.percent}%)` : '';
+                  return `{b|${params.name}} \n {hr|}\n {c|${value}${percent}}`
                 }
-
               },
               rich: {
                 hr: {
@@ -325,14 +327,14 @@ export default class Visual extends WynVisual {
                   height: 0
                 },
                 b: {
-                  lineHeight: 25,
+                  lineHeight: 20,
                   align: 'center',
                   padding: [2, 2],
                   ...options.labelTextStyle,
                   fontSize: parseFloat(options.labelTextStyle.fontSize),
                 },
                 c: {
-                  lineHeight: 25,
+                  lineHeight: 20,
                   align: 'center',
                   ...options.labelTextStyle,
                   fontSize: parseFloat(options.labelTextStyle.fontSize),
@@ -369,7 +371,7 @@ export default class Visual extends WynVisual {
               }
             },
             animationType: options.pieStartType,
-            animationEasing: 'elasticOut',
+            animationEasing: options.pieStartType === 'scale' ? 'elasticOut' : 'linear',
             animationDelay: function (idx) {
               return Math.random() * 200;
             }
