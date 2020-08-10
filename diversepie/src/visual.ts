@@ -248,19 +248,135 @@ export default class Visual extends WynVisual {
     //   bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '20%' : '15%')
     // };
 
-    const getColors = (index) => {
+    const getColors = (index, position: number) => {
       let backgroundColor = ''
       const pieColor = options.pieColor;
       if (index < pieColor.length - 1) {
-        backgroundColor = pieColor[index].colorStops ? pieColor[index].colorStops[0] : pieColor[index]
+        // is grandient 
+
+        backgroundColor = pieColor[index].colorStops ? pieColor[index].colorStops[position] : pieColor[index]
       } else {
         backgroundColor = pieColor[Math.floor((Math.random() * pieColor.length))].colorStops
-          ? pieColor[Math.floor((Math.random() * pieColor.length))].colorStops[0]
+          ? pieColor[Math.floor((Math.random() * pieColor.length))].colorStops[position]
           : pieColor[Math.floor((Math.random() * pieColor.length))]
       }
       return backgroundColor
     }
+    const getSeries = () => {
+      const seriesData = this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0];
+      return seriesData.map((item, index) => {
+        if (index) {
+          return {
+            name: seriesData[index],
+            type: 'pie',
+            data: [],
+            itemStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 1,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: getColors(index, 1), //  0%  处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: getColors(index, 0), //  100%  处的颜色
+                  }
+                  ],
+                  global: false //  缺省为  false
+                }
+              },
+              emphasis: {
+                opacity: 1
+              }
+            },
+          }
+        } else {
+          return {
+            name: '',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: data,
+            roseType: options.pieRoseType === 'rose' ? options.pieType : '',
+            label: {
+              show: options.showLabel,
+              ...options.labelTextStyle,
+              fontSize: parseFloat(options.labelTextStyle.fontSize),
+              position: options.labelPosition,
+              formatter: (params) => {
+                if (options.labelPosition === 'outside') {
+                  const value = this.formatData(params.value, options.labelDataUnit, options.labelDataType)
+                  return `{b|${params.name}} \n{hr|}\n {c|${value}(${params.percent}%)}`
+                } else {
+                  return `{b|${params.name}}`
+                }
 
+              },
+              rich: {
+                hr: {
+                  borderColor: '#fff',
+                  width: '100%',
+                  borderWidth: 1,
+                  height: 0
+                },
+                b: {
+                  lineHeight: 25,
+                  align: 'center',
+                  padding: [2, 2],
+                  ...options.labelTextStyle,
+                  fontSize: parseFloat(options.labelTextStyle.fontSize),
+                },
+                c: {
+                  lineHeight: 25,
+                  align: 'center',
+                  ...options.labelTextStyle,
+                  fontSize: parseFloat(options.labelTextStyle.fontSize),
+                }
+              },
+            },
+            labelLine: {
+              show: options.showLabelLine
+            },
+            itemStyle: {
+              normal: {
+                color: (params) => {
+                  return {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 1,
+                    y2: 1,
+                    colorStops: [{
+                      offset: 0,
+                      color: getColors(params.dataIndex, 1), //  0%  处的颜色
+                    },
+                    {
+                      offset: 1,
+                      color: getColors(params.dataIndex, 0), //  100%  处的颜色
+                    }
+                    ],
+                    global: false //  缺省为  false
+                  }
+                }
+              },
+              emphasis: {
+                opacity: 1
+              }
+            },
+            animationType: options.pieStartType,
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+              return Math.random() * 200;
+            }
+          }
+        }
+      })
+    }
     const option = {
       tooltip: {
         trigger: 'item',
@@ -268,7 +384,7 @@ export default class Visual extends WynVisual {
       },
       // grid: gridStyle,
       legend: {
-        data: this.isMock ? ['访问量'] : [this.dimension],
+        data: this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0],
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
@@ -287,34 +403,7 @@ export default class Visual extends WynVisual {
       yAxis: {
         show: false
       },
-      series: [{
-        name: this.isMock ? ['访问量'] : [this.dimension],
-        type: 'pie',
-        radius: '55%',
-        center: ['50%', '50%'],
-        data: data,
-        roseType: options.pieRoseType ? options.pieType : '',
-        label: {
-          ...options.labelTextStyle,
-          fontSize: parseFloat(options.labelTextStyle.fontSize),
-          position: options.labelPosition
-        },
-        labelLine: {
-          show: options.showLabelLine
-        },
-        itemStyle: {
-          normal: {
-            color: (params) => {
-              return getColors(params.dataIndex)
-            }
-          }
-        },
-        animationType: options.pieStartType,
-        animationEasing: 'elasticOut',
-        animationDelay: function (idx) {
-          return Math.random() * 200;
-        }
-      }]
+      series: getSeries()
     }
 
     this.chart.setOption(option)
@@ -342,12 +431,16 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['legendHorizontalPosition'])
     }
     //  rose type 
-    if (!updateOptions.properties.pieRoseType) {
+    if (updateOptions.properties.pieRoseType === 'pie') {
       hiddenOptions = hiddenOptions.concat(['pieType'])
     }
     // label
+    if (!updateOptions.properties.showLabel) {
+      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle'])
+    }
+
     if (updateOptions.properties.labelPosition === 'inside') {
-      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'labelDataType', 'labelDataUnit'])
     }
 
     return hiddenOptions;

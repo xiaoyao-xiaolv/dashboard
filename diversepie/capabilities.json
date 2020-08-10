@@ -30,11 +30,11 @@
         ],
         "conditions": [
             {
-                "dimension": {
+                "value": {
                     "max": 1
                 },
-                "series": {
-                    "max": 0
+                "dimension": {
+                    "max": 1
                 }
             }
         ]
@@ -51,9 +51,19 @@
                     },
                     {
                         "name": "pieRoseType",
-                        "type": "Boolean",
-                        "displayName": "显示玫瑰图",
-                        "defaultValue": true
+                        "type": "Enum",
+                        "displayName": "图形形状",
+                        "items": [
+                            {
+                                "value": "pie",
+                                "displayNameKey": "饼图"
+                            },
+                            {
+                                "value": "rose",
+                                "displayNameKey": "玫瑰图"
+                            }
+                        ],
+                        "defaultValue": "pie"
                     },
                     {
                         "name": "pieType",
@@ -86,37 +96,6 @@
                             }
                         ],
                         "defaultValue": "scale"
-                    },
-                    {
-                        "name": "labelPosition",
-                        "type": "Enum",
-                        "displayName": "标注位置",
-                        "items": [
-                            {
-                                "value": "outside",
-                                "displayNameKey": "外侧"
-                            },
-                            {
-                                "value": "inside",
-                                "displayNameKey": "内侧"
-                            }
-                        ],
-                        "defaultValue": "outside"
-                    },
-                    {
-                        "name": "showLabelLine",
-                        "type": "Boolean",
-                        "displayName": "显示指示线",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "labelTextStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle",
-                        "defaultValue": {
-                            "fontSize": "14px"
-                        }
                     }
                 ]
             },
@@ -195,6 +174,120 @@
                     },
                     {
                         "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
+                    {
+                        "name": "showLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标注",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "labelPosition",
+                        "type": "Enum",
+                        "displayName": "标注位置",
+                        "items": [
+                            {
+                                "value": "outside",
+                                "displayNameKey": "外侧"
+                            },
+                            {
+                                "value": "inside",
+                                "displayNameKey": "内侧"
+                            }
+                        ],
+                        "defaultValue": "outside"
+                    },
+                    {
+                        "name": "showLabelLine",
+                        "type": "Boolean",
+                        "displayName": "显示指示线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "labelDataType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": "none"
+                    },
+                    {
+                        "name": "labelDataUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    },
+                    {
+                        "name": "labelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
