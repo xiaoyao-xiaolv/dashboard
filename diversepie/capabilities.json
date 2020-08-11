@@ -98,6 +98,24 @@
                         "defaultValue": "scale"
                     },
                     {
+                        "name": "inner",
+                        "type": "Percentage",
+                        "displayName": "内径",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "outer",
+                        "type": "Percentage",
+                        "displayName": "外径",
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "outerOutside",
+                        "type": "Percentage",
+                        "displayName": "外径",
+                        "defaultValue": 55
+                    },
+                    {
                         "name": "startAngle",
                         "type": "Integer",
                         "displayName": "起始角度",
@@ -354,7 +372,7 @@
             "type": "drill",
             "rule": {
                 "roles": [
-                    "dimensions"
+                    "dimension"
                 ]
             }
         }

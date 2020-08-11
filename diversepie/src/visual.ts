@@ -25,11 +25,6 @@ export default class Visual extends WynVisual {
   private selection: any[] = [];
   private dimension: string;
   private value: string;
-  private Series: string;
-  private MaxFillNumber: number | string;
-  private YLabelOffset: number;
-  private lengendLabelOffset: number;
-  private lengendLabeIndex: number;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -92,13 +87,9 @@ export default class Visual extends WynVisual {
     })
 
     this.chart.on('click', (params) => {
-
       if (params.componentType !== 'series') return;
-
       this.showTooltip(params, true);
-
       params.event.event.seriesClick = true;
-
       const selectInfo = {
         seriesIndex: params.seriesIndex,
         dataIndex: params.dataIndex,
@@ -109,9 +100,7 @@ export default class Visual extends WynVisual {
       }
       this.dispatch('highlight', selectInfo);
       this.selection.push(selectInfo)
-
     })
-
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
@@ -146,16 +135,11 @@ export default class Visual extends WynVisual {
         return selectionId
       }
       this.items[2] = items.map((item) => getSelectionId(item));
-      // this.items[2] = _.uniqWith(this.items[2], _.isEqual)
-      // get max 
-      this.MaxFillNumber = _.maxBy(this.items[1], (item) => item[this.value]);
 
     } else {
       this.isMock = true;
-      this.MaxFillNumber = 100;
     }
     this.properties = options.properties;
-
     this.render()
   }
 
@@ -220,40 +204,10 @@ export default class Visual extends WynVisual {
     const data: any = this.isMock ? Visual.mockItems : this.items[1];
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
 
-    // const getYLbaelOffset = (str, y: string) => {
-    //   const yLabelOffset = document.createElement('span');
-    //   yLabelOffset.innerText = str;
-    //   yLabelOffset.className = `ylabeloffset${y}`;
-    //   this.container.appendChild(yLabelOffset);
-    //   const offsetWidth = document.querySelector(`.ylabeloffset${y}`);
-    //   let width = 0;
-    //   if (offsetWidth instanceof HTMLElement) width = offsetWidth.offsetWidth + 10;
-    //   yLabelOffset.remove()
-    //   return width
-    // }
-    // this.YLabelOffset = getYLbaelOffset(isMock ? this.formatData(200, options.dataUnit, options.dataType) : this.formatData(this.MaxFillNumber, options.dataUnit, options.dataType), 'y');
-    // this.lengendLabelOffset = getYLbaelOffset(isMock ? '访问量' : `${this.dimension}`, 'leg');
-    // const getOffset = (left: boolean, position) => {
-    //   let legend = 0;
-    //   let label = 0;
-    //   if (left) legend = options.leftAxis ? this.YLabelOffset : 0;
-    //   label = options.showLegend && options.legendPosition === position ? this.lengendLabelOffset : 0;
-    //   return `${legend + label}px`;
-    // }
-
-    // const gridStyle = {
-    //   left: getOffset(true, 'left'),
-    //   top: options.legendPosition === 'top' ? '10%' : '10%',
-    //   right: getOffset(false, 'right'),
-    //   bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '20%' : '15%')
-    // };
-
     const getColors = (index, position: number) => {
       let backgroundColor = ''
       const pieColor = options.pieColor;
       if (index < pieColor.length - 1) {
-        // is grandient 
-
         backgroundColor = pieColor[index].colorStops ? pieColor[index].colorStops[position] : pieColor[index]
       } else {
         backgroundColor = pieColor[Math.floor((Math.random() * pieColor.length))].colorStops
@@ -273,21 +227,20 @@ export default class Visual extends WynVisual {
             itemStyle: {
               normal: {
                 color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 1,
-                  y2: 1,
+                  type: 'radial',
+                  x: 0.5,
+                  y: 0.5,
+                  r: 1,
                   colorStops: [{
                     offset: 0,
-                    color: getColors(index, 1), //  0%  处的颜色
+                    color: getColors(index, 1)
                   },
                   {
                     offset: 1,
-                    color: getColors(index, 0), //  100%  处的颜色
+                    color: getColors(index, 0)
                   }
                   ],
-                  global: false //  缺省为  false
+                  global: false
                 }
               },
               emphasis: {
@@ -299,7 +252,7 @@ export default class Visual extends WynVisual {
           return {
             name: '',
             type: 'pie',
-            radius: options.labelPosition === 'inside' ? '100%' : '55%',
+            radius: options.labelPosition === 'inside' ? [`${options.inner}%`, `${options.outer}%`] : [`${options.inner}%`, `${options.outerOutside}%`],
             center: ['50%', '50%'],
             data: data,
             startAngle: options.startAngle,
@@ -347,22 +300,22 @@ export default class Visual extends WynVisual {
             itemStyle: {
               normal: {
                 color: (params) => {
+                  console.log(params, 'color params')
                   return {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 1,
-                    y2: 1,
+                    type: 'radial',
+                    x: 0.5,
+                    y: 0.5,
+                    r: 1,
                     colorStops: [{
                       offset: 0,
-                      color: getColors(params.dataIndex, 1), //  0%  处的颜色
+                      color: getColors(params.dataIndex, 0)
                     },
                     {
                       offset: 1,
-                      color: getColors(params.dataIndex, 0), //  100%  处的颜色
+                      color: getColors(params.dataIndex, 1)
                     }
                     ],
-                    global: false //  缺省为  false
+                    global: false
                   }
                 }
               },
@@ -442,7 +395,10 @@ export default class Visual extends WynVisual {
     }
 
     if (updateOptions.properties.labelPosition === 'inside') {
-      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'labelDataType', 'labelDataUnit'])
+      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'labelDataType', 'labelDataUnit', 'outerOutside'])
+    }
+    if (updateOptions.properties.labelPosition === 'outside') {
+      hiddenOptions = hiddenOptions.concat(['outer'])
     }
 
     return hiddenOptions;
