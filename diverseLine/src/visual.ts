@@ -1,13 +1,6 @@
 import '../style/visual.less';
 import _ = require('lodash');
-import * as Echarts from 'echarts';
-
-import dataTool = require("echarts/extension/dataTool/index")
-
-const echarts = {
-  ...Echarts,
-  dataTool
-}
+import * as echarts from 'echarts';
 
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
@@ -174,13 +167,16 @@ export default class Visual extends WynVisual {
       //  get max legend
       const lengendLabe = this.ActualValue.map((item) => item.length)
       this.lengendLabeIndex = lengendLabe.indexOf(_.max(lengendLabe));
-
+      // get serise label
+      if (this.Series) {
+        this.items[3] = items.map((item) => item[this.Series]);
+        this.items[3] = _.uniqWith(this.items[3], _.isEqual)
+      }
     } else {
       this.isMock = true;
       this.MaxFillNumber = 200;
     }
     this.properties = options.properties;
-
     this.render()
   }
 
@@ -268,7 +264,7 @@ export default class Visual extends WynVisual {
 
     const gridStyle = {
       left: getOffset(true, 'left'),
-      top: options.legendPosition === 'top' ? '10%' : '10%',
+      top: options.legendPosition === 'top' ? '15%' : '15%',
       right: getOffset(false, 'right'),
       bottom: options.showDataZoom ? (options.legendPosition === 'bottom' ? '30%' : '20%') : (options.legendPosition === 'bottom' ? '20%' : '15%')
     };
@@ -290,7 +286,7 @@ export default class Visual extends WynVisual {
     const getSeries = () => {
       return datas.map((data, index) => {
         return {
-          name: this.isMock ? ['访问量'] : this.ActualValue[index],
+          name: this.isMock ? ['访问量'] : (this.Series ? this.items[3][index] : this.ActualValue[index]),
           type: "line",
           symbolSize: 10,
           itemStyle: {
@@ -302,14 +298,12 @@ export default class Visual extends WynVisual {
             type: options.borderType
           },
           label: {
-            show: options.dataindicate,
+            show: options.showCate && options.dataindicate,
             position: options.dataindicatePosition,
-            distance: 15,
             ...options.dataindicateTextStyle,
             formatter: (item) => {
               return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
             },
-            // color: options.barGradientColor[1].colorStops ? options.barGradientColor[1].colorStops[0] : options.barGradientColor[1],
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
           },
           markPoint: {
@@ -317,13 +311,13 @@ export default class Visual extends WynVisual {
             symbolSize: options.markPointSize,
             label: {
               normal: {
-                show: options.showMackPointLabel,
+                show: options.showCate && options.showMackPointLabel,
                 textStyle: {
-                  ...options.markPointSizeTextStyle,
-                  fontSize: parseFloat(options.markPointSizeTextStyle.fontSize)
+                  ...options.dataindicateTextStyle,
+                  fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
                 },
                 formatter: (item) => {
-                  if (options.dataindicate) {
+                  if (options.showCate && options.showMackPointLabel) {
                     return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
                   } else {
                     return item.value
@@ -347,17 +341,20 @@ export default class Visual extends WynVisual {
 
     const option = {
       tooltip: {
-        trigger: "item",
+        trigger: 'axis',
         axisPointer: {
-          type: "shadow",
-          textStyle: {
-            color: "#fff"
-          }
+          type: 'line'
         },
+        formatter: (items) => {
+          let stringData = ''
+          items = _.sortBy(items, (item) => -item.value)
+          items.map((item) => stringData += `${item.seriesName}:${item.value}<br />`)
+          return stringData
+        }
       },
       grid: gridStyle,
       legend: {
-        data: this.isMock ? ['访问量', '订单量'] : this.ActualValue,
+        data: this.isMock ? ['访问量', '订单量'] : (this.Series ? this.items[3] : this.ActualValue),
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
@@ -369,7 +366,7 @@ export default class Visual extends WynVisual {
         },
         orient: orient,
       },
-      calculable: true,
+      // calculable: true,
       xAxis: {
         data: this.isMock ? Visual.mockItems[0] : Array.from(new Set(this.items[0])),
         // data: xData,
@@ -464,14 +461,11 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['xAxisLabel', 'xAxisTick', 'xAxisLine'])
     }
     //dataindicate
-    if (!updateOptions.properties.dataindicate) {
-      hiddenOptions = hiddenOptions.concat(['dataindicatePosition', 'dataindicateTextStyle', 'dataindicateType', 'dataindicateUnit'])
+    if (!updateOptions.properties.showCate) {
+      hiddenOptions = hiddenOptions.concat(['dataindicate', 'showMackPointLabel', 'dataindicatePosition', 'dataindicateTextStyle', 'dataindicateType', 'dataindicateUnit'])
     }
     if (!updateOptions.properties.leftAxis) {
       hiddenOptions = hiddenOptions.concat(['leftAxisLabel', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])
-    }
-    if (!updateOptions.properties.showMackPointLabel) {
-      hiddenOptions = hiddenOptions.concat(['markPointSizeTextStyle'])
     }
 
     return hiddenOptions;

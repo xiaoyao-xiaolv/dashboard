@@ -140,13 +140,7 @@
                         "name": "markPointSize",
                         "type": "Integer",
                         "displayName": "标记大小",
-                        "defaultValue": 20
-                    },
-                    {
-                        "name": "showMackPointLabel",
-                        "type": "Boolean",
-                        "displayName": "显示标注",
-                        "defaultValue": false
+                        "defaultValue": 40
                     },
                     {
                         "name": "markPointSizeTextStyle",
@@ -276,10 +270,22 @@
                 "displayName": "数据标注",
                 "properties": [
                     {
+                        "name": "showCate",
+                        "type": "Boolean",
+                        "displayName": "显示数据标注",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "dataindicate",
                         "type": "Boolean",
                         "displayName": "显示数据标注",
                         "defaultValue": false
+                    },
+                    {
+                        "name": "showMackPointLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标记标注",
+                        "defaultValue": true
                     },
                     {
                         "name": "dataindicatePosition",
@@ -315,7 +321,7 @@
                         "displayName": "数据格式",
                         "items": [
                             {
-                                "value": "",
+                                "value": "none",
                                 "displayNameKey": "常规"
                             },
                             {
@@ -331,7 +337,7 @@
                                 "displayNameKey": "百分比"
                             }
                         ],
-                        "defaultValue": ""
+                        "defaultValue": "none"
                     },
                     {
                         "name": "dataindicateUnit",
@@ -491,7 +497,7 @@
                                 "displayNameKey": "百分比"
                             }
                         ],
-                        "defaultValue": ""
+                        "defaultValue": "none"
                     },
                     {
                         "name": "dataUnit",
