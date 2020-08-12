@@ -1,8 +1,6 @@
 import '../style/visual.less';
 import _ = require('lodash');
 import * as echarts from 'echarts';
-import dataTool = require("echarts/extension/dataTool/index")
-
 
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
@@ -335,7 +333,7 @@ export default class Visual extends WynVisual {
     const getColors = (index, position: number) => {
       let backgroundColor = ''
       const barGradientColor = options.barGradientColor;
-      if (index < barGradientColor.length - 1) {
+      if (index < barGradientColor.length) {
         backgroundColor = barGradientColor[index].colorStops ? barGradientColor[index].colorStops[position] : barGradientColor[index]
       } else {
         backgroundColor = barGradientColor[Math.floor((Math.random() * barGradientColor.length))].colorStops
@@ -378,15 +376,7 @@ export default class Visual extends WynVisual {
           symbolOffset: [getSymbolOffset(index), -bar[Number(options.columnWidth)].yOffset],
           symbolPosition: 'end',
           z: 12,
-          label: {
-            show: options.dataindicate,
-            position: options.dataindicatePosition,
-            formatter: (item) => {
-              return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
-            },
-            ...options.dataindicateTextStyle,
-            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
-          },
+
           itemStyle: {
             normal: {
               color: getColors(index, 0),
@@ -403,25 +393,7 @@ export default class Visual extends WynVisual {
           z: 12,
           itemStyle: {
             normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0,
-                  color: getColors(index, 0),
-
-                },
-                {
-                  offset: 1,
-                  color: getColors(index, 1),
-
-                }
-                ],
-                global: false
-              },
+              color: options.fillColor,
               opacity: 0.6
             },
             emphasis: {
@@ -441,7 +413,7 @@ export default class Visual extends WynVisual {
           z: 12,
           itemStyle: {
             normal: {
-              color: getColors(index, 0),
+              color: options.fillColor,
               opacity: .6
             }
           },
@@ -457,7 +429,7 @@ export default class Visual extends WynVisual {
           z: 12,
           itemStyle: {
             normal: {
-              color: getColors(index, 0),
+              color: options.fillColumn ? options.fillColor : getColors(index, 0),
             }
           },
           data: data
@@ -505,6 +477,15 @@ export default class Visual extends WynVisual {
             emphasis: {
               opacity: 1
             }
+          },
+          label: {
+            show: options.dataindicate,
+            position: options.dataindicatePosition,
+            formatter: (item) => {
+              return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
+            },
+            ...options.dataindicateTextStyle,
+            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
           },
           barWidth: bar[Number(options.columnWidth)].barWidth,
           data: data,
@@ -576,7 +557,7 @@ export default class Visual extends WynVisual {
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'shadow'
+          type: datas.length > 1 ? 'shadow' : 'line'
         },
         formatter: (items) => {
           if (options.barType == 'column') {
@@ -598,11 +579,11 @@ export default class Visual extends WynVisual {
       grid: gridStyle,
       legend: {
         data: this.isMock ? ['销量'] : (this.Series ? this.items[3] : this.ActualValue),
+        align: 'left',
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
-        align: 'auto',
-        icon: 'roundRect',
+        icon: options.legendIcon === 'none' ? '' : options.legendIcon,
         textStyle: {
           ...legendTextStyle,
           fontSize: parseFloat(options.legendTextStyle.fontSize),
@@ -687,7 +668,7 @@ export default class Visual extends WynVisual {
     let hiddenOptions: Array<string> = [''];
     // legend
     if (!updateOptions.properties.showLegend) {
-      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
@@ -715,6 +696,10 @@ export default class Visual extends WynVisual {
     }
     if (updateOptions.properties.barType === 'hill') {
       hiddenOptions = hiddenOptions.concat(['barColor', 'showColumnBottom', 'columnWidth', 'fillColumn'])
+    }
+    // fill type 
+    if (!updateOptions.properties.fillColumn) {
+      hiddenOptions = hiddenOptions.concat(['fillColor'])
     }
     return hiddenOptions;
   }
