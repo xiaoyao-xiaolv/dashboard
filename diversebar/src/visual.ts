@@ -1,13 +1,8 @@
 import '../style/visual.less';
 import _ = require('lodash');
-import * as Echarts from 'echarts';
-
+import * as echarts from 'echarts';
 import dataTool = require("echarts/extension/dataTool/index")
 
-const echarts = {
-  ...Echarts,
-  dataTool
-}
 
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
@@ -174,13 +169,16 @@ export default class Visual extends WynVisual {
       //  get max legend
       const lengendLabe = this.ActualValue.map((item) => item.length)
       this.lengendLabeIndex = lengendLabe.indexOf(_.max(lengendLabe));
-
+      // get serise label
+      if (this.Series) {
+        this.items[3] = items.map((item) => item[this.Series]);
+        this.items[3] = _.uniqWith(this.items[3], _.isEqual)
+      }
     } else {
       this.isMock = true;
       this.MaxFillNumber = 200;
     }
     this.properties = options.properties;
-
     this.render()
   }
 
@@ -334,14 +332,14 @@ export default class Visual extends WynVisual {
       margin: 20
     }];
 
-    const getColors = (index) => {
+    const getColors = (index, position: number) => {
       let backgroundColor = ''
       const barGradientColor = options.barGradientColor;
       if (index < barGradientColor.length - 1) {
-        backgroundColor = barGradientColor[index].colorStops ? barGradientColor[index].colorStops[0] : barGradientColor[index]
+        backgroundColor = barGradientColor[index].colorStops ? barGradientColor[index].colorStops[position] : barGradientColor[index]
       } else {
         backgroundColor = barGradientColor[Math.floor((Math.random() * barGradientColor.length))].colorStops
-          ? barGradientColor[Math.floor((Math.random() * barGradientColor.length))].colorStops[0]
+          ? barGradientColor[Math.floor((Math.random() * barGradientColor.length))].colorStops[position]
           : barGradientColor[Math.floor((Math.random() * barGradientColor.length))]
       }
       return backgroundColor
@@ -391,11 +389,9 @@ export default class Visual extends WynVisual {
           },
           itemStyle: {
             normal: {
-              color: getColors(index),
+              color: getColors(index, 0),
             }
           },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
           data: data
         }, {
           name: "",
@@ -407,12 +403,31 @@ export default class Visual extends WynVisual {
           z: 12,
           itemStyle: {
             normal: {
-              color: getColors(index),
-              opacity: .6
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0,
+                  color: getColors(index, 0),
+
+                },
+                {
+                  offset: 1,
+                  color: getColors(index, 1),
+
+                }
+                ],
+                global: false
+              },
+              opacity: 0.6
+            },
+            emphasis: {
+              opacity: 1
             }
           },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
           data: options.fillColumn ? getFillData(data.length) : []
         },
         {
@@ -426,7 +441,7 @@ export default class Visual extends WynVisual {
           z: 12,
           itemStyle: {
             normal: {
-              color: getColors(index),
+              color: getColors(index, 0),
               opacity: .6
             }
           },
@@ -442,11 +457,9 @@ export default class Visual extends WynVisual {
           z: 12,
           itemStyle: {
             normal: {
-              color: getColors(index),
+              color: getColors(index, 0),
             }
           },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
           data: data
         },
         {
@@ -456,31 +469,44 @@ export default class Visual extends WynVisual {
           symbolOffset: [getSymbolOffset(index), bar[Number(options.columnWidth)].yOffset * 2],
           z: 10,
           silent: true,
-
           itemStyle: {
             normal: {
               color: 'transparent',
-              borderColor: getColors(index),
+              borderColor: getColors(index, 0),
               borderType: 'dashed',
               borderWidth: 5
             }
           },
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
           data: options.showColumnBottom ? data : []
         },
         {
-          name: this.isMock ? '销量' : this.ActualValue[index],
+          name: this.isMock ? '销量' : (this.Series ? this.items[3][index] : this.ActualValue[index]),
           type: 'bar',
           itemStyle: {
             normal: {
-              color: getColors(index),
-              opacity: .7
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0,
+                  color: getColors(index, 0),
+                },
+                {
+                  offset: 1,
+                  color: getColors(index, 1),
+                }
+                ],
+                global: false
+              }, opacity: 0.7
+            },
+            emphasis: {
+              opacity: 1
             }
           },
           barWidth: bar[Number(options.columnWidth)].barWidth,
-          // barGap: `${options.barGap}%`,
-          // barCategoryGap: `${options.barCategoryGap}%`,
           data: data,
         }]
         serise.push(...serisedata)
@@ -494,15 +520,13 @@ export default class Visual extends WynVisual {
       const serise = [];
       datas.map((data, index) => {
         const serisedata = [{
-          name: this.isMock ? '销量' : this.ActualValue[index],
+          name: this.isMock ? '销量' : (this.Series ? this.items[3][index] : this.ActualValue[index]),
           type: 'pictorialBar',
           symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
           label: {
             show: options.dataindicate,
             position: options.dataindicatePosition,
-            distance: 15,
             ...options.dataindicateTextStyle,
-            // color: options.barGradientColor[1].colorStops ? options.barGradientColor[1].colorStops[0] : options.barGradientColor[1],
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
           },
           itemStyle: {
@@ -515,16 +539,16 @@ export default class Visual extends WynVisual {
                 y2: 1,
                 colorStops: [{
                   offset: 0,
-                  color: getColors(index), //  0%  处的颜色
+                  color: getColors(index, 0),
 
                 },
                 {
                   offset: 1,
-                  color: getColors(index + 1), //  100%  处的颜色
+                  color: getColors(index, 1),
 
                 }
                 ],
-                global: false //  缺省为  false
+                global: false
               }
             },
             emphasis: {
@@ -550,17 +574,30 @@ export default class Visual extends WynVisual {
 
     const option = {
       tooltip: {
-        trigger: 'item',
-        // axisPointer: {
-        //   type: 'shadow'
-        // },
-        formatter: (item) => {
-          return `${item.name || '月份'}<br />${item.seriesName || '数量'}:${item.data}`
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        },
+        formatter: (items) => {
+          if (options.barType == 'column') {
+            let itemsData = items.filter(item => item.seriesType === 'bar')
+            let stringData = this.Series ? `${this.ActualValue[0]}<br />` : '';
+            itemsData.map(item => {
+              stringData += `${item.seriesName || '数量'}: ${item.data} <br />`
+            })
+            return stringData
+          } else {
+            let stringData = ''
+            items.map(item => {
+              stringData += `${item.seriesName || '数量'}: ${item.data} <br />`
+            })
+            return stringData
+          }
         }
       },
       grid: gridStyle,
       legend: {
-        data: this.isMock ? ['销量'] : this.ActualValue,
+        data: this.isMock ? ['销量'] : (this.Series ? this.items[3] : this.ActualValue),
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
