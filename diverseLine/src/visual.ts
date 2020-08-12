@@ -272,7 +272,7 @@ export default class Visual extends WynVisual {
     const getColors = (index) => {
       let backgroundColor = ''
       const lineColor = options.lineColor;
-      if (index < lineColor.length - 1) {
+      if (index < lineColor.length) {
         backgroundColor = lineColor[index].colorStops ? lineColor[index].colorStops[0] : lineColor[index]
       } else {
         backgroundColor = lineColor[Math.floor((Math.random() * lineColor.length))].colorStops
@@ -358,8 +358,8 @@ export default class Visual extends WynVisual {
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
-        align: 'auto',
-        icon: 'roundRect',
+        align: 'left',
+        icon: options.legendIcon === 'none' ? '' : options.legendIcon,
         textStyle: {
           ...legendTextStyle,
           fontSize: parseFloat(options.legendTextStyle.fontSize),
@@ -445,7 +445,7 @@ export default class Visual extends WynVisual {
     let hiddenOptions: Array<string> = [''];
     // legend
     if (!updateOptions.properties.showLegend) {
-      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
