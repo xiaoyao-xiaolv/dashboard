@@ -113,7 +113,7 @@
                         "name": "outerOutside",
                         "type": "Percentage",
                         "displayName": "外径",
-                        "defaultValue": 55
+                        "defaultValue": 75
                     },
                     {
                         "name": "startAngle",
@@ -137,6 +137,38 @@
                         "type": "Boolean",
                         "displayName": "显示图例",
                         "defaultValue": false
+                    },
+                    {
+                        "name": "legendIcon",
+                        "type": "Enum",
+                        "displayName": "图标",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "默认"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "rect",
+                                "displayNameKey": "方形"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "圆角方形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            }
+                        ],
+                        "defaultValue": "roundRect"
                     },
                     {
                         "name": "legendPosition",

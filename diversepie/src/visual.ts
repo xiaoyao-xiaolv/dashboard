@@ -12,7 +12,7 @@ export default class Visual extends WynVisual {
     { name: "三月", value: 324 },
     { name: "四月", value: 135 },
     { name: "五月", value: 548 },
-    { name: "六月", value: 133 }
+    { name: "六月", value: 133 },
   ];
 
   private container: HTMLDivElement;
@@ -207,7 +207,7 @@ export default class Visual extends WynVisual {
     const getColors = (index, position: number) => {
       let backgroundColor = ''
       const pieColor = options.pieColor;
-      if (index < pieColor.length - 1) {
+      if (index < pieColor.length) {
         backgroundColor = pieColor[index].colorStops ? pieColor[index].colorStops[position] : pieColor[index]
       } else {
         backgroundColor = pieColor[Math.floor((Math.random() * pieColor.length))].colorStops
@@ -264,21 +264,13 @@ export default class Visual extends WynVisual {
               fontSize: parseFloat(options.labelTextStyle.fontSize),
               position: options.labelPosition,
               formatter: (params) => {
-                if (options.labelPosition === 'inside' || (!options.showLabelValue && !options.showLabelPercent)) {
-                  return `{b|${params.name}}`
-                } else {
-                  const value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                  const percent = options.showLabelPercent ? `(${params.percent}%)` : '';
-                  return `{b|${params.name}} \n {hr|}\n {c|${value}${percent}}`
-                }
+                let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
+                let percent = options.showLabelPercent ? `${value ? '/' : ''}${params.percent.toFixed(0)}%` : '';
+                return !options.showLabelValue && !options.showLabelPercent
+                  ? `{b|${params.name}}`
+                  : `{b|${params.name}} \n {c|${value}${percent}}`
               },
               rich: {
-                hr: {
-                  borderColor: '#fff',
-                  width: '100%',
-                  borderWidth: 1,
-                  height: 0
-                },
                 b: {
                   lineHeight: 20,
                   align: 'center',
@@ -343,8 +335,8 @@ export default class Visual extends WynVisual {
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
-        align: 'auto',
-        icon: 'roundRect',
+        align: 'left',
+        icon: options.legendIcon === 'none' ? '' : options.legendIcon,
         textStyle: {
           ...legendTextStyle,
           fontSize: parseFloat(options.legendTextStyle.fontSize),
@@ -378,7 +370,7 @@ export default class Visual extends WynVisual {
 
     // legend
     if (!updateOptions.properties.showLegend) {
-      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
@@ -391,7 +383,7 @@ export default class Visual extends WynVisual {
     }
     // label
     if (!updateOptions.properties.showLabel) {
-      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle'])
     }
 
     if (updateOptions.properties.labelPosition === 'inside') {
