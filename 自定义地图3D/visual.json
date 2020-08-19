@@ -1,7 +1,7 @@
 {
-    "name": "CustomMap3D",
+    "name": "自定义地图3D",
     "version": "0.0.1",
-    "displayName": "江苏省地图3D",
+    "displayName": "自定义地图3D",
     "displayNameKey": "",
     "icon": "assets/icon.png",
     "description": "",

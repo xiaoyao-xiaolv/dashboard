@@ -12,51 +12,48 @@
   <component name="ChangeListManager">
     <list default="true" id="ffa2dddd-3683-4900-957c-4c2aa56ee874" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boxplot/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/boxplot/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carrouselKPI/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carrouselKPI/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diverseLine/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/diverseLine/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diverseLine/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diverseLine/变形折线图.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversebar/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diverseLine/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diverseLine/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/diversebar/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/dist/visual.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/diversebar/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/diversebar/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversebar/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversebar/变形柱状图.viz" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/diversepie/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversepie/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversepie/变形扇形图.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamictitle/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/dynamictitle/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamictitle/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/dynamictitle/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/funnel/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/funnel/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/funnel/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/funnel/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/funnel/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/funnel/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/heatCalendarMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/heatCalendarMap/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/heatCalendarMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/heatCalendarMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/heatCalendarMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/heatCalendarMap/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/heatPointMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/heatPointMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/histogram/histogram.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/histogram/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/histogram/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hotMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/hotMap/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hotMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/hotMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hotMap/hotmap.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/numberAnimate/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/numberAnimate/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/numberAnimate/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/numberAnimate/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rectangularpyramid/3d四棱锥.viz" beforeDir="false" afterPath="$PROJECT_DIR$/rectangularpyramid/3d四棱锥.viz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rectangularpyramid/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/rectangularpyramid/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rectangularpyramid/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/rectangularpyramid/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rectangularpyramid/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/rectangularpyramid/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversepie/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversepie/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waterfull/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waterfull/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waterfull/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waterfull/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waterfull/waterfull.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/仪表盘/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/仪表盘/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/仪表盘/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/仪表盘/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片加载/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片加载/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片加载/图片加载.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片呼吸效果/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片呼吸效果/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片呼吸效果/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片呼吸效果/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片旋转/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片旋转/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片旋转/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片旋转/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片旋转3D/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片旋转3D/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/圆环指示器/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/圆环指示器/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/圆环指示器/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/圆环指示器/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天气预报/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/帕累托图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/帕累托图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/帕累托图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/帕累托图/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/插件列表" beforeDir="false" afterPath="$PROJECT_DIR$/插件列表" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/漏斗图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/漏斗图/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/漏斗图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/漏斗图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/漏斗图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/漏斗图/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/点地图.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图2D/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图2D/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图2D/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图2D/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/视频加载/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/视频加载/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/视频加载/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/视频加载/visual.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,14 +99,34 @@
       <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597031009182" />
-    <state x="780" y="-859" key="RollbackChangesDialog" timestamp="1597110137134">
+    <state width="1899" height="281" key="GridCell.Tab.0.bottom" timestamp="1597397999173">
       <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
-    <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597110137134" />
-    <state x="441" y="144" width="573" height="536" key="find.popup" timestamp="1597196660878">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state width="1899" height="281" key="GridCell.Tab.0.center" timestamp="1597397999173">
+      <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
-    <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597110098532" />
+    <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state width="1899" height="281" key="GridCell.Tab.0.left" timestamp="1597397999173">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state width="1899" height="281" key="GridCell.Tab.0.right" timestamp="1597397999173">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state x="780" y="-859" key="RollbackChangesDialog" timestamp="1597291717716">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1597396388880">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597396388880" />
+    <state x="662" y="-828" width="596" height="536" key="find.popup" timestamp="1597379014345">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597379014345" />
     <state x="441" y="144" width="573" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196660878" />
     <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1597196652654">
       <screen x="0" y="0" width="1280" height="680" />

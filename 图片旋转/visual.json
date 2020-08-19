@@ -1,7 +1,7 @@
 {
-    "name": "ImageRotation",
+    "name": "图片旋转2D",
     "version": "0.0.1",
-    "displayName": "图片旋转",
+    "displayName": "图片旋转2D",
     "displayNameKey": "",
     "icon": "assets/icon.png",
     "description": "",
