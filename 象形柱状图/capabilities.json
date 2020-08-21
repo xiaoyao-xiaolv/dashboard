@@ -1,0 +1,90 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "dimension",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "dimension": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "min": 1
+                },
+                "dimension": {
+                    "max": 1
+                }
+            },
+            {
+                "values": {
+                    "max": 1
+                },
+                "dimension": {
+                    "min": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "imageUrl",
+                        "type": "Image",
+                        "displayName": "自定义图标"
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            }, {
+                "type": "interaction"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        }, {
+            "type": "filter"
+        }, {
+            "type": "rank"
+        },{
+            "type": "sort"
+        }
+    ],
+    "analysis": [
+        {
+            "type": "drill",
+            "rule": {
+                "roles": [
+                    "dimension"
+                ]
+            }
+        }
+    ]
+}

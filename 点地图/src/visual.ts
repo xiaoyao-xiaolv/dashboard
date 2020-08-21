@@ -151,6 +151,53 @@ export default class Visual extends WynVisual {
     const options = this.properties;
     let series = [
       {
+        type: 'map',
+        roam: false,
+        label: {
+          normal: {
+            show: true,
+            textStyle: {
+              color: '#1DE9B6'
+            }
+          },
+          emphasis: {
+            textStyle: {
+              color: 'rgb(183,185,14)'
+            }
+          }
+        },
+
+        itemStyle: {
+          normal: {
+            borderColor: 'rgb(147, 235, 248)',
+            borderWidth: 1,
+            areaColor: {
+              type: 'radial',
+              x: 0.5,
+              y: 0.5,
+              r: 0.8,
+              colorStops: [{
+                offset: 0,
+                color: '#09132c' // 0% 处的颜色
+              }, {
+                offset: 1,
+                color: '#274d68' // 100% 处的颜色
+              }],
+              globalCoord: true // 缺省为 false
+            },
+          },
+          emphasis: {
+            areaColor: 'rgb(46,229,206)',
+            //    shadowColor: 'rgb(12,25,50)',
+            borderWidth: 0.1
+          }
+        },
+        zoom: options.z,
+        //     roam: false,
+        map: options.mapName //使用
+        // data: this.difficultData //热力图数据   不同区域 不同的底色
+      },
+      {
         name: '气泡地图',
         type: 'effectScatter',
         coordinateSystem: 'geo',
@@ -234,7 +281,7 @@ export default class Visual extends WynVisual {
         map: options.mapName,
         label: {
           emphasis: {
-            sfalsehow: true,
+            show: true,
             color: '#fff'
           }
         },
@@ -260,9 +307,8 @@ export default class Visual extends WynVisual {
               // globalCoord: true // 缺省为 false
             },
             shadowColor: options.shadowColor,
-            shadowOffsetX: -2,
-            shadowOffsetY: 2,
-            shadowBlur: 10
+            shadowOffsetX: 0,
+            shadowOffsetY: 25,
           },
           emphasis: {
             areaColor: options.emphasisColor,

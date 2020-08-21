@@ -12,48 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ffa2dddd-3683-4900-957c-4c2aa56ee874" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diverseLine/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diverseLine/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diverseLine/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/diverseLine/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversebar/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversebar/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversebar/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversepie/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversepie/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diversepie/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/waterfull/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/waterfull/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/waterfull/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/waterfull/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/waterfull/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/waterfull/waterfull.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/仪表盘/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/仪表盘/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/仪表盘/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/仪表盘/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图片加载/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片加载/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图片加载/图片加载.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/图片呼吸效果/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片呼吸效果/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图片呼吸效果/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片呼吸效果/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图片旋转/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片旋转/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图片旋转/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片旋转/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图片旋转3D/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/图片旋转3D/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/圆环指示器/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/圆环指示器/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/圆环指示器/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/圆环指示器/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/天气预报/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/帕累托图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/帕累托图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/帕累托图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/帕累托图/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/插件列表" beforeDir="false" afterPath="$PROJECT_DIR$/插件列表" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/漏斗图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/漏斗图/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/漏斗图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/漏斗图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/漏斗图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/漏斗图/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/点地图.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图2D/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图2D/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图2D/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图2D/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图3D/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图3D/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/视频加载/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/视频加载/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/视频加载/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/视频加载/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +29,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../WynApiDemo" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\EchartsColumnChart\node_modules\typescript\lib" />
@@ -99,38 +61,52 @@
       <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597031009182" />
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom" timestamp="1597397999173">
-      <screen x="0" y="-1080" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1899" height="281" key="GridCell.Tab.0.center" timestamp="1597397999173">
-      <screen x="0" y="-1080" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1899" height="281" key="GridCell.Tab.0.left" timestamp="1597397999173">
-      <screen x="0" y="-1080" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1899" height="281" key="GridCell.Tab.0.right" timestamp="1597397999173">
-      <screen x="0" y="-1080" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state x="780" y="-859" key="RollbackChangesDialog" timestamp="1597291717716">
-      <screen x="0" y="-1080" width="1920" height="1040" />
-    </state>
-    <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1597396388880">
-      <screen x="0" y="-1080" width="1920" height="1040" />
-    </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597396388880" />
-    <state x="662" y="-828" width="596" height="536" key="find.popup" timestamp="1597379014345">
-      <screen x="0" y="-1080" width="1920" height="1040" />
-    </state>
-    <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597379014345" />
-    <state x="441" y="144" width="573" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196660878" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1597196652654">
+    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1597891443266">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597891443266" />
+    <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1597824764380">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state width="1259" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
+    <state width="1259" height="162" key="GridCell.Tab.0.center" timestamp="1597824764380">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state width="1259" height="162" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
+    <state width="1259" height="162" key="GridCell.Tab.0.left" timestamp="1597824764380">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state width="1259" height="162" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
+    <state width="1259" height="162" key="GridCell.Tab.0.right" timestamp="1597824764380">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
+    <state width="1259" height="162" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
+    <state x="520" y="84" key="RollbackChangesDialog" timestamp="1597801753080">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
+    <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597801753080" />
+    <state width="498" height="398" key="SwitcherDM" timestamp="1597982604689">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597912323145" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597982604689" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680@0.0.1280.680" timestamp="1597915391890" />
+    <state x="441" y="112" width="573" height="568" key="find.popup" timestamp="1597980353957">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597912369827" />
+    <state x="441" y="112" width="573" height="568" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597980353957" />
+    <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1597915448810" />
+    <state x="303" y="1" width="672" height="679" key="search.everywhere.popup" timestamp="1597914778950">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="455" y="-1078" width="1008" height="1037" key="search.everywhere.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597832072872" />
     <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196652654" />
+    <state x="303" y="1" width="672" height="679" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1597914778950" />
   </component>
 </project>
