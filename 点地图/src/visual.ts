@@ -48,6 +48,8 @@ export default class Visual extends WynVisual {
   private valuesName: any;
   private long: any;
   private lat: any;
+  private hourIndex: any;
+  private fhourTime: any;
   private items: any;
   static mockItems = [
     { name: "福州", value: [119.306239, 26.075302, 13] }
@@ -66,8 +68,7 @@ export default class Visual extends WynVisual {
     , { name: "郑州", value: [113.665412, 34.757975, 7] }
     , { name: "长沙", value: [112.982279, 28.19409, 95] }
   ];
-  static hourIndex = 0;
-  static fhourTime = null;
+
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
@@ -76,9 +77,10 @@ export default class Visual extends WynVisual {
     this.items = [];
     this.properties = {
     };
+    this.hourIndex = 0;
+    this.fhourTime = null;
+    this.auto_tooltip();
   }
-
-
 
   private queryData = (keyWord: string) => {
     var reg = new RegExp(keyWord);
@@ -102,7 +104,7 @@ export default class Visual extends WynVisual {
       }
     }
     return res;
-  };
+  }
 
   private convertData1 = (data: any) => {
     var res = [];
@@ -117,7 +119,7 @@ export default class Visual extends WynVisual {
       }
     }
     return res;
-  };
+  }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
@@ -140,6 +142,21 @@ export default class Visual extends WynVisual {
     this.render();
   }
 
+  private getSymbolSize = (minValue, maxValue) => {
+    if (maxValue === minValue) {
+      minValue = 0;
+    }
+    var containerSize = this.container.getBoundingClientRect();
+    var width = containerSize.width;
+    var height = containerSize.height;
+    var min = width > height ? height : width;
+    var minSize = min / 70;
+    var maxSize = min / 20;
+    return function (value) {
+      return (maxSize - minSize) / (maxValue - minValue) * (value[2] - minValue) + minSize;
+    };
+  }
+
   public render() {
     this.chart.clear();
     let myTooltip = this.myTooltip;
@@ -149,6 +166,14 @@ export default class Visual extends WynVisual {
     let valuesName = isMock ? '数量' : this.valuesName;
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
+    var maxValue = Math.max.apply(null, items.map(function (item) {
+      return item.value[2];
+    }));
+    var minValue = Math.min.apply(null, items.map(function (item) {
+      return item.value[2];
+    }));
+    var symbolSize = this.getSymbolSize(minValue, maxValue);
+
     let series = [
       {
         type: 'map',
@@ -202,9 +227,7 @@ export default class Visual extends WynVisual {
         type: 'effectScatter',
         coordinateSystem: 'geo',
         data: items,
-        symbolSize: function (val) {
-          return val[2] / options.pointSize > options.pointMaxSize ? options.pointMaxSize : val[2] / options.pointSize > options.pointMinSize ? val[2] / options.pointSize : options.pointMinSize;
-        },
+        symbolSize: symbolSize,
         showEffectOn: 'render',
         rippleEffect: {
           brushType: 'stroke'
@@ -257,8 +280,54 @@ export default class Visual extends WynVisual {
         hoverAnimation: true,
         zlevel: 1
       }];
-    let temp = options.symbolStyle == 'effectScatter' ? series[0] : series[1]
+    let temp: any = options.symbolStyle == 'effectScatter' ? series[0] : series[1]
+    temp.push({
+      type: 'map',
+      roam: false,
+      label: {
+        normal: {
+          show: true,
+          textStyle: {
+            color: '#1DE9B6'
+          }
+        },
+        emphasis: {
+          textStyle: {
+            color: 'rgb(183,185,14)'
+          }
+        }
+      },
 
+      itemStyle: {
+        normal: {
+          borderColor: 'rgb(147, 235, 248)',
+          borderWidth: 1,
+          areaColor: {
+            type: 'radial',
+            x: 0.5,
+            y: 0.5,
+            r: 0.8,
+            colorStops: [{
+              offset: 0,
+              color: '#09132c' // 0% 处的颜色
+            }, {
+              offset: 1,
+              color: '#274d68' // 100% 处的颜色
+            }],
+            globalCoord: true // 缺省为 false
+          },
+        },
+        emphasis: {
+          areaColor: 'rgb(46,229,206)',
+          //    shadowColor: 'rgb(12,25,50)',
+          borderWidth: 0.1
+        }
+      },
+      zoom: 1.1,
+      //     roam: false,
+      map: 'china' //使用
+      // data: this.difficultData //热力图数据   不同区域 不同的底色
+    });
     var option = {
       tooltip: {
         trigger: 'item',
@@ -319,43 +388,21 @@ export default class Visual extends WynVisual {
       series: temp
     }
     this.chart.setOption(option);
-    this.auto_tooltip();
   }
 
-  private auto_tooltip(){
-    Visual.fhourTime = setTimeout(() =>  {
-      this.chart.dispatchAction({
-        type: "downplay",
-        seriesIndex: 0,
-
-      });
-      this.chart.dispatchAction({
-        type: "highlight",
-        seriesIndex: 0,
-        dataIndex: Visual.hourIndex
-      });
-      this.chart.dispatchAction({
-        type: "showTip",
-        seriesIndex: 0,
-        dataIndex: Visual.hourIndex
-      });
-      Visual.hourIndex++;
-      if (Visual.hourIndex > this.items.length) {
-        Visual.hourIndex = 0;
-      }
-    }, 3000);
+  private auto_tooltip() {
+    this.chart.dispatchAction({
+      type: "showTip",
+      seriesIndex: 0,
+      dataIndex: this.hourIndex
+    });
+    this.hourIndex++;
+    if (this.hourIndex > this.items.length) {
+      this.hourIndex = 0;
+    }
     //鼠标移入停止轮播
-    this.chart.on("mousemove", (e) =>  {
-      clearTimeout(Visual.fhourTime)
-      this.chart.dispatchAction({
-        type: "downplay",
-        seriesIndex: 0,
-      });
-      this.chart.dispatchAction({
-        type: "highlight",
-        seriesIndex: 0,
-        dataIndex: e.dataIndex
-      });
+    this.chart.on("mousemove", (e) => {
+      clearTimeout(this.fhourTime)
       this.chart.dispatchAction({
         type: "showTip",
         seriesIndex: 0,
@@ -363,44 +410,34 @@ export default class Visual extends WynVisual {
       });
     })
     //鼠标移出恢复轮播
-    this.chart.on("mouseout", () =>  {
-      Visual.fhourTime = setTimeout(() =>  {
-        this.chart.dispatchAction({
-          type: "downplay",
-          seriesIndex: 0,
-
-        });
-        this.chart.dispatchAction({
-          type: "highlight",
-          seriesIndex: 0,
-          dataIndex: Visual.hourIndex
-        });
-        this.chart.dispatchAction({
-          type: "showTip",
-          seriesIndex: 0,
-          dataIndex: Visual.hourIndex
-        });
-        Visual.hourIndex++;
-        if (Visual.hourIndex > this.items.length) {
-          Visual.hourIndex = 0;
-        }
-      }, 3000);
+    this.chart.on("mouseout", () => {
+      this.chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: this.hourIndex
+      });
+      this.hourIndex++;
+      if (this.hourIndex > this.items.length) {
+        this.hourIndex = 0;
+      }
     })
-    setTimeout(() => {this.auto_tooltip()}, 3000);
+    setTimeout(() => { this.auto_tooltip() }, 3000);
   }
 
   public onDestroy() {
+    this.chart.dispose();
   }
 
   public onResize() {
     this.chart.resize();
+    this.render();
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     if (!(options.properties.symbolStyle == 'effectScatter')) {
       return ['pointSize', 'pointMaxSize', 'pointMinSize'];
     }
-    return ['showLabel','textColor','textFont']
+    return ['showLabel', 'textColor', 'textFont']
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {

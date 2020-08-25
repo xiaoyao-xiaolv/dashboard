@@ -164,24 +164,6 @@
                         "defaultValue": 9
                     },
                     {
-                        "name": "pointSize",
-                        "type": "Integer",
-                        "displayName": "数据点缩小倍数",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "pointMaxSize",
-                        "type": "Integer",
-                        "displayName": "数据点最大值",
-                        "defaultValue": 40
-                    },
-                    {
-                        "name": "pointMinSize",
-                        "type": "Integer",
-                        "displayName": "数据点最小值",
-                        "defaultValue": 6
-                    },
-                    {
                         "name": "symbolColor",
                         "type": "Color",
                         "displayName": "散点颜色",

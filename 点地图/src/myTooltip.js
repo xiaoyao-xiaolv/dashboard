@@ -1,6 +1,5 @@
 import { TimelineMax } from "gsap"
-import 'script-loader!createjs/builds/1.0.0/createjs.min.js'
-import _ from 'lodash'
+import 'script-loader!createjs/builds/1.0.0/createjs.min.js';
 
 /**
  * @author liang
@@ -20,7 +19,7 @@ export class myTooltipC {
         this.config = {
             priority: 'top',        // 默认在点上方OR下方（top/bottom）
             partition: 1.4,         // 左右分割比例
-            lineColor: 'rgba(253, 129, 91, 0.8)',      // 引导线颜色
+            lineColor: 'rgba(20, 255, 242, 1)',      // 引导线颜色
             offset: [5, 5],
             L1: {
                 time: 0.3,          // L1动画时长(单位s)
@@ -35,11 +34,11 @@ export class myTooltipC {
                 font: '14px Arial',
                 color: '#fff',
                 padding: [10, 10],
-                width: 120,
+                width: 150,
                 height: 60,
                 lineHeight: 24,
-                backgroundColor: 'rgba(50, 50, 50, 0.5)',
-                borderColor: 'rgba(253, 129, 91, 1)',
+                backgroundColor: 'rgba(6, 54, 102, 0.5)',
+                borderColor: 'rgba(20, 255, 242, 1)',
                 borderWidth: 1,
                 angle: {
                     width: 2,
@@ -55,6 +54,7 @@ export class myTooltipC {
     getPosOrSize(type, point) {
         let x1 = this.config.L1.long * Math.sin(Math.PI / 4)
         let width = x1 + this.config.L2.long + this.config.text.width
+        console.log()
         let height = x1 + this.config.text.height / 2
         if (type === 'size') {
             this.config.width = width
@@ -207,6 +207,7 @@ export class createTooltip {
         this.totalTime += c.L2.time
     }
     addText() {
+        
         // text框只与L2end有关，只需判断left即可，top不影响
         let me = this
         let c = me.config
