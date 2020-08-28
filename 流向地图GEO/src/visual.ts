@@ -3,44 +3,17 @@ import * as echarts from 'echarts';
 import "echarts-amap";
 // @ts-ignore
 import AMap from 'AMap';
-import "echarts/map/js/china.js";
-import "echarts/map/js/world.js";
-import "echarts/map/js/province/anhui.js";
-import "echarts/map/js/province/aomen.js";
-import "echarts/map/js/province/beijing.js";
-import "echarts/map/js/province/chongqing.js";
-import "echarts/map/js/province/fujian.js";
-import "echarts/map/js/province/gansu.js";
-import "echarts/map/js/province/guangdong.js";
-import "echarts/map/js/province/guangxi.js";
-import "echarts/map/js/province/guizhou.js";
-import "echarts/map/js/province/hainan.js";
-import "echarts/map/js/province/hebei.js";
-import "echarts/map/js/province/heilongjiang.js";
-import "echarts/map/js/province/henan.js";
-import "echarts/map/js/province/hubei.js";
-import "echarts/map/js/province/hunan.js";
-import "echarts/map/js/province/jiangsu.js";
-import "echarts/map/js/province/jiangxi.js";
-import "echarts/map/js/province/jilin.js";
-import "echarts/map/js/province/liaoning.js";
-import "echarts/map/js/province/neimenggu.js";
-import "echarts/map/js/province/ningxia.js";
-import "echarts/map/js/province/qinghai.js";
-import "echarts/map/js/province/shandong.js";
-import "echarts/map/js/province/shanghai.js";
-import "echarts/map/js/province/shanxi.js";
-import "echarts/map/js/province/shanxi1.js";
-import "echarts/map/js/province/sichuan.js";
-import "echarts/map/js/province/taiwan.js";
-import "echarts/map/js/province/tianjin.js";
-import "echarts/map/js/province/xianggang.js";
-import "echarts/map/js/province/xinjiang.js";
-import "echarts/map/js/province/xizang.js";
-import "echarts/map/js/province/yunnan.js";
-import "echarts/map/js/province/zhejiang.js";
-
 import geoCoordMap from './geoCoordMap.json';
+
+let loaded = false;
+let ins;
+(window as any).__init = function() {
+  loaded = true;
+  if(ins) {
+    ins.init();
+  }
+}
+
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
@@ -48,12 +21,13 @@ export default class Visual {
   private legendData: any;
   private destinationName: string;
   private valuesName: string;
-  private departureName: string;
-  private destinationlatName: string;
-  private destinationlongName: string;
-  private departurelatName: string;
-  private departurelongName: string;
-  private items: any;
+  private originName: string;
+  private destinationLatName: string;
+  private destinationLongName: string;
+  private originLatName: string;
+  private originLongName: string;
+  private originResultData: any;
+  private isAllBound: boolean;
   static mockItems = [
     [
       { fromName: "广州", toName: "福州", coords: [[113.280637, 23.125178], [119.306239, 26.075302]], value: 13 }
@@ -95,165 +69,152 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = echarts.init(dom)
-    this.items = [];
+    this.originResultData = [];
+    this.isAllBound = false;
     this.properties = {
-      roam: true,
+      zoom: 4,
+      zoomEnable: true,
+      centerEnable: false,
       showLegend: false,
+      longitude: 108.948024,
+      latitude: 34.263161,
       effect: false,
       pointSize: 6,
       symbolSize: 12,
       period: 6,
-      mapName:'china',
+      mapName: '中国',
       symbolStyle: 'pin',
       symbol: 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z',
-      borderColor: 'rgba(147, 235, 248, 1)',
-      startColor: 'rgba(147, 235, 248, 0)',
-      endColor: 'rgba(147, 235, 248, 0.1)',
-      shadowColor: 'rgba(128, 217, 248, 1)',
-      emphasisColor: '#389BB7',
     };
+    ins = this;
   }
 
-  private queryData = (keyWord: string) => {
-    var reg = new RegExp(keyWord);
-    for (var i = 0; i < geoCoordMap.length; i++) {
+  init() {
+    this.chart = echarts.init(this.container);
+    this.render();
+  }
+
+  private getCoords = (keyWord: string) => {
+    let reg = new RegExp(keyWord);
+    for (let i = 0; i < geoCoordMap.length; i++) {
       if (reg.test(geoCoordMap[i].name)) {
         return [geoCoordMap[i].lng, geoCoordMap[i].lat];
       }
     }
   }
 
-  private convertData = (data: number[]) => {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-      var dataItem = data[i];
-      var fromCoord = this.queryData(dataItem[this.departureName]);
-      var toCoord = this.queryData(dataItem[this.destinationName]);
-      if (fromCoord && toCoord) {
-        res.push({
-          fromName: dataItem[this.departureName],
+  private convertData = (originRawData: number[]) => {
+    let result = [];
+    originRawData.forEach((dataItem) => {
+      let fromCoords;
+      let toCoords;
+      if (this.isAllBound) {
+        fromCoords = [dataItem[this.originLongName],dataItem[this.originLatName]];
+        toCoords = [dataItem[this.destinationLongName],dataItem[this.destinationLatName]];
+      } else {
+        fromCoords = this.getCoords(dataItem[this.originName]);
+        toCoords = this.getCoords(dataItem[this.destinationName]);
+      }
+      // @ts-ignore
+      if (fromCoords && toCoords) {
+        result.push({
+          fromName: dataItem[this.originName],
           toName: dataItem[this.destinationName],
-          coords: [fromCoord, toCoord],
-          value: dataItem[this.valuesName]
+          coords: [fromCoords, toCoords],
         });
       }
-    }
-    return res;
+    });
+    return result;
   };
 
-  private classify = (arr: any) => {
-    let obj = {}
-    arr.map(v => {
-      obj[v[this.departureName]] = 0
+  private prepareOriginData = (rawData: any) => {
+    let originSet = new Set();
+    rawData.forEach((data) => {
+      originSet.add(data[this.originName]);
     })
-    let nameArr = Object.keys(obj)
-    this.legendData = nameArr
-    let result = [];
-    nameArr.map(v => {
-      let temp = this.convertData(arr.filter(_v => v == _v[this.departureName]));
-      if (temp.length) {
-        result.push(temp)
-      }
-    })
-    return result
+
+    let originArray = Array.from(originSet);
+    this.legendData = originArray;
+
+    let originResultData = [];
+    originArray.forEach((origin) => {
+      let originRawData = rawData.filter(data => data[this.originName] === origin);
+      let originData = this.convertData(originRawData);
+      originResultData.push(originData);
+    });
+    return originResultData;
   }
 
-  private convertData1 = (data: number[]) => {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-      var dataItem = data[i];
-      var fromCoord = [dataItem[this.departurelongName],dataItem[this.departurelatName]];
-      var toCoord = [dataItem[this.destinationlongName],dataItem[this.destinationlatName]];
-      if (fromCoord && toCoord) {
-        res.push({
-          fromName: dataItem[this.departureName],
-          toName: dataItem[this.destinationName],
-          coords: [fromCoord, toCoord],
-          value: dataItem[this.valuesName]
-        });
-      }
-    }
-    return res;
-  };
-  private classify1 = (arr: any) => {
-    let obj = {}
-    arr.map(v => {
-      obj[v[this.departureName]] = 0
-    })
-    let nameArr = Object.keys(obj)
-    this.legendData = nameArr
+  private parseData = (itemArr: any) => {
     let result = [];
-    nameArr.map(v => {
-      let temp = this.convertData1(arr.filter(_v => v == _v[this.departureName]));
-      if (temp.length) {
-        result.push(temp)
-      }
-    })
-    return result
-  }
-
-  private parseData = (arr: any) => {
-    let result = [];
-    arr.map(a => {
+    itemArr.map(data => {
       result.push({
-        name: a.toName,
-        value: a.coords[1].concat(a.value)
+        name: data.toName,
+        value: data.coords[1].concat(data.value)
       })
     });
     result.push({
-      name: arr[0].fromName,
-      value: arr[0].coords[0].concat(0)
-    })
-    return result
+      name: itemArr[0].fromName,
+      value: itemArr[0].coords[0].concat(0)
+    });
+    return result;
+  }
+
+  private getBoundStatus = (items) => {
+    if (!items) {
+      return;
+    }
+    for (let key in items) {
+      if (!items[key].values.length) {
+        this.isAllBound = false;
+        return;
+      }
+      this.isAllBound = true;
+    }
   }
 
   public update(options: any) {
-    const dataView = options.dataViews[0];
-    this.items = [];
-    if (dataView &&
-      dataView.plain.profile.values.values.length && dataView.plain.profile.departure.values.length && dataView.plain.profile.destination.values.length &&
-      dataView.plain.profile.departurelat.values.length && dataView.plain.profile.departurelong.values.length &&
-      dataView.plain.profile.destinationlong.values.length && dataView.plain.profile.destinationlat.values.length) {
-      const plainData = dataView.plain;
-      this.destinationName = plainData.profile.destination.values[0].display
-      this.valuesName = plainData.profile.values.values[0].display;
-      this.departureName = plainData.profile.departure.values[0].display
-      this.destinationlatName = plainData.profile.destinationlat.values[0].display
-      this.destinationlongName = plainData.profile.destinationlong.values[0].display;
-      this.departurelatName = plainData.profile.departurelat.values[0].display
-      this.departurelongName = plainData.profile.departurelong.values[0].display
-      this.items = this.classify1(plainData.data);
-    } else if (dataView) {
-      const plainData = dataView.plain;
-      this.destinationName = plainData.profile.destination.values[0].display
-      this.valuesName = plainData.profile.values.values[0].display;
-      this.departureName = plainData.profile.departure.values[0].display
-      this.items = this.classify(plainData.data);
+    let profileItems = options.dataViews[0] && options.dataViews[0].plain.profile;
+    this.getBoundStatus(profileItems);
+    this.originResultData = [];
+    if (profileItems && options.dataViews.length) {
+      let plainData = options.dataViews[0].plain;
+      this.destinationName = profileItems.destination.values[0].display;
+      this.valuesName = profileItems.values.values[0].display;
+      this.originName = profileItems.origin.values[0].display;
+      if (this.isAllBound) {
+        this.destinationLatName = profileItems.destinationLat.values[0].display;
+        this.destinationLongName = profileItems.destinationLong.values[0].display;
+        this.originLatName = profileItems.originLat.values[0].display;
+        this.originLongName = profileItems.originLong.values[0].display;
+      }
+      this.originResultData = this.prepareOriginData(plainData.data);
     }
-
     this.properties = options.properties;
     this.render();
   }
 
   public render() {
+    if (!loaded) {
+      return;
+    }
     this.chart.clear();
-    const isMock = !this.items.length;
-    const items = isMock ? Visual.mockItems : this.items;
+    const isMock = !this.originResultData.length;
+    const originItems = isMock ? Visual.mockItems : this.originResultData;
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
     let planePath = options.effect ? options.symbol : options.symbolStyle;
-    let departureValue = isMock ? ['北京', '上海', '广州市'] : this.legendData;
+    let originValues= isMock ? ['北京', '上海', '广州市'] : this.legendData;
     let color = isMock ? ['#a6c84c', '#ffa022', '#46bee9'] : options.palette;
-    var series = [];
-    items.map((item: any, i: number) => {
+    let series = [];
+    originItems.map((item: any, i: number) => {
       if (item.length) {
         let j = i % color.length;
         series.push(
           {
             name: item[0].fromName,
             type: 'lines',
-            zlevel: 1,
+            zlevel: 5,
             coordinateSystem: 'amap',
             effect: {
               show: true,
@@ -265,7 +226,7 @@ export default class Visual {
             lineStyle: {
               normal: {
                 color: color[j],
-                width: 0.1,
+                width: 0,
                 curveness: 0.2
               }
             },
@@ -274,10 +235,8 @@ export default class Visual {
           {
             name: item[0].fromName,
             type: 'lines',
-            zlevel: 2,
+            zlevel: 11,
             coordinateSystem: 'amap',
-            symbol: ['none', 'arrow'],
-            symbolSize: 10,
             effect: {
               show: true,
               period: options.period,
@@ -299,7 +258,7 @@ export default class Visual {
             name: item[0].fromName,
             type: 'effectScatter',
             coordinateSystem: 'amap',
-            zlevel: 2,
+            zlevel: 12,
             rippleEffect: {
               brushType: 'stroke'
             },
@@ -307,14 +266,11 @@ export default class Visual {
               normal: {
                 show: true,
                 position: "right", //显示位置
-                offset: [5, 0], //偏移设置
                 formatter: "{b}" //圆环显示文字
-              },
-              emphasis: {
-                show: true
               }
             },
             symbolSize: options.pointSize,
+            showEffectOn: 'render',
             itemStyle: {
               normal: {
                 color: color[j]
@@ -326,13 +282,18 @@ export default class Visual {
       }
     });
 
-    var option = {
-      amap: {
-        resizeEnable: true,
-        zoom:11,//级别
-        roam: true,
-        center: [116.397428, 39.90923]
-      },
+    let amap = {
+      resizeEnable: true,
+      zoom:options.zoom,//级别
+      zoomEnable: options.zoomEnable,
+      mapStyle: `amap://styles/${options.mapStyle}`,
+    }
+    if (options.centerEnable) {
+      amap['center'] = [options.longitude, options.latitude];
+    }
+
+    let option = {
+      amap: amap,
       tooltip: {
         trigger: 'item',
         formatter: function (params, ticket, callback) {
@@ -349,7 +310,7 @@ export default class Visual {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        data: departureValue,
+        data: originValues,
         textStyle: {
           color: '#fff'
         },
@@ -363,42 +324,55 @@ export default class Visual {
             show: true,
             color: '#fff'
           }
-        },
-        roam: options.roam,
-        // layoutCenter: ["50%", "50%"], //地图位置
-        // layoutSize: "125%",
-        itemStyle: {
-          normal: {
-            borderColor: options.borderColor,
-            borderWidth: 1,
-            areaColor: {
-              type: 'radial',
-              x: 0.5,
-              y: 0.5,
-              r: 0.8,
-              colorStops: [{
-                offset: 0,
-                color: options.startColor // 0% 处的颜色
-              }, {
-                offset: 1,
-                color: options.endColor // 100% 处的颜色
-              }],
-              // globalCoord: true // 缺省为 false
-            },
-            shadowColor: options.shadowColor,
-            shadowOffsetX: -2,
-            shadowOffsetY: 2,
-            shadowBlur: 10
-          },
-          emphasis: {
-            areaColor: options.emphasisColor,
-            borderWidth: 0
-          }
         }
       },
       series: series
     };
     this.chart.setOption(option);
+    let map = this.chart.getModel().getComponent('amap').getAMap();
+    let polygons = []
+    let district = null;
+    AMap.plugin('AMap.DistrictSearch', function () {
+      if (options.mapName === 'world') {
+        map.setZoom(3);
+        map.remove(polygons);
+        return;
+      }
+      if (!district) {
+        let opts = {
+          subdistrict: 0,
+          extensions: 'all',
+          level: 'province'
+        };
+        district = new AMap.DistrictSearch(opts);
+      }
+
+      if (options.mapName === '中国') {
+        district.setLevel('country');
+      }
+      district.search(options.mapName, function(status, result) {
+        map.remove(polygons)
+        polygons = [];
+        let bounds = result.districtList[0].boundaries;
+        if (bounds) {
+          for (let i = 0, l = bounds.length; i < l; i++) {
+            let polygon = new AMap.Polygon({
+              map: map,
+              strokeWeight: 1,
+              path: bounds[i],
+              fillOpacity: 0,
+              strokeColor: options.boundColor,
+            });
+            polygons.push(polygon);
+          }
+
+          if (!options.centerEnable) {
+            let centerPosition = ins.getCoords(options.mapName);
+            map.setCenter(centerPosition);
+          }
+        }
+      })
+    })
   }
 
   public onResize() {
@@ -407,10 +381,14 @@ export default class Visual {
   }
 
   public getInspectorHiddenState(updateOptions: any): string[] {
-    if (!updateOptions.properties.effect) {
-      return ['symbol'];
+    let properties = updateOptions.properties;
+    let hiddenStates = [];
+    let hiddenEffect = properties.effect ? 'symbolStyle' : 'symbol';
+    hiddenStates.push(hiddenEffect);
+    if (!properties.centerEnable) {
+      hiddenStates.push('latitude','longitude');
     }
-    return ['symbolStyle'];
+    return hiddenStates;
   }
 
   // 功能按钮可见性

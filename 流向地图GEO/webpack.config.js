@@ -50,7 +50,7 @@ const config = {
   },
   mode: 'development',
   externals: {
-    'AMap': 'AMap',
+    'AMap': 'AMap'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.jsx', '.js', '.json', '.css', '.less'],

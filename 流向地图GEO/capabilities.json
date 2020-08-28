@@ -7,17 +7,17 @@
                 "kind": "value"
             },
             {
-                "name": "departure",
+                "name": "origin",
                 "displayNameKey": "起始地点",
                 "kind": "grouping"
             },
             {
-                "name": "departurelong",
+                "name": "originLong",
                 "displayNameKey": "起始经度",
                 "kind": "grouping"
             },
             {
-                "name": "departurelat",
+                "name": "originLat",
                 "displayNameKey": "起始纬度",
                 "kind": "grouping"
             },
@@ -27,12 +27,12 @@
                 "kind": "grouping"
             },
             {
-                "name": "destinationlong",
+                "name": "destinationLong",
                 "displayNameKey": "目标经度",
                 "kind": "grouping"
             },
             {
-                "name": "destinationlat",
+                "name": "destinationLat",
                 "displayNameKey": "目标纬度",
                 "kind": "grouping"
             }
@@ -45,22 +45,22 @@
                             "values": {
                                 "min": 1
                             },
-                            "departure": {
+                            "origin": {
                                 "min": 1
                             },
                             "destination": {
                                 "min": 1
                             },
-                            "departurelong": {
+                            "originLong": {
                                 "max": 0
                             },
-                            "departurelat": {
+                            "originLat": {
                                 "max": 0
                             },
-                            "destinationlong": {
+                            "destinationLong": {
                                 "max": 0
                             },
-                            "destinationlat": {
+                            "destinationLat": {
                                 "max": 0
                             }
                         },
@@ -68,22 +68,22 @@
                             "values": {
                                 "min": 1
                             },
-                            "departure": {
+                            "origin": {
                                 "min": 1
                             },
                             "destination": {
                                 "min": 1
                             },
-                            "departurelong": {
+                            "originLong": {
                                 "min": 1
                             },
-                            "departurelat": {
+                            "originLat": {
                                 "min": 1
                             },
-                            "destinationlong": {
+                            "destinationLong": {
                                 "min": 1
                             },
-                            "destinationlat": {
+                            "destinationLat": {
                                 "min": 1
                             }
                         }
@@ -96,22 +96,22 @@
                 "values": {
                     "max": 1
                 },
-                "departure": {
+                "origin": {
                     "max": 1
                 },
                 "destination": {
                     "max": 1
                 },
-                "departurelong": {
+                "originLong": {
                     "max": 1
                 },
-                "departurelat": {
+                "departureLat": {
                     "max": 1
                 },
-                "destinationlong": {
+                "destinationLong": {
                     "max": 1
                 },
-                "destinationlat": {
+                "destinationLat": {
                     "max": 1
                 }
             }
@@ -123,10 +123,18 @@
                 "displayName": "地图设置",
                 "properties": [
                     {
-                        "name": "roam",
+                        "name": "zoomEnable",
                         "type": "Boolean",
                         "displayName": "是否允许缩放",
                         "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "地图缩放级别",
+                        "name": "zoom",
+                        "type": "Integer",
+                        "max": 18,
+                        "min": 3,
+                        "defaultValue": 4
                     },
                     {
                         "name": "showLegend",
@@ -135,12 +143,30 @@
                         "defaultValue": false
                     },
                     {
+                        "name": "centerEnable",
+                        "type": "Boolean",
+                        "displayName": "是否自定义地图中心点",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "longitude",
+                        "type": "Float",
+                        "displayName": "地图中心点经度",
+                        "defaultValue": 108.948024
+                    },
+                    {
+                        "name": "latitude",
+                        "type": "Float",
+                        "displayName": "地图中心点纬度",
+                        "defaultValue": 34.263161
+                    },
+                    {
                         "displayNameKey": "地图名称",
                         "name": "mapName",
                         "type": "Enum",
                         "items": [
                             {"value":"world","displayNameKey":"世界"},
-                            {"value":"china","displayNameKey":"中国"},
+                            {"value":"中国","displayNameKey":"中国"},
                             {"value":"安徽","displayNameKey":"安徽"},
                             {"value":"澳门","displayNameKey":"澳门"},
                             {"value":"北京","displayNameKey":"北京"},
@@ -176,7 +202,7 @@
                             {"value":"云南","displayNameKey":"云南"},
                             {"value":"浙江","displayNameKey":"浙江"}
                         ],
-                        "defaultValue": "china"
+                        "defaultValue": "中国"
                     }
                 ]
             },
@@ -253,36 +279,30 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
-                        "name": "borderColor",
-                        "type": "Color",
-                        "displayName": "地图边界颜色",
-                        "defaultValue": "rgba(147, 235, 248, 1)"
+                        "displayNameKey": "地图主题样式",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "defaultValue": "blue",
+                        "items": [
+                            {"value":"normal","displayNameKey":"标准"},
+                            {"value":"dark","displayNameKey":"幻影黑"},
+                            {"value":"light","displayNameKey":"月光银"},
+                            {"value":"whitesmoke","displayNameKey":"远山黛"},
+                            {"value":"fresh","displayNameKey":"草色青"},
+                            {"value":"grey","displayNameKey":"雅士灰"},
+                            {"value":"graffiti","displayNameKey":"涂鸦"},
+                            {"value":"macaron","displayNameKey":"马卡龙"},
+                            {"value":"blue","displayNameKey":"靛青蓝"},
+                            {"value":"darkblue","displayNameKey":"极夜蓝"},
+                            {"value":"wine","displayNameKey":"酱籽"}
+                        ]
                     },
                     {
-                        "name": "startColor",
+                        "name": "boundColor",
                         "type": "Color",
-                        "displayName": "填充起始颜色",
-                        "defaultValue": "rgba(147, 235, 248, 0)"
-                    },
-                    {
-                        "name": "endColor",
-                        "type": "Color",
-                        "displayName": "填充终止颜色",
-                        "defaultValue": "rgba(147, 235, 248, 0.1)"
-                    },
-                    {
-                        "name": "shadowColor",
-                        "type": "Color",
-                        "displayName": "阴影效果颜色",
-                        "defaultValue": "rgba(128, 217, 248, 1)"
-                    },
-                    {
-                        "name": "emphasisColor",
-                        "type": "Color",
-                        "displayName": "悬浮背景颜色",
-                        "defaultValue": "#389BB7"
+                        "displayName": "区域边线颜色",
+                        "defaultValue": "#CC66CC"
                     }
-
                 ]
             },
             {

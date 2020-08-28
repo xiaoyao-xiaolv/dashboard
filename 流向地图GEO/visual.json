@@ -1,11 +1,13 @@
 {
-    "name": "FlyingLineMap",
+    "name": "流向地图Geo",
     "version": "0.0.1",
-    "displayName": "流向地图",
+    "displayName": "流向地图Geo",
     "displayNameKey": "",
     "icon": "assets/icon.png",
     "description": "",
-    "externalJs": ["https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66"],
+    "externalJs": [
+        "https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66&callback=__init&plugin=AMap.CustomLayer,AMap.DistrictSearch"
+    ],
     "externalCss": [],
     "assets": {
         "images": {}
