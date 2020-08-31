@@ -22,9 +22,6 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.properties = {
-      colorInRange: ['white', 'blue', 'green', 'yellow', 'red']
-    };
     ins = this;
   }
 
@@ -56,6 +53,7 @@ export default class Visual {
     let points = this.isMock ? mockPoints : this.boundPoints;
     this.container.style.opacity = this.isMock  ? '0.5' : '1';
     let options = this.properties;
+    let colorInRange = this.isMock ? ['white', 'blue', 'green', 'yellow', 'red'] : options.colorInRange;
     let option = {
       amap: {
         center: [options.centerLongitude, options.centerLatitude],
@@ -71,7 +69,7 @@ export default class Visual {
         seriesIndex: 0,
         calculable: true,
         inRange: {
-          color: options.colorInRange
+          color: colorInRange
         }
       },
       series: [{
