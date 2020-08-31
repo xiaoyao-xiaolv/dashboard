@@ -34,7 +34,6 @@ export default class Visual {
   }
 
   public update(options: any) {
-    console.log(options)
     this.properties = options.properties;
     this.isMock = !options.dataViews.length;
     if (!this.isMock) {
@@ -57,7 +56,6 @@ export default class Visual {
     let points = this.isMock ? mockPoints : this.boundPoints;
     this.container.style.opacity = this.isMock  ? '0.5' : '1';
     let options = this.properties;
-    console.log(this.properties);
     let option = {
       amap: {
         center: [options.centerLongitude, options.centerLatitude],
@@ -85,7 +83,6 @@ export default class Visual {
       }]
     };
     this.chart.setOption(option);
-    // this.map = this.chart.getModel().getComponent('amap').getAMap();
   }
 
   public onResize() {
@@ -101,6 +98,5 @@ export default class Visual {
     return null;
   }
   public onActionEventHandler = (name: string) => {
-    console.log(name);
   }
 }

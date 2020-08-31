@@ -11,19 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ffa2dddd-3683-4900-957c-4c2aa56ee874" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/热力地图/src/mockPoints.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图GEO/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图GEO/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图GEO/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图GEO/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图GEO/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图GEO/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/heatMap.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/热力地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +60,7 @@
       <workItem from="1598490473268" duration="38370000" />
       <workItem from="1598582716959" duration="22152000" />
       <workItem from="1598762632699" duration="2456000" />
-      <workItem from="1598838260965" duration="16367000" />
+      <workItem from="1598838260965" duration="16601000" />
     </task>
     <servers />
   </component>
@@ -101,11 +90,11 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196645723" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1598604935196">
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1598864803289">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319080400" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598604935196" />
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598864803289" />
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1597891443266">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
