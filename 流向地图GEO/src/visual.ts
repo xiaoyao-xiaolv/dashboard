@@ -145,9 +145,9 @@ export default class Visual {
     return originResultData;
   }
 
-  private parseData = (itemArr: any) => {
+  private prepareData = (itemArr: any) => {
     let result = [];
-    itemArr.map(data => {
+    itemArr.forEach(data => {
       result.push({
         name: data.toName,
         value: data.coords[1].concat(data.value)
@@ -202,7 +202,7 @@ export default class Visual {
     const isMock = !this.originResultData.length;
     const originItems = isMock ? Visual.mockItems : this.originResultData;
     this.container.style.opacity = isMock ? '0.3' : '1';
-    const options = this.properties;
+    let options = this.properties;
     let planePath = options.effect ? options.symbol : options.symbolStyle;
     let originValues= isMock ? ['北京', '上海', '广州市'] : this.legendData;
     let color = isMock ? ['#a6c84c', '#ffa022', '#46bee9'] : options.palette;
@@ -276,7 +276,7 @@ export default class Visual {
                 color: color[j]
               }
             },
-            data: this.parseData(item)
+            data: this.prepareData(item)
           }
         );
       }

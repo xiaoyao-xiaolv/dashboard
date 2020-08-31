@@ -43,7 +43,7 @@ const config = {
     unknownContextCritical: false,
   },
   externals: {
-    'BMap': 'BMap',
+    'AMap': 'AMap'
   },
   devServer: {
     host: '0.0.0.0',

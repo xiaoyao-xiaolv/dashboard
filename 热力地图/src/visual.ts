@@ -1,93 +1,93 @@
 import '../style/visual.less';
-import BMap from 'BMap';
+import * as echarts from 'echarts';
+import "echarts-amap";
+// @ts-ignore
+import mockPoints from './mockPoints.ts';
+
+let loaded = false;
+let ins;
+(window as any).__init = function() {
+  loaded = true;
+  if(ins) {
+    ins.init();
+  }
+}
+
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
-  private map: any;
-  private items: any;
   private properties: any;
-  private valueField: any;
-  private ActualValue: any;
-  private ContrastValue: any;
-  static mockItems = 0.5;
+  private boundPoints: any;
+  private isMock: boolean;
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = require('echarts').init(dom);
-    this.items = [];
     this.properties = {
-      zoom: 14,
-      mapStyle: 'style',
-      styleValue: 'normal'
-
+      colorInRange: ['white', 'blue', 'green', 'yellow', 'red']
     };
+    ins = this;
+  }
+
+  init() {
+    this.chart = echarts.init(this.container);
     this.render();
   }
 
   public update(options: any) {
-    const dataView = options.dataViews[0];
-    console.log(dataView)
-    this.items = [];
-    if ((dataView &&
-      dataView.plain.profile.values.values.length) || (dataView &&
-        dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length)) {
-      const plainData = dataView.plain;
-      this.valueField = plainData.profile.values.values;
-      this.ActualValue = plainData.profile.ActualValue.values;
-      this.ContrastValue = plainData.profile.ContrastValue.values;
-      if (this.valueField.length == 1) {
-        this.items = plainData.data[0][this.valueField[0].display].toFixed(4);
-      } else {
-        this.items = (plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]).toFixed(4);
-      }
-    }
+    console.log(options)
     this.properties = options.properties;
+    this.isMock = !options.dataViews.length;
+    if (!this.isMock) {
+      let dataView = options.dataViews[0].plain;
+      let lgLabel = dataView.profile.longitude.values[0].display;
+      let laLabel = dataView.profile.latitude.values[0].display;
+      let boundData = dataView.data;
+      this.boundPoints = boundData.map((data) => {
+        return [data[lgLabel], data[laLabel], 1]
+      })
+    }
     this.render();
   };
 
   private render() {
+    if (!loaded) {
+      return;
+    }
     this.chart.clear();
-    const isMock = !this.items.length;
-    const items = isMock ? Visual.mockItems : this.items;
-    this.container.style.opacity = isMock ? '0.3' : '1';
-    const options = this.properties;
-
-    var option = {
-      animation: false,
-      bmap: {
-        center: [120.14066322374, 30.250018034923],
+    let points = this.isMock ? mockPoints : this.boundPoints;
+    this.container.style.opacity = this.isMock  ? '0.5' : '1';
+    let options = this.properties;
+    console.log(this.properties);
+    let option = {
+      amap: {
+        center: [options.centerLongitude, options.centerLatitude],
+        zoomEnable: options.zoomEnable,
         zoom: options.zoom,
-        roam: true,
+        mapStyle: `amap://styles/${options.mapStyle}`,
       },
       visualMap: {
-        type: 'continuous',
         show: false,
         top: 'top',
         min: 0,
-        max: 5,
-        dimension: 2,
+        max: options.visualMapMax,
         seriesIndex: 0,
         calculable: true,
         inRange: {
-          color: ['blue', 'blue', 'green', 'yellow', 'red']
+          color: options.colorInRange
         }
       },
       series: [{
         type: 'heatmap',
-        coordinateSystem: 'bmap',
-        data: items,
-        pointSize: 5,
-        blurSize: 6
+        coordinateSystem: 'amap',
+        data: points,
+        pointSize: options.pointSize,
+        blurSize: options.blurSize
       }]
-    }
+    };
     this.chart.setOption(option);
-    this.map = this.chart.getModel().getComponent('bmap').getBMap();
-
-
-
-
+    // this.map = this.chart.getModel().getComponent('amap').getAMap();
   }
-  // public abstract onDestroy(): void;
+
   public onResize() {
     this.chart.resize();
     this.render();

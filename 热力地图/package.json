@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node script",
-    "release": "webpack --mode=production"
+    "release": "webpack --mode=production",
+    "compile": "webpack --mode=development"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "file-loader": "6.0.0"
   },
   "dependencies": {
-    "echarts": "^4.7.0"
+    "echarts": "^4.7.0",
+    "echarts-amap": "^1.4.15-rc.1"
   }
 }
