@@ -11,8 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ffa2dddd-3683-4900-957c-4c2aa56ee874" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/气泡地图GEO/capabilities.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/气泡地图GEO/src/geoCoordMap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/气泡地图GEO/src/myTooltip.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/热力地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/热力地图/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +23,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/气泡地图GEO/package.json" />
   </component>
   <component name="ProjectId" id="1gaG3BZuOH9MuDguHcAidSLJzk8" />
   <component name="ProjectViewState">
@@ -31,17 +36,20 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/气泡地图GEO/src" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\EchartsColumnChart\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\热力地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\src" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO" />
       <recent name="D:\Wyn plugins code\dashboard" />
     </key>
   </component>
@@ -60,7 +68,10 @@
       <workItem from="1598490473268" duration="38370000" />
       <workItem from="1598582716959" duration="22152000" />
       <workItem from="1598762632699" duration="2456000" />
-      <workItem from="1598838260965" duration="16601000" />
+      <workItem from="1598838260965" duration="17409000" />
+      <workItem from="1598867642263" duration="142000" />
+      <workItem from="1598867952604" duration="810000" />
+      <workItem from="1598922391477" duration="27143000" />
     </task>
     <servers />
   </component>
@@ -99,36 +110,36 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597891443266" />
-    <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1597824764380">
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1598931453827">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
-    <state width="1259" height="162" key="GridCell.Tab.0.center" timestamp="1597824764380">
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598931453827" />
+    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1598931453826">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="162" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
-    <state width="1259" height="162" key="GridCell.Tab.0.left" timestamp="1597824764380">
+    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598931453826" />
+    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1598931453826">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="162" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
-    <state width="1259" height="162" key="GridCell.Tab.0.right" timestamp="1597824764380">
+    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598931453826" />
+    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1598931453826">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="162" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597824764380" />
+    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598931453826" />
     <state x="520" y="84" key="RollbackChangesDialog" timestamp="1597801753080">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
     <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597801753080" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1598862659254">
+    <state width="498" height="398" key="SwitcherDM" timestamp="1598953798778">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319869554" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598862659254" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598953798778" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680@0.0.1280.680" timestamp="1598431897079" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1598602694618">
       <screen x="0" y="0" width="1280" height="680" />

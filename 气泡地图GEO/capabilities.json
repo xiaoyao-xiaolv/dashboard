@@ -1,0 +1,270 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "location",
+                "displayNameKey": "位置",
+                "kind": "grouping"
+            },
+            {
+                "name": "longitude",
+                "displayNameKey": "经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "latitude",
+                "displayNameKey": "纬度",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "max": 0
+                            },
+                            "latitude": {
+                                "max": 0
+                            }
+                        },
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "min": 1
+                            },
+                            "latitude": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "location": {
+                    "max": 1
+                },
+                "longitude": {
+                    "max": 1
+                },
+                "latitude": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "地图设置",
+                "properties": [
+                    {
+                        "name": "zoomEnable",
+                        "type": "Boolean",
+                        "displayName": "是否允许鼠标缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "地图缩放级别",
+                        "name": "zoom",
+                        "type": "Integer",
+                        "max": 18,
+                        "min": 3,
+                        "defaultValue": 4
+                    },
+                    {
+                        "name": "centerEnable",
+                        "type": "Boolean",
+                        "displayName": "是否自定义地图中心点",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "longitude",
+                        "type": "Float",
+                        "displayName": "地图中心点经度",
+                        "defaultValue": 108.948024
+                    },
+                    {
+                        "name": "latitude",
+                        "type": "Float",
+                        "displayName": "地图中心点纬度",
+                        "defaultValue": 34.263161
+                    }
+                ]
+            },
+            {
+                "displayName": "数据样式",
+                "properties": [
+                    {
+                        "displayNameKey": "散点样式",
+                        "name": "symbol",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "circle",
+                                "displayNameKey": "涟漪气泡"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "钻石菱形"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "圆角四边形"
+                            },
+                            {
+                                "value": "pin",
+                                "displayNameKey": "水滴"
+                            }
+                        ],
+                        "defaultValue": "circle"
+                    },
+                    {
+                        "name": "showLabel",
+                        "type": "Boolean",
+                        "displayName": "是否显示数据标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "textColor",
+                        "type": "Color",
+                        "displayName": "标签字体颜色",
+                        "defaultValue": "#ffffff"
+                    },
+                    {
+                        "name": "textFont",
+                        "type": "Integer",
+                        "displayName": "标签字体大小",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "symbolColor",
+                        "type": "Color",
+                        "displayName": "散点颜色",
+                        "defaultValue": "#5189ff"
+                    },
+                    {
+                        "name": "showRankData",
+                        "type": "Boolean",
+                        "displayName": "条件格式化",
+                        "defaultValue": "true"
+                    },
+                    {
+                        "name": "rank",
+                        "displayName": "条件类型",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "前 N 项"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "后 N 项"
+                            }
+                        ],
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "level",
+                        "type": "Integer",
+                        "displayName": "数据项",
+                        "defaultValue": "5",
+                        "min": 1
+                    },
+                    {
+                        "name": "rankSymbolColor",
+                        "type": "Color",
+                        "displayName": "条件数据点颜色",
+                        "defaultValue": "#bd86ff"
+                    }
+                ]
+            },
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "displayNameKey": "地图主题样式",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "defaultValue": "normal",
+                        "items": [
+                            {"value":"normal","displayNameKey":"标准"},
+                            {"value":"dark","displayNameKey":"幻影黑"},
+                            {"value":"light","displayNameKey":"月光银"},
+                            {"value":"whitesmoke","displayNameKey":"远山黛"},
+                            {"value":"fresh","displayNameKey":"草色青"},
+                            {"value":"grey","displayNameKey":"雅士灰"},
+                            {"value":"graffiti","displayNameKey":"涂鸦"},
+                            {"value":"macaron","displayNameKey":"马卡龙"},
+                            {"value":"blue","displayNameKey":"靛青蓝"},
+                            {"value":"darkblue","displayNameKey":"极夜蓝"},
+                            {"value":"wine","displayNameKey":"酱籽"}
+                        ]
+                    },
+                    {
+                        "name": "boundColor",
+                        "type": "Color",
+                        "displayName": "区域边线颜色",
+                        "defaultValue": "#CC66CC"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

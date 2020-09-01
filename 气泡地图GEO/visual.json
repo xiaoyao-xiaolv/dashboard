@@ -1,0 +1,16 @@
+{
+    "name": "气泡地图GEO",
+    "displayName": "气泡地图GEO",
+    "displayNameKey": "气泡地图GEO",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": ["https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66&callback=__init&plugin=AMap.CustomLayer,AMap.DistrictSearch"],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "4.0.1"
+}
