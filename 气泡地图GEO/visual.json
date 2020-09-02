@@ -1,7 +1,7 @@
 {
-    "name": "气泡地图GEO",
-    "displayName": "气泡地图GEO",
-    "displayNameKey": "气泡地图GEO",
+    "name": "气泡散点组合地图",
+    "displayName": "气泡散点组合地图",
+    "displayNameKey": "气泡散点组合地图",
     "icon": "visualIcon",
     "description": "",
     "externalJs": ["https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66&callback=__init&plugin=AMap.CustomLayer,AMap.DistrictSearch"],

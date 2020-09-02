@@ -42,6 +42,34 @@
                         },
                         {
                             "values": {
+                                "max": 0
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "max": 0
+                            },
+                            "latitude": {
+                                "max": 0
+                            }
+                        },
+                        {
+                            "values": {
+                                "max": 0
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "min": 1
+                            },
+                            "latitude": {
+                                "min": 1
+                            }
+                        },
+                        {
+                            "values": {
                                 "min": 1
                             },
                             "location": {
@@ -124,7 +152,7 @@
                         "items": [
                             {
                                 "value": "circle",
-                                "displayNameKey": "涟漪气泡"
+                                "displayNameKey": "气泡"
                             },
                             {
                                 "value": "diamond",
@@ -142,10 +170,28 @@
                         "defaultValue": "circle"
                     },
                     {
+                        "name": "symbolColor",
+                        "type": "Color",
+                        "displayName": "散点颜色",
+                        "defaultValue": "rgba(179, 122, 255, 0.85)"
+                    },
+                    {
+                        "name": "symbolSize",
+                        "type": "Integer",
+                        "displayName": "散点大小",
+                        "defaultValue": 15
+                    },
+                    {
+                        "name": "showEffect",
+                        "type": "Boolean",
+                        "displayName": "是否开启涟漪效果",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "showLabel",
                         "type": "Boolean",
                         "displayName": "是否显示数据标签",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "textColor",
@@ -158,12 +204,6 @@
                         "type": "Integer",
                         "displayName": "标签字体大小",
                         "defaultValue": 10
-                    },
-                    {
-                        "name": "symbolColor",
-                        "type": "Color",
-                        "displayName": "散点颜色",
-                        "defaultValue": "#5189ff"
                     },
                     {
                         "name": "showRankData",
@@ -198,7 +238,7 @@
                         "name": "rankSymbolColor",
                         "type": "Color",
                         "displayName": "条件数据点颜色",
-                        "defaultValue": "#bd86ff"
+                        "defaultValue": "rgba(250, 40, 255, 0.75)"
                     }
                 ]
             },

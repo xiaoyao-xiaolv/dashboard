@@ -4,7 +4,6 @@ import "echarts-amap";
 // @ts-ignore
 import AMap from 'AMap';
 import geoCoordMap from './geoCoordMap.json';
-// import { myTooltipC } from './myTooltip.js'
 
 let loaded = false;
 let ins;
@@ -19,13 +18,13 @@ export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
   private properties: any;
-  // private myTooltip: any;
   private locationName: any;
   private valuesName: any;
   private longitude: any;
   private latitude: any;
   private items: any;
-  private isBoundCoords: boolean;
+  private bindCoords: boolean;
+  private bindValues: boolean;
   private static mockItems = [
       { name: "太原", value: [119.306239, 26.075302, 13] }
     , { name: "福州", value: [112.549248, 37.857014, 71] }
@@ -46,8 +45,8 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.isBoundCoords = false;
-    // this.myTooltip = new myTooltipC('visualDom');
+    this.bindCoords = false;
+    this.bindValues = false;
     ins = this;
   }
 
@@ -69,7 +68,7 @@ export default class Visual {
     let res = [];
     dataItems.forEach((dataItem) => {
       let geoCoord;
-      if (this.isBoundCoords) {
+      if (this.bindCoords) {
         geoCoord = [dataItem[this.longitude], dataItem[this.latitude]];
       } else {
         geoCoord = this.getCoords(dataItem[this.locationName]);
@@ -91,10 +90,13 @@ export default class Visual {
     let profileItems = options.dataViews[0] && options.dataViews[0].plain.profile;
     if (profileItems && options.dataViews.length) {
       let plainData = options.dataViews[0].plain;
-      this.valuesName = profileItems.values.values[0].display;
-      this.isBoundCoords = !!(profileItems.longitude.values.length && profileItems.latitude.values.length);
       this.locationName = profileItems.location.values[0].display;
-      if (this.isBoundCoords) {
+      this.bindValues = !!profileItems.values.values.length;
+      if(this.bindValues) {
+        this.valuesName = profileItems.values.values[0].display;
+      }
+      this.bindCoords = !!(profileItems.longitude.values.length && profileItems.latitude.values.length);
+      if (this.bindCoords) {
         this.longitude = profileItems.longitude.values[0].display;
         this.latitude = profileItems.latitude.values[0].display;
       }
@@ -124,7 +126,6 @@ export default class Visual {
       return;
     }
     this.chart.clear();
-    // let myTooltip = this.myTooltip;
     let options = this.properties;
     let isMock = !this.items.length;
     let items = isMock ? Visual.mockItems : this.items;
@@ -135,67 +136,46 @@ export default class Visual {
     let minValue = Math.min.apply(null, items.map(function (item) {
       return item.value[2];
     }));
-    let symbolSize = this.getSymbolSize(minValue, maxValue);
-    let series = [
-      {
-        type: 'scatter',
-        coordinateSystem: 'amap',
-        data: items,
-        symbolSize: symbolSize,
-        symbol: options.symbol,
-        itemStyle: {
-          normal: {
-            color: options.symbolColor
-          }
-        }
-      },
-      {
-        type: 'effectScatter',
-        coordinateSystem: 'amap',
-        data: items,
-        symbolSize: symbolSize,
-        symbol: options.symbol,
-        showEffectOn: 'render',
-        rippleEffect: {
-          brushType: 'stroke'
-        },
-        hoverAnimation: true,
-        label: {
-          normal: {
-            show: options.showLabel,
-            textStyle: {
-              color: options.textColor,
-              fontSize: options.textFont,
-            },
-            formatter(value) {
-              return value.data.value[2]
+    let symbolSize;
+    if (!isMock && !this.bindValues) {
+      symbolSize = options.symbolSize;
+    } else {
+      symbolSize = this.getSymbolSize(minValue, maxValue);
+    }
+    let series = [];
+    series.push(
+        {
+          type: 'scatter',
+          coordinateSystem: 'amap',
+          data: items,
+          symbolSize: symbolSize,
+          symbol: options.symbol,
+          label: {
+            normal: {
+              show: options.showLabel,
+              textStyle: {
+                color: options.textColor,
+                fontSize: options.textFont,
+              },
+              formatter(value) {
+                return value.data.value[2]
+              }
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: options.symbolColor,
             }
           }
-        },
-        itemStyle: {
-          normal: {
-            color: options.symbolColor,
-            shadowBlur: 10,
-            shadowColor: '#333'
-          }
-        },
-        zlevel: 1
-      },
-    ];
-
-    if (options.showRankData) {
-      let rankItems = items.sort(function (a, b) {
-        if (options.rank === 'top') {
-          return b.value[2] - a.value[2];
-        } else {
-          return a.value[2] - b.value[2];
         }
-      }).slice(0, options.level);
+    )
+
+    if (options.showEffect) {
       series.push(
           {
             type: 'effectScatter',
             coordinateSystem: 'amap',
-            data: rankItems,
+            data: items,
             symbolSize: symbolSize,
             symbol: options.symbol,
             showEffectOn: 'render',
@@ -217,14 +197,88 @@ export default class Visual {
             },
             itemStyle: {
               normal: {
-                color: options.rankSymbolColor,
+                color: options.symbolColor,
                 shadowBlur: 10,
-                shadowColor: '#333'
+                shadowColor: '#fff'
               }
             },
             zlevel: 1
           }
-      )
+      );
+    }
+
+    if (options.showRankData) {
+      let rankItems = items.sort(function (a, b) {
+        if (options.rank === 'top') {
+          return b.value[2] - a.value[2];
+        } else {
+          return a.value[2] - b.value[2];
+        }
+      }).slice(0, options.level);
+
+      if (!options.showEffect) {
+        series.push(
+            {
+              type: 'scatter',
+              coordinateSystem: 'amap',
+              data: rankItems,
+              symbolSize: symbolSize,
+              symbol: options.symbol,
+              label: {
+                normal: {
+                  show: options.showLabel,
+                  textStyle: {
+                    color: options.textColor,
+                    fontSize: options.textFont,
+                  },
+                  formatter(value) {
+                    return value.data.value[2]
+                  }
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: options.rankSymbolColor
+                }
+              }
+            }
+        );
+      } else {
+        series.push(
+            {
+              type: 'effectScatter',
+              coordinateSystem: 'amap',
+              data: rankItems,
+              symbolSize: symbolSize,
+              symbol: options.symbol,
+              showEffectOn: 'render',
+              rippleEffect: {
+                brushType: 'stroke'
+              },
+              hoverAnimation: true,
+              label: {
+                normal: {
+                  show: options.showLabel,
+                  textStyle: {
+                    color: options.textColor,
+                    fontSize: options.textFont,
+                  },
+                  formatter(value) {
+                    return value.data.value[2]
+                  }
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: options.rankSymbolColor,
+                  shadowBlur: 10,
+                  shadowColor: '#fff'
+                }
+              },
+              zlevel: 1
+            }
+        );
+      }
     }
 
     let amap = {
@@ -236,24 +290,9 @@ export default class Visual {
     if (options.centerEnable) {
       amap['center'] = [options.longitude, options.latitude];
     }
-    // let locationName = isMock ? '地点' : this.locationName;
-    // let valuesName = isMock ? '数量' : this.valuesName;
+
     let option = {
       amap: amap,
-      // tooltip: {
-      //   trigger: 'item',
-      //   // triggerOn: 'click',
-      //   backgroundColor: 'transparent',
-      //   position(pos: any) {
-      //     let position = myTooltip.getPosOrSize('pos', pos)
-      //     return position
-      //   },
-      //   formatter(params: any) {
-      //     let text = locationName + ' : ' + params.name + '\n' + valuesName + ' : ' + params.value[2];
-      //     let tooltipDom = myTooltip.getTooltipDom(text)
-      //     return tooltipDom
-      //   }
-      // },
       legend: {
         show: false
       },
@@ -270,51 +309,6 @@ export default class Visual {
       series: series
     };
     this.chart.setOption(option);
-
-    // let map = this.chart.getModel().getComponent('amap').getAMap();
-    // let polygons = []
-    // let district = null;
-    // AMap.plugin('AMap.DistrictSearch', function () {
-    //   if (options.mapName === 'world') {
-    //     map.setZoom(3);
-    //     map.remove(polygons);
-    //     return;
-    //   }
-    //   if (!district) {
-    //     let opts = {
-    //       subdistrict: 0,
-    //       extensions: 'all',
-    //       level: 'province'
-    //     };
-    //     district = new AMap.DistrictSearch(opts);
-    //   }
-    //
-    //   if (options.mapName === '中国') {
-    //     district.setLevel('country');
-    //   }
-    //   district.search(options.mapName, function(status, result) {
-    //     map.remove(polygons)
-    //     polygons = [];
-    //     let bounds = result.districtList[0].boundaries;
-    //     if (bounds) {
-    //       for (let i = 0, l = bounds.length; i < l; i++) {
-    //         let polygon = new AMap.Polygon({
-    //           map: map,
-    //           strokeWeight: 1,
-    //           path: bounds[i],
-    //           fillOpacity: 0,
-    //           strokeColor: options.boundColor,
-    //         });
-    //         polygons.push(polygon);
-    //       }
-    //
-    //       if (!options.centerEnable) {
-    //         let centerPosition = ins.getCoords(options.mapName);
-    //         map.setCenter(centerPosition);
-    //       }
-    //     }
-    //   })
-    // })
   }
 
   public onResize() {
@@ -325,6 +319,17 @@ export default class Visual {
   public getInspectorHiddenState(updateOptions: any): string[] {
     let properties = updateOptions.properties;
     let hiddenStates = [];
+    let profileItems = updateOptions.dataViews[0] && updateOptions.dataViews[0].plain.profile;
+    this.bindValues = profileItems && !!profileItems.values.values.length;
+
+    if (profileItems && !this.bindValues) {
+      properties.showLabel = false;
+      properties.showRankData = false;
+      hiddenStates.push('showLabel', 'showRankData');
+    } else {
+      hiddenStates.push('symbolSize');
+    }
+
     if (!properties.centerEnable) {
       hiddenStates.push('latitude','longitude');
     }

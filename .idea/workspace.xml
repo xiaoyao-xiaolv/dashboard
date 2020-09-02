@@ -11,10 +11,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ffa2dddd-3683-4900-957c-4c2aa56ee874" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/气泡地图GEO/capabilities.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/气泡地图GEO/src/geoCoordMap.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/气泡地图GEO/src/myTooltip.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/气泡地图GEO/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/气泡地图GEO/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/气泡地图GEO/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/气泡地图GEO/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/气泡地图GEO/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/气泡地图GEO/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/气泡地图GEO.viz" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +47,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\src" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图" />
@@ -71,7 +76,7 @@
       <workItem from="1598838260965" duration="17409000" />
       <workItem from="1598867642263" duration="142000" />
       <workItem from="1598867952604" duration="810000" />
-      <workItem from="1598922391477" duration="27143000" />
+      <workItem from="1598922391477" duration="44666000" />
     </task>
     <servers />
   </component>
@@ -101,11 +106,11 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196645723" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1598864803289">
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1598955161873">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319080400" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598864803289" />
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598955161873" />
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1597891443266">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -135,11 +140,11 @@
     </state>
     <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
     <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597801753080" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1598953798778">
+    <state width="498" height="398" key="SwitcherDM" timestamp="1599032493024">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319869554" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598953798778" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599032493024" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680@0.0.1280.680" timestamp="1598431897079" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1598602694618">
       <screen x="0" y="0" width="1280" height="680" />
