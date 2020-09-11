@@ -133,6 +133,7 @@ export default class Visual extends WynVisual {
       geo: {
         map: options.mapName,
         roam: options.roam,
+        zoom: 1.2,
         itemStyle: {
           normal: {
             areaColor:options.mapColor,

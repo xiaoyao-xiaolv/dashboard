@@ -110,7 +110,7 @@
                         "name": "mapBorderShadowColor",
                         "type": "Color",
                         "displayName": "边线阴影颜色",
-                        "defaultValue": "rgba(128, 217, 248, 1)"
+                        "defaultValue": "rgba(128, 217, 248, 0)"
                     },
                     {
                         "name": "mapColor",
@@ -209,7 +209,7 @@
                         "name": "chartShadowColor",
                         "type": "Color",
                         "displayName": "阴影效果颜色",
-                        "defaultValue": "rgba(255, 255, 255, 0.8)"
+                        "defaultValue": "rgba(255, 255, 255, 0)"
                     },
                     {
                         "name": "showLocationName",
@@ -331,6 +331,12 @@
                         }
                     }
                 ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
             }
         ]
     },
