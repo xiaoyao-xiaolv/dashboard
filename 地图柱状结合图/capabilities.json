@@ -107,10 +107,22 @@
                         "defaultValue": "#73d8ff"
                     },
                     {
+                        "name": "mapBorderShadowColor",
+                        "type": "Color",
+                        "displayName": "边线阴影颜色",
+                        "defaultValue": "rgba(128, 217, 248, 1)"
+                    },
+                    {
                         "name": "mapColor",
                         "type": "Color",
                         "displayName": "地图填充颜色",
                         "defaultValue": "#0a4880"
+                    },
+                    {
+                        "name": "emphasisColor",
+                        "type": "Color",
+                        "displayName": "悬浮背景颜色",
+                        "defaultValue": "#653294"
                     },
                     {
                         "displayNameKey": "地图名称",
@@ -159,8 +171,28 @@
                 ]
             },
             {
-                "displayName": "图表设置",
+                "displayName": "图表样式",
                 "properties": [
+                    {
+                        "name": "chartType",
+                        "type": "Enum",
+                        "displayName": "切换图表类型",
+                        "items": [
+                            {
+                                "value": "bar",
+                                "displayNameKey": "柱状图"
+                            },
+                            {
+                                "value": "pie",
+                                "displayNameKey": "饼图"
+                            },
+                            {
+                                "value": "rosePie",
+                                "displayNameKey": "玫瑰图"
+                            }
+                        ],
+                        "defaultValue": "pie"
+                    },
                     {
                         "name": "palette",
                         "type": "Palette",
@@ -168,16 +200,16 @@
                         "inheritFrom": "dashboard.palette"
                     },
                     {
-                        "name": "maxValue",
-                        "type": "Integer",
-                        "displayName": "图表最大值",
-                        "defaultValue": 200
+                        "name": "chartOpacity",
+                        "type": "Percentage",
+                        "displayName": "图形不透明度",
+                        "defaultValue": 80
                     },
                     {
-                        "name": "showLegend",
-                        "type": "Boolean",
-                        "displayName": "是否显示图例",
-                        "defaultValue": true
+                        "name": "chartShadowColor",
+                        "type": "Color",
+                        "displayName": "阴影效果颜色",
+                        "defaultValue": "rgba(255, 255, 255, 0.8)"
                     },
                     {
                         "name": "showLocationName",
@@ -186,10 +218,117 @@
                         "defaultValue": true
                     },
                     {
-                        "name": "locationNameColor",
-                        "type": "Color",
-                        "displayName": "位置标注颜色",
-                        "defaultValue": "#cccccc"
+                        "name": "locationNameTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "位置标注字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "12px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "name": "showLegend",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "legendIcon",
+                        "type": "Enum",
+                        "displayName": "图标",
+                        "items": [
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "rect",
+                                "displayNameKey": "方形"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "圆角方形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            }
+                        ],
+                        "defaultValue": "roundRect"
+                    },
+                    {
+                        "name": "legendOrient",
+                        "type": "Enum",
+                        "displayName": "图例布局方向",
+                        "items": [
+                            {
+                                "value": "horizontal",
+                                "displayNameKey": "水平方向"
+                            },
+                            {
+                                "value": "vertical",
+                                "displayNameKey": "垂直方向"
+                            }
+                        ],
+                        "defaultValue": "horizontal"
+                    },
+                    {
+                        "name": "legendHorizontalPosition",
+                        "type": "Enum",
+                        "displayName": "水平位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "middle",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "bottom"
+                    },
+                    {
+                        "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
                     }
                 ]
             }

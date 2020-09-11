@@ -40,20 +40,19 @@ import "echarts/map/js/province/yunnan.js";
 import "echarts/map/js/province/zhejiang.js";
 
 let myChart;
+let allSeriesData;
 let rawData = [
-  ["南京",10,20,30],
-  ["镇江",10,25,30],
-  ["常州",10,20,35],
-  ["无锡",15,20,25],
-  ["苏州",10,20,30],
-  ["扬州",10,20,30],
-  ["泰州",10,25,35],
-  ["南通",10,20,30],
-  ["徐州",15,20,35],
-  ["宿迁",10,25,30],
-  ["淮安",15,20,35],
-  ["盐城",10,20,30],
-  ["连云港",10,25,35],
+  ["陕西",10,20,30],
+  ["四川",10,25,30],
+  ["河北",10,20,35],
+  ["广州",15,20,25],
+  ["福建",10,20,30],
+  ["浙江",10,20,30],
+  ["青海",10,25,35],
+  ["黑龙江",10,20,30],
+  ["新疆",15,20,35],
+  ["西藏",10,25,30],
+  ["云南",15,20,35]
 ];
 
 export default class Visual extends WynVisual {
@@ -68,7 +67,6 @@ export default class Visual extends WynVisual {
   private resultData: any;
   private series: any;
   private locationArr: any;
-
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
@@ -77,20 +75,24 @@ export default class Visual extends WynVisual {
   }
 
   private prepareData(dataArr: any) {
-     return this.locationArr.map((location) => {
+    allSeriesData = [];
+    return this.locationArr.map((location) => {
       let locationTempData = dataArr.filter(data => data[this.locationName] === location);
       let tempObj = {};
       locationTempData.forEach((temp) => {
         tempObj[temp[this.seriesName]] = temp[this.valuesName];
-      })
+      });
       let seriesData = this.series.map((item) => {
-        return  tempObj[item] ? tempObj[item] : 0;
-      })
+        return tempObj[item] ? tempObj[item] : 0;
+      });
+      allSeriesData = allSeriesData.concat(seriesData);
       return [location].concat(seriesData);
     });
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
+    this.series = [];
+    this.locationArr = [];
     this.isMock = !options.dataViews.length;
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
@@ -102,8 +104,16 @@ export default class Visual extends WynVisual {
         this.longitudeName = profile.longitude.values[0].display;
         this.latitudeName = profile.latitude.values[0].display;
       }
-      this.series = options.dataViews[0].plain.sort[this.seriesName].order;
-      this.locationArr = options.dataViews[0].plain.sort[this.locationName].order;
+      bindData.forEach((data) => {
+        if(this.series.indexOf(data[this.seriesName]) < 0) {
+          this.series.push(data[this.seriesName]);
+        }
+      })
+      bindData.forEach((data) => {
+        if(this.locationArr.indexOf(data[this.locationName]) < 0) {
+          this.locationArr.push(data[this.locationName]);
+        }
+      })
       this.resultData = this.prepareData(bindData);
     }
     this.properties = options.properties;
@@ -114,28 +124,27 @@ export default class Visual extends WynVisual {
     myChart.clear();
     let options = this.properties;
     this.container.style.opacity = this.isMock ? '0.5' : '1';
-    let colorList = this.isMock ? ['#a6c84c', '#ffa022', '#46bee9'] : options.palette;
-    let map = this.isMock ? '江苏' : options.mapName;
+    let colorList = this.isMock ? ['#a6c84c', '#7b64ff', '#46bee9'] : options.palette;
     let mapOption = {
       animation: false,
       tooltip: {
         trigger: 'axis'
       },
       geo: {
-        map: map,
+        map: options.mapName,
         roam: options.roam,
         itemStyle: {
           normal: {
             areaColor:options.mapColor,
             borderColor: options.mapBorderColor,
             borderWidth: 1,
-            shadowColor: 'rgba(128, 217, 248, 1)',
-            shadowOffsetX: -2,
-            shadowOffsetY: 2,
+            shadowColor: options.mapBorderShadowColor,
+            shadowOffsetX: -3,
+            shadowOffsetY: 3,
             shadowBlur: 10,
           },
           emphasis: {
-            areaColor: 'rgba(119,119,119,0)',
+            areaColor: options.emphasisColor,
           }
         },
         label: {
@@ -157,90 +166,170 @@ export default class Visual extends WynVisual {
       };
       let areaData = this.isMock ? rawData: this.resultData;
       let series = this.isMock ? ["学校","教师","学生"] : this.series;
-      let maxValue = this.isMock ? 50 : options.maxValue;
+      let maxValue = this.isMock ? 50 : Math.max.apply(null, allSeriesData);
       let gridWidth = 10 * series.length;
+      let totalSeriesDataList = [];
+      areaData.forEach((item) => {
+        let total = item.slice(1).reduce((prev,current) => {
+          return prev+current;
+        }, 0)
+        totalSeriesDataList.push(total);
+      });
+      let maxTotalSeriesData = Math.max.apply(null, totalSeriesDataList);
+      let minTotalSeriesData = Math.min.apply(null, totalSeriesDataList);
       let option = {
         legend:[],
         xAxis: [],
         yAxis: [],
+        title: [],
         grid: [],
         series: []
       };
       if (options.showLegend) {
         option.legend.push({
           data : series,
-          left:'center',
-          top:'bottom',
+          icon: options.legendIcon,
+          left: options.legendHorizontalPosition,
+          top: options.legendVerticalPosition,
           itemWidth:25,
           itemHeight:15,
-          textStyle:{
-            color:'#ddd',
-            fontSize:15
-          }
+          orient:options.legendOrient,
+          textStyle: {
+            ...options.legendTextStyle,
+            fontSize: parseFloat(options.legendTextStyle.fontSize),
+          },
         });
       }
       echarts.util.each(areaData, function(dataItem, idx) {
         let locationName = dataItem[0];
         let geoCoords = getCoords(locationName);
-        let seriesData = dataItem.slice(1);
         let pixel = myChart.convertToPixel('geo', geoCoords);
+        let seriesData = dataItem.slice(1);
+        let pieSeriesData = series.map((item, index) => {
+          return {
+            name: item,
+            value: seriesData[index]
+          }
+        });
         idx += '';
-        let xAxis = {
-          id: idx,
-          gridId: idx,
-          type: 'category',
-          nameTextStyle: {color: options.locationNameColor},
-          nameLocation: 'middle',
-          nameGap: 3,
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          minInterval:10,
-          data: [locationName],
-          z: 100
-        };
-        if (options.showLocationName) {
-          xAxis['name']= locationName;
-        }
-        option.xAxis.push(xAxis);
-        option.yAxis.push({
-          id: idx,
-          gridId: idx,
-          show: false,
-          max: maxValue,
-          z: 100
-        });
-        option.grid.push({
-          id: idx,
-          width: gridWidth,
-          height: 40,
-          left: pixel[0] - 20,
-          top: pixel[1] - 30,
-          z: 100
-        });
-        for (let i = 0; i < series.length; i++) {
-          option.series.push({
-            name : series[i],
-            type : 'bar',
-            xAxisId : idx,
-            yAxisId : idx,
-            barWidth: 7,
-            itemStyle : {
-              normal : {
-                color : colorList[i]
+        if (options.chartType === 'bar') {
+          let xAxis = {
+            id: idx,
+            gridId: idx,
+            type: 'category',
+            nameTextStyle: {
+              ...options.locationNameTextStyle,
+              fontSize: parseFloat(options.locationNameTextStyle.fontSize),
+            },
+            nameLocation: 'middle',
+            nameGap: 3,
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+            minInterval:10,
+            data: [locationName],
+            z: 100
+          };
+          if (options.showLocationName) {
+            xAxis['name']= locationName;
+          }
+          option.xAxis.push(xAxis);
+          option.yAxis.push({
+            id: idx,
+            gridId: idx,
+            show: false,
+            max: maxValue,
+            z: 100
+          });
+          option.grid.push({
+            id: idx,
+            width: gridWidth,
+            height: 40,
+            left: pixel[0] - 20,
+            top: pixel[1] - 30,
+            z: 100
+          });
+          for (let i = 0; i < series.length; i++) {
+            option.series.push({
+              name : series[i],
+              type : 'bar',
+              xAxisId : idx,
+              yAxisId : idx,
+              barWidth: 7,
+              itemStyle : {
+                normal : {
+                  color : colorList[i],
+                  opacity: options.chartOpacity * 0.01
+                }
+              },
+              data : [ seriesData[i] ]
+            });
+          }
+        } else {
+          let radius = 10 + 15 * (totalSeriesDataList[idx] - minTotalSeriesData)/(maxTotalSeriesData - minTotalSeriesData);
+          option.grid.push({
+            id: idx,
+            gridId:idx,
+            width: 30,
+            height: 40,
+            left: pixel[0] - 25,
+            top: pixel[1] - 30,
+            z: 100
+          });
+          option.title.push({
+            show: options.showLocationName,
+            subtext: locationName,
+            left: pixel[0] - 20,
+            top: pixel[1]+ radius - 12,
+            subtextStyle: {
+              ...options.locationNameTextStyle,
+              fontSize: parseFloat(options.locationNameTextStyle.fontSize)
+            }
+          });
+          let pieSeries = {
+            id: idx,
+            type: 'pie',
+            animationType : 'expansion',
+            tooltip: {
+              trigger: "item",
+              formatter: "{b} : {c} ({d}%)"
+            },
+            label: {
+              normal: {
+                show: false
+              },
+              emphasis: {
+                show: false
               }
             },
-            data : [ seriesData[i] ]
-          });
+            center: pixel,
+            data: pieSeriesData,
+            z: 100,
+            radius: radius,
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return colorList[params.dataIndex];
+                },
+                opacity: options.chartOpacity * 0.01,
+                shadowColor: options.chartShadowColor,
+                shadowBlur: 4
+              }
+            }
+          };
+          if (options.chartType === 'rosePie') {
+            pieSeries['roseType'] = 'radius';
+          }
+          option.series.push(pieSeries);
         }
       });
       myChart.setOption(option);
@@ -292,7 +381,14 @@ export default class Visual extends WynVisual {
     let properties = options.properties;
     let hiddenStates = [];
     if (!properties.showLocationName) {
-      hiddenStates.push('locationNameColor');
+      hiddenStates.push('locationNameTextStyle');
+    }
+    if (!properties.showLegend) {
+      hiddenStates.push('legendIcon', 'legendOrient', 'legendHorizontalPosition', 'legendVerticalPosition', 'legendTextStyle');
+    }
+
+    if (properties.chartType === 'bar') {
+      hiddenStates.push('chartShadowColor');
     }
     return hiddenStates;
   }
