@@ -11,11 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ffa2dddd-3683-4900-957c-4c2aa56ee874" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/地图柱状结合图/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/地图柱状结合图/src/geoCoordMap.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/象形柱状图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/象形柱状图/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/象形柱状图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/象形柱状图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/地图柱状结合图/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/地图柱状结合图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/地图柱状结合图/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/地图柱状结合图/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/地图柱状组合图.viz" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,18 +44,18 @@
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\EchartsColumnChart\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO" />
+      <recent name="D:\Wyn plugins code\dashboard" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
       <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\src" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
-      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
-      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO" />
-      <recent name="D:\Wyn plugins code\dashboard" />
     </key>
   </component>
   <component name="SvnConfiguration">
