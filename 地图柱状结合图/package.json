@@ -28,7 +28,6 @@
     "file-loader": "6.0.0"
   },
   "dependencies": {
-    "echarts": "^4.9.0",
-    "jquery": "^3.5.1"
+    "echarts": "^4.9.0"
   }
 }

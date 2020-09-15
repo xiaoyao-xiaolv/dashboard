@@ -1,6 +1,5 @@
 import '../style/visual.less';
 import * as echarts from 'echarts';
-import 'jquery';
 import geoCoordsMap from './geoCoordMap.json';
 import "echarts/map/js/china.js";
 import "echarts/map/js/world.js";
