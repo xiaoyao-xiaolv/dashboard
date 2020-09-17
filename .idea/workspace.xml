@@ -10,7 +10,20 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="" />
+    <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/百度GIS流向地图/assets/icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/百度GIS流向地图/capabilities.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/百度GIS流向地图/src/geoCoordMap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/百度GIS流向地图/src/visual.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/百度GIS流向地图/visual.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/百度GIS流向地图/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/气泡地图GEO/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/气泡地图GEO/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图GEO/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图GEO/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/百度GIS气泡地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS气泡地图/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/百度GIS热力地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS热力地图/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/百度GIS热力地图/百度GIS热力地图.viz" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,24 +44,25 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/地图柱状结合图/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/百度GIS流向地图" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\EchartsColumnChart\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图" />
+      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO" />
+      <recent name="D:\Wyn plugins code\dashboard" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
       <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\src" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
-      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
-      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO" />
-      <recent name="D:\Wyn plugins code\dashboard" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -136,11 +150,11 @@
     </state>
     <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
     <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597801753080" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1599558043067">
+    <state width="498" height="398" key="SwitcherDM" timestamp="1600328895392">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319869554" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599558043067" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1600328895392" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680@0.0.1280.680" timestamp="1598431897079" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1598602694618">
       <screen x="0" y="0" width="1280" height="680" />

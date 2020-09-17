@@ -264,12 +264,6 @@
                             {"value":"grayscale","displayNameKey":"高端灰"},
                             {"value":"hardedge","displayNameKey":"强边界"}
                         ]
-                    },
-                    {
-                        "name": "boundColor",
-                        "type": "Color",
-                        "displayName": "区域边线颜色",
-                        "defaultValue": "#CC66CC"
                     }
                 ]
             },

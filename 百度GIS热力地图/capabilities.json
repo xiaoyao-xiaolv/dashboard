@@ -113,17 +113,26 @@
                         "type": "Enum",
                         "defaultValue": "normal",
                         "items": [
-                            {"value":"normal","displayNameKey":"标准"},
-                            {"value":"dark","displayNameKey":"幻影黑"},
-                            {"value":"light","displayNameKey":"月光银"},
-                            {"value":"whitesmoke","displayNameKey":"远山黛"},
-                            {"value":"fresh","displayNameKey":"草色青"},
-                            {"value":"grey","displayNameKey":"雅士灰"},
-                            {"value":"graffiti","displayNameKey":"涂鸦"},
-                            {"value":"macaron","displayNameKey":"马卡龙"},
-                            {"value":"blue","displayNameKey":"靛青蓝"},
-                            {"value":"darkblue","displayNameKey":"极夜蓝"},
-                            {"value":"wine","displayNameKey":"酱籽"}
+                            {
+                                "displayNameKey": "地图主题样式",
+                                "name": "mapStyle",
+                                "type": "Enum",
+                                "defaultValue": "midnight",
+                                "items": [
+                                    {"value":"normal","displayNameKey":"标准"},
+                                    {"value":"dark","displayNameKey":"黑夜风"},
+                                    {"value":"light","displayNameKey":"清新蓝"},
+                                    {"value":"redalert","displayNameKey":"红色警戒"},
+                                    {"value":"googlelite","displayNameKey":"精简"},
+                                    {"value":"grassgreen","displayNameKey":"自然绿"},
+                                    {"value":"midnight","displayNameKey":"午夜蓝"},
+                                    {"value":"pink","displayNameKey":"浪漫粉"},
+                                    {"value":"darkgreen","displayNameKey":"青春绿"},
+                                    {"value":"bluish","displayNameKey":"清新蓝绿"},
+                                    {"value":"grayscale","displayNameKey":"高端灰"},
+                                    {"value":"hardedge","displayNameKey":"强边界"}
+                                ]
+                            }
                         ]
                     }
                 ]
