@@ -1,0 +1,154 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "longitude",
+                "displayNameKey": "经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "latitude",
+                "displayNameKey": "纬度",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "longitude": {
+                                "min": 1
+                            },
+                            "latitude": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "longitude": {
+                    "max": 1
+                },
+                "latitude": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "地图设置",
+                "properties": [
+                    {
+                        "name": "zoomEnable",
+                        "type": "Boolean",
+                        "displayName": "是否允许缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "displayName": "地图缩放级别",
+                        "name": "zoom",
+                        "type": "Integer",
+                        "max": 18,
+                        "min": 3,
+                        "defaultValue": 13
+                    },
+                    {
+                        "name": "centerLongitude",
+                        "type": "Float",
+                        "displayName": "地图中心点经度",
+                        "defaultValue": 120.12066322374
+                    },
+                    {
+                        "name": "centerLatitude",
+                        "type": "Float",
+                        "displayName": "地图中心点纬度",
+                        "defaultValue": 30.250018034923
+                    }
+                ]
+            },
+            {
+                "displayName": "数据特效",
+                "properties": [
+                    {
+                        "name": "pointSize",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "数据点大小",
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "blurSize",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "数据点模糊程度",
+                        "defaultValue": 6
+                    },
+                    {
+                        "name": "visualMapMax",
+                        "type": "Integer",
+                        "min": 2,
+                        "displayName": "热力颜色域最大值",
+                        "defaultValue": 6
+                    },
+                    {
+                        "name": "colorInRange",
+                        "type": "Palette",
+                        "displayName": "热力颜色范围",
+                        "inheritFrom": "dashboard.palette"
+                    }
+                ]
+            },
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "displayNameKey": "地图主题样式",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "defaultValue": "normal",
+                        "items": [
+                            {"value":"normal","displayNameKey":"标准"},
+                            {"value":"dark","displayNameKey":"幻影黑"},
+                            {"value":"light","displayNameKey":"月光银"},
+                            {"value":"whitesmoke","displayNameKey":"远山黛"},
+                            {"value":"fresh","displayNameKey":"草色青"},
+                            {"value":"grey","displayNameKey":"雅士灰"},
+                            {"value":"graffiti","displayNameKey":"涂鸦"},
+                            {"value":"macaron","displayNameKey":"马卡龙"},
+                            {"value":"blue","displayNameKey":"靛青蓝"},
+                            {"value":"darkblue","displayNameKey":"极夜蓝"},
+                            {"value":"wine","displayNameKey":"酱籽"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

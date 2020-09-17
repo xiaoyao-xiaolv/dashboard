@@ -1,0 +1,16 @@
+{
+    "name": "hot-map-gis",
+    "displayName": "百度GIS热力地图",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": ["https://api.map.baidu.com/api?v=3.0&ak=3PWpZRUmDfatAWvb8SBwpAUa3SRiSGSi&callback=__init"],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "4.0.1"
+}
