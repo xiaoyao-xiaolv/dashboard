@@ -27,5 +27,8 @@
     "webpack-dev-server": "3.10.3",
     "file-loader": "6.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "echarts": "^4.9.0",
+    "echarts-bmap": "^1.0.3"
+  }
 }

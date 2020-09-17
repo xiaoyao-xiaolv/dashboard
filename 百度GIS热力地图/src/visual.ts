@@ -1,27 +1,101 @@
 import '../style/visual.less';
+import * as echarts from 'echarts';
+import { registerBmap } from 'echarts-bmap';
+// @ts-ignore
+import mockPoints from './mockPoints.ts';
 
-export default class Visual extends WynVisual {
-  constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
-    super(dom, host, options);
+let loaded = false;
+let ins;
+(window as any).__init = function() {
+  loaded = true;
+  registerBmap(echarts);
+  if(ins) {
+    ins.init();
+  }
+}
+
+export default class Visual {
+  private container: HTMLDivElement;
+  private chart: any;
+  private properties: any;
+  private boundPoints: any;
+  private isMock: boolean;
+
+  constructor(dom: HTMLDivElement, host: any) {
+    this.container = dom;
+    ins = this;
   }
 
-  public update(options: VisualNS.IVisualUpdateOptions) {
-    console.log(options);
+  init() {
+    this.chart = echarts.init(this.container);
+    this.render();
   }
 
-  public onDestroy() {
+  public update(options: any) {
+    this.properties = options.properties;
+    this.isMock = !options.dataViews.length;
+    if (!this.isMock) {
+      let dataView = options.dataViews[0].plain;
+      let lgLabel = dataView.profile.longitude.values[0].display;
+      let laLabel = dataView.profile.latitude.values[0].display;
+      let boundData = dataView.data;
+      this.boundPoints = boundData.map((data) => {
+        return [data[lgLabel], data[laLabel], 1]
+      })
+    }
+    this.render();
+  };
 
+  private render() {
+    if (!loaded) {
+      return;
+    }
+    this.chart.clear();
+    let points = this.isMock ? mockPoints : this.boundPoints;
+    this.container.style.opacity = this.isMock  ? '0.5' : '1';
+    let options = this.properties;
+    let colorInRange = this.isMock ? ['white', 'blue', 'green', 'yellow', 'red'] : options.colorInRange;
+    let option = {
+      bmap: {
+        center: [options.centerLongitude, options.centerLatitude],
+        roam: options.zoomEnable,
+        zoom: options.zoom,
+        mapStyle: {style : options.mapStyle},
+      },
+      visualMap: {
+        show: false,
+        top: 'top',
+        min: 0,
+        max: options.visualMapMax,
+        seriesIndex: 0,
+        calculable: true,
+        inRange: {
+          color: colorInRange
+        }
+      },
+      series: [{
+        type: 'heatmap',
+        coordinateSystem: 'bmap',
+        data: points,
+        pointSize: options.pointSize,
+        blurSize: options.blurSize
+      }]
+    };
+    this.chart.setOption(option);
   }
 
   public onResize() {
-
+    this.chart.resize();
+    this.render();
   }
-
-  public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+  // 自定义属性可见性
+  public getInspectorVisibilityState(properties: any): string[] {
     return null;
   }
-
-  public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+  // 功能按钮可见性
+  public getActionBarVisibilityState(updateOptions: any): string[] {
     return null;
+  }
+  public onActionEventHandler = (name: string) => {
   }
 }
