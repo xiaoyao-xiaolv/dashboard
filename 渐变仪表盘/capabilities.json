@@ -33,14 +33,11 @@
                 "plain": {
                     "required": [
                         {
-                            "values": {
-                                "max": 1
-                            },
                             "ActualValue": {
-                                "max": 1
+                                "min": 1
                             },
                             "ContrastValue": {
-                                "max": 1
+                                "min": 1
                             }
                         }
                     ]
@@ -49,20 +46,6 @@
         ],
         "conditions": [
             {
-                "values": {
-                    "max": 1
-                },
-                "ActualValue": {
-                    "max": 0
-                },
-                "ContrastValue": {
-                    "max": 0
-                }
-            },
-            {
-                "values": {
-                    "max": 0
-                },
                 "ActualValue": {
                     "max": 1
                 },
@@ -83,15 +66,15 @@
                         "type": "Enum",
                         "items": [
                             {
-                              "value": "dataset",
-                              "displayNameKey": "数据集"
+                                "value": "dataset",
+                                "displayNameKey": "数据集"
                             },
                             {
-                              "value": "customdata",
-                              "displayNameKey": "自定义数据"
+                                "value": "customdata",
+                                "displayNameKey": "自定义数据"
                             }
-                          ],
-                          "defaultValue": "dataset"
+                        ],
+                        "defaultValue": "dataset"
                     },
                     {
                         "displayNameKey": "对比值来源",
@@ -99,15 +82,15 @@
                         "type": "Enum",
                         "items": [
                             {
-                              "value": "dataset",
-                              "displayNameKey": "数据集"
+                                "value": "dataset",
+                                "displayNameKey": "数据集"
                             },
                             {
-                              "value": "customdata",
-                              "displayNameKey": "自定义数据"
+                                "value": "customdata",
+                                "displayNameKey": "自定义数据"
                             }
-                          ],
-                          "defaultValue": "dataset"
+                        ],
+                        "defaultValue": "dataset"
                     }
                 ]
             },
@@ -124,21 +107,21 @@
                         "name": "scope",
                         "type": "Integer",
                         "displayName": "划分范围",
-                        "min":0,
+                        "min": 0,
                         "defaultValue": 4
                     },
                     {
                         "name": "min",
                         "type": "Integer",
                         "displayName": "最小比例",
-                        "min":0,
+                        "min": 0,
                         "defaultValue": 0
                     },
                     {
                         "name": "max",
                         "type": "Integer",
                         "displayName": "最大比例",
-                        "min":0,
+                        "min": 0,
                         "defaultValue": 100
                     },
                     {
@@ -151,13 +134,21 @@
                         "name": "startAngle",
                         "type": "Angle",
                         "displayName": "起始角度",
-                        "defaultValue": 225
+                        "defaultValue": 225,
+                        "step": 15,
+                        "min": 0,
+                        "max": 360,
+                        "markStep":30
                     },
                     {
                         "name": "endAngle",
                         "type": "Angle",
-                        "displayName": "终止角度",
-                        "defaultValue": -45
+                        "displayName": "扇形角度",
+                        "defaultValue": 270,
+                        "step": 15,
+                        "min": 30,
+                        "max": 360,
+                        "markStep":30
                     }
                 ]
             },

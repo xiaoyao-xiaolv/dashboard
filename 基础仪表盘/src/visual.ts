@@ -20,12 +20,7 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-    if (dataView && dataView.plain.profile.values.values.length) {
-      const plainData = dataView.plain;
-      let valueField = plainData.profile.values.values[0].display;
-      this.ActualValue = plainData.data[0][valueField];
-      this.items = plainData.data[0][valueField];
-    } else if (dataView &&
+    if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length) {
       const plainData = dataView.plain;
       let ActualValue = plainData.profile.ActualValue.values[0].display;
@@ -43,12 +38,13 @@ export default class Visual extends WynVisual {
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
     let subtitle = options.showNum ? options.subtitle + '\n' + this.ActualValue : options.subtitle
-    let scope = options.max / options.scope
+    let scope = 100 / options.scope
     let color = [];
     for (let i = 0; i < options.scope; i++) {
       let j = i % options.palette.length
       color.push([scope * (i + 1) / 100, options.palette[j]])
     }
+    console.log()
     let fontWeight: string;
     if (options.textStyle.fontWeight == "Light") {
       fontWeight = options.textStyle.fontWeight + "er"
@@ -71,17 +67,17 @@ export default class Visual extends WynVisual {
         max: options.max,
         startAngle: options.startAngle,
         endAngle: options.endAngle,
-        splitNumber: options.splitLineNum,
+        splitNumber: options.scope,
         axisLine: {
           show: true,
           lineStyle: {
-            width: 100 - options.width,
+            width: options.width,
             color: color
           },
         },
         splitLine: {
           show: options.showsplitLine,
-          length: 100 - options.width,
+          length: options.width,
           lineStyle: {
             type: "solid",
             color: options.splitLineColor,
