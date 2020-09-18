@@ -2,9 +2,17 @@
     "dataBinding": {
         "dataRoles": [
             {
-                "name": "imgUrl",
-                "displayNameKey": "图片地址",
-                "kind": "grouping"
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "iconCss": "icon-format-data",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             }
         ],
         "dataViewMappings": [
@@ -12,7 +20,7 @@
                 "plain": {
                     "required": [
                         {
-                            "imgUrl": {
+                            "values": {
                                 "min": 1
                             }
                         }
@@ -22,7 +30,7 @@
         ],
         "conditions": [
             {
-                "imgUrl": {
+                "values": {
                     "max": 1
                 }
             }
@@ -30,6 +38,17 @@
     },
     "options": {
         "visual": [
+            {
+                "displayName": "自定义属性",
+                "properties": [
+                    {
+                        "name": "Interval",
+                        "type": "LongText",
+                        "displayName": "预警状态区间",
+                        "defaultValue": "[{\"gte\": 10000,\"color\": \"green\"},{\"gte\": 1000,\"lt\": 10000,\"color\": \"yellow\"},{\"gte\": 0,\"lt\": 1000,\"color\": \"red\"}]"
+                    }
+                ]
+            },
             {
                 "type": "interaction"
             },

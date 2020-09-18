@@ -9,7 +9,9 @@
     "assets": {
         "images": {
             "visualIcon": "assets/icon.png",
-            "mockImg": "assets/mock.png"
+            "redImg": "assets/1.png",
+            "yellowImg": "assets/2.png",
+            "greenImg": "assets/3.png"
         }
     },
     "configuration": {},
