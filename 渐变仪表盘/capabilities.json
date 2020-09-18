@@ -104,13 +104,6 @@
                         "defaultValue": 70
                     },
                     {
-                        "name": "scope",
-                        "type": "Integer",
-                        "displayName": "划分范围",
-                        "min": 0,
-                        "defaultValue": 4
-                    },
-                    {
                         "name": "min",
                         "type": "Integer",
                         "displayName": "最小比例",
@@ -123,12 +116,6 @@
                         "displayName": "最大比例",
                         "min": 0,
                         "defaultValue": 100
-                    },
-                    {
-                        "name": "palette",
-                        "type": "Palette",
-                        "displayName": "范围颜色",
-                        "inheritFrom": "dashboard.palette"
                     },
                     {
                         "name": "startAngle",
@@ -153,97 +140,88 @@
                 ]
             },
             {
-                "displayName": "分隔线样式",
-                "properties": [
-                    {
-                        "name": "showsplitLine",
-                        "type": "Boolean",
-                        "displayName": "显示分隔线",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "splitLineWidth",
-                        "type": "Integer",
-                        "displayName": "线宽",
-                        "defaultValue": 1
-                    },
-                    {
-                        "name": "splitLineColor",
-                        "type": "Color",
-                        "displayName": "颜色",
-                        "defaultValue": "rgba(255, 255, 255, 1)"
-                    }
-                ]
-            },
-            {
-                "displayName": "刻度样式",
-                "properties": [
-                    {
-                        "name": "showaxisTick",
-                        "type": "Boolean",
-                        "displayName": "显示刻度",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "axisTickNum",
-                        "type": "Integer",
-                        "displayName": "数量",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "axisTickWidth",
-                        "type": "Integer",
-                        "displayName": "线宽",
-                        "defaultValue": 1
-                    },
-                    {
-                        "name": "axisTickColor",
-                        "type": "Color",
-                        "displayName": "颜色",
-                        "defaultValue": "rgba(255, 255, 255, 1)"
-                    }
-                ]
-            },
-            {
                 "displayName": "数据标注样式",
                 "properties": [
-                    {
-                        "name": "showSubTitle",
-                        "type": "Boolean",
-                        "displayName": "显示副标题",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "subtitle",
-                        "type": "Text",
-                        "displayNameKey": "副标题",
-                        "defaultValue": "示例"
-                    },
                     {
                         "name": "showNum",
                         "type": "Boolean",
                         "displayName": "显示数据标注",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "textStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
-                    }
-                ]
-            },
-            {
-                "displayName": "比例标签样式",
-                "properties": [
-                    {
-                        "name": "showDetail",
-                        "type": "Boolean",
-                        "displayName": "比例数据标签",
                         "defaultValue": true
                     },
                     {
-                        "name": "detailTextStyle",
+                        "name": "detailValueType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "detailValueUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
+                    },
+                    {
+                        "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle"
