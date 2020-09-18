@@ -313,10 +313,48 @@
                 ]
             },
             {
-                "type": "interaction"
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "tooltipBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "name": "tooltipBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "displayNameKey": "边框宽度",
+                        "name": "tooltipBorderWidth",
+                        "type": "Integer",
+                        "defaultValue": 1
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "tooltipPadding",
+                        "type": "Integer",
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "tooltipTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
             },
             {
                 "type": "title"
+            },
+            {
+                "type": "interaction"
             },
             {
                 "type": "appearance"

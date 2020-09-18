@@ -122,6 +122,7 @@ export default class Visual {
           fromName: dataItem[this.originName],
           toName: dataItem[this.destinationName],
           coords: [fromCoords, toCoords],
+          value: dataItem[this.valuesName]
         });
       }
     });
@@ -299,11 +300,18 @@ export default class Visual {
         trigger: 'item',
         formatter: function (params, ticket, callback) {
           if (params.seriesType == "lines") {
-            return params.data.fromName + " --> " + params.data.toName + "<br />" + params.data.value;
+            return params.data.fromName + " -> " + params.data.toName + "<br />" + params.data.value;
           } else {
             return params.name;
           }
-
+        },
+        backgroundColor : options.tooltipBackgroundColor,
+        borderColor : options.tooltipBorderColor,
+        borderWidth : options.tooltipBorderWidth,
+        padding : options.tooltipPadding,
+        textStyle: {
+          ...options.tooltipTextStyle,
+          fontSize: parseFloat(options.tooltipTextStyle.fontSize),
         }
       },
       legend: {
