@@ -263,12 +263,6 @@
                             {"value":"darkblue","displayNameKey":"极夜蓝"},
                             {"value":"wine","displayNameKey":"酱籽"}
                         ]
-                    },
-                    {
-                        "name": "boundColor",
-                        "type": "Color",
-                        "displayName": "区域边线颜色",
-                        "defaultValue": "#CC66CC"
                     }
                 ]
             },
