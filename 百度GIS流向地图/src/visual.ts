@@ -267,8 +267,8 @@ export default class Visual {
             label: {
               normal: {
                 show: true,
-                position: "right", //显示位置
-                formatter: "{b}" //圆环显示文字
+                position: "right",
+                formatter: "{b}"
               }
             },
             symbolSize: options.pointSize,
@@ -286,7 +286,7 @@ export default class Visual {
 
     let bmap = {
       resizeEnable: true,
-      zoom:options.zoom,//级别
+      zoom:options.zoom,
       roam: options.zoomEnable,
       mapStyle: {style : options.mapStyle},
     }
@@ -308,11 +308,18 @@ export default class Visual {
         backgroundColor : options.tooltipBackgroundColor,
         borderColor : options.tooltipBorderColor,
         borderWidth : options.tooltipBorderWidth,
-        padding : options.tooltipPadding,
+        padding : [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
         textStyle: {
           ...options.tooltipTextStyle,
           fontSize: parseFloat(options.tooltipTextStyle.fontSize),
-        }
+        },
+        extraCssText: `
+                        background-image:url(${options.tooltipBackgroundImage});
+                        width: ${options.tooltipWidth}px;
+                        height: ${options.tooltipHeight}px;
+                        box-sizing: border-box;
+                        background-size:100% 100%;
+                      `,
       },
       legend: {
         show: options.showLegend,

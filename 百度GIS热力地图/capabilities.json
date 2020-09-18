@@ -69,6 +69,26 @@
                         "type": "Float",
                         "displayName": "地图中心点纬度",
                         "defaultValue": 30.250018034923
+                    },
+                    {
+                        "displayNameKey": "地图主题样式",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "defaultValue": "normal",
+                        "items": [
+                            {"value":"normal","displayNameKey":"标准"},
+                            {"value":"dark","displayNameKey":"黑夜风"},
+                            {"value":"light","displayNameKey":"清新蓝"},
+                            {"value":"redalert","displayNameKey":"红色警戒"},
+                            {"value":"googlelite","displayNameKey":"精简"},
+                            {"value":"grassgreen","displayNameKey":"自然绿"},
+                            {"value":"midnight","displayNameKey":"午夜蓝"},
+                            {"value":"pink","displayNameKey":"浪漫粉"},
+                            {"value":"darkgreen","displayNameKey":"青春绿"},
+                            {"value":"bluish","displayNameKey":"清新蓝绿"},
+                            {"value":"grayscale","displayNameKey":"高端灰"},
+                            {"value":"hardedge","displayNameKey":"强边界"}
+                        ]
                     }
                 ]
             },
@@ -101,31 +121,6 @@
                         "type": "Palette",
                         "displayName": "热力颜色范围",
                         "inheritFrom": "dashboard.palette"
-                    }
-                ]
-            },
-            {
-                "displayName": "图表样式",
-                "properties": [
-                    {
-                        "displayNameKey": "地图主题样式",
-                        "name": "mapStyle",
-                        "type": "Enum",
-                        "defaultValue": "normal",
-                        "items": [
-                            {"value":"normal","displayNameKey":"标准"},
-                            {"value":"dark","displayNameKey":"黑夜风"},
-                            {"value":"light","displayNameKey":"清新蓝"},
-                            {"value":"redalert","displayNameKey":"红色警戒"},
-                            {"value":"googlelite","displayNameKey":"精简"},
-                            {"value":"grassgreen","displayNameKey":"自然绿"},
-                            {"value":"midnight","displayNameKey":"午夜蓝"},
-                            {"value":"pink","displayNameKey":"浪漫粉"},
-                            {"value":"darkgreen","displayNameKey":"青春绿"},
-                            {"value":"bluish","displayNameKey":"清新蓝绿"},
-                            {"value":"grayscale","displayNameKey":"高端灰"},
-                            {"value":"hardedge","displayNameKey":"强边界"}
-                        ]
                     }
                 ]
             },

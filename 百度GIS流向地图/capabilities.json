@@ -203,6 +203,38 @@
                             {"value":"浙江","displayNameKey":"浙江"}
                         ],
                         "defaultValue": "中国"
+                    },
+                    {
+                        "displayNameKey": "地图主题样式",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "defaultValue": "midnight",
+                        "items": [
+                            {"value":"normal","displayNameKey":"标准"},
+                            {"value":"dark","displayNameKey":"黑夜风"},
+                            {"value":"light","displayNameKey":"清新蓝"},
+                            {"value":"redalert","displayNameKey":"红色警戒"},
+                            {"value":"googlelite","displayNameKey":"精简"},
+                            {"value":"grassgreen","displayNameKey":"自然绿"},
+                            {"value":"midnight","displayNameKey":"午夜蓝"},
+                            {"value":"pink","displayNameKey":"浪漫粉"},
+                            {"value":"darkgreen","displayNameKey":"青春绿"},
+                            {"value":"bluish","displayNameKey":"清新蓝绿"},
+                            {"value":"grayscale","displayNameKey":"高端灰"},
+                            {"value":"hardedge","displayNameKey":"强边界"}
+                        ]
+                    },
+                    {
+                        "name": "boundColor",
+                        "type": "Color",
+                        "displayName": "区域边线颜色",
+                        "defaultValue": "#aea1ff"
+                    },
+                    {
+                        "name": "fillColor",
+                        "type": "Color",
+                        "displayName": "区域填充颜色",
+                        "defaultValue": "#808080"
                     }
                 ]
             },
@@ -276,43 +308,6 @@
                 ]
             },
             {
-                "displayName": "图表样式",
-                "properties": [
-                    {
-                        "displayNameKey": "地图主题样式",
-                        "name": "mapStyle",
-                        "type": "Enum",
-                        "defaultValue": "midnight",
-                        "items": [
-                            {"value":"normal","displayNameKey":"标准"},
-                            {"value":"dark","displayNameKey":"黑夜风"},
-                            {"value":"light","displayNameKey":"清新蓝"},
-                            {"value":"redalert","displayNameKey":"红色警戒"},
-                            {"value":"googlelite","displayNameKey":"精简"},
-                            {"value":"grassgreen","displayNameKey":"自然绿"},
-                            {"value":"midnight","displayNameKey":"午夜蓝"},
-                            {"value":"pink","displayNameKey":"浪漫粉"},
-                            {"value":"darkgreen","displayNameKey":"青春绿"},
-                            {"value":"bluish","displayNameKey":"清新蓝绿"},
-                            {"value":"grayscale","displayNameKey":"高端灰"},
-                            {"value":"hardedge","displayNameKey":"强边界"}
-                        ]
-                    },
-                    {
-                        "name": "boundColor",
-                        "type": "Color",
-                        "displayName": "区域边线颜色",
-                        "defaultValue": "#aea1ff"
-                    },
-                    {
-                        "name": "fillColor",
-                        "type": "Color",
-                        "displayName": "区域填充颜色",
-                        "defaultValue": "#808080"
-                    }
-                ]
-            },
-            {
                 "displayName": "提示标签",
                 "properties": [
                     {
@@ -320,6 +315,25 @@
                         "type": "Color",
                         "displayName": "背景颜色",
                         "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "name": "tooltipBackgroundImage",
+                        "type": "Image",
+                        "displayName": "背景图片"
+                    },
+                    {
+                        "displayNameKey": "宽度",
+                        "name": "tooltipWidth",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 120
+                    },
+                    {
+                        "displayNameKey": "高度",
+                        "name": "tooltipHeight",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 60
                     },
                     {
                         "name": "tooltipBorderColor",
@@ -336,8 +350,13 @@
                     {
                         "displayNameKey": "边框内边距",
                         "name": "tooltipPadding",
-                        "type": "Integer",
-                        "defaultValue": 5
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 10,
+                            "bottom": 10,
+                            "left": 10,
+                            "right": 10
+                        }
                     },
                     {
                         "name": "tooltipTextStyle",

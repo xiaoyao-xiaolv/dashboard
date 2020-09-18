@@ -293,6 +293,31 @@ export default class Visual {
 
     let option = {
       bmap: bmap,
+      tooltip: {
+        trigger: 'item',
+        formatter(params: any) {
+          if( params.data.value[2]) {
+            return  params.name + ' : ' + params.value[2];
+          } else {
+            return  params.name;
+          }
+        },
+        backgroundColor : options.tooltipBackgroundColor,
+        borderColor : options.tooltipBorderColor,
+        borderWidth : options.tooltipBorderWidth,
+        padding : [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+        textStyle: {
+          ...options.tooltipTextStyle,
+          fontSize: parseFloat(options.tooltipTextStyle.fontSize),
+        },
+        extraCssText: `
+                        background-image:url(${options.tooltipBackgroundImage});
+                        width: ${options.tooltipWidth}px;
+                        height: ${options.tooltipHeight}px;
+                        box-sizing: border-box;
+                        background-size:100% 100%;
+                      `,
+      },
       legend: {
         show: false
       },
