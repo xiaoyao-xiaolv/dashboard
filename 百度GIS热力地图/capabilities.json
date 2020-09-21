@@ -113,13 +113,13 @@
                         "name": "visualMapMax",
                         "type": "Integer",
                         "min": 2,
-                        "displayName": "热力颜色域最大值",
+                        "displayName": "警戒值",
                         "defaultValue": 6
                     },
                     {
                         "name": "colorInRange",
                         "type": "Palette",
-                        "displayName": "热力颜色范围",
+                        "displayName": "颜色范围",
                         "inheritFrom": "dashboard.palette"
                     }
                 ]
