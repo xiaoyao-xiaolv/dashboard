@@ -1,7 +1,7 @@
 {
-    "name": "自定义地图2D",
+    "name": "色阶地图",
     "version": "0.0.1",
-    "displayName": "自定义地图2D",
+    "displayName": "色阶地图",
     "displayNameKey": "",
     "icon": "assets/icon.png",
     "description": "",
