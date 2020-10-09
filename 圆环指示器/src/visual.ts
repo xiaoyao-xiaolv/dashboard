@@ -70,7 +70,7 @@ export default class Visual {
         let icon = options.icon || this.visualHost.assetsManager.getImage('default')
         var option = {
             title: {
-                text: items + '%',
+                text: items.toFixed(2) + '%',
                 subtext: subtitle,
                 x: 'center',
                 y: 'center',
