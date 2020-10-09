@@ -4,15 +4,15 @@ import { registerBmap } from 'echarts-bmap';
 // @ts-ignore
 import mockPoints from './mockPoints.ts';
 
-let loaded = false;
-let ins;
-(window as any).__init = function() {
-  loaded = true;
-  registerBmap(echarts);
-  if(ins) {
-    ins.init();
-  }
-}
+// let loaded = false;
+// let ins;
+// (window as any).__init = function() {
+//   loaded = true;
+//   registerBmap(echarts);
+//   if(ins) {
+//     ins.init();
+//   }
+// }
 
 export default class Visual {
   private container: HTMLDivElement;
@@ -22,14 +22,16 @@ export default class Visual {
   private isMock: boolean;
 
   constructor(dom: HTMLDivElement, host: any) {
+    registerBmap(echarts);
     this.container = dom;
-    ins = this;
+    this.chart = echarts.init(this.container);
+    // ins = this;
   }
 
-  init() {
-    this.chart = echarts.init(this.container);
-    this.render();
-  }
+  // init() {
+  //   this.chart = echarts.init(this.container);
+  //   this.render();
+  // }
 
   public update(options: any) {
     this.properties = options.properties;
@@ -47,9 +49,9 @@ export default class Visual {
   };
 
   private render() {
-    if (!loaded) {
-      return;
-    }
+    // if (!loaded) {
+    //   return;
+    // }
     this.chart.clear();
     let points = this.isMock ? mockPoints : this.boundPoints;
     this.container.style.opacity = this.isMock  ? '0.5' : '1';

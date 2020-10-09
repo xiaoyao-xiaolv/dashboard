@@ -17,6 +17,7 @@ export default class Visual extends WynVisual {
   private selection: any[] = [];
   private dimension: string;
   private ActualValue: Array<any>;
+  private valueFormat: any;
   private Series: string;
   private MaxFillNumber: number | string;
   private YLabelOffset: number;
@@ -116,6 +117,7 @@ export default class Visual extends WynVisual {
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
       this.ActualValue = plainData.profile.ActualValue.values.map((item) => item.display);
+      this.valueFormat = plainData.profile.ActualValue.options.valueFormat;
 
       let items = plainData.data;
       const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
@@ -216,14 +218,12 @@ export default class Visual extends WynVisual {
       unit: '万亿'
     }]
     const formatUnit = units.find((item) => item.value === Number(dataUnit))
-    format = (format / formatUnit.value).toFixed(2)
+    format = (format / formatUnit.value).toFixed(2);
 
-    if (dataType === 'number') {
-      format = format.toLocaleString()
+    if (dataType === 'number' || dataType === 'none') {
+      format = this.host.formatService.format(this.valueFormat, format).toLocaleString();
     } else if (dataType === '%') {
       format = format + dataType
-    } else if (dataType === 'none') {
-      format = Number(format).toFixed(0)
     } else {
       format = dataType + format
     }
@@ -348,7 +348,7 @@ export default class Visual extends WynVisual {
         formatter: (items) => {
           let stringData = ''
           items = _.sortBy(items, (item) => -item.value)
-          items.map((item) => stringData += `${item.seriesName}:${item.value}<br />`)
+          items.map((item) => stringData += `${item.seriesName}:${this.host.formatService.format(this.valueFormat, item.value)}<br />`)
           return stringData
         }
       },

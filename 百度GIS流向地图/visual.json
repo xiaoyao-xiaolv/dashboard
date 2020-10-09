@@ -6,11 +6,13 @@
     "icon": "assets/icon.png",
     "description": "",
     "externalJs": [
-        "https://api.map.baidu.com/api?v=3.0&ak=3PWpZRUmDfatAWvb8SBwpAUa3SRiSGSi&callback=__init"
+        "https://api.map.baidu.com/api?v=3.0&ak={{ak}}"
     ],
     "externalCss": [],
     "assets": {
         "images": {}
     },
-    "configuration": {}
+    "configuration": {
+        "ak": ""
+    }
 }

@@ -4,13 +4,15 @@
     "displayNameKey": "",
     "icon": "visualIcon",
     "description": "",
-    "externalJs": ["https://api.map.baidu.com/api?v=3.0&ak=3PWpZRUmDfatAWvb8SBwpAUa3SRiSGSi&callback=__init"],
+    "externalJs": ["https://api.map.baidu.com/api?v=3.0&ak={{ak}}"],
     "externalCss": [],
     "assets": {
         "images": {
             "visualIcon": "assets/icon.png"
         }
     },
-    "configuration": {},
+    "configuration": {
+        "ak": ""
+    },
     "cliVersion": "4.0.1"
 }

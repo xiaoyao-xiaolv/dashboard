@@ -3,15 +3,15 @@ import * as echarts from 'echarts';
 import { registerBmap } from 'echarts-bmap';
 import geoCoordMap from './geoCoordMap.json';
 
-let loaded = false;
+// let loaded = false;
 let ins;
-(window as any).__init = function() {
-  loaded = true;
-  registerBmap(echarts);
-  if(ins) {
-    ins.init();
-  }
-}
+// (window as any).__init = function() {
+//   loaded = true;
+//   registerBmap(echarts);
+//   if(ins) {
+//     ins.init();
+//   }
+// }
 
 export default class Visual {
   private container: HTMLDivElement;
@@ -43,16 +43,18 @@ export default class Visual {
   ];
 
   constructor(dom: HTMLDivElement, host: any) {
+    registerBmap(echarts);
     this.container = dom;
     this.bindCoords = false;
     this.bindValues = false;
+    this.chart = echarts.init(this.container);
     ins = this;
   }
 
-  init() {
-    this.chart = echarts.init(this.container);
-    this.render();
-  }
+  // init() {
+  //   this.chart = echarts.init(this.container);
+  //   this.render();
+  // }
 
   private getCoords = (keyWord: string) => {
     let reg = new RegExp(keyWord);
@@ -121,9 +123,9 @@ export default class Visual {
   }
 
   public render() {
-    if (!loaded) {
-      return;
-    }
+    // if (!loaded) {
+    //   return;
+    // }
     this.chart.clear();
     let options = this.properties;
     let isMock = !this.items.length;
@@ -337,9 +339,9 @@ export default class Visual {
   }
 
   public onResize() {
-    if (!loaded) {
-      return;
-    }
+    // if (!loaded) {
+    //   return;
+    // }
     this.chart.resize();
     this.render();
   }
