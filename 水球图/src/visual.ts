@@ -1,16 +1,13 @@
 import '../style/visual.less';
-//@ts-nocheck
-import echarts from 'echarts';
+import * as echarts from 'echarts';
 //@ts-ignore
 import liquidfill from 'echarts-liquidfill'
 (window as any).q = liquidfill;
 export default class Visual {
-    private visualHost: any;
     private container: HTMLDivElement;
     private chart: any;
     private items: any;
     private properties: any;
-    private valueField: any;
     private ActualValue: any;
     private ContrastValue: any;
 
@@ -18,8 +15,7 @@ export default class Visual {
 
     constructor(dom: HTMLDivElement, host: any) {
         this.container = dom;
-        this.chart = require('echarts').init(dom)
-        this.visualHost = host;
+        this.chart = echarts.init(dom);
         this.fitSize();
         this.items = [];
         this.properties = {
@@ -31,25 +27,17 @@ export default class Visual {
             borderColor: '#1daaeb',
             waterColor: '#e6776c',
             backgroundColor: '#fff',
-            fontSize:35
+            fontSize: 35
         };
     }
 
     public update(options: any) {
         const dataView = options.dataViews[0];
-        this.items = [];
-        if ((dataView &&
-            dataView.plain.profile.values.values.length) || (dataView &&
-                dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length)) {
-            const plainData = dataView.plain;
-            this.valueField = plainData.profile.values.values;
+        const plainData = dataView.plain;
+        if (dataView && dataView.plain.profile.ActualValue.values.length) {
             this.ActualValue = plainData.profile.ActualValue.values;
             this.ContrastValue = plainData.profile.ContrastValue.values;
-            if (this.valueField.length == 1) {
-                this.items = plainData.data[0][this.valueField[0].display].toFixed(4);
-            } else {
-                this.items = (plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]).toFixed(4);
-            }
+            this.items = this.ContrastValue.length ? [plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]] : [plainData.data[0][this.ActualValue[0].display]];
         }
         this.properties = options.properties;
         this.render();
@@ -110,6 +98,6 @@ export default class Visual {
         return null;
     }
     public onActionEventHandler = (name: string) => {
-      console.log(name);
+        console.log(name);
     }
 }

@@ -2,19 +2,6 @@
     "dataBinding": {
         "dataRoles": [
             {
-                "name": "values",
-                "displayNameKey": "数值",
-                "kind": "value",
-                "options": [
-                    {
-                        "displayNameKey": "数据格式",
-                        "iconCss": "icon-format-data",
-                        "type": "format",
-                        "name": "valueFormat"
-                    }
-                ]
-            },
-            {
                 "name": "ActualValue",
                 "displayNameKey": "实际值",
                 "kind": "value"
@@ -28,13 +15,34 @@
         "dataViewMappings": [
             {
                 "plain": {
+                    "required": [
+                        {
+                            "ActualValue": {
+                                "min": 1
+                            }
+                        },
+                        {
+                            "ContrastValue": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "ActualValue": {
+                    "max": 1
+                },
+                "ContrastValue": {
+                    "max": 1
                 }
             }
         ]
     },
     "options": {
         "visual": [
-            
             {
                 "displayName": "自定义属性",
                 "properties": [
@@ -56,23 +64,23 @@
                         "type": "Enum",
                         "items": [
                             {
-                              "value": "rect",
-                              "displayNameKey": "rect"
+                                "value": "rect",
+                                "displayNameKey": "rect"
                             },
                             {
-                              "value": "roundRect",
-                              "displayNameKey": "roundRect"
+                                "value": "roundRect",
+                                "displayNameKey": "roundRect"
                             },
                             {
-                              "value": "circle",
-                              "displayNameKey": "circle"
+                                "value": "circle",
+                                "displayNameKey": "circle"
                             },
                             {
-                              "value": "diamond",
-                              "displayNameKey": "diamond"
+                                "value": "diamond",
+                                "displayNameKey": "diamond"
                             }
-                          ],
-                          "defaultValue": "circle"
+                        ],
+                        "defaultValue": "circle"
                     },
                     {
                         "name": "borderWidth",
@@ -102,7 +110,7 @@
                         "name": "fontSize",
                         "type": "Integer",
                         "displayName": "内容字体大小",
-                        "defaultValue":30
+                        "defaultValue": 30
                     }
                 ]
             },
