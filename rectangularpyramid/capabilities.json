@@ -138,7 +138,7 @@
                         "name": "pyramidSharp",
                         "type": "Boolean",
                         "displayName": "显示顶部",
-                        "defaultValue": false
+                        "defaultValue": true
                     },
                     {
                         "name": "yInterval",

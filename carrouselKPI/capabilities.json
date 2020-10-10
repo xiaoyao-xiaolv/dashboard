@@ -472,6 +472,10 @@
             }
         ]
     },
-    "actions": [],
+    "actions": [
+        {
+            "type": "focus"
+        }
+    ],
     "analysis": []
 }
