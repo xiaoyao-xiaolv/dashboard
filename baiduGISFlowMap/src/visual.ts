@@ -69,6 +69,8 @@ export default class Visual {
   ]
 
   constructor(dom: HTMLDivElement, host: any) {
+    console.log('dom');
+    console.log(dom);
     registerBmap(echarts);
     this.container = dom;
     this.originResultData = [];

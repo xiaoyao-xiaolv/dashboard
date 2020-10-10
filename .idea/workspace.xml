@@ -11,17 +11,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS气泡地图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS气泡地图/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS气泡地图/百度GIS气泡地图.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS流向地图/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS流向地图/assets/icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS流向地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS流向地图/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS流向地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS流向地图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS流向地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS流向地图/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS流向地图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS流向地图/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS热力地图/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS热力地图/assets/icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS热力地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS热力地图/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/百度GIS热力地图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/百度GIS热力地图/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/GIS流向地图.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/GIS热力地图.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/visual.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,19 +46,19 @@
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\EchartsColumnChart\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\百度GIS热力地图\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图" />
-      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
-      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
       <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\热力地图\src" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\百度GIS热力地图\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图" />
+      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
+      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
     </key>
   </component>
   <component name="SvnConfiguration">
