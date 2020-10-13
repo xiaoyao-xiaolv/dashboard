@@ -5,16 +5,7 @@ import { registerBmap } from 'echarts-bmap';
 import BMap from 'BMap';
 import geoCoordMap from './geoCoordMap.json';
 
-// let loaded = false;
 let ins;
-// (window as any).__init = function() {
-//   loaded = true;
-//   registerBmap(echarts);
-//   if(ins) {
-//     ins.init();
-//   }
-// }
-
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
@@ -29,6 +20,7 @@ export default class Visual {
   private originLongName: string;
   private originResultData: any;
   private isAllBound: boolean;
+  private shadowDiv: any;
   static mockItems = [
     [
       { fromName: "广州", toName: "福州", coords: [[113.280637, 23.125178], [119.306239, 26.075302]], value: 13 }
@@ -90,12 +82,9 @@ export default class Visual {
     };
     this.chart = echarts.init(this.container);
     ins = this;
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
   }
-
-  // init() {
-  //   this.chart = echarts.init(this.container);
-  //   this.render();
-  // }
 
   private getCoords = (keyWord: string) => {
     let reg = new RegExp(keyWord);
@@ -177,7 +166,7 @@ export default class Visual {
     }
   }
 
-  public update(options: any) {
+  public update(options: VisualNS.IVisualUpdateOptions) {
     let profileItems = options.dataViews[0] && options.dataViews[0].plain.profile;
     this.getBoundStatus(profileItems);
     this.originResultData = [];
@@ -199,17 +188,15 @@ export default class Visual {
   }
 
   public render() {
-    // if (!loaded) {
-    //   return;
-    // }
     this.chart.clear();
-    const isMock = !this.originResultData.length;
-    const originItems = isMock ? Visual.mockItems : this.originResultData;
-    this.container.style.opacity = isMock ? '0.3' : '1';
+    let isMock = !this.originResultData.length;
+    let originItems = isMock ? Visual.mockItems : this.originResultData;
     let options = this.properties;
     let planePath = options.effect ? options.symbol : options.symbolStyle;
     let originValues= isMock ? ['北京', '上海', '广州市'] : this.legendData;
     let color = isMock ? ['#a6c84c', '#ffa022', '#46bee9'] : options.palette;
+    this.container.style.opacity = isMock ? '0.3' : '1';
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     let series = [];
     originItems.map((item: any, i: number) => {
       if (item.length) {

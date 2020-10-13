@@ -11,13 +11,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/GIS流向地图.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/src/visual.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/GIS热力地图.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/src/visual.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISHotMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/visual.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,11 +121,11 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196645723" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1600329805763">
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1602579222767">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319080400" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1600329805763" />
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602579222767" />
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1597891443266">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -146,11 +154,11 @@
     <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599117656456" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1600337358278" />
-    <state x="520" y="84" key="RollbackChangesDialog" timestamp="1600328955353">
+    <state x="520" y="84" key="RollbackChangesDialog" timestamp="1602579224278">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
-    <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1600328955353" />
+    <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602579224278" />
     <state width="498" height="398" key="SwitcherDM" timestamp="1600396919391">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

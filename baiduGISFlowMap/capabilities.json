@@ -235,6 +235,23 @@
                         "type": "Color",
                         "displayName": "区域填充颜色",
                         "defaultValue": "#808080"
+                    },
+                    {
+                        "name": "borderShadowColor",
+                        "type": "Color",
+                        "displayName": "边界阴影颜色"
+                    },
+                    {
+                        "name": "borderShadowWidth",
+                        "type": "Integer",
+                        "displayName": "边界阴影宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "borderShadowBlurLevel",
+                        "type": "Integer",
+                        "displayName": "边界阴影模糊度",
+                        "defaultValue": 0
                     }
                 ]
             },

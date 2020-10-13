@@ -159,6 +159,23 @@
                             {"value":"grayscale","displayNameKey":"高端灰"},
                             {"value":"hardedge","displayNameKey":"强边界"}
                         ]
+                    },
+                    {
+                        "name": "borderShadowColor",
+                        "type": "Color",
+                        "displayName": "边界阴影颜色"
+                    },
+                    {
+                        "name": "borderShadowWidth",
+                        "type": "Integer",
+                        "displayName": "边界阴影宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "borderShadowBlurLevel",
+                        "type": "Integer",
+                        "displayName": "边界阴影模糊度",
+                        "defaultValue": 0
                     }
                 ]
             },

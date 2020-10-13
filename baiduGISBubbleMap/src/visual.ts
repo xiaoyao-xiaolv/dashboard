@@ -3,16 +3,7 @@ import * as echarts from 'echarts';
 import { registerBmap } from 'echarts-bmap';
 import geoCoordMap from './geoCoordMap.json';
 
-// let loaded = false;
 let ins;
-// (window as any).__init = function() {
-//   loaded = true;
-//   registerBmap(echarts);
-//   if(ins) {
-//     ins.init();
-//   }
-// }
-
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
@@ -22,6 +13,7 @@ export default class Visual {
   private longitude: any;
   private latitude: any;
   private items: any;
+  private shadowDiv: any;
   private bindCoords: boolean;
   private bindValues: boolean;
   private static mockItems = [
@@ -48,13 +40,10 @@ export default class Visual {
     this.bindCoords = false;
     this.bindValues = false;
     this.chart = echarts.init(this.container);
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
     ins = this;
   }
-
-  // init() {
-  //   this.chart = echarts.init(this.container);
-  //   this.render();
-  // }
 
   private getCoords = (keyWord: string) => {
     let reg = new RegExp(keyWord);
@@ -123,13 +112,12 @@ export default class Visual {
   }
 
   public render() {
-    // if (!loaded) {
-    //   return;
-    // }
     this.chart.clear();
+    this.shadowDiv.style.cssText = '';
     let options = this.properties;
     let isMock = !this.items.length;
     let items = isMock ? Visual.mockItems : this.items;
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     this.container.style.opacity = isMock ? '0.5' : '1';
     let maxValue = Math.max.apply(null, items.map(function (item) {
       return item.value[2];

@@ -4,36 +4,23 @@ import { registerBmap } from 'echarts-bmap';
 // @ts-ignore
 import mockPoints from './mockPoints.ts';
 
-// let loaded = false;
-// let ins;
-// (window as any).__init = function() {
-//   loaded = true;
-//   registerBmap(echarts);
-//   if(ins) {
-//     ins.init();
-//   }
-// }
-
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
   private properties: any;
   private boundPoints: any;
   private isMock: boolean;
+  private shadowDiv: any;
 
   constructor(dom: HTMLDivElement, host: any) {
     registerBmap(echarts);
     this.container = dom;
     this.chart = echarts.init(this.container);
-    // ins = this;
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
   }
 
-  // init() {
-  //   this.chart = echarts.init(this.container);
-  //   this.render();
-  // }
-
-  public update(options: any) {
+  public update(options: VisualNS.IVisualUpdateOptions) {
     this.properties = options.properties;
     this.isMock = !options.dataViews.length;
     if (!this.isMock) {
@@ -49,14 +36,13 @@ export default class Visual {
   };
 
   private render() {
-    // if (!loaded) {
-    //   return;
-    // }
+    this.shadowDiv.style.cssText= '';
     this.chart.clear();
     let points = this.isMock ? mockPoints : this.boundPoints;
-    this.container.style.opacity = this.isMock  ? '0.5' : '1';
     let options = this.properties;
     let colorInRange = this.isMock ? ['white', 'blue', 'green', 'yellow', 'red'] : options.colorInRange;
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
+    this.container.style.opacity = this.isMock  ? '0.5' : '1';
     let option = {
       bmap: {
         center: [options.centerLongitude, options.centerLatitude],
