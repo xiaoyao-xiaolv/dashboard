@@ -210,15 +210,10 @@ export default class Visual extends WynVisual {
         let valueLabel = plainDataView.profile.values.values[0].display;
         let dimensionLabel = plainDataView.profile.dimension.values[0].display;
         let dataItems = plainDataView.data;
-
-        let isSorted = plainDataView.sort[dimensionLabel].priority === 0;
-        if (isSorted) {
-          let labelOrder = plainDataView.sort[dimensionLabel].order.reverse();
-          dataItems = labelOrder.map((orderItem) => {
-            return dataItems.find((dataItem) => dataItem && dataItem[dimensionLabel] === orderItem);
-          })
-        }
-
+        let labelOrder = plainDataView.sort[dimensionLabel].order.reverse();
+        dataItems = labelOrder.map((orderItem) => {
+          return dataItems.find((dataItem) => dataItem && dataItem[dimensionLabel] === orderItem);
+        })
         let values = [];
         let series = [];
         dataItems.forEach((dataPoint) => {

@@ -1,10 +1,17 @@
 import '../style/visual.less';
+import _ = require('lodash');
 const echarts = require('echarts');
+
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
   private properties: any;
+  private isMock: boolean;
   private items: any;
+  private host: any;
+  private selection: any;
+  private selectionManager: any;
+  private isTooltipModelShown: boolean;
   static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
     , [58, 46, 47, 49, 59, 17, 25, 83, 34]
     , [74, 64, 78, 65, 79, 21, 28, 91, 38]
@@ -13,38 +20,99 @@ export default class Visual {
   ];
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = echarts.init(dom)
+    this.chart = echarts.init(dom);
     this.items = [];
+    this.isMock = true;
+    this.host = host;
     this.properties = {
       barWidth: 14,
       fontSize: 14,
       textColor: '#ffffff',
       barBackgroundColor: '#444a58',
       barStartColor: '#57eabf',
-      barEndcolor: '#2563f9',
+      barEndColor: '#2563f9',
     };
+    this.bindEvents();
+    this.isTooltipModelShown = false;
+    this.selection = [];
+    this.selectionManager = host.selectionService.createSelectionManager();
+  }
+
+  private showTooltip = _.debounce((params) => {
+    console.log(params);
+    this.isTooltipModelShown = true;
+    const fields = [{ label: params.name, value: `${params.data}%` }]
+    this.host.toolTipService.show({
+      position: {
+        x: params.event.event.x,
+        y: params.event.event.y,
+      },
+      fields,
+      selected: this.selectionManager.getSelectionIds(),
+      menu: true,
+    }, 10);
+  });
+
+  private hideTooltip = () => {
+    this.host.toolTipService.hide();
+    this.isTooltipModelShown = false;
+  }
+
+  private dispatch = (type, payload) => this.chart.dispatchAction({ type, ...payload });
+
+  public bindEvents = () => {
+    this.container.addEventListener('click', (e: any) => {
+      if (!e.seriesClick) {
+        this.hideTooltip();
+        this.selection.forEach(item => this.dispatch('downplay', item));
+        this.selection = [];
+        this.selectionManager.clear();
+        return;
+      }
+    })
+
+    this.chart.on('click', (params) => {
+      if (params.componentType !== 'series') return;
+      params.event.event.seriesClick = true;
+      this.showTooltip(params);
+      if (this.items[5][params.dataIndex]) {
+        const sid = this.items[5][params.dataIndex];
+        this.selectionManager.select(sid, true);
+      }
+
+      const selectedInfo = {
+        seriesIndex: params.seriesIndex,
+        dataIndex: params.dataIndex,
+      };
+      this.dispatch('highlight', selectedInfo);
+      this.selection.push(selectedInfo);
+    })
   }
 
   public update(options: any) {
     const dataView = options.dataViews[0];
-    this.items = [];
+    this.isMock = !dataView;
+    this.items = [[],[],[],[],[],[]];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length && dataView.plain.profile.dimension.values.length) {
       const plainData = dataView.plain;
       let dimension = plainData.profile.dimension.values[0].display;
       let ActualValue = plainData.profile.ActualValue.values[0].display;
       let ContrastValue = plainData.profile.ContrastValue.values[0].display;
+      let data = plainData.data;
       this.items[0] = plainData.sort[dimension].order;
-      this.items[1] = plainData.data.map(function (item) {
-        return item[ActualValue]
-      });
-      this.items[2] = plainData.data.map(function (item) {
-        return item[ContrastValue]
-      });
-      this.items[3] = plainData.data.map(function (item) {
-        return parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2))
-      });
-      this.items[4] = [ActualValue, ContrastValue]
+      this.items[4]=[ActualValue, ContrastValue];
+      data.forEach((item) => {
+        this.items[1].push(item[ActualValue]);
+        this.items[2].push(item[ContrastValue]);
+        this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
+        const getSelectionId = (item) => {
+          const selectionId = this.host.selectionService.createSelectionId();
+          selectionId.withDimension(plainData.profile.dimension.values[0], item);
+          return selectionId;
+        }
+        this.items[5].push(getSelectionId(item));
+      })
     }
 
     this.properties = options.properties;
@@ -53,11 +121,10 @@ export default class Visual {
 
   private render() {
     this.chart.clear();
-    const isMock = !this.items.length;
-    const items = isMock ? Visual.mockItems : this.items;
-    this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
-    var option = {
+    const items = this.isMock ? Visual.mockItems : this.items;
+    this.container.style.opacity = this.isMock ? '0.3' : '1';
+    let option = {
       tooltip: {
         show: true,
         formatter(params) {

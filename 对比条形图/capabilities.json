@@ -127,5 +127,14 @@
             "type": "annotation"
         }
     ],
-    "analysis": []
+    "analysis": [
+        {
+            "type": "drill",
+            "rule": {
+                "roles": [
+                    "dimension"
+                ]
+            }
+        }
+    ]
 }

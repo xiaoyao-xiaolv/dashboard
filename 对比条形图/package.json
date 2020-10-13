@@ -28,6 +28,7 @@
     "file-loader": "6.0.0"
   },
   "dependencies": {
-    "echarts": "^4.8.0"
+    "echarts": "^4.8.0",
+    "lodash": "^4.17.20"
   }
 }

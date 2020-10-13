@@ -1,8 +1,8 @@
 {
-    "name": "percentageBar",
+    "name": "对比条形图",
     "version": "0.0.1",
-    "displayName": "进度条条形图",
-    "displayNameKey": "",
+    "displayName": "对比条形图",
+    "displayNameKey": "对比条形图",
     "icon": "assets/icon.png",
     "description": "",
     "externalJs": [],
