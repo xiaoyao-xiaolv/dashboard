@@ -1,0 +1,155 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "iconCss": "icon-format-data",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "区间一",
+                "properties": [
+                    {
+                        "name": "Interval1",
+                        "type": "Text",
+                        "displayName": "区间",
+                        "defaultValue": "(,1000)"
+                    },
+                    {
+                        "name": "Image1",
+                        "type": "Image",
+                        "displayName": "图标"
+                    }
+                ]
+            },
+            {
+                "displayName": "区间二",
+                "properties": [
+                    {
+                        "name": "Interval2",
+                        "type": "Text",
+                        "displayName": "区间",
+                        "defaultValue": "[1000,10000)"
+                    },
+                    {
+                        "name": "Image2",
+                        "type": "Image",
+                        "displayName": "图标"
+                    }
+                ]
+            },
+            {
+                "displayName": "区间三",
+                "properties": [
+                    {
+                        "name": "Interval3",
+                        "type": "Text",
+                        "displayName": "区间",
+                        "defaultValue": "[10000,)"
+                    },
+                    {
+                        "name": "Image3",
+                        "type": "Image",
+                        "displayName": "图标"
+                    }
+                ]
+            },
+            {
+                "displayName": "区间四",
+                "properties": [
+                    {
+                        "name": "Interval4",
+                        "type": "Text",
+                        "displayName": "区间"
+                    },
+                    {
+                        "name": "Image4",
+                        "type": "Image",
+                        "displayName": "图标"
+                    }
+                ]
+            },
+            {
+                "displayName": "区间五",
+                "properties": [
+                    {
+                        "name": "Interval5",
+                        "type": "Text",
+                        "displayName": "区间"
+                    },
+                    {
+                        "name": "Image5",
+                        "type": "Image",
+                        "displayName": "图标"
+                    }
+                ]
+            },
+
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

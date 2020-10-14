@@ -35,16 +35,33 @@ export default class Visual extends WynVisual {
     maskImage.onload = () => {
       this.container.appendChild(maskImage);
     };
-    let interval = JSON.parse(options.Interval)
-    if (items >= interval[1].gte) {
-      if (items >= interval[0].gte) {
-        maskImage.src = this.visualHost.assetsManager.getImage(interval[0].color + 'Img');
-      } else {
-        maskImage.src = this.visualHost.assetsManager.getImage(interval[1].color + 'Img');
+    console.log(items)
+
+    for (let index = 0; index < 5; index++) {
+      let name = 'Interval' + (index + 1);
+      let flag = false;
+      let str = options[name].split(",");
+      let left = str[0].length;
+      let right = str[1].length;
+
+      if (left) {
+        if (left - 1) {
+          let leftValue = str[0].substring(1);
+          flag = str[0].substring(0, 1) === "[" ? (items[0] >= leftValue) : (items[0] > leftValue);
+        }
+        if (right - 1) {
+          let rightValue = str[1].substring(0, str[1].length - 1);
+          flag = str[1].substring(right - 1, right) === "]" ? (items[0] <= rightValue) : (items[0] < rightValue);
+        }
       }
-    } else {
-      maskImage.src = this.visualHost.assetsManager.getImage(interval[2].color + 'Img');
+      if (flag) {
+        let name = 'Image' + (index + 1);
+        maskImage.src = options[name] || this.visualHost.assetsManager.getImage(name)
+        break;
+      }
     }
+
+
   }
 
   public onDestroy() {

@@ -1,6 +1,6 @@
 {
-    "name": "图片加载",
-    "displayName": "图片加载",
+    "name": "图标预警",
+    "displayName": "图标预警",
     "displayNameKey": "",
     "icon": "visualIcon",
     "description": "",
@@ -9,9 +9,9 @@
     "assets": {
         "images": {
             "visualIcon": "assets/icon.png",
-            "redImg": "assets/1.png",
-            "yellowImg": "assets/2.png",
-            "greenImg": "assets/3.png"
+            "Image1": "assets/1.png",
+            "Image2": "assets/2.png",
+            "Image3": "assets/3.png"
         }
     },
     "configuration": {},
