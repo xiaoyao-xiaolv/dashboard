@@ -35,7 +35,6 @@ export default class Visual extends WynVisual {
     maskImage.onload = () => {
       this.container.appendChild(maskImage);
     };
-    console.log(items)
 
     for (let index = 0; index < 5; index++) {
       let name = 'Interval' + (index + 1);

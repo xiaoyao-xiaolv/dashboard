@@ -45,7 +45,8 @@
                         "name": "Interval1",
                         "type": "Text",
                         "displayName": "区间",
-                        "defaultValue": "(,1000)"
+                        "defaultValue": "(,1000)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
                     },
                     {
                         "name": "Image1",
@@ -61,7 +62,8 @@
                         "name": "Interval2",
                         "type": "Text",
                         "displayName": "区间",
-                        "defaultValue": "[1000,10000)"
+                        "defaultValue": "[1000,10000)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
                     },
                     {
                         "name": "Image2",
@@ -77,7 +79,8 @@
                         "name": "Interval3",
                         "type": "Text",
                         "displayName": "区间",
-                        "defaultValue": "[10000,)"
+                        "defaultValue": "[10000,)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
                     },
                     {
                         "name": "Image3",
@@ -92,7 +95,8 @@
                     {
                         "name": "Interval4",
                         "type": "Text",
-                        "displayName": "区间"
+                        "displayName": "区间",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
                     },
                     {
                         "name": "Image4",
@@ -107,7 +111,8 @@
                     {
                         "name": "Interval5",
                         "type": "Text",
-                        "displayName": "区间"
+                        "displayName": "区间",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
                     },
                     {
                         "name": "Image5",
