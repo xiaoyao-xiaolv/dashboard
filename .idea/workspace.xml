@@ -12,21 +12,33 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/assets/icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/GIS流向地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/GIS流向地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/assets/icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/GIS热力地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/GIS热力地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/assets/icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrouselKPI/3D旋转KPI.viz" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/3D旋转KPI.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrouselKPI/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/funnel/3D漏斗图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/funnel/3D漏斗图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/funnel/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/funnel/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/3D旋转三棱锥.viz" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/3D旋转三棱锥.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rectangularpyramid/3D四棱锥.viz" beforeDir="false" afterPath="$PROJECT_DIR$/rectangularpyramid/3D四棱锥.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rectangularpyramid/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/rectangularpyramid/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/3D倾斜旋转KPI.viz" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/3D倾斜旋转KPI.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/地图柱状结合图/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/组合地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/地图柱状结合图/组合地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图2D/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图2D/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图2D/色阶地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图2D/色阶地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/3D色阶地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/3D色阶地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/assets/icon.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,22 +63,22 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/百度GIS热力地图/assets" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
-    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\EchartsColumnChart\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\圆环指示器\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
-      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\热力地图\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\热力地图\src" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\百度GIS热力地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图" />
       <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
       <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\rectangularpyramid\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\funnel\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\自定义地图2D\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\自定义地图3D\assets" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -92,6 +104,7 @@
       <workItem from="1599119005749" duration="16044000" />
       <workItem from="1599446926142" duration="46337000" />
       <workItem from="1600390779638" duration="8036000" />
+      <workItem from="1602579785593" duration="7142000" />
     </task>
     <servers />
   </component>
@@ -121,11 +134,11 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196645723" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1602579222767">
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1602579945834">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319080400" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602579222767" />
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602579945834" />
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1597891443266">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -154,16 +167,16 @@
     <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599117656456" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1600337358278" />
-    <state x="520" y="84" key="RollbackChangesDialog" timestamp="1602579224278">
+    <state x="520" y="84" key="RollbackChangesDialog" timestamp="1602649509348">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
-    <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602579224278" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1600396919391">
+    <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602649509348" />
+    <state width="498" height="398" key="SwitcherDM" timestamp="1602645666776">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319869554" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1600396919391" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602645666776" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680@0.0.1280.680" timestamp="1598431897079" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1598602694618">
       <screen x="0" y="0" width="1280" height="680" />
