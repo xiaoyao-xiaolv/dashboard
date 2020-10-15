@@ -39,7 +39,6 @@ export default class Visual {
   }
 
   private showTooltip = _.debounce((params) => {
-    console.log(params);
     this.isTooltipModelShown = true;
     const fields = [{ label: params.name, value: `${params.data}%` }]
     this.host.toolTipService.show({
@@ -74,16 +73,22 @@ export default class Visual {
     this.chart.on('click', (params) => {
       if (params.componentType !== 'series') return;
       params.event.event.seriesClick = true;
-      this.showTooltip(params);
-      if (this.items[5][params.dataIndex]) {
-        const sid = this.items[5][params.dataIndex];
-        this.selectionManager.select(sid, true);
+
+      let dataIndex = params.dataIndex;
+      let sid = this.items[5][dataIndex];
+      let selectedInfo = {
+        seriesIndex: 1,
+        dataIndex: dataIndex,
+      };
+
+      if (this.selectionManager.contains(sid)){
+        this.dispatch('downplay', selectedInfo);
+        this.selectionManager.clear(sid);
+        return;
       }
 
-      const selectedInfo = {
-        seriesIndex: params.seriesIndex,
-        dataIndex: params.dataIndex,
-      };
+      this.showTooltip(params);
+      this.selectionManager.select(sid, true);
       this.dispatch('highlight', selectedInfo);
       this.selection.push(selectedInfo);
     })
@@ -204,6 +209,14 @@ export default class Visual {
         itemStyle: {
           color: options.barBackgroundColor,
           barBorderRadius: 14
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(255, 255, 255, 0.5)',
+            borderWidth: 1,
+          }
         },
         zlevel: -1
       }]

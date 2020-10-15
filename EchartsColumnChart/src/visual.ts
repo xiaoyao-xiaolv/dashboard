@@ -11,7 +11,7 @@ const getFirstItemDisplay = role => getFirstItem(role)?.display;
 // @TODO: should not maintain in plugin
 let isTooltipModelShown = false;
 
-debugger; // be used for debugging
+// debugger; // be used for debugging
 export default class Visual extends WynVisual {
   private chart: echarts.ECharts;
   private selectionManager: any;
@@ -110,6 +110,7 @@ export default class Visual extends WynVisual {
       emphasis,
       label: this.getLabel(),
     }
+    console.log(legend);
 
     const seriesInfo = this.getFieldInfo(dataView, 'series');
     if (!seriesInfo) return [legend];
@@ -184,6 +185,7 @@ export default class Visual extends WynVisual {
     this.chart.on('click', (params) => {
       if (params.componentType !== 'series') return;
 
+      console.log(params)
       this.showTooltip(params, true);
       
       params.event.event.seriesClick = true;
