@@ -5,7 +5,7 @@ export default class Visual extends WynVisual {
   private visualHost: any;
   private properties: any;
   private items: any;
-  static mockItems = 10000;
+  static mockItems = [10000];
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
@@ -40,10 +40,9 @@ export default class Visual extends WynVisual {
       let name = 'Interval' + (index + 1);
       let flag = false;
       let str = options[name].split(",");
-      let left = str[0].length;
-      let right = str[1].length;
-
-      if (left) {
+      if (str.length-1) {
+        let left = str[0].length;
+        let right = str[1].length;
         if (left - 1) {
           let leftValue = str[0].substring(1);
           flag = str[0].substring(0, 1) === "[" ? (items[0] >= leftValue) : (items[0] > leftValue);

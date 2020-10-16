@@ -1,0 +1,103 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "dimensions",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "dimensions": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "dimensions": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "playInterval",
+                        "type": "Integer",
+                        "displayName": "时间间隔(s)",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "symbolSize",
+                        "type": "Integer",
+                        "displayName": "标记大小",
+                        "defaultValue": 12
+                    },
+                    {
+                        "name": "lineColor",
+                        "type": "Color",
+                        "displayName": "轴线颜色",
+                        "defaultValue": "#009ce0"
+                    },
+                    {
+                        "name": "checkpointColor",
+                        "type": "Color",
+                        "displayName": "当前项颜色",
+                        "defaultValue": "#0c797d"
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "当前项边框颜色",
+                        "defaultValue": "rgba(147, 235, 248, 0)"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
