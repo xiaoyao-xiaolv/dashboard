@@ -81,7 +81,7 @@ export default class Visual {
         dataIndex: dataIndex,
       };
 
-      if (this.selectionManager.contains(sid)){
+      if (this.selectionManager.contains(sid)) {
         this.dispatch('downplay', selectedInfo);
         this.selectionManager.clear(sid);
         return;
@@ -97,7 +97,7 @@ export default class Visual {
   public update(options: any) {
     const dataView = options.dataViews[0];
     this.isMock = !dataView;
-    this.items = [[],[],[],[],[],[]];
+    this.items = [[], [], [], [], [], []];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length && dataView.plain.profile.dimension.values.length) {
       const plainData = dataView.plain;
@@ -106,20 +106,24 @@ export default class Visual {
       let ContrastValue = plainData.profile.ContrastValue.values[0].display;
       let data = plainData.data;
       this.items[0] = plainData.sort[dimension].order;
-      this.items[4]=[ActualValue, ContrastValue];
-      data.forEach((item) => {
-        this.items[1].push(item[ActualValue]);
-        this.items[2].push(item[ContrastValue]);
-        this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
-        const getSelectionId = (item) => {
-          const selectionId = this.host.selectionService.createSelectionId();
-          selectionId.withDimension(plainData.profile.dimension.values[0], item);
-          return selectionId;
-        }
-        this.items[5].push(getSelectionId(item));
-      })
-    }
+      this.items[4] = [ActualValue, ContrastValue];
 
+      for (let index = 0; index < data.length; index++) {
+        data.forEach((item) => {
+          if (item[dimension] == this.items[0][index]) {
+            this.items[1].push(item[ActualValue]);
+            this.items[2].push(item[ContrastValue]);
+            this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
+            const getSelectionId = (item) => {
+              const selectionId = this.host.selectionService.createSelectionId();
+              selectionId.withDimension(plainData.profile.dimension.values[0], item);
+              return selectionId;
+            }
+            this.items[5].push(getSelectionId(item));
+          }
+        })
+      }
+    }
     this.properties = options.properties;
     this.render();
   }
