@@ -1,8 +1,8 @@
 {
-    "name": "DateTime",
+    "name": "日期时间",
     "version": "0.0.1",
     "displayName": "日期时间",
-    "displayNameKey": "",
+    "displayNameKey": "日期时间",
     "icon": "assets/icon.png",
     "description": "",
     "externalJs": [],

@@ -11,15 +11,49 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/DateSlicer/assets/icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/capabilities.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/i18nResources/en-US.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/i18nResources/zh-CN.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/i18nResources/zh-TW.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/src/datepicker-cn.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/src/visual.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/style/jquery-ui.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/style/jquery-ui.theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/style/visual.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/tslint.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/visual.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/visual.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DateSlicer/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TupleSlicer/src/component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/对比条形图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/对比条形图/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/对比条形图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/对比条形图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/对比条形图/对比条形图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/对比条形图/对比条形图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TupleSlicer/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/TupleSlicer/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TupleSlicer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/TupleSlicer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TupleSlicer/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/TupleSlicer/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TupleSlicer/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/TupleSlicer/style/visual.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TupleSlicer/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/TupleSlicer/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TupleSlicer/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/TupleSlicer/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TupleSlicer/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/TupleSlicer/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片呼吸效果/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/图片呼吸效果/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/图片呼吸效果/图片呼吸效果.viz" beforeDir="false" afterPath="$PROJECT_DIR$/图片呼吸效果/图片呼吸效果.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/日期时间/assets/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/日期时间/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/日期时间/visual.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -36,25 +70,25 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/百度GIS热力地图/assets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\圆环指示器\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\DateSlicer\style" />
+      <recent name="D:\Wyn plugins code\dashboard\DateSlicer\src" />
+      <recent name="D:\Wyn plugins code\dashboard\DateSlicer" />
+      <recent name="D:\Wyn plugins code\dashboard\日期时间\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\图片呼吸效果\assets" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard" />
+      <recent name="D:\Wyn plugins code\dashboard\TupleSlicer\assets" />
       <recent name="D:\Wyn plugins code\dashboard\百度GIS热力地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图\assets" />
       <recent name="D:\Wyn plugins code\dashboard\百度GIS流向地图" />
-      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\src" />
-      <recent name="D:\Wyn plugins code\dashboard\气泡地图GEO\src" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\地图柱状结合图\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\rectangularpyramid\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\funnel\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\自定义地图2D\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\自定义地图3D\assets" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -81,6 +115,7 @@
       <workItem from="1599446926142" duration="46337000" />
       <workItem from="1600390779638" duration="8036000" />
       <workItem from="1602579785593" duration="7142000" />
+      <workItem from="1602744125068" duration="6183000" />
     </task>
     <servers />
   </component>
@@ -90,6 +125,31 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:D:/Wyn plugins code/dashboard/TupleSlicer" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -103,71 +163,84 @@
         </entry>
       </map>
     </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="1" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1597196645723">
+    <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1603189502724">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597196645723" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1602670922299">
+    <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1603246422051">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319080400" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602670922299" />
-    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1597891443266">
+    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603246422051" />
+    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1602745320188">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1597891443266" />
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1600337358278">
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602745320188" />
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1603187905457">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599117656456" />
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1600337358278" />
-    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1600337358278">
+    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1603187905457">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599117656456" />
+    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1600337358278" />
-    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1600337358277">
+    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1603187905457">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599117656456" />
+    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1600337358277" />
-    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1600337358278">
+    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1603187905457">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
-    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1599117656456" />
+    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1600337358278" />
     <state x="520" y="84" key="RollbackChangesDialog" timestamp="1602670923765">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
     <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602670923765" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1602668057403">
+    <state width="498" height="398" key="SwitcherDM" timestamp="1603253272755">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319869554" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602668057403" />
+    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603195048049" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253272755" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680@0.0.1280.680" timestamp="1598431897079" />
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1603246422051">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603246422051" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1598602694618">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598602694618" />
-    <state x="459" y="86" width="750" height="594" key="find.popup" timestamp="1602663902641">
+    <state x="459" y="86" width="750" height="594" key="find.popup" timestamp="1603251334392">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319857836" />
-    <state x="459" y="86" width="750" height="594" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602663902641" />
+    <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603191748048" />
+    <state x="459" y="86" width="750" height="594" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603251334392" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1597915448810" />
     <state x="282" y="67" width="700" height="530" key="recent.locations.popup" timestamp="1598497389732">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="282" y="67" width="700" height="530" key="recent.locations.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598497389732" />
+    <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1603189285910">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189285910" />
     <state x="297" y="151" key="run.anything.popup" timestamp="1602665470831">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

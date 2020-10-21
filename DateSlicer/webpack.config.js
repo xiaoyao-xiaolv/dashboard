@@ -28,11 +28,6 @@ const config = {
         use: ['babel-loader', 'awesome-typescript-loader?silent=true'],
       },
       {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: ['ts-loader']
-      },
-      {
         test: /\.(less|css)$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
       },
@@ -46,9 +41,6 @@ const config = {
       },
     ],
     unknownContextCritical: false,
-  },
-  resolve: {
-    extensions: [ '.tsx', '.ts', '.js'],
   },
   mode: 'development',
 };

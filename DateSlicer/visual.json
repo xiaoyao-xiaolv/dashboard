@@ -1,16 +1,14 @@
 {
-    "name": "日期选择器",
-    "displayName": "日期选择器",
-    "displayNameKey": "日期选择器",
+    "name": "tuple_slicer",
+    "displayName": "",
+    "displayNameKey": "",
     "icon": "visualIcon",
     "description": "",
     "externalJs": [
         "https://code.jquery.com/jquery-1.12.4.js",
         "https://code.jquery.com/ui/1.12.1/jquery-ui.js"
     ],
-    "externalCss": [
-        "http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-    ],
+    "externalCss": [],
     "assets": {
         "images": {
             "visualIcon": "assets/icon.png"

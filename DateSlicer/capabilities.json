@@ -1,0 +1,37 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "dimensions",
+                "displayNameKey": "筛选日期",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                }
+            }
+        ]
+    },
+    "options": {
+        "common": {
+            "filter": true
+        },
+        "visual": [{
+            "type": "interaction"
+        }]
+    },
+    "actions": [
+        {
+            "type": "edit"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "focus"
+        }
+    ],
+    "analysis": []
+}
