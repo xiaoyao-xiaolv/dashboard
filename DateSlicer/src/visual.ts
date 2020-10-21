@@ -2,18 +2,19 @@ import * as _ from 'lodash';
 import '../style/visual.less';
 import '../style/jquery-ui.theme.css';
 import '../style/jquery-ui.css';
+const $ = require( 'jquery' );
+import 'jquery-ui/ui/widgets/datepicker.js';
+import './datepicker-cn.js';
 
 const template = `
-  <div class="dateDiv"><span class="dateText">请选择日期:</span> <input autocomplete="off" id="datepicker"></div>
+  <div class="dateDiv"><input class="datepicker" autocomplete="off" id="datepicker"></div>
 `;
 const compiled = _.template(template);
-const $ = (window as any).$;
 const TupleFilter = WynVisual.Models.Filter.TupleFilter;
 const Enums = WynVisual.Enums;
 
 export default class Visual extends WynVisual {
   private dom: HTMLDivElement;
-  private items: any[];
   private filter: VisualNS.TupleFilter;
   private isMock = true;
   private host: VisualNS.VisualHost;
@@ -50,26 +51,18 @@ export default class Visual extends WynVisual {
         onSelect: this.onRangeChange,
         dateFormat: 'yy-mm-dd',
         changeYear: true,
-      });
-      $('#input').datepicker({
-        format: 'yyyy-mm-dd',
-        language: 'zh-CN',
-        autoclose: true,
-        forceParse: !1
+        changeMonth: true
       });
     }
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
-    console.log(options);
-    const dv = options.dataViews[0];
+    let dv = options.dataViews[0];
     if (dv && dv.plain) {
       const dimensionsProfiles = dv.plain.profile.dimensions.values;
       const filter = new TupleFilter(dimensionsProfiles);
       filter.fromJSON(options.filters[0] as VisualNS.ITupleFilter);
       this.isMock = false;
-      console.log('-----filter-----');
-      console.log(filter);
       this.filter = filter;
     } else {
       this.isMock = true;
@@ -82,7 +75,7 @@ export default class Visual extends WynVisual {
   }
 
   public onResize() {
-
+    this.render();
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {

@@ -4,12 +4,27 @@
             {
                 "name": "dimensions",
                 "displayNameKey": "筛选日期",
-                "kind": "grouping"
+                "kind": "grouping",
+                "requiredTypes": ["datetime"]
             }
         ],
         "dataViewMappings": [
             {
                 "plain": {
+                    "required": [
+                        {
+                            "dimensions": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "dimensions": {
+                    "max": 1
                 }
             }
         ]
@@ -18,9 +33,14 @@
         "common": {
             "filter": true
         },
-        "visual": [{
-            "type": "interaction"
-        }]
+        "visual": [
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            }
+        ]
     },
     "actions": [
         {

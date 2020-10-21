@@ -1,12 +1,10 @@
 {
-    "name": "tuple_slicer",
-    "displayName": "",
-    "displayNameKey": "",
+    "name": "日期筛选器",
+    "displayName": "日期筛选器",
+    "displayNameKey": "日期筛选器",
     "icon": "visualIcon",
     "description": "",
     "externalJs": [
-        "https://code.jquery.com/jquery-1.12.4.js",
-        "https://code.jquery.com/ui/1.12.1/jquery-ui.js"
     ],
     "externalCss": [],
     "assets": {
