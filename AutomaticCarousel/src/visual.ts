@@ -1,5 +1,6 @@
 import '../style/visual.less';
-import * as echarts from 'echarts';
+import * as echarts from 'echarts/lib/echarts';
+import 'echarts/lib/component/timeline';
 
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
@@ -19,59 +20,40 @@ export default class Visual extends WynVisual {
     this.items = [];
     this.properties = {
     };
-    // this.bindEvents();
+    this.bindEvents();
     this.selection = [];
     this.selectionManager = host.selectionService.createSelectionManager();
 
   }
 
-  // public bindEvents = () => {
-  //   this.container.addEventListener('click', (e: any) => {
-  //     if (!e.seriesClick) {
-  //       this.hideTooltip();
-  //       this.selection.forEach(item => this.dispatch('downplay', item));
-  //       this.selection = [];
-  //       this.selectionManager.clear();
-  //       return;
-  //     }
-  //   })
-
-  //   this.chart.on('click', (params) => {
-  //     if (params.componentType !== 'series') return;
-  //     params.event.event.seriesClick = true;
-
-  //     let dataIndex = params.dataIndex;
-  //     let sid = this.items[5][dataIndex];
-  //     let selectedInfo = {
-  //       seriesIndex: 1,
-  //       dataIndex: dataIndex,
-  //     };
-
-  //     if (this.selectionManager.contains(sid)){
-  //       this.dispatch('downplay', selectedInfo);
-  //       this.selectionManager.clear(sid);
-  //       return;
-  //     }
-
-  //     this.showTooltip(params);
-  //     this.selectionManager.select(sid, true);
-  //     this.dispatch('highlight', selectedInfo);
-  //     this.selection.push(selectedInfo);
-  //   })
-  // }
+  public bindEvents = () => {
+    this.chart.on('timelinechanged', (params) => {
+      let dataIndex = params.currentIndex;
+      if (this.items.length) {
+        let sid = this.items[1][dataIndex];
+        this.selectionManager.clear();
+        this.selectionManager.select(sid, true);
+      }
+    })
+  }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-    let arr = []
+    let arr = [[], []]
     if (dataView) {
       const plainData = dataView.plain;
       let dimensions = plainData.profile.dimensions.values[0].display;
-      plainData.data.map(function (item) {
-        arr.push(item[dimensions])
+      plainData.data.map((item) => {
+        arr[0].push(item[dimensions])
+        const getSelectionId = (item) => {
+          const selectionId = this.host.selectionService.createSelectionId();
+          selectionId.withDimension(plainData.profile.dimensions.values[0], item);
+          return selectionId;
+        }
+        arr[1].push(getSelectionId(item));
       })
+      this.items = arr
     }
-    this.items = arr.sort(function (a, b) { return a - b })
-    console.log(this.items);
     this.properties = options.properties;
     this.render();
   }
@@ -79,8 +61,14 @@ export default class Visual extends WynVisual {
   private render() {
     this.chart.clear();
     const isMock = !this.items.length;
-    const items = isMock ? Visual.mockItems : this.items;
+    const items = isMock ? Visual.mockItems : this.items[0];
     const options = this.properties;
+    let fontWeight: string;
+    if (options.textStyle.fontWeight == "Light") {
+      fontWeight = options.textStyle.fontWeight + "er"
+    } else {
+      fontWeight = options.textStyle.fontWeight
+    }
     let option = {
       timeline: {
         data: items,
@@ -90,7 +78,7 @@ export default class Visual extends WynVisual {
         top: 'middle',
         left: '5%',
         right: '5%',
-        playInterval: options.playInterval*1000,
+        playInterval: options.playInterval * 1000,
         symbolSize: options.symbolSize,
         lineStyle: {
           show: true,
@@ -104,8 +92,11 @@ export default class Visual extends WynVisual {
         },
         label: {
           show: true,
-          color: "white",
-          fontSize: 14
+          color: options.textStyle.color,
+          fontSize: options.textStyle.fontSize.substr(0, 2),
+          fontWeight: fontWeight,
+          fontFamily: options.textStyle.fontFamily,
+          fontStyle: options.textStyle.fontStyle
         },
         controlStyle: {
           show: true,
@@ -122,7 +113,7 @@ export default class Visual extends WynVisual {
   }
 
   public onResize() {
-
+    this.chart.resize()
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {

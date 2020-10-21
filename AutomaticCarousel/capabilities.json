@@ -62,6 +62,12 @@
                         "type": "Color",
                         "displayName": "当前项边框颜色",
                         "defaultValue": "rgba(147, 235, 248, 0)"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     }
                 ]
             },
