@@ -12,12 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EchartsColumnChart/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/EchartsColumnChart/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EchartsColumnChart/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/EchartsColumnChart/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EchartsColumnChart/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/EchartsColumnChart/src/visual.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/对比条形图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/对比条形图/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/对比条形图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/对比条形图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/对比条形图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/对比条形图/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/对比条形图/对比条形图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/对比条形图/对比条形图.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

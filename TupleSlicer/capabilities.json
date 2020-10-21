@@ -1,0 +1,31 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "dimensions",
+                "displayNameKey": "dataBindingPanel.size",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                }
+            }
+        ]
+    },
+    "options": {
+        "common": {
+            "filter": true
+        },
+        "visual": [{
+            "type": "interaction"
+        }]
+    },
+    "actions": [{
+        "type": "edit"
+    }, {
+        "type": "convertVisual"
+    }],
+    "analysis": []
+}
