@@ -76,11 +76,6 @@ export default class Visual extends WynVisual {
       }
     })
 
-    this.container.addEventListener('mouseleave', (e: any) => {
-      if (this.isTooltipModelShown) return;
-      this.hideTooltip();
-    })
-
     this.chart.on('click', (params) => {
       if (params.componentType !== 'series') return;
       this.showTooltip(params, true);
@@ -233,8 +228,9 @@ export default class Visual extends WynVisual {
         if (this.properties.imageUrl) {
           let reg = /\/api\/dashboardResources/;
           if (reg.test(this.properties.imageUrl)) {
-            return;
-            // imageUrl = `image://http://10.32.201.177:51980/api/dashboardResources/image/b3f06f0b-1272-4a98-876b-d14501e8adde?dashboardId=`;
+            let host = window.location.host;
+            let protocol = window.location.protocol;
+            imageUrl = `image://${protocol}//${host}${this.properties.imageUrl}`;
           } else {
             imageUrl = `image://${this.properties.imageUrl}`;
           }

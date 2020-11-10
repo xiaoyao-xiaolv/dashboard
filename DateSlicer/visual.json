@@ -1,7 +1,7 @@
 {
-    "name": "日期筛选器",
-    "displayName": "日期筛选器",
-    "displayNameKey": "日期筛选器",
+    "name": "分级日期筛选器",
+    "displayName": "分级日期筛选器",
+    "displayNameKey": "分级日期筛选器",
     "icon": "visualIcon",
     "description": "",
     "externalJs": [

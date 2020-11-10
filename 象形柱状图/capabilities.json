@@ -78,13 +78,5 @@
         }
     ],
     "analysis": [
-        {
-            "type": "drill",
-            "rule": {
-                "roles": [
-                    "dimension"
-                ]
-            }
-        }
     ]
 }
