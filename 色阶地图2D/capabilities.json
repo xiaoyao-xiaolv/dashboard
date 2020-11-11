@@ -4,7 +4,14 @@
             {
                 "name": "values",
                 "displayNameKey": "数值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "province",
@@ -39,13 +46,31 @@
     "options": {
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "地图属性",
                 "properties": [
                     {
                         "name": "roam",
                         "type": "Boolean",
                         "displayName": "是否允许缩放",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "mapColor",
+                        "type": "Color",
+                        "displayName": "地图填充颜色",
+                        "defaultValue": "#0a4880"
+                    },
+                    {
+                        "name": "emphasisColor",
+                        "type": "Color",
+                        "displayName": "高亮选中颜色",
+                        "defaultValue": "#389BB7"
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "地图边界颜色",
+                        "defaultValue": "#666666"
                     },
                     {
                         "name": "showPieces",
@@ -60,10 +85,10 @@
                         "defaultValue": true
                     },
                     {
-                        "name": "textColor",
-                        "type": "Color",
-                        "displayName": "图例字体颜色",
-                        "defaultValue": "#ffffff"
+                        "name": "detailTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "图例字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     },
                     {
                         "name": "pieces",
@@ -76,18 +101,95 @@
                         "type": "Palette",
                         "displayName": "调色板",
                         "inheritFrom": "dashboard.palette"
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
+                    {
+                        "name": "showlabel",
+                        "type": "Boolean",
+                        "displayName": "显示数据标注",
+                        "defaultValue": true
                     },
                     {
-                        "name": "mapColor",
-                        "type": "Color",
-                        "displayName": "地图填充颜色",
-                        "defaultValue": "#0a4880"
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     },
                     {
-                        "name": "borderColor",
-                        "type": "Color",
-                        "displayName": "地图边界颜色",
-                        "defaultValue": "rgba(147, 235, 248, 1)"
+                        "name": "dataindicateType",
+                        "type": "Enum",
+                        "displayName": "数据格式",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "常规"
+                            },
+                            {
+                                "value": "number",
+                                "displayNameKey": "数字"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "货币"
+                            },
+                            {
+                                "value": "%",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": "none"
+                    },
+                    {
+                        "name": "dataindicateUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "1",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "1"
                     }
                 ]
             },

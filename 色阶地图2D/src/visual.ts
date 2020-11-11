@@ -3,16 +3,19 @@ import * as echarts from 'echarts';
 import "echarts/map/js/china.js"
 export default class Visual {
   private container: HTMLDivElement;
+  private host: any;
   private chart: any;
   private properties: any;
   private items: any;
+  private valueFormat: any;
   private dataView: any;
   static mockItems = [];
   private hourIndex: any;
   private fhourTime: any;
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = echarts.init(dom)
+    this.chart = echarts.init(dom);
+    this.host = host;
     this.items = [];
     this.dataView = [];
     this.properties = {
@@ -38,6 +41,7 @@ export default class Visual {
       const plainData = dataView.plain;
       let provinceName = plainData.profile.province.values[0].display;
       let valuesName = plainData.profile.values.values;
+      this.valueFormat = plainData.profile.values.options.valueFormat;
       this.items = plainData.data.map(function (item) {
         return {
           name: item[provinceName],
@@ -61,21 +65,36 @@ export default class Visual {
       item['color'] = options.piecesColor[j];
       return item;
     });
+
     let plainData = isMock ? Visual.mockItems : this.dataView.plain;
     let provinceName = isMock ? Visual.mockItems : plainData.profile.province.values[0].display;
     let valuesName = isMock ? Visual.mockItems : plainData.profile.values.values;
     let showtooltip = isMock ? false : true
+
+    let fontWeight: string;
+    if (options.textStyle.fontWeight == "Light") {
+      fontWeight = options.textStyle.fontWeight + "er"
+    } else {
+      fontWeight = options.textStyle.fontWeight
+    }
+    let detailfontWeight: string;
+    if (options.detailTextStyle.fontWeight == "Light") {
+      detailfontWeight = options.detailTextStyle.fontWeight + "er"
+    } else {
+      detailfontWeight = options.detailTextStyle.fontWeight
+    }
+
     var option = {
       tooltip: {
         show: showtooltip,
         trigger: 'item',
-        formatter(params) {
+        formatter:(params)=> {
           let tootip = ''
           for (let i = 0; i < plainData.data.length; i++) {
             if (plainData.data[i][provinceName] === params.name) {
               tootip = '<span style="color:#fff;font-size:15px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + params.name + '</span>' + '<p style="height: 1px; width: 100%; background: rgba(190,190,190,.4); margin-top: 5px;" ></p>';
               for (let j = 0; j < valuesName.length; j++) {
-                tootip += params.marker + " " + '<span style="color: #fff;">' + valuesName[j].display + '</span>' + " :  " + '<span style="color: #ffcf07;">' + plainData.data[i][valuesName[j].display] + '</span>' + "<br/>";
+                tootip += params.marker + " " + '<span style="color: #fff;">' + valuesName[j].display + '</span>' + " :  " + '<span style="color: #ffcf07;">' + this.formatData(plainData.data[i][valuesName[j].display], options.dataindicateUnit, options.dataindicateType) + '</span>' + "<br/>";
               }
               return tootip;
             }
@@ -90,27 +109,26 @@ export default class Visual {
           name: 'map',
           type: 'map',
           map: 'china',
+          zoom:1.2,
           roam: options.roam,
           itemStyle: {
             opacity: 1,
             areaColor: options.mapColor,
             borderWidth: 1,
             borderColor: options.borderColor,
-            shadowColor: 'rgba(128, 217, 248, 1)',
-            // shadowColor: 'rgba(255, 255, 255, 1)',
-            shadowOffsetX: -2,
-            shadowOffsetY: 2,
-            shadowBlur: 10,
             emphasis: {
-              areaColor: '#389BB7',
+              areaColor: options.emphasisColor,
               borderWidth: 0
             }
           },
           label: {
-            show: true,
+            show: options.showlabel,
             textStyle: {
-              color: '#fff', //地图初始化区域字体颜色
-              fontSize: 13,
+              color: options.textStyle.color,
+              fontSize: options.textStyle.fontSize.substr(0, 2),
+              fontWeight: fontWeight,
+              fontFamily: options.textStyle.fontFamily,
+              fontStyle: options.textStyle.fontStyle,
               backgroundColor: 'rgba(0,0,0,0)'
             },
           },
@@ -127,12 +145,63 @@ export default class Visual {
           right: '2%',
           bottom: '5%',
           textStyle: {
-            color: options.textColor
+          color: options.detailTextStyle.color,
+          fontSize: options.detailTextStyle.fontSize.substr(0, 2),
+          fontWeight: detailfontWeight,
+          fontFamily: options.detailTextStyle.fontFamily,
+          fontStyle: options.detailTextStyle.fontStyle
           },
           pieces: pieces
         },
       })
     }
+  }
+
+  public formatData = (number, dataUnit, dataType) => {
+    let format = number
+    const units = [{
+      value: 1,
+      unit: ''
+    },
+    {
+      value: 100,
+      unit: '百'
+    }, {
+      value: 1000,
+      unit: '千'
+    }, {
+      value: 10000,
+      unit: '万'
+    }, {
+      value: 100000,
+      unit: '十万'
+    }, {
+      value: 1000000,
+      unit: '百万'
+    }, {
+      value: 10000000,
+      unit: '千万'
+    }, {
+      value: 100000000,
+      unit: '亿'
+    }, {
+      value: 1000000000,
+      unit: '十亿'
+    }, {
+      value: 100000000000,
+      unit: '万亿'
+    }]
+    const formatUnit = units.find((item) => item.value === Number(dataUnit))
+    format = (format / formatUnit.value).toFixed(2);
+
+    if (dataType === 'number' || dataType === 'none') {
+      format = this.host.formatService.format(this.valueFormat, format).toLocaleString();
+    } else if (dataType === '%') {
+      format = format + dataType
+    } else {
+      format = dataType + format
+    }
+    return format + formatUnit.unit
   }
 
   private auto_tooltip() {
