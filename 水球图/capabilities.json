@@ -44,20 +44,8 @@
     "options": {
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "图表样式",
                 "properties": [
-                    {
-                        "name": "showSubTitle",
-                        "type": "Boolean",
-                        "displayName": "显示副标题",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "subtitle",
-                        "type": "Text",
-                        "displayNameKey": "副标题",
-                        "defaultValue": "示例"
-                    },
                     {
                         "displayNameKey": "水球形状",
                         "name": "shape",
@@ -83,34 +71,118 @@
                         "defaultValue": "circle"
                     },
                     {
+                        "name": "backgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "transparent"
+                    },
+                    {
+                        "name": "piecesColor",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "inheritFrom": "dashboard.palette"
+                    },
+                    {
+                        "name": "showColor",
+                        "type": "Boolean",
+                        "displayName": "开启条件颜色",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "Interval1",
+                        "type": "Text",
+                        "displayName": "区间1",
+                        "defaultValue": "(,0.5)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval2",
+                        "type": "Text",
+                        "displayName": "区间2",
+                        "defaultValue": "[0.5,0.8)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval3",
+                        "type": "Text",
+                        "displayName": "区间3",
+                        "defaultValue": "[0.8,)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval4",
+                        "type": "Text",
+                        "displayName": "区间4",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval5",
+                        "type": "Text",
+                        "displayName": "区间5",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    }
+                ]
+            },
+            {
+                "displayName": "内边框样式",
+                "properties": [
+                    {
                         "name": "borderWidth",
                         "type": "Integer",
                         "displayName": "边框线宽",
-                        "defaultValue": "5"
+                        "defaultValue": "2"
                     },
                     {
                         "name": "borderColor",
                         "type": "Color",
                         "displayName": "边框颜色",
-                        "defaultValue": "#ccc"
+                        "defaultValue": "#1daaeb"
+                    }
+                ]
+            },
+            {
+                "displayName": "外边框样式",
+                "properties": [
+                    {
+                        "name": "showoutline",
+                        "type": "Boolean",
+                        "displayName": "显示边框",
+                        "defaultValue": true
                     },
                     {
-                        "name": "waterColor",
-                        "type": "Color",
-                        "displayName": "水波颜色",
-                        "defaultValue": "#e6776c"
-                    },
-                    {
-                        "name": "backgroundColor",
-                        "type": "Color",
-                        "displayName": "背景颜色",
-                        "defaultValue": "#fff"
-                    },
-                    {
-                        "name": "fontSize",
+                        "name": "borderDistance",
                         "type": "Integer",
-                        "displayName": "内容字体大小",
-                        "defaultValue": 30
+                        "displayName": "与内边框距离",
+                        "defaultValue": "6"
+                    },
+                    {
+                        "name": "outlineborderWidth",
+                        "type": "Integer",
+                        "displayName": "边框线宽",
+                        "defaultValue": "4"
+                    },
+                    {
+                        "name": "outlineborderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "#0ff"
+                    }
+                ]
+            },
+            {
+                "displayName": "标签样式",
+                "properties": [
+                    {
+                        "name": "showlabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     }
                 ]
             },

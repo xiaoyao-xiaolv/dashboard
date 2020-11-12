@@ -28,8 +28,8 @@
     "file-loader": "6.0.0"
   },
   "dependencies": {
-    "echarts": "^4.2.1",
-    "echarts-liquidfill": "^2.0.5",
-    "zrender": "^4.0.7"
+    "echarts": "^4.8.0",
+    "echarts-liquidfill": "^2.0.6",
+    "zrender": "^4.3.1"
   }
 }
