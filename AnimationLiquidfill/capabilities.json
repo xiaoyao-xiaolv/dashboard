@@ -1,0 +1,247 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "ActualValue",
+                "displayNameKey": "实际值",
+                "kind": "value"
+            },
+            {
+                "name": "ContrastValue",
+                "displayNameKey": "对比值",
+                "kind": "value"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "ActualValue": {
+                                "min": 1
+                            }
+                        },
+                        {
+                            "ContrastValue": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "ActualValue": {
+                    "max": 1
+                },
+                "ContrastValue": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "displayNameKey": "水球形状",
+                        "name": "shape",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "rect",
+                                "displayNameKey": "rect"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "roundRect"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "circle"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "diamond"
+                            }
+                        ],
+                        "defaultValue": "circle"
+                    },
+                    {
+                        "name": "backgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "transparent"
+                    },
+                    {
+                        "name": "piecesColor",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "inheritFrom": "dashboard.palette"
+                    },
+                    {
+                        "name": "showColor",
+                        "type": "Boolean",
+                        "displayName": "开启条件颜色",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "Interval1",
+                        "type": "Text",
+                        "displayName": "区间1",
+                        "defaultValue": "(,0.5)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval2",
+                        "type": "Text",
+                        "displayName": "区间2",
+                        "defaultValue": "[0.5,0.8)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval3",
+                        "type": "Text",
+                        "displayName": "区间3",
+                        "defaultValue": "[0.8,)",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval4",
+                        "type": "Text",
+                        "displayName": "区间4",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    },
+                    {
+                        "name": "Interval5",
+                        "type": "Text",
+                        "displayName": "区间5",
+                        "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+                    }
+                ]
+            },
+            {
+                "displayName": "内边框样式",
+                "properties": [
+                    {
+                        "name": "borderWidth",
+                        "type": "Integer",
+                        "displayName": "边框线宽",
+                        "defaultValue": "2"
+                    },
+                    {
+                        "name": "borderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "#1daaeb"
+                    }
+                ]
+            },
+            {
+                "displayName": "外边框样式",
+                "properties": [
+                    {
+                        "name": "showoutline",
+                        "type": "Boolean",
+                        "displayName": "显示边框",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "borderDistance",
+                        "type": "Integer",
+                        "displayName": "与内边框距离",
+                        "defaultValue": "6"
+                    },
+                    {
+                        "name": "outlineborderWidth",
+                        "type": "Integer",
+                        "displayName": "边框线宽",
+                        "defaultValue": "4"
+                    },
+                    {
+                        "name": "outlineborderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "#0ff"
+                    }
+                ]
+            },
+            {
+                "displayName": "标签样式",
+                "properties": [
+                    {
+                        "name": "showlabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "displayName": "动画样式",
+                "properties": [
+                    {
+                        "name": "outsideColor",
+                        "type": "Color",
+                        "displayName": "外线颜色",
+                        "defaultValue": "#0ff"
+                    },
+                    {
+                        "name": "insideColor",
+                        "type": "Color",
+                        "displayName": "内线颜色",
+                        "defaultValue": "#0ff"
+                    },
+                    {
+                        "name": "pointColor",
+                        "type": "Color",
+                        "displayName": "点颜色",
+                        "defaultValue": "#0ff"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
