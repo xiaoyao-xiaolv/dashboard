@@ -1,14 +1,15 @@
 {
-    "name": "色阶地图",
-    "version": "0.0.1",
-    "displayName": "色阶地图",
+    "name": "色阶地图2D",
+    "displayName": "色阶地图2D",
     "displayNameKey": "",
-    "icon": "assets/icon.png",
+    "icon": "visualIcon",
     "description": "",
     "externalJs": [],
     "externalCss": [],
     "assets": {
-        "images": {}
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
     },
     "configuration": {}
 }

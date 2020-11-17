@@ -17,6 +17,11 @@
                 "name": "province",
                 "displayNameKey": "省份",
                 "kind": "grouping"
+            },
+            {
+                "name": "city",
+                "displayNameKey": "钻取路径",
+                "kind": "grouping"
             }
         ],
         "dataViewMappings": [
@@ -48,12 +53,6 @@
             {
                 "displayName": "地图属性",
                 "properties": [
-                    {
-                        "name": "roam",
-                        "type": "Boolean",
-                        "displayName": "是否允许缩放",
-                        "defaultValue": true
-                    },
                     {
                         "name": "mapColor",
                         "type": "Color",
@@ -227,5 +226,6 @@
             "type": "annotation"
         }
     ],
-    "analysis": []
+    "analysis": [
+    ]
 }
