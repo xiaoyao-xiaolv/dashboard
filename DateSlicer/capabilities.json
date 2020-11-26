@@ -5,7 +5,7 @@
                 "name": "dimensions",
                 "displayNameKey": "筛选日期",
                 "kind": "grouping",
-                "requiredTypes": ["datetime"]
+                "requiredTypes": ["datetime","date"]
             }
         ],
         "dataViewMappings": [

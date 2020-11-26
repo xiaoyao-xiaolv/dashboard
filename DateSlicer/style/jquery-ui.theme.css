@@ -33,8 +33,8 @@
 }
 .ui-widget-content {
 	border: 1px solid #404040;
-	background: #121212;
-	color: #eeeeee;
+	background: #ecf1f5;
+	color: #333;
 }
 .ui-widget-content a {
 	color: #eeeeee;
@@ -60,10 +60,10 @@
 works properly when clicked or hovered */
 html .ui-button.ui-state-disabled:hover,
 html .ui-button.ui-state-disabled:active {
-	border: 1px solid #cccccc;
-	background: #adadad;
+	/*border: 1px solid #cccccc;*/
+	background: #ecf1f5;
 	font-weight: normal;
-	color: #ffffff;
+	color: #333;
 }
 .ui-state-default a,
 .ui-state-default a:link,
@@ -112,8 +112,8 @@ a.ui-button:active,
 .ui-button:active,
 .ui-button.ui-state-active:hover {
 	border: 1px solid #dcdbdb;
-	background: #121212;
-	font-weight: normal;
+	background: #369;
+	font-weight: bold;
 	color: #ffffff;
 }
 .ui-icon-background,
@@ -133,10 +133,23 @@ a.ui-button:active,
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-	border: 1px solid #404040;
-	background: #555555;;
-	color: #cccccc;
+	color: #ffffff;
 }
+
+.ui-datepicker-today :after{
+	position: absolute;
+	right: 4px;
+	bottom: 4px;
+	display: inline-block;
+	content: "";
+	border-bottom: 7px solid #369;
+	border-left: 7px solid transparent;
+}
+
+.ui-datepicker-current-day :after {
+	border-bottom-color: #fff;
+}
+
 .ui-state-checked {
 	border: 1px solid #404040;
 	background: #555555;
