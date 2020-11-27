@@ -44,6 +44,9 @@
             {
                 "province": {
                     "max": 1
+                },
+                "values": {
+                    "max": 1
                 }
             }
         ]
@@ -82,6 +85,28 @@
                         "type": "Boolean",
                         "displayName": "是否显示分段图例",
                         "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "图例显示位置",
+                        "name": "position",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "detailTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "图例字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     },
                     {
                         "name": "detailTextStyle",
@@ -226,6 +251,5 @@
             "type": "annotation"
         }
     ],
-    "analysis": [
-    ]
+    "analysis": []
 }

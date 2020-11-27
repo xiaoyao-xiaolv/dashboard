@@ -42,55 +42,132 @@ export default class Visual extends WynVisual {
   private host: any;
   private chart: any;
   private properties: any;
-  private graphic: any;
   private drilldown: boolean;
+  private timeFn = null;
   private items: any;
+  private graphic: any;
+  private sid: any;
+  private data: any;
+  static mockItems = [];
+  private selection: any;
+  private selectionManager: any;
+  private isTooltipModelShown: boolean;
   private provinceName: any;
   private cityName: any;
   private valuesName: any;
-  private valueFormat: any;
-  private dataView: any;
   private map: any;
-  static mockItems = [];
-  // private hourIndex: any;
-  // private fhourTime: any;
+
+
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
     this.chart = echarts.init(dom);
     this.host = host;
     this.items = [];
-    this.dataView = [];
+    this.data = [];
     this.graphic = [];
-    this.drilldown = true;
+    this.drilldown = false;
     this.map = 'china';
     this.properties = {
     };
-    // this.hourIndex = 0;
-    // this.fhourTime = null;
+    this.isTooltipModelShown = false;
+    this.selection = [];
+    this.selectionManager = host.selectionService.createSelectionManager();
     this.bindEvents();
-    // this.auto_tooltip();
+
   }
 
+  private dispatch = (type, payload) => this.chart.dispatchAction({ type, ...payload });
+
   private bindEvents = () => {
+    this.chart.getZr().on('click', (e) => {
+      if (!e.target) {
+        this.hideTooltip();
+        this.selection.forEach(item => this.dispatch('downplay', item));
+        this.selection = [];
+        this.selectionManager.clear();
+        if (!this.drilldown) {
+          this.selectionManager.select(this.sid, true);
+        }
+        return;
+      }
+    })
     this.chart.on('click', (params) => {
+      clearTimeout(this.timeFn);
+      this.timeFn = setTimeout(() => {
+        if (!params.data) {
+          this.hideTooltip();
+          this.selection.forEach(item => this.dispatch('downplay', item));
+          this.selection = [];
+          this.selectionManager.clear();
+          if (!this.drilldown) {
+            this.selectionManager.select(this.sid, true);
+          }
+          return;
+        } else {
+          let dataIndex = params.dataIndex;
+          let sid = this.items[1][dataIndex];
+          let selectedInfo = {
+            seriesIndex: 0,
+            dataIndex: dataIndex,
+          };
+          if (this.selectionManager.contains(sid)) {
+            this.hideTooltip();
+            this.dispatch('downplay', selectedInfo);
+            this.selectionManager.clear(sid);
+            return;
+          }
+          this.showTooltip(params);
+          this.dispatch('highlight', selectedInfo);
+          this.selectionManager.select(sid, true);
+          this.selection.push(selectedInfo);
+        }
+      }, 300);
+    })
+    this.chart.on('dblclick', (params) => {
+      clearTimeout(this.timeFn);
+      if (!params.data) {
+        this.hideTooltip();
+        this.selection = [];
+        this.selectionManager.clear();
+        return;
+      }
       if (this.drilldown) {
         let dataIndex = params.dataIndex;
+        this.sid = this.items[1][dataIndex];
+        this.selectionManager.select(this.sid, true);
         this.map = params.name;
         this.drilldown = false;
-        //传递标题
-
-        this.render(this.items[1][dataIndex]);
+        this.items = this.data[1][dataIndex];
+        this.graphic[0].children[0].shape.x2 = 100;
+        this.graphic[0].children[1].shape.x2 = 100;
+        this.graphic.push(this.createBreadcrumb(params.name))
+        this.hideTooltip();
+        this.render();
       }
     })
   }
+
+  private showTooltip = _.debounce((params) => {
+    this.isTooltipModelShown = true;
+    const fields = [{ label: params.name, value: params.data.value }]
+    this.host.toolTipService.show({
+      position: {
+        x: params.event.event.x,
+        y: params.event.event.y,
+      },
+      fields,
+      selected: this.selectionManager.getSelectionIds(),
+      menu: true,
+    }, 10);
+  });
+
+  private hideTooltip = () => {
+    this.host.toolTipService.hide();
+    this.isTooltipModelShown = false;
+  }
+
   private createBreadcrumb = (name) => {
-    let pos = {
-      leftPlus: 115,
-      leftCur: 150,
-      left: 198,
-      top: 50,
-    };
     let line = [
       [0, 0],
       [5, 5],
@@ -128,7 +205,6 @@ export default class Visual extends WynVisual {
       }
       ]
     };
-    pos.leftCur += pos.leftPlus;
     return breadcrumb;
   }
 
@@ -145,7 +221,7 @@ export default class Visual extends WynVisual {
         shape: {
           x1: 0,
           y1: 0,
-          x2: 100,
+          x2: 50,
           y2: 0,
         },
         style: {
@@ -159,7 +235,7 @@ export default class Visual extends WynVisual {
         shape: {
           x1: 0,
           y1: 0,
-          x2: 100,
+          x2: 50,
           y2: 0,
         },
         style: {
@@ -185,18 +261,67 @@ export default class Visual extends WynVisual {
             fill: "#0ab7ff",
             font: '12px "Microsoft YaHei", sans-serif',
           },
-          onclick: function () {
+          onclick: () => {
+            this.map = 'china';
+            this.drilldown = true;
+            this.items = this.data[0];
+            this.hideTooltip();
+            this.selection = [];
+            this.selectionManager.clear();
+            this.getgraphic();
+            this.render();
           },
         }
       ]
     }]
-    
+    this.graphic = arr;
   }
 
-  private render(data: any) {
+  private classify = (arr: any, name: any) => {
+    let obj = {}
+    arr.map(v => {
+      obj[v[name]] = 0
+    })
+    let nameArr = Object.keys(obj)
+    let result = [];
+    nameArr.map(v => {
+      let temp = arr.filter(_v => v == _v[name]);
+      if (temp.length) {
+        result.push(temp)
+      }
+    })
+    return result
+  }
+
+  private sum(arr: any) {
+    let s = 0;
+    arr.forEach(item => {
+      s += item[this.valuesName];
+    });
+    return s;
+  }
+
+  private getMapData(data: any, dimension: any, name: any) {
+    let arr = [[], []];
+    data.map((item) => {
+      arr[0].push({
+        name: item[name],
+        value: item[this.valuesName] || 0,
+      })
+      const getSelectionId = (item) => {
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(dimension, item);
+        return selectionId;
+      }
+      arr[1].push(getSelectionId(item));
+    });
+    return arr;
+  }
+
+  private render() {
     this.chart.clear();
     const isMock = !this.items.length;
-    const items = isMock ? Visual.mockItems : data;
+    const items = isMock ? Visual.mockItems : this.items[0];
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
     let pieces = JSON.parse(options.pieces).map(function (item: number[], i: number) {
@@ -204,11 +329,6 @@ export default class Visual extends WynVisual {
       item['color'] = options.piecesColor[j];
       return item;
     });
-    // let plainData = isMock ? Visual.mockItems : this.dataView.plain;
-    // let provinceName = isMock ? Visual.mockItems : plainData.profile.province.values[0].display;
-    // let valuesName = isMock ? Visual.mockItems : plainData.profile.values.values;
-    // let showtooltip = isMock ? false : true
-    let mapname = this.map;
 
     let fontWeight: string;
     if (options.textStyle.fontWeight == "Light") {
@@ -222,33 +342,27 @@ export default class Visual extends WynVisual {
     } else {
       detailfontWeight = options.detailTextStyle.fontWeight
     }
+    let left;
+    let right;
+    if (options.position == "left") {
+      left = '2%'
+      right = 'auto'
+    } else {
+      left = 'auto'
+      right = '2%'
+    }
     var option = {
-      // tooltip: {
-      //   show: showtooltip,
-      //   trigger: 'item',
-      //   formatter: (params) => {
-      //     let tootip = ''
-      //     for (let i = 0; i < plainData.data.length; i++) {
-      //       if (plainData.data[i][provinceName] === params.name) {
-      //         tootip = '<span style="color:#fff;font-size:15px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + params.name + '</span>' + '<p style="height: 1px; width: 100%; background: rgba(190,190,190,.4); margin-top: 5px;" ></p>';
-      //         for (let j = 0; j < valuesName.length; j++) {
-      //           tootip += params.marker + " " + '<span style="color: #fff;">' + valuesName[j].display + '</span>' + " :  " + '<span style="color: #ffcf07;">' + this.formatData(plainData.data[i][valuesName[j].display], options.dataindicateUnit, options.dataindicateType) + '</span>' + "<br/>";
-      //         }
-      //         return tootip;
-      //       }
-      //     }
-      //   },
-      //   backgroundColor: 'rgba(0, 62, 108, 0.9)',
-      //   borderColor: '#3edfd8',
-      //   borderWidth: 2
-      // },
-      // graphic: ,
+      tooltip: {
+        show: false,
+      },
+      graphic: this.graphic,
       series: [
         {
           name: 'map',
           type: 'map',
-          map: mapname,
+          map: this.map,
           zoom: 1.2,
+          roam: options.roam,
           itemStyle: {
             opacity: 1,
             areaColor: options.mapColor,
@@ -271,17 +385,18 @@ export default class Visual extends WynVisual {
             },
           },
           data: items,
+          animationDelayUpdate: 300
         }
       ]
     };
-
     this.chart.setOption(option);
     if (options.showPieces) {
       this.chart.setOption({
         visualMap: {
           show: options.showVisualMap,
           type: 'piecewise',
-          right: '2%',
+          left: left,
+          right: right,
           bottom: '5%',
           textStyle: {
             color: options.detailTextStyle.color,
@@ -296,151 +411,50 @@ export default class Visual extends WynVisual {
     }
   }
 
-  private formatData = (number, dataUnit, dataType) => {
-    let format = number
-    const units = [{
-      value: 1,
-      unit: ''
-    },
-    {
-      value: 100,
-      unit: '百'
-    }, {
-      value: 1000,
-      unit: '千'
-    }, {
-      value: 10000,
-      unit: '万'
-    }, {
-      value: 100000,
-      unit: '十万'
-    }, {
-      value: 1000000,
-      unit: '百万'
-    }, {
-      value: 10000000,
-      unit: '千万'
-    }, {
-      value: 100000000,
-      unit: '亿'
-    }, {
-      value: 1000000000,
-      unit: '十亿'
-    }, {
-      value: 100000000000,
-      unit: '万亿'
-    }]
-    const formatUnit = units.find((item) => item.value === Number(dataUnit))
-    format = (format / formatUnit.value).toFixed(2);
-
-    if (dataType === 'number' || dataType === 'none') {
-      format = this.host.formatService.format(this.valueFormat, format).toLocaleString();
-    } else if (dataType === '%') {
-      format = format + dataType
-    } else {
-      format = dataType + format
-    }
-    return format + formatUnit.unit
-  }
-
-  private classify = (arr: any) => {
-    let obj = {}
-    arr.map(v => {
-      obj[v[this.provinceName]] = 0
-    })
-    let nameArr = Object.keys(obj)
-    let result = [];
-    nameArr.map(v => {
-      let temp = arr.filter(_v => v == _v[this.provinceName]);
-      if (temp.length) {
-        result.push(temp)
-      }
-    })
-    return result
-  }
-
-  private sum(arr: any) {
-    let s = 0;
-    arr.forEach(item => {
-      s += item[this.valuesName[0].display];
-    });
-    return s;
-  }
-
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-    this.dataView = dataView;
-    let arr = [[], []]
+    console.log(dataView);
+    let data = [[], []];
     if (dataView) {
       const plainData = dataView.plain;
       this.provinceName = plainData.profile.province.values[0].display;
-      this.valuesName = plainData.profile.values.values;
-      this.valueFormat = plainData.profile.values.options.valueFormat;
       this.cityName = plainData.profile.city.values;
+      this.valuesName = plainData.profile.values.values[0].display;
       if (this.cityName.length) {
-        this.classify(plainData.data).map((item) => {
+        let arr = [[], []]
+        this.classify(plainData.data, this.provinceName).map((item) => {
           arr[0].push({
             name: item[0][this.provinceName],
             value: this.sum(item)
           });
-          arr[1].push(item.map((item) => {
-            return {
-              provincename: item[this.provinceName],
-              name: item[this.cityName[0].display],
-              value: item[this.valuesName[0].display]
-            };
-          }))
+          const getSelectionId = (item) => {
+            const selectionId = this.host.selectionService.createSelectionId();
+            selectionId.withDimension(plainData.profile.province.values[0], item[0]);
+            return selectionId;
+          }
+          arr[1].push(getSelectionId(item));
+          data[1].push(this.getMapData(item, this.cityName[0], this.cityName[0].display));
         });
+        data[0] = arr;
+        this.drilldown = true;
+        if (arr[0].length == 1) {
+          this.map = arr[0][0].name;
+          data[0] = data[1][0];
+        } else {
+          this.map = "china"
+        }
       } else {
-        plainData.data.map((item) => {
-          arr[0].push({
-            name: item[this.provinceName],
-            value: item[this.valuesName[0].display] || 0,
-          })
-        });
+        data[0] = this.getMapData(plainData.data, plainData.profile.province.values[0], this.provinceName);
       }
-      this.items = arr;
     }
+    this.data = data;
+    this.items = this.data[0];
     this.properties = options.properties;
-    this.render(this.items[0]);
+    this.getgraphic();
+    this.render();
   }
 
-  // private auto_tooltip() {
-  //   this.chart.dispatchAction({
-  //     type: "showTip",
-  //     seriesIndex: 0,
-  //     dataIndex: this.hourIndex
-  //   });
-  //   this.hourIndex++;
-  //   if (this.hourIndex > this.items.length) {
-  //     this.hourIndex = 0;
-  //   }
-  //   //鼠标移入停止轮播
-  //   this.chart.on("mousemove", (e) => {
-  //     clearTimeout(this.fhourTime)
-  //     this.chart.dispatchAction({
-  //       type: "showTip",
-  //       seriesIndex: 0,
-  //       dataIndex: e.dataIndex
-  //     });
-  //   })
-  //   //鼠标移出恢复轮播
-  //   this.chart.on("mouseout", () => {
-  //     this.chart.dispatchAction({
-  //       type: "showTip",
-  //       seriesIndex: 0,
-  //       dataIndex: this.hourIndex
-  //     });
-  //     this.hourIndex++;
-  //     if (this.hourIndex > this.items.length) {
-  //       this.hourIndex = 0;
-  //     }
-  //   })
-  //   setTimeout(() => { this.auto_tooltip() }, 3000);
-  // }
-
   public onDestroy() {
-
   }
 
   public onResize() {
