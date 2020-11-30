@@ -4,6 +4,7 @@ import * as echarts from 'echarts';
 import namedata from './china.json';
 import $ from 'jquery';
 (window as any).jQuery = $;
+$.ajaxSettings.async = false;
 
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
@@ -22,7 +23,6 @@ export default class Visual extends WynVisual {
   private isTooltipModelShown: boolean;
   private provinceName: any;
   private cityName: any;
-  private districtName: any;
   private valuesName: any;
 
 
@@ -105,10 +105,19 @@ export default class Visual extends WynVisual {
         this.sid = this.items[1][dataIndex];
         this.selectionManager.select(this.sid, true);
         this.getGeoJson(params.name);
-        this.drilldown = false;
-        this.items = this.data[1][dataIndex];
-        this.graphic[0].children[0].shape.x2 = 100;
-        this.graphic[0].children[1].shape.x2 = 100;
+        console.log(params.data.drilldownIndex)
+        switch (params.data.drilldownIndex) {
+          case 1:
+            this.items = this.data[1][dataIndex];
+            break;
+          case 2:
+            this.items = this.data[2].find(item => item[3] == params.name);
+            this.drilldown = false;
+            break;
+        }
+
+        this.graphic[0].children[0].shape.x2 += 60;
+        this.graphic[0].children[1].shape.x2 += 60;
         this.graphic.push(this.createBreadcrumb(params.name))
         this.hideTooltip();
         this.render();
@@ -141,16 +150,14 @@ export default class Visual extends WynVisual {
   }
 
   private getGeoJson(name: any) {
-    let mapJson
+    let mapJson;
     let id = name == "中国" ? "100000" : this.getMapId(name);
-    $.ajaxSettings.async = false
-    $.getJSON("https://geo.datav.aliyun.com/areas_v2/bound/" + id + "_full.json", function (geoJson) {
+    let url = "https://geo.datav.aliyun.com/areas_v2/bound/" + id + "_full.json";
+    $.getJSON(url, function (geoJson) {
       mapJson = geoJson
     })
     echarts.registerMap('Map', mapJson);
   }
-
-
 
   private createBreadcrumb = (name) => {
     let line = [
@@ -286,16 +293,17 @@ export default class Visual extends WynVisual {
     return s;
   }
 
-  private getData(data: any, dimension: any, name: any) {
+  private getSumData(data: any, dimension: any, name: any, drilldown: number) {
     let arr = [[], []];
     data.map((item) => {
       arr[0].push({
         name: item[0][name],
-        value: this.sum(item) || 0
+        value: this.sum(item) || 0,
+        drilldownIndex: drilldown
       });
       const getSelectionId = (item) => {
         const selectionId = this.host.selectionService.createSelectionId();
-        selectionId.withDimension(dimension, item);
+        selectionId.withDimension(dimension, item[0]);
         return selectionId;
       }
       arr[1].push(getSelectionId(item));
@@ -304,7 +312,7 @@ export default class Visual extends WynVisual {
   }
 
   private getMapData(data: any, dimension: any, name: any) {
-    let arr = [[], []];
+    let arr = [[], [], []];
     data.map((item) => {
       arr[0].push({
         name: item[name],
@@ -317,6 +325,7 @@ export default class Visual extends WynVisual {
       }
       arr[1].push(getSelectionId(item));
     });
+    arr[2] = data[0][this.cityName[0].display]
     return arr;
   }
 
@@ -421,12 +430,12 @@ export default class Visual extends WynVisual {
       this.provinceName = plainData.profile.province.values[0].display;
       this.cityName = plainData.profile.city.values;
       this.valuesName = plainData.profile.values.values[0].display;
-      data[0] = this.getData(this.classify(plainData.data, this.provinceName), plainData.profile.province.values[0], this.provinceName);
+      data[0] = this.getSumData(this.classify(plainData.data, this.provinceName), plainData.profile.province.values[0], this.provinceName, 1);
       if (this.cityName.length) {
         this.drilldown = true;
         this.classify(plainData.data, this.provinceName).map((item) => {
           if (this.cityName.length > 1) {
-            data[1] = this.getData(this.classify(item, this.cityName[0].display), this.cityName[0], this.cityName[0].display);
+            data[1].push(this.getSumData(this.classify(item, this.cityName[0].display), this.cityName[0], this.cityName[0].display, 2));
             this.classify(item, this.cityName[0].display).map((item) => {
               data[2].push(this.getMapData(item, this.cityName[1], this.cityName[1].display));
             })
@@ -437,6 +446,7 @@ export default class Visual extends WynVisual {
       }
     }
     this.data = data;
+    this.items = data[0];
     console.log(data)
     this.properties = options.properties;
     this.getgraphic();
