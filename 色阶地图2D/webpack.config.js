@@ -2,7 +2,6 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
 const config = {
   entry: './src/visual.ts',
   output: {
@@ -43,6 +42,9 @@ const config = {
     unknownContextCritical: false,
   },
   mode: 'development',
+  resolve: {
+    extensions: ['.ts', '.tsx', '.jsx', '.js', '.json', '.css', '.less'],
+  }
 };
 
 module.exports = config;

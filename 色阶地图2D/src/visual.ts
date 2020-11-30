@@ -1,41 +1,9 @@
 import '../style/visual.less';
 import _ = require('lodash');
 import * as echarts from 'echarts';
-import "echarts/map/js/china.js";
-import "echarts/map/js/province/anhui.js";
-import "echarts/map/js/province/aomen.js";
-import "echarts/map/js/province/beijing.js";
-import "echarts/map/js/province/chongqing.js";
-import "echarts/map/js/province/fujian.js";
-import "echarts/map/js/province/gansu.js";
-import "echarts/map/js/province/guangdong.js";
-import "echarts/map/js/province/guangxi.js";
-import "echarts/map/js/province/guizhou.js";
-import "echarts/map/js/province/hainan.js";
-import "echarts/map/js/province/hebei.js";
-import "echarts/map/js/province/heilongjiang.js";
-import "echarts/map/js/province/henan.js";
-import "echarts/map/js/province/hubei.js";
-import "echarts/map/js/province/hunan.js";
-import "echarts/map/js/province/jiangsu.js";
-import "echarts/map/js/province/jiangxi.js";
-import "echarts/map/js/province/jilin.js";
-import "echarts/map/js/province/liaoning.js";
-import "echarts/map/js/province/neimenggu.js";
-import "echarts/map/js/province/ningxia.js";
-import "echarts/map/js/province/qinghai.js";
-import "echarts/map/js/province/shandong.js";
-import "echarts/map/js/province/shanghai.js";
-import "echarts/map/js/province/shanxi.js";
-import "echarts/map/js/province/shanxi1.js";
-import "echarts/map/js/province/sichuan.js";
-import "echarts/map/js/province/taiwan.js";
-import "echarts/map/js/province/tianjin.js";
-import "echarts/map/js/province/xianggang.js";
-import "echarts/map/js/province/xinjiang.js";
-import "echarts/map/js/province/xizang.js";
-import "echarts/map/js/province/yunnan.js";
-import "echarts/map/js/province/zhejiang.js";
+import namedata from './china.json';
+import $ from 'jquery';
+(window as any).jQuery = $;
 
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
@@ -54,8 +22,8 @@ export default class Visual extends WynVisual {
   private isTooltipModelShown: boolean;
   private provinceName: any;
   private cityName: any;
+  private districtName: any;
   private valuesName: any;
-  private map: any;
 
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
@@ -67,7 +35,7 @@ export default class Visual extends WynVisual {
     this.data = [];
     this.graphic = [];
     this.drilldown = false;
-    this.map = 'china';
+    this.getGeoJson("中国");
     this.properties = {
     };
     this.isTooltipModelShown = false;
@@ -136,7 +104,7 @@ export default class Visual extends WynVisual {
         let dataIndex = params.dataIndex;
         this.sid = this.items[1][dataIndex];
         this.selectionManager.select(this.sid, true);
-        this.map = params.name;
+        this.getGeoJson(params.name);
         this.drilldown = false;
         this.items = this.data[1][dataIndex];
         this.graphic[0].children[0].shape.x2 = 100;
@@ -166,6 +134,23 @@ export default class Visual extends WynVisual {
     this.host.toolTipService.hide();
     this.isTooltipModelShown = false;
   }
+
+  private getMapId(name: any) {
+
+    return namedata.find(item => item.city == name).cityid.toString();
+  }
+
+  private getGeoJson(name: any) {
+    let mapJson
+    let id = name == "中国" ? "100000" : this.getMapId(name);
+    $.ajaxSettings.async = false
+    $.getJSON("https://geo.datav.aliyun.com/areas_v2/bound/" + id + "_full.json", function (geoJson) {
+      mapJson = geoJson
+    })
+    echarts.registerMap('Map', mapJson);
+  }
+
+
 
   private createBreadcrumb = (name) => {
     let line = [
@@ -262,7 +247,7 @@ export default class Visual extends WynVisual {
             font: '12px "Microsoft YaHei", sans-serif',
           },
           onclick: () => {
-            this.map = 'china';
+            this.getGeoJson("中国");
             this.drilldown = true;
             this.items = this.data[0];
             this.hideTooltip();
@@ -299,6 +284,23 @@ export default class Visual extends WynVisual {
       s += item[this.valuesName];
     });
     return s;
+  }
+
+  private getData(data: any, dimension: any, name: any) {
+    let arr = [[], []];
+    data.map((item) => {
+      arr[0].push({
+        name: item[0][name],
+        value: this.sum(item) || 0
+      });
+      const getSelectionId = (item) => {
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(dimension, item);
+        return selectionId;
+      }
+      arr[1].push(getSelectionId(item));
+    });
+    return arr;
   }
 
   private getMapData(data: any, dimension: any, name: any) {
@@ -360,7 +362,7 @@ export default class Visual extends WynVisual {
         {
           name: 'map',
           type: 'map',
-          map: this.map,
+          map: "Map",
           zoom: 1.2,
           roam: options.roam,
           itemStyle: {
@@ -413,42 +415,29 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-    console.log(dataView);
-    let data = [[], []];
+    let data = [[], [], []];
     if (dataView) {
       const plainData = dataView.plain;
       this.provinceName = plainData.profile.province.values[0].display;
       this.cityName = plainData.profile.city.values;
       this.valuesName = plainData.profile.values.values[0].display;
+      data[0] = this.getData(this.classify(plainData.data, this.provinceName), plainData.profile.province.values[0], this.provinceName);
       if (this.cityName.length) {
-        let arr = [[], []]
-        this.classify(plainData.data, this.provinceName).map((item) => {
-          arr[0].push({
-            name: item[0][this.provinceName],
-            value: this.sum(item)
-          });
-          const getSelectionId = (item) => {
-            const selectionId = this.host.selectionService.createSelectionId();
-            selectionId.withDimension(plainData.profile.province.values[0], item[0]);
-            return selectionId;
-          }
-          arr[1].push(getSelectionId(item));
-          data[1].push(this.getMapData(item, this.cityName[0], this.cityName[0].display));
-        });
-        data[0] = arr;
         this.drilldown = true;
-        if (arr[0].length == 1) {
-          this.map = arr[0][0].name;
-          data[0] = data[1][0];
-        } else {
-          this.map = "china"
-        }
-      } else {
-        data[0] = this.getMapData(plainData.data, plainData.profile.province.values[0], this.provinceName);
+        this.classify(plainData.data, this.provinceName).map((item) => {
+          if (this.cityName.length > 1) {
+            data[1] = this.getData(this.classify(item, this.cityName[0].display), this.cityName[0], this.cityName[0].display);
+            this.classify(item, this.cityName[0].display).map((item) => {
+              data[2].push(this.getMapData(item, this.cityName[1], this.cityName[1].display));
+            })
+          } else {
+            data[1].push(this.getMapData(item, this.cityName[0], this.cityName[0].display));
+          }
+        })
       }
     }
     this.data = data;
-    this.items = this.data[0];
+    console.log(data)
     this.properties = options.properties;
     this.getgraphic();
     this.render();
