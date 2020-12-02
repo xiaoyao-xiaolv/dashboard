@@ -4,7 +4,6 @@ import * as echarts from 'echarts';
 import namedata from './china.json';
 import $ from 'jquery';
 (window as any).jQuery = $;
-$.ajaxSettings.async = false;
 
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
@@ -14,6 +13,8 @@ export default class Visual extends WynVisual {
   private drilldown: boolean;
   private timeFn = null;
   private items: any;
+  private provincedata: any;
+  private provincegraphic: any;
   private graphic: any;
   private sid: any;
   private data: any;
@@ -54,9 +55,7 @@ export default class Visual extends WynVisual {
         this.selection.forEach(item => this.dispatch('downplay', item));
         this.selection = [];
         this.selectionManager.clear();
-        if (!this.drilldown) {
-          this.selectionManager.select(this.sid, true);
-        }
+        this.selectionManager.select(this.sid, true);
         return;
       }
     })
@@ -85,7 +84,7 @@ export default class Visual extends WynVisual {
             this.selectionManager.clear(sid);
             return;
           }
-          this.showTooltip(params);
+          this.showTooltip(params, true);
           this.dispatch('highlight', selectedInfo);
           this.selectionManager.select(sid, true);
           this.selection.push(selectedInfo);
@@ -105,28 +104,39 @@ export default class Visual extends WynVisual {
         this.sid = this.items[1][dataIndex];
         this.selectionManager.select(this.sid, true);
         this.getGeoJson(params.name);
-        console.log(params.data.drilldownIndex)
         switch (params.data.drilldownIndex) {
           case 1:
             this.items = this.data[1][dataIndex];
+            this.graphic.push(this.createBreadcrumb(params.name, 50, 1));
+            this.graphic[0].children[0].shape.x2 += 60;
+            this.graphic[0].children[1].shape.x2 += 60;
+            this.provincedata = this.items;
+            this.provincegraphic = this.graphic
             break;
           case 2:
-            this.items = this.data[2].find(item => item[3] == params.name);
+            this.items = this.data[2].find(item => item[2] == params.name);
+            this.graphic.push(this.createBreadcrumb(params.name, 120, 2))
+            this.graphic[0].children[0].shape.x2 += 60;
+            this.graphic[0].children[1].shape.x2 += 60;
             this.drilldown = false;
             break;
         }
-
-        this.graphic[0].children[0].shape.x2 += 60;
-        this.graphic[0].children[1].shape.x2 += 60;
-        this.graphic.push(this.createBreadcrumb(params.name))
         this.hideTooltip();
         this.render();
       }
     })
+    this.chart.on('mouseout', (e) => {
+      if (this.isTooltipModelShown) return;
+      this.hideTooltip();
+    });
+    this.chart.on('mousemove', (params) => {
+      if (!params.data) return;
+      if (!this.isTooltipModelShown) this.showTooltip(params);
+    });
   }
 
-  private showTooltip = _.debounce((params) => {
-    this.isTooltipModelShown = true;
+  private showTooltip = _.debounce((params, asModel = false) => {
+    if (asModel) this.isTooltipModelShown = true;
     const fields = [{ label: params.name, value: params.data.value }]
     this.host.toolTipService.show({
       position: {
@@ -135,7 +145,7 @@ export default class Visual extends WynVisual {
       },
       fields,
       selected: this.selectionManager.getSelectionIds(),
-      menu: true,
+      menu: asModel,
     }, 10);
   });
 
@@ -152,14 +162,18 @@ export default class Visual extends WynVisual {
   private getGeoJson(name: any) {
     let mapJson;
     let id = name == "中国" ? "100000" : this.getMapId(name);
-    let url = "https://geo.datav.aliyun.com/areas_v2/bound/" + id + "_full.json";
+    let href = window.location.href;
+    let port = window.location.port;
+    let url = href.substring(0, href.indexOf(port)+port.length+1)+"data/" + id + ".json"
+    console.log(url)
+    $.ajaxSettings.async = false;
     $.getJSON(url, function (geoJson) {
       mapJson = geoJson
     })
     echarts.registerMap('Map', mapJson);
   }
 
-  private createBreadcrumb = (name) => {
+  private createBreadcrumb = (name: any, left: any, index: any) => {
     let line = [
       [0, 0],
       [5, 5],
@@ -168,7 +182,7 @@ export default class Visual extends WynVisual {
     let breadcrumb = {
       type: "group",
       id: name,
-      left: 60,
+      left: left,
       top: 20,
       children: [{
         type: "polyline",
@@ -192,7 +206,19 @@ export default class Visual extends WynVisual {
           fill: "#0ab7ff",
           font: '12px "Microsoft YaHei", sans-serif',
         },
-        onclick: function () {
+        onclick: () => {
+          switch (index) {
+            case 1:
+              this.items = this.provincedata;
+              this.graphic = this.provincegraphic;
+              this.getGeoJson(name);
+              this.hideTooltip();
+              this.render();
+              break;
+            case 2:
+              this.render();
+              break;
+          }
         },
       }
       ]
@@ -261,6 +287,7 @@ export default class Visual extends WynVisual {
             this.selection = [];
             this.selectionManager.clear();
             this.getgraphic();
+            this.sid = [];
             this.render();
           },
         }
@@ -447,7 +474,6 @@ export default class Visual extends WynVisual {
     }
     this.data = data;
     this.items = data[0];
-    console.log(data)
     this.properties = options.properties;
     this.getgraphic();
     this.render();
