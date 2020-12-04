@@ -141,6 +141,12 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "showposition",
+                        "type": "Boolean",
+                        "displayName": "显示位置",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -152,7 +158,7 @@
                         "displayName": "数据格式",
                         "items": [
                             {
-                                "value": "none",
+                                "value": "",
                                 "displayNameKey": "常规"
                             },
                             {
@@ -168,7 +174,7 @@
                                 "displayNameKey": "百分比"
                             }
                         ],
-                        "defaultValue": "none"
+                        "defaultValue": ""
                     },
                     {
                         "name": "dataindicateUnit",

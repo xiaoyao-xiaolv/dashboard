@@ -1,7 +1,8 @@
 import '../style/visual.less';
 import _ = require('lodash');
 import * as echarts from 'echarts';
-import namedata from './china.json';
+import china from "echarts/map/json/china.json";
+import namedata from './mapname.json';
 import $ from 'jquery';
 (window as any).jQuery = $;
 
@@ -25,6 +26,7 @@ export default class Visual extends WynVisual {
   private provinceName: any;
   private cityName: any;
   private valuesName: any;
+  private map: any;
 
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
@@ -161,16 +163,21 @@ export default class Visual extends WynVisual {
 
   private getGeoJson(name: any) {
     let mapJson;
-    let id = name == "中国" ? "100000" : this.getMapId(name);
-    let href = window.location.href;
-    let port = window.location.port;
-    let url = href.substring(0, href.indexOf(port)+port.length+1)+"data/" + id + ".json"
-    console.log(url)
-    $.ajaxSettings.async = false;
-    $.getJSON(url, function (geoJson) {
-      mapJson = geoJson
-    })
-    echarts.registerMap('Map', mapJson);
+    if (name == "中国") {
+      mapJson = china;
+      this.map = 'china'
+    } else {
+      let id = this.getMapId(name);
+      let href = window.location.href;
+      let port = window.location.port;
+      let url = href.substring(0, href.indexOf(port) + port.length + 1) + "data/" + id + ".json"
+      $.ajaxSettings.async = false;
+      $.getJSON(url, function (geoJson) {
+        mapJson = geoJson
+      })
+      this.map = 'area'
+    }
+    echarts.registerMap(this.map, mapJson);
   }
 
   private createBreadcrumb = (name: any, left: any, index: any) => {
@@ -398,7 +405,7 @@ export default class Visual extends WynVisual {
         {
           name: 'map',
           type: 'map',
-          map: "Map",
+          map: this.map,
           zoom: 1.2,
           roam: options.roam,
           itemStyle: {
@@ -412,7 +419,17 @@ export default class Visual extends WynVisual {
             }
           },
           label: {
-            show: options.showlabel,
+            show: options.showlabel || options.showposition,
+            formatter: (params) => {
+              if (!Number.isNaN(params.value)) {
+                let name = options.showposition ? params.name + '\n\n' : '';
+                let value = options.showlabel ? this.formatData(params.value, options.dataindicateUnit, options.dataindicateType) : '';
+                return name + value;
+              }else{
+                let name = options.showposition ? params.name + '\n\n' : '';
+                return name;
+              }
+            },
             textStyle: {
               color: options.textStyle.color,
               fontSize: options.textStyle.fontSize.substr(0, 2),
@@ -447,6 +464,53 @@ export default class Visual extends WynVisual {
         },
       })
     }
+  }
+
+  public formatData = (number: any, dataUnit: any, dataType: any) => {
+    let format = number
+    const units = [{
+      value: 1,
+      unit: ''
+    },
+    {
+      value: 100,
+      unit: '百'
+    }, {
+      value: 1000,
+      unit: '千'
+    }, {
+      value: 10000,
+      unit: '万'
+    }, {
+      value: 100000,
+      unit: '十万'
+    }, {
+      value: 1000000,
+      unit: '百万'
+    }, {
+      value: 10000000,
+      unit: '千万'
+    }, {
+      value: 100000000,
+      unit: '亿'
+    }, {
+      value: 1000000000,
+      unit: '十亿'
+    }, {
+      value: 100000000000,
+      unit: '万亿'
+    }]
+    const formatUnit = units.find((item) => item.value === Number(dataUnit))
+    format = (format / formatUnit.value).toFixed(2)
+
+    if (dataType === 'number') {
+      format = format.toLocaleString()
+    } else if (dataType === '%') {
+      format = format + dataType
+    } else {
+      format = dataType + format
+    }
+    return format + formatUnit.unit
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
