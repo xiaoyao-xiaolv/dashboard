@@ -1,0 +1,173 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "projectName",
+                "displayNameKey": "项目名称",
+                "kind": "grouping"
+            },
+            {
+                "name": "taskName",
+                "displayNameKey": "任务名称",
+                "kind": "grouping"
+            },
+            {
+                "name": "progress",
+                "displayNameKey": "项目进度",
+                "kind": "value"
+            },
+            {
+                "name": "startTime",
+                "displayNameKey": "开始时间",
+                "kind": "grouping",
+                "requiredTypes": ["datetime","date"]
+            },
+            {
+                "name": "endTime",
+                "displayNameKey": "结束时间",
+                "kind": "grouping",
+                "requiredTypes": ["datetime","date"]
+            },
+            {
+                "name": "status",
+                "displayNameKey": "状态",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [{
+                        "projectName": {
+                            "min": 1
+                        },
+                        "taskName": {
+                            "min": 1
+                        },
+                        "startTime": {
+                            "min": 1
+                        },
+                        "endTime": {
+                            "min": 1
+                        }
+                    },{
+                        "projectName": {
+                            "min": 1
+                        },
+                        "taskName": {
+                            "max": 0
+                        },
+                        "startTime": {
+                            "min": 1
+                        },
+                        "endTime": {
+                            "min": 1
+                        }
+                      }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "projectName": {
+                    "max": 1
+                },
+                "taskName": {
+                    "max": 1
+                },
+                "progress": {
+                    "max": 1
+                },
+                "startTime": {
+                    "max": 1
+                },
+                "endTime": {
+                    "max": 1
+                },
+                "status": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+    "visual": [
+      {
+        "displayName": "图表样式",
+        "properties": [
+          {
+            "name": "label",
+            "type": "Text",
+            "displayName": "列头名称",
+            "defaultValue": "任务名称"
+          },
+          {
+            "displayNameKey": "列头宽度",
+            "name": "projectWidth",
+            "type": "Integer",
+            "min": 10,
+            "defaultValue": 200
+          },
+          {
+            "displayNameKey": "日期列宽度",
+            "name": "dateColumnWidth",
+            "type": "Integer",
+            "min": 10,
+            "defaultValue": 50
+          },
+          {
+            "name": "projectColor",
+            "type": "Color",
+            "displayName": "项目颜色",
+            "defaultValue": "#0856f2"
+          },
+          {
+            "name": "taskColors",
+            "type": "Palette",
+            "displayName": "任务状态颜色"
+          },
+          {
+            "name": "showDetail",
+            "type": "Boolean",
+            "displayName": "默认展开项目",
+            "defaultValue": true
+          },
+          {
+            "displayName": "主题样式",
+            "name": "style",
+            "type": "Enum",
+            "defaultValue": "dhtmlxgantt_contrast_black",
+            "items": [
+              {"value":"dhtmlxgantt","displayNameKey":"标准"},
+              {"value":"dhtmlxgantt_contrast_black","displayNameKey":"午夜黑"},
+              {"value":"dhtmlxgantt_contrast_white","displayNameKey":"透亮白"},
+              {"value":"dhtmlxgantt_material","displayNameKey":"简约风"},
+              {"value":"dhtmlxgantt_meadow","displayNameKey":"草地绿"},
+              {"value":"dhtmlxgantt_skyblue","displayNameKey":"天空蓝"},
+              {"value":"dhtmlxgantt_broadway","displayNameKey":"商务风"}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "title"
+      },
+      {
+        "type": "interaction"
+      },
+      {
+        "type": "appearance"
+      }
+    ]
+  },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
