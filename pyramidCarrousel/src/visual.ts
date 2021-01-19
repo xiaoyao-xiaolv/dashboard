@@ -1,6 +1,4 @@
 import '../style/visual.less';
-// import '../img';
-import _ = require('lodash');
 import * as $ from 'jquery';
 
 export default class Visual extends WynVisual {
@@ -31,6 +29,7 @@ export default class Visual extends WynVisual {
 
   private value: string;
   private dimensions: string;
+  private valueFormat: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -60,10 +59,13 @@ export default class Visual extends WynVisual {
     const plainData: any = this.isMock ? {} : dataView.plain;
 
     if (this.isMock) {
+      this.root.css({'opacity': 0.5});
       this.value = 'value';
       this.dimensions = 'name';
       this.items = Visual.mockItems;
     } else {
+      this.root.css({'opacity': 1});
+      this.valueFormat = plainData.profile.values.options.valueFormat;
       this.value = plainData.profile.values.values[0].display || '';
       this.dimensions = plainData.profile.dimensions.values[0].display || ''
       this.items = plainData.data
@@ -74,8 +76,6 @@ export default class Visual extends WynVisual {
   }
 
   public render() {
-
-
     this.root.html('').width(Visual.width).height(Visual.height).css('position', 'relative');
     const options = this.options;
 
@@ -298,11 +298,11 @@ export default class Visual extends WynVisual {
       value: 100000000000,
       unit: '万亿'
     }]
-    const formatUnit = units.find((item) => item.value === Number(dataUnit))
-    format = (format / formatUnit.value).toFixed(2)
+    const formatUnit = units.find((item) => item.value === Number(dataUnit));
+    format = (format / formatUnit.value).toFixed(2);
 
-    if (dataType === 'number') {
-      format = format.toLocaleString()
+    if (dataType === 'number'  || dataType === 'none' || dataType === '') {
+        format = this.visualHost.formatService.format(this.valueFormat, format).toLocaleString();
     } else if (dataType === '%') {
       format = format + dataType
     } else {

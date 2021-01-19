@@ -11,26 +11,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-bg_glass_95_fef1ec_1x400.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-icons_666666_256x240.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-icons_aaaaaa_256x240.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-icons_bbbbbb_256x240.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-icons_c98000_256x240.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-icons_cccccc_256x240.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-icons_cd0a0a_256x240.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DateSlicer/style/images/ui-icons_f29a00_256x240.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/capabilities.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DateSlicer/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DateSlicer/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/src/datepicker-cn.js" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/src/datepicker-cn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/style/jquery-ui.css" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/style/jquery-ui.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/style/jquery-ui.theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/style/jquery-ui.theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/style/visual.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,10 +48,16 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/DateSlicer/style" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../WynApiDemo" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
-    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\圆环指示器\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\BubbleChart\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -108,6 +101,13 @@
       <workItem from="1602579785593" duration="7142000" />
       <workItem from="1602744125068" duration="6183000" />
       <workItem from="1603267598554" duration="4033000" />
+      <workItem from="1609730096244" duration="91000" />
+      <workItem from="1609730801719" duration="259000" />
+      <workItem from="1609731245560" duration="766000" />
+      <workItem from="1610080049555" duration="1153000" />
+      <workItem from="1610436227348" duration="327000" />
+      <workItem from="1610593986944" duration="124000" />
+      <workItem from="1610961674224" duration="4036000" />
     </task>
     <servers />
   </component>
@@ -150,7 +150,40 @@
                   <entry key="Show.Git.Branches" value="false" />
                 </map>
               </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="text">
+                    <value>
+                      <list>
+                        <option value="format" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="user">
+                    <value>
+                      <list>
+                        <option value="*" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
             </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>
@@ -162,68 +195,64 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog" timestamp="1603253888366">
+    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611019671944">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1598319080400" />
     <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253888366" />
-    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1602745320188">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="61" y="60" width="1158" height="561" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1610963965701" />
+    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611019671944" />
+    <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
+      <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602745320188" />
+    <state x="2552" y="154" key="FileChooserDialogImpl/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1609728131440" />
     <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1603267425725">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
     <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1603267425725">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
     <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1603267425725">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
     <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1603267425725">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597397999173" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
-    <state x="520" y="84" key="RollbackChangesDialog" timestamp="1603271925213">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="2700" y="135" key="RollbackChangesDialog" timestamp="1611019674831">
+      <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state x="780" y="-859" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597291717716" />
     <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603271925213" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1603265879442">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="2700" y="135" key="RollbackChangesDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611019674831" />
+    <state width="747" height="609" key="SwitcherDM" timestamp="1610964367991">
+      <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603195048049" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603265879442" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680@0.0.1280.680" timestamp="1598431897079" />
+    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1610964367991" />
+    <state x="475" y="37" key="VCS.ChangeListViewerDialog" timestamp="1610436344813">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="475" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1610436344813" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1603246422051">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603246422051" />
-    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1598602694618">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598602694618" />
-    <state x="441" y="86" width="573" height="594" key="find.popup" timestamp="1603269210622">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="2725" y="111" width="860" height="909" key="find.popup" timestamp="1610965382532">
+      <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603191748048" />
     <state x="459" y="86" width="750" height="594" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603263983411" />
+    <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1610963906125" />
+    <state x="2725" y="111" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1610965382532" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1603269210622" />
-    <state x="282" y="67" width="700" height="530" key="recent.locations.popup" timestamp="1598497389732">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="282" y="67" width="700" height="530" key="recent.locations.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598497389732" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1603189285910">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -232,11 +261,5 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="297" y="151" key="run.anything.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602665470831" />
-    <state x="303" y="1" width="672" height="679" key="search.everywhere.popup" timestamp="1598762954376">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="455" y="-1078" width="1008" height="1037" key="search.everywhere.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1597832072872" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1598517202030" />
-    <state x="303" y="1" width="672" height="679" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1598762954376" />
   </component>
 </project>

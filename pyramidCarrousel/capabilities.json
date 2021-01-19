@@ -3,14 +3,15 @@
         "dataRoles": [
             {
                 "name": "values",
-                "displayNameKey": "数值值",
+                "displayNameKey": "数值",
+                "kind": "value",
                 "options": [
-                    {
-                        "name": "数据格式",
-                        "type": "format"
-                    }
-                ],
-                "kind": "value"
+                  {
+                    "displayNameKey": "数据格式",
+                    "type": "format",
+                    "name": "valueFormat"
+                  }
+                ]
             },
             {
                 "name": "dimensions",
