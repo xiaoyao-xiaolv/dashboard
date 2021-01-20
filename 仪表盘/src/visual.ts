@@ -61,7 +61,7 @@ export default class Visual {
                 show: true,
                 x: "center",
                 bottom: 10,
-                text: subtitle + Math.floor(items) + '%',
+                text: subtitle + items + '%',
                 textStyle: {
                     fontWeight: 'normal',
                     fontSize: options.fontSize,
@@ -198,8 +198,8 @@ export default class Visual {
                 axisLine: {
                     lineStyle: { // 属性lineStyle控制线条样式//控制外圈位置
                         color: [
-                            [0.5, options.borderColor],
-                            [1, 'rgba(255, 255, 255, 0.2)']
+                            [items/100, options.borderColor],
+                            [1, options.borderBgColor]
                         ],
                         width: 5,
                         opacity: 0.9, //控制外圈位置，颜色，宽度，透明度

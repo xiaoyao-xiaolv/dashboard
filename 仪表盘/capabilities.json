@@ -67,6 +67,12 @@
                         "defaultValue": "#20da97"
                     },
                     {
+                        "name": "borderBgColor",
+                        "type": "Color",
+                        "displayName": "外环背景颜色",
+                        "defaultValue": "rgba(255, 255, 255, 0.2)"
+                    },
+                    {
                         "name": "scaleBackgroundColor",
                         "type": "Color",
                         "displayName": "刻度背景颜色",
