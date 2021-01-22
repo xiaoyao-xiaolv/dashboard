@@ -51,6 +51,7 @@ export default class Visual {
   private departurelatName: string;
   private departurelongName: string;
   private items: any;
+  private shadowDiv: any;
   static mockItems = [
     [
       { fromName: "广州", toName: "福州", coords: [[113.280637, 23.125178], [119.306239, 26.075302]], value: 13 }
@@ -92,7 +93,10 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = echarts.init(dom)
+    this.chart = echarts.init(dom);
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
+    this.container.firstElementChild.setAttribute('style','height : 0');
     this.items = [];
     this.properties = {
       roam: true,
@@ -235,10 +239,12 @@ export default class Visual {
 
   public render() {
     this.chart.clear();
+    this.shadowDiv.style.cssText = '';
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items;
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     let planePath = options.effect ? options.symbol : options.symbolStyle;
     let departureValue = isMock ? ['北京', '上海', '广州市'] : this.legendData;
     let color = isMock ? ['#a6c84c', '#ffa022', '#46bee9'] : options.palette;
