@@ -66,11 +66,15 @@ export default class Visual extends WynVisual {
   private resultData: any;
   private series: any;
   private locationArr: any;
+  private shadowDiv: any;
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
     this.isMock = true;
     myChart = echarts.init(dom);
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
+    this.container.firstElementChild.setAttribute('style','height : 0')
   }
 
   private prepareData(dataArr: any) {
@@ -121,9 +125,11 @@ export default class Visual extends WynVisual {
 
   private render() {
     myChart.clear();
+    this.shadowDiv.style.cssText = '';
     let options = this.properties;
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     let colorList = this.isMock ? ['#a6c84c', '#7b64ff', '#46bee9'] : options.palette;
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     let mapOption = {
       animation: false,
       tooltip: {
@@ -208,7 +214,8 @@ export default class Visual extends WynVisual {
         let pieSeriesData = series.map((item, index) => {
           return {
             name: item,
-            value: seriesData[index]
+            value: seriesData[index],
+            locationName: locationName
           }
         });
         idx += '';
@@ -301,7 +308,9 @@ export default class Visual extends WynVisual {
             animationType : 'expansion',
             tooltip: {
               trigger: "item",
-              formatter: "{b} : {c} ({d}%)"
+              formatter(params: any) {
+                return `${params.data.locationName}<br>${params.data.name} : ${params.data.value}`;
+              },
             },
             label: {
               normal: {

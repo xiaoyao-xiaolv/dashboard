@@ -109,7 +109,7 @@
                     {
                         "name": "mapBorderShadowColor",
                         "type": "Color",
-                        "displayName": "边线阴影颜色",
+                        "displayName": "地图边线阴影",
                         "defaultValue": "rgba(128, 217, 248, 0)"
                     },
                     {
@@ -167,6 +167,23 @@
                             {"value":"浙江","displayNameKey":"浙江"}
                         ],
                         "defaultValue": "china"
+                    },
+                    {
+                        "name": "borderShadowColor",
+                        "type": "Color",
+                        "displayName": "边框阴影颜色"
+                    },
+                    {
+                        "name": "borderShadowWidth",
+                        "type": "Integer",
+                        "displayName": "边框阴影宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "borderShadowBlurLevel",
+                        "type": "Integer",
+                        "displayName": "边框阴影模糊度",
+                        "defaultValue": 0
                     }
                 ]
             },
