@@ -117,6 +117,12 @@
                         "type": "Input",
                         "displayName": "自定义字体连接",
                         "defaultValue": "gatha/Gatha-Sans"
+                    },
+                    {
+                        "name": "KPIName",
+                        "type": "Input",
+                        "displayName": "KPI名称",
+                        "defaultValue": "完成率"
                     }
                 ]
             },

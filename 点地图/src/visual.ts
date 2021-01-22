@@ -173,56 +173,46 @@ export default class Visual extends WynVisual {
       return item.value[2];
     }));
     var symbolSize = this.getSymbolSize(minValue, maxValue);
-
-    let series = [
+    let temp = [];
+    temp.push(
       {
         type: 'map',
         roam: false,
         label: {
-          normal: {
-            show: true,
-            textStyle: {
-              color: '#1DE9B6'
-            }
-          },
-          emphasis: {
-            textStyle: {
-              color: 'rgb(183,185,14)'
-            }
+          show: false,
+        },
+        emphasis: {
+          textStyle: {
+            color: 'rgb(183,185,14)'
           }
         },
-
         itemStyle: {
-          normal: {
-            borderColor: 'rgb(147, 235, 248)',
-            borderWidth: 1,
-            areaColor: {
-              type: 'radial',
-              x: 0.5,
-              y: 0.5,
-              r: 0.8,
-              colorStops: [{
-                offset: 0,
-                color: '#09132c' // 0% 处的颜色
-              }, {
-                offset: 1,
-                color: '#274d68' // 100% 处的颜色
-              }],
-              globalCoord: true // 缺省为 false
-            },
+          borderColor: options.borderColor,
+          borderWidth: 1,
+          areaColor: {
+            type: 'radial',
+            x: 0.5,
+            y: 0.5,
+            r: 0.8,
+            colorStops: [{
+              offset: 0,
+              color: options.startColor
+            }, {
+              offset: 1,
+              color: options.endColor
+            }],
           },
           emphasis: {
-            areaColor: 'rgb(46,229,206)',
-            //    shadowColor: 'rgb(12,25,50)',
+            areaColor: options.emphasisColor,
             borderWidth: 0.1
           }
         },
-        zoom: options.z,
-        //     roam: false,
-        map: options.mapName //使用
-        // data: this.difficultData //热力图数据   不同区域 不同的底色
-      },
-      {
+        zoom: 1.2,
+        map: options.mapName
+      }
+    );
+    if (options.symbolStyle == 'effectScatter') {
+      temp.push({
         name: '气泡地图',
         type: 'effectScatter',
         coordinateSystem: 'geo',
@@ -248,8 +238,9 @@ export default class Visual extends WynVisual {
           }
         },
         zlevel: 1
-      },
-      {
+      });
+    } else {
+      temp.push({
         name: '点地图',
         type: 'scatter',
         coordinateSystem: 'geo',
@@ -279,68 +270,22 @@ export default class Visual extends WynVisual {
         },
         hoverAnimation: true,
         zlevel: 1
-      }];
-    let temp: any = options.symbolStyle == 'effectScatter' ? series[0] : series[1]
-    temp.push({
-      type: 'map',
-      roam: false,
-      label: {
-        normal: {
-          show: true,
-          textStyle: {
-            color: '#1DE9B6'
-          }
-        },
-        emphasis: {
-          textStyle: {
-            color: 'rgb(183,185,14)'
-          }
-        }
-      },
-
-      itemStyle: {
-        normal: {
-          borderColor: 'rgb(147, 235, 248)',
-          borderWidth: 1,
-          areaColor: {
-            type: 'radial',
-            x: 0.5,
-            y: 0.5,
-            r: 0.8,
-            colorStops: [{
-              offset: 0,
-              color: '#09132c' // 0% 处的颜色
-            }, {
-              offset: 1,
-              color: '#274d68' // 100% 处的颜色
-            }],
-            globalCoord: true // 缺省为 false
-          },
-        },
-        emphasis: {
-          areaColor: 'rgb(46,229,206)',
-          //    shadowColor: 'rgb(12,25,50)',
-          borderWidth: 0.1
-        }
-      },
-      zoom: 1.1,
-      //     roam: false,
-      map: 'china' //使用
-      // data: this.difficultData //热力图数据   不同区域 不同的底色
-    });
+      });
+    }
     var option = {
       tooltip: {
         trigger: 'item',
-        // triggerOn: 'click',
         backgroundColor: 'transparent',
         position(pos: any) {
           let position = myTooltip.getPosOrSize('pos', pos)
           return position
         },
         formatter(params: any) {
-          let text = locationName + ' : ' + params.name + '\n' + valuesName + ' : ' + params.value[2];
-          let tooltipDom = myTooltip.getTooltipDom(text)
-          return tooltipDom
+          if (params.seriesType != "map") {
+            let text = locationName + ' : ' + params.name + '\n' + valuesName + ' : ' + params.value[2];
+            let tooltipDom = myTooltip.getTooltipDom(text)
+            return tooltipDom
+          }
         }
       },
       legend: {
@@ -348,42 +293,19 @@ export default class Visual extends WynVisual {
       },
       geo: {
         map: options.mapName,
-        label: {
-          emphasis: {
-            show: true,
-            color: '#fff'
-          }
-        },
-        roam: options.roam,
-        layoutCenter: ["50%", "50%"], //地图位置
-        layoutSize: "125%",
+        zoom: 1.2,
+        roam: false,
         itemStyle: {
-          normal: {
-            borderColor: options.borderColor,
-            borderWidth: 1,
-            areaColor: {
-              type: 'radial',
-              x: 0.5,
-              y: 0.5,
-              r: 0.8,
-              colorStops: [{
-                offset: 0,
-                color: options.startColor // 0% 处的颜色
-              }, {
-                offset: 1,
-                color: options.endColor // 100% 处的颜色
-              }],
-              // globalCoord: true // 缺省为 false
-            },
-            shadowColor: options.shadowColor,
-            shadowOffsetX: 0,
-            shadowOffsetY: 25,
+          shadowColor: options.shadowColor,
+          shadowOffsetX: 10,
+          shadowOffsetY: 11
+        },
+        regions: [{
+          name: '南海诸岛',
+          itemStyle: {
+            opacity: 0,
           },
-          emphasis: {
-            areaColor: options.emphasisColor,
-            borderWidth: 0
-          }
-        }
+        }],
       },
       series: temp
     }
@@ -393,7 +315,7 @@ export default class Visual extends WynVisual {
   private auto_tooltip() {
     this.chart.dispatchAction({
       type: "showTip",
-      seriesIndex: 0,
+      seriesIndex: 1,
       dataIndex: this.hourIndex
     });
     this.hourIndex++;
@@ -405,7 +327,7 @@ export default class Visual extends WynVisual {
       clearTimeout(this.fhourTime)
       this.chart.dispatchAction({
         type: "showTip",
-        seriesIndex: 0,
+        seriesIndex: 1,
         dataIndex: e.dataIndex
       });
     })
@@ -413,7 +335,7 @@ export default class Visual extends WynVisual {
     this.chart.on("mouseout", () => {
       this.chart.dispatchAction({
         type: "showTip",
-        seriesIndex: 0,
+        seriesIndex: 1,
         dataIndex: this.hourIndex
       });
       this.hourIndex++;

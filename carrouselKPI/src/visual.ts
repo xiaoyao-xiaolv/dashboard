@@ -192,7 +192,7 @@ export default class Visual extends WynVisual {
 
         const actualValue = $('<span></span>').text(`${this.value}: ${this.formatData(dataText[this.value], options.detailValueUnit, options.detailValueType)}`);
         const contrastValue = $('<span></span>').text(`${this.contrast}: ${this.formatData(dataText[this.contrast], options.detailValueUnit, options.detailValueType)}`);
-        const rateText = $('<span></span>').text('完成率');
+        const rateText = $('<span></span>').text(options.KPIName);
         const rate = (dataText[this.value] / dataText[this.contrast] * 100).toFixed(2) + '%'
         const rateValue = $('<span></span>').text(rate);
 
@@ -316,7 +316,7 @@ export default class Visual extends WynVisual {
 
         const actualValue = $('<span></span>').text(`${this.value}: ${this.formatData(this.totalItem[this.value], options.totalValueUnit, options.totalValueType)}`);
         const contrastValue = $('<span></span>').text(`${this.contrast}: ${this.formatData(this.totalContrastItem[this.contrast], options.totalValueUnit, options.totalValueType)}`);
-        const rateText = $('<span></span>').text('完成率');
+        const rateText = $('<span></span>').text(options.KPIName);
         const rate = (this.totalItem[this.value] / this.totalContrastItem[this.contrast] * 100).toFixed(2) + '%'
         const rateValue = $('<span></span>').text(rate);
 

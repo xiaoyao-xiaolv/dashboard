@@ -45,7 +45,6 @@ export default class Visual extends WynVisual {
     this.selection = [];
     this.selectionManager = host.selectionService.createSelectionManager();
     this.bindEvents();
-
   }
 
   private dispatch = (type, payload) => this.chart.dispatchAction({ type, ...payload });
@@ -216,10 +215,16 @@ export default class Visual extends WynVisual {
         onclick: () => {
           switch (index) {
             case 1:
-              this.items = this.provincedata;
-              this.graphic = this.provincegraphic;
-              this.getGeoJson(name);
-              this.hideTooltip();
+              if (!this.drilldown) {
+                this.items = this.provincedata;
+                this.provincegraphic.pop();
+                this.graphic = this.provincegraphic;
+                this.graphic[0].children[0].shape.x2 -= 60;
+                this.graphic[0].children[1].shape.x2 -= 60;
+                this.getGeoJson(name);
+                this.hideTooltip();
+                this.drilldown = true;
+              }
               this.render();
               break;
             case 2:
@@ -406,7 +411,7 @@ export default class Visual extends WynVisual {
           name: 'map',
           type: 'map',
           map: this.map,
-          zoom: 1.2,
+          zoom: 0.6,
           roam: options.roam,
           itemStyle: {
             opacity: 1,
@@ -425,7 +430,7 @@ export default class Visual extends WynVisual {
                 let name = options.showposition ? params.name + '\n\n' : '';
                 let value = options.showlabel ? this.formatData(params.value, options.dataindicateUnit, options.dataindicateType) : '';
                 return name + value;
-              }else{
+              } else {
                 let name = options.showposition ? params.name + '\n\n' : '';
                 return name;
               }
@@ -445,6 +450,7 @@ export default class Visual extends WynVisual {
       ]
     };
     this.chart.setOption(option);
+    this.zoomAnimation();
     if (options.showPieces) {
       this.chart.setOption({
         visualMap: {
@@ -464,6 +470,25 @@ export default class Visual extends WynVisual {
         },
       })
     }
+  }
+
+  public zoomAnimation = () => {
+    var count = null;
+    var zoom = (per) => {
+      if (!count) count = per;
+      count = count + per;
+      this.chart.setOption({
+        series: {
+          zoom: count
+        }
+      });
+      if (count < 1.2) window.requestAnimationFrame(() => {
+        zoom(0.2);
+      });
+    };
+    window.requestAnimationFrame(() => {
+      zoom(0.2);
+    });
   }
 
   public formatData = (number: any, dataUnit: any, dataType: any) => {
