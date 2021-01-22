@@ -51,6 +51,7 @@ export default class Visual extends WynVisual {
   private hourIndex: any;
   private fhourTime: any;
   private items: any;
+  private shadowDiv: any;
   static mockItems = [
     { name: "福州", value: [119.306239, 26.075302, 13] }
     , { name: "太原", value: [112.549248, 37.857014, 71] }
@@ -73,6 +74,9 @@ export default class Visual extends WynVisual {
     super(dom, host, options);
     this.container = dom;
     this.chart = echarts.init(dom);
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
+    this.container.firstElementChild.setAttribute('style','height : 0');
     this.myTooltip = new myTooltipC('visualDom');
     this.items = [];
     this.properties = {
@@ -159,6 +163,7 @@ export default class Visual extends WynVisual {
 
   public render() {
     this.chart.clear();
+    this.shadowDiv.style.cssText = '';
     let myTooltip = this.myTooltip;
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items;
@@ -166,6 +171,7 @@ export default class Visual extends WynVisual {
     let valuesName = isMock ? '数量' : this.valuesName;
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     var maxValue = Math.max.apply(null, items.map(function (item) {
       return item.value[2];
     }));

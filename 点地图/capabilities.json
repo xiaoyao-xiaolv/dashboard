@@ -229,13 +229,13 @@
                     {
                         "name": "shadowColor",
                         "type": "Color",
-                        "displayName": "阴影效果颜色",
+                        "displayName": "地图阴影颜色",
                         "defaultValue": "rgb(58,115,192)"
                     },
                     {
                         "name": "emphasisColor",
                         "type": "Color",
-                        "displayName": "悬浮背景颜色",
+                        "displayName": "地图悬浮背景色",
                         "defaultValue": "#389BB7"
                     },
                     {
@@ -247,14 +247,31 @@
                     {
                         "name": "startColor",
                         "type": "Color",
-                        "displayName": "填充起始颜色",
+                        "displayName": "地图填充起始色",
                         "defaultValue": "#09132c"
                     },
                     {
                         "name": "endColor",
                         "type": "Color",
-                        "displayName": "填充终止颜色",
+                        "displayName": "地图填充终止色",
                         "defaultValue": "#274d68"
+                    },
+                    {
+                        "name": "borderShadowColor",
+                        "type": "Color",
+                        "displayName": "边框阴影颜色"
+                    },
+                    {
+                        "name": "borderShadowWidth",
+                        "type": "Integer",
+                        "displayName": "边框阴影宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "borderShadowBlurLevel",
+                        "type": "Integer",
+                        "displayName": "边框阴影模糊度",
+                        "defaultValue": 0
                     }
                 ]
             },
