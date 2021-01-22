@@ -4,7 +4,7 @@
     "displayNameKey": "",
     "icon": "visualIcon",
     "description": "",
-    "externalJs": ["https://api.map.baidu.com/api?v=3.0&ak={{百度地图API服务密钥}}"],
+  "externalJs": ["https://api.map.baidu.com/api?v=3.0&ak=3PWpZRUmDfatAWvb8SBwpAUa3SRiSGSi"],
     "externalCss": [],
     "assets": {
         "images": {

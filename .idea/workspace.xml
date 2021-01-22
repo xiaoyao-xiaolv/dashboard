@@ -11,13 +11,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/baiduGISBubbleMap/src/myTooltip.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DateSlicer/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/DateSlicer/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrouselKPI/3D旋转KPI.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrouselKPI/carrorselkpi.viz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/3D旋转三棱锥.viz" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,14 +36,21 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/xiaoyao-xiaolv/dashboard.git" />
+      </set>
+    </option>
   </component>
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/气泡地图GEO/package.json" />
@@ -56,7 +72,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.TypeScript" />
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\BubbleChart\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
@@ -107,7 +123,9 @@
       <workItem from="1610080049555" duration="1153000" />
       <workItem from="1610436227348" duration="327000" />
       <workItem from="1610593986944" duration="124000" />
-      <workItem from="1610961674224" duration="4036000" />
+      <workItem from="1610961674224" duration="34454000" />
+      <workItem from="1611132511205" duration="33270000" />
+      <workItem from="1611288268485" duration="2399000" />
     </task>
     <servers />
   </component>
@@ -152,13 +170,6 @@
               </option>
               <option name="FILTERS">
                 <map>
-                  <entry key="text">
-                    <value>
-                      <list>
-                        <option value="format" />
-                      </list>
-                    </value>
-                  </entry>
                   <entry key="user">
                     <value>
                       <list>
@@ -195,12 +206,12 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
-    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611019671944">
+    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611198363927">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253888366" />
-    <state x="61" y="60" width="1158" height="561" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1610963965701" />
-    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611019671944" />
+    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123486623" />
+    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611198363927" />
     <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
@@ -231,35 +242,42 @@
     </state>
     <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603271925213" />
     <state x="2700" y="135" key="RollbackChangesDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611019674831" />
-    <state width="747" height="609" key="SwitcherDM" timestamp="1610964367991">
+    <state x="142" y="0" key="SettingsEditor" timestamp="1611049100080">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="142" y="0" key="SettingsEditor/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611049100080" />
+    <state width="747" height="609" key="SwitcherDM" timestamp="1611286782058">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603195048049" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603265879442" />
-    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1610964367991" />
-    <state x="475" y="37" key="VCS.ChangeListViewerDialog" timestamp="1610436344813">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state width="498" height="399" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123394184" />
+    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611286782058" />
+    <state x="2633" y="64" key="VCS.ChangeListViewerDialog" timestamp="1611198348997">
+      <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state x="475" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1610436344813" />
+    <state x="475" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123384787" />
+    <state x="2633" y="64" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611198348997" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1603246422051">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603246422051" />
-    <state x="2725" y="111" width="860" height="909" key="find.popup" timestamp="1610965382532">
+    <state x="2723" y="111" width="860" height="909" key="find.popup" timestamp="1611286270186">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603191748048" />
     <state x="459" y="86" width="750" height="594" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603263983411" />
-    <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1610963906125" />
-    <state x="2725" y="111" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1610965382532" />
+    <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611122955676" />
+    <state x="2723" y="111" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611286270186" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1603269210622" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1603189285910">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189285910" />
-    <state x="297" y="151" key="run.anything.popup" timestamp="1602665470831">
+    <state x="297" y="151" key="run.anything.popup" timestamp="1611050516303">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="297" y="151" key="run.anything.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1602665470831" />
+    <state x="297" y="151" key="run.anything.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611050516303" />
   </component>
 </project>

@@ -20,6 +20,11 @@
                 "name": "latitude",
                 "displayNameKey": "纬度",
                 "kind": "grouping"
+            },
+            {
+              "name": "tooltipFields",
+              "displayNameKey": "工具提示",
+              "kind": "attributeOrValue"
             }
         ],
         "dataViewMappings": [
@@ -289,35 +294,24 @@
                         "defaultValue": "rgba(66, 125, 249, 0.3)"
                     },
                     {
-                        "name": "tooltipBackgroundImage",
-                        "type": "Image",
-                        "displayName": "背景图片"
-                    },
-                    {
                         "displayNameKey": "宽度",
                         "name": "tooltipWidth",
                         "type": "Integer",
                         "min": 10,
-                        "defaultValue": 100
+                        "defaultValue": 200
                     },
                     {
                         "displayNameKey": "高度",
                         "name": "tooltipHeight",
                         "type": "Integer",
                         "min": 10,
-                        "defaultValue": 45
+                        "defaultValue": 80
                     },
                     {
                         "name": "tooltipBorderColor",
                         "type": "Color",
                         "displayName": "边框颜色",
                         "defaultValue": "rgba(115, 216, 255, 0.88)"
-                    },
-                    {
-                        "displayNameKey": "边框宽度",
-                        "name": "tooltipBorderWidth",
-                        "type": "Integer",
-                        "defaultValue": 1
                     },
                     {
                         "displayNameKey": "边框内边距",

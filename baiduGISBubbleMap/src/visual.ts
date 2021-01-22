@@ -2,16 +2,20 @@ import '../style/visual.less';
 import * as echarts from 'echarts';
 import { registerBmap } from 'echarts-bmap';
 import geoCoordMap from './geoCoordMap.json';
+import { myTooltipC } from './myTooltip.js';
 
 let ins;
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
+  private myTooltip: any;
+  private config: any;
   private properties: any;
   private locationName: any;
   private valuesName: any;
   private longitude: any;
   private latitude: any;
+  private tooltipFields: any;
   private items: any;
   private shadowDiv: any;
   private bindCoords: boolean;
@@ -42,6 +46,22 @@ export default class Visual {
     this.chart = echarts.init(this.container);
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
+    this.config = {
+      priority: 'top',        // 默认在点上方OR下方（top/bottom）
+      partition: 2,         // 左右分割比例
+      lineColor: 'rgba(253, 129, 91, 0.8)',      // 引导线颜色
+      offset: [5, 5],
+      L1: {
+        time: 0.2,          // L1动画时长(单位s)
+        long: 40            // L1长度
+      },
+      L2: {
+        time: 0.2,
+        long: 40
+      }
+    }
+    this.myTooltip = new myTooltipC('visualDom', this.config);
+    this.autoPlayTooltip();
     ins = this;
   }
 
@@ -57,6 +77,9 @@ export default class Visual {
   private convertData = (dataItems: any) => {
     let res = [];
     dataItems.forEach((dataItem) => {
+      let valueObj = {
+        name: dataItem[this.locationName]
+      };
       let geoCoord;
       if (this.bindCoords) {
         geoCoord = [dataItem[this.longitude], dataItem[this.latitude]];
@@ -65,18 +88,34 @@ export default class Visual {
       }
 
       if (geoCoord) {
-        res.push({
-          name: dataItem[this.locationName],
-          value: geoCoord.concat(dataItem[this.valuesName])
-        });
+        valueObj['value'] = geoCoord.concat(dataItem[this.valuesName]);
       }
-    })
 
+      if(this.bindValues) {
+        valueObj['valueInfo'] = {
+          valueName : this.valuesName,
+          value : dataItem[this.valuesName]
+        }
+      }
+
+      let tooltips;
+      if (this.tooltipFields.length) {
+        tooltips = this.tooltipFields.map((filed) => {
+          return {
+            filed : filed,
+            value : dataItem[filed]
+          }
+        });
+        valueObj['tooltipFields'] = tooltips;
+      }
+      res.push(valueObj);
+    })
     return res;
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     this.items = [];
+    this.tooltipFields = [];
     let profileItems = options.dataViews[0] && options.dataViews[0].plain.profile;
     if (profileItems && options.dataViews.length) {
       let plainData = options.dataViews[0].plain;
@@ -89,6 +128,11 @@ export default class Visual {
       if (this.bindCoords) {
         this.longitude = profileItems.longitude.values[0].display;
         this.latitude = profileItems.latitude.values[0].display;
+      }
+
+      let toolTipValues = profileItems.tooltipFields.values;
+      if (toolTipValues.length) {
+        this.tooltipFields = toolTipValues.map(value => value.display);
       }
       this.items = this.convertData(plainData.data);
     }
@@ -112,9 +156,26 @@ export default class Visual {
   }
 
   public render() {
+    let myTooltip = this.myTooltip;
     this.chart.clear();
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
+    myTooltip.config['text'] = {
+        time: 0.3,
+        font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
+        color: options.tooltipTextStyle.color,
+        padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+        width: options.tooltipWidth,
+        height: options.tooltipHeight,
+        lineHeight: 24,
+        backgroundColor: options.tooltipBackgroundColor,
+        borderColor: options.tooltipBorderColor,
+        borderWidth: 1,
+        angle: {
+          width: 2,
+          long: 15
+        }
+    }
     let isMock = !this.items.length;
     let items = isMock ? Visual.mockItems : this.items;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
@@ -280,33 +341,37 @@ export default class Visual {
       bmap['center'] = [options.longitude, options.latitude];
     }
 
+    function tooltipTemplate(data) {
+      let locationStr = `${data.name}\n`;
+      let valueStr = '';
+      let tooltipStr = '';
+
+      if (data.valueInfo) {
+        valueStr = `${data.valueInfo.valueName} : ${data.valueInfo.value}\n`;
+      }
+
+      if (data.tooltipFields) {
+        data.tooltipFields.forEach((tooltip) => {
+          tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
+        })
+      }
+      return `${locationStr}${valueStr}${tooltipStr}`;
+    }
+
 
     let option = {
       bmap: bmap,
       tooltip: {
         trigger: 'item',
+        triggerOn: 'click',
+        backgroundColor : 'transparent',
+        position (pos) {
+          return myTooltip.getPosOrSize('pos', pos);
+        },
         formatter(params: any) {
-          if( params.data.value[2]) {
-            return  params.name + ' : ' + params.value[2];
-          } else {
-            return  params.name;
-          }
+          let text = tooltipTemplate(params.data);
+          return myTooltip.getTooltipDom(text);
         },
-        backgroundColor : options.tooltipBackgroundColor,
-        borderColor : options.tooltipBorderColor,
-        borderWidth : options.tooltipBorderWidth,
-        padding : [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
-        textStyle: {
-          ...options.tooltipTextStyle,
-          fontSize: parseFloat(options.tooltipTextStyle.fontSize),
-        },
-        extraCssText: `
-                        background-image:url(${options.tooltipBackgroundImage});
-                        width: ${options.tooltipWidth}px;
-                        height: ${options.tooltipHeight}px;
-                        box-sizing: border-box;
-                        background-size:100% 100%;
-                      `,
       },
       legend: {
         show: false
@@ -326,10 +391,41 @@ export default class Visual {
     this.chart.setOption(option);
   }
 
+  public autoPlayTooltip() {
+    let timer = null;
+    const autoPlay = () => {
+      let index = 0;
+      if (timer) clearInterval(timer);
+      timer = setInterval(() => {
+        this.chart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: index
+        });
+        index++;
+        if (index >= this.items.length) {
+          index = 0;
+        }
+      }, 2000);
+    }
+
+    this.chart.on('mousemove', (e) => {
+      if (timer) clearInterval(timer);
+      this.chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
+    })
+
+    this.chart.on('mouseout', (e) => {
+      autoPlay();
+    })
+
+    autoPlay();
+  }
+
   public onResize() {
-    // if (!loaded) {
-    //   return;
-    // }
     this.chart.resize();
     this.render();
   }
