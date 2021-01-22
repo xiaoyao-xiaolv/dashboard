@@ -11,12 +11,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/baiduGISBubbleMap/.babelrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/点地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/点地图.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,12 +202,12 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
-    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611294739329">
+    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611296631367">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253888366" />
     <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123486623" />
-    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611294739329" />
+    <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611296631367" />
     <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
@@ -243,22 +249,22 @@
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603265879442" />
     <state width="498" height="399" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123394184" />
     <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611294806690" />
-    <state x="2633" y="64" key="VCS.ChangeListViewerDialog" timestamp="1611294433153">
+    <state x="2633" y="64" key="VCS.ChangeListViewerDialog" timestamp="1611296596523">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="475" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123384787" />
-    <state x="2633" y="64" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611294433153" />
+    <state x="2633" y="64" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611296596523" />
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1603246422051">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603246422051" />
-    <state x="2723" y="111" width="860" height="909" key="find.popup" timestamp="1611294333990">
+    <state x="2723" y="111" width="860" height="909" key="find.popup" timestamp="1611297841619">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603191748048" />
     <state x="459" y="86" width="750" height="594" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603263983411" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611122955676" />
-    <state x="2723" y="111" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611294333990" />
+    <state x="2723" y="111" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611297841619" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1603269210622" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1603189285910">
       <screen x="0" y="0" width="1280" height="680" />
