@@ -6,8 +6,9 @@
                 "displayNameKey": "实际值",
                 "options": [
                     {
-                        "name": "数据格式",
-                        "type": "format"
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
                     }
                 ],
                 "kind": "value"

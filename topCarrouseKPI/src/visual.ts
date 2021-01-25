@@ -35,6 +35,7 @@ export default class Visual extends WynVisual {
   private dimensions: any;
   private value: any;
   private contrast: any;
+  private valueFormat: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -96,7 +97,8 @@ export default class Visual extends WynVisual {
       this.dimensions = !this.isMock && plainData.profile.dimensions.values[0].display || '';
       this.value = this.isValue && plainData.profile.values.values[0].display || '';
       this.contrast = this.isContrast && plainData.profile.contrast.values[0].display || '';
-      this.items = plainData.data
+      this.items = plainData.data;
+      this.valueFormat = plainData.profile.values.options.valueFormat;
     }
 
     this.options = options.properties;
@@ -364,9 +366,9 @@ export default class Visual extends WynVisual {
     const formatUnit = units.find((item) => item.value === Number(dataUnit))
     format = (format / formatUnit.value).toFixed(2)
 
-    if (dataType === 'number') {
-      format = format.toLocaleString()
-    } else if (dataType === '%') {
+    if (dataType === 'number'  || dataType === 'none' || dataType === '') {
+      format = this.visualHost.formatService.format(this.valueFormat, format).toLocaleString();
+    }  else if (dataType === '%') {
       format = format + dataType
     } else {
       format = dataType + format
