@@ -26,6 +26,7 @@ export default class Visual extends WynVisual {
   private static height = 500;
   private static elementWidth = 200;
   private static elementHeight = 100;
+  private valueFormat: any;
 
   private isDimensions: boolean;
   private isValue: boolean;
@@ -81,11 +82,8 @@ export default class Visual extends WynVisual {
 
 
   public update(updateOptions: VisualNS.IVisualUpdateOptions) {
-
     const options = updateOptions;
     const dataView = options.dataViews[0];
-
-
     this.isMock = !(dataView && dataView.plain.profile.dimensions.values.length);
     const plainData: any = this.isMock ? {} : dataView.plain;
 
@@ -102,7 +100,8 @@ export default class Visual extends WynVisual {
       this.dimensions = !this.isMock && plainData.profile.dimensions.values[0].display || '';
       this.value = this.isValue && plainData.profile.values.values[0].display || '';
       this.contrast = this.isContrast && plainData.profile.contrast.values[0].display || '';
-      this.items = plainData.data
+      this.items = plainData.data;
+      this.valueFormat = plainData.profile.values.options.valueFormat;
     }
 
     if (this.value) {
@@ -440,9 +439,9 @@ export default class Visual extends WynVisual {
     const formatUnit = units.find((item) => item.value === Number(dataUnit))
     format = (format / formatUnit.value).toFixed(2)
 
-    if (dataType === 'number') {
-      format = format.toLocaleString()
-    } else if (dataType === '%') {
+    if (dataType === 'number'  || dataType === 'none' || dataType === '') {
+      format = this.visualHost.formatService.format(this.valueFormat, format).toLocaleString();
+    }  else if (dataType === '%') {
       format = format + dataType
     } else {
       format = dataType + format
