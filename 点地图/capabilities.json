@@ -20,6 +20,11 @@
                 "name": "lat",
                 "displayNameKey": "纬度",
                 "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
             }
         ],
         "dataViewMappings": [
@@ -320,6 +325,57 @@
                     }
                 ]
             },
+          {
+            "displayName": "提示标签",
+            "properties": [
+              {
+                "name": "tooltipBackgroundColor",
+                "type": "Color",
+                "displayName": "背景颜色",
+                "defaultValue": "rgba(66, 125, 249, 0.3)"
+              },
+              {
+                "displayNameKey": "宽度",
+                "name": "tooltipWidth",
+                "type": "Integer",
+                "min": 10,
+                "defaultValue": 200
+              },
+              {
+                "displayNameKey": "高度",
+                "name": "tooltipHeight",
+                "type": "Integer",
+                "min": 10,
+                "defaultValue": 80
+              },
+              {
+                "name": "tooltipBorderColor",
+                "type": "Color",
+                "displayName": "边框颜色",
+                "defaultValue": "rgba(115, 216, 255, 0.88)"
+              },
+              {
+                "displayNameKey": "边框内边距",
+                "name": "tooltipPadding",
+                "type": "Position",
+                "defaultValue": {
+                  "top": 10,
+                  "bottom": 10,
+                  "left": 10,
+                  "right": 10
+                }
+              },
+              {
+                "name": "tooltipTextStyle",
+                "type": "TextStyle",
+                "displayName": "字体设置",
+                "inheritFrom": "dashboard.textStyle",
+                "defaultValue": {
+                  "fontSize": "14px"
+                }
+              }
+            ]
+          },
             {
                 "type": "interaction"
             },

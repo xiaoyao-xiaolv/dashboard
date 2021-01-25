@@ -16,36 +16,7 @@ export class myTooltipC {
     constructor(boxId, config = {}) {
         if (!boxId) throw Error('boxId为必传项')
         this.boxId = boxId
-        this.config = {
-            priority: 'top',        // 默认在点上方OR下方（top/bottom）
-            partition: 1.4,         // 左右分割比例
-            lineColor: 'rgba(20, 255, 242, 1)',      // 引导线颜色
-            offset: [5, 5],
-            L1: {
-                time: 0.3,          // L1动画时长(单位s)
-                long: 40            // L1长度
-            },
-            L2: {
-                time: 0.3,
-                long: 40
-            },
-            text: {
-                time: 0.5,
-                font: '14px Arial',
-                color: '#fff',
-                padding: [10, 10],
-                width: 150,
-                height: 60,
-                lineHeight: 24,
-                backgroundColor: 'rgba(6, 54, 102, 0.5)',
-                borderColor: 'rgba(20, 255, 242, 1)',
-                borderWidth: 1,
-                angle: {
-                    width: 2,
-                    long: 15
-                }
-            }
-        }
+        this.config = {}
         _.merge(this.config, config, {
             left: false,
             top: false

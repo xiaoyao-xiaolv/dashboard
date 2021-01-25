@@ -44,6 +44,7 @@ export default class Visual extends WynVisual {
   private chart: any;
   private properties: any;
   private myTooltip: any;
+  private config: any;
   private locationName: any;
   private valuesName: any;
   private long: any;
@@ -52,6 +53,9 @@ export default class Visual extends WynVisual {
   private fhourTime: any;
   private items: any;
   private shadowDiv: any;
+  private bindCoords: boolean;
+  private tooltipFields: any;
+
   static mockItems = [
     { name: "福州", value: [119.306239, 26.075302, 13] }
     , { name: "太原", value: [112.549248, 37.857014, 71] }
@@ -77,13 +81,28 @@ export default class Visual extends WynVisual {
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
     this.container.firstElementChild.setAttribute('style','height : 0');
-    this.myTooltip = new myTooltipC('visualDom');
     this.items = [];
     this.properties = {
     };
     this.hourIndex = 0;
     this.fhourTime = null;
+    this.config = {
+      priority: 'top',        // 默认在点上方OR下方（top/bottom）
+      partition: 2,         // 左右分割比例
+      lineColor: 'rgba(253, 129, 91, 0.8)',      // 引导线颜色
+      offset: [5, 5],
+      L1: {
+        time: 0.2,          // L1动画时长(单位s)
+        long: 40            // L1长度
+      },
+      L2: {
+        time: 0.2,
+        long: 40
+      }
+    }
+    this.myTooltip = new myTooltipC('visualDom', this.config);
     this.auto_tooltip();
+    this.bindCoords = false;
   }
 
   private queryData = (keyWord: string) => {
@@ -96,52 +115,65 @@ export default class Visual extends WynVisual {
   }
 
   private convertData = (data: any) => {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-      var dataItem = data[i];
-      var geoCoord = this.queryData(dataItem[this.locationName]);
-      if (geoCoord) {
-        res.push({
-          name: dataItem[this.locationName],
-          value: geoCoord.concat(dataItem[this.valuesName])
-        });
+    let res = [];
+    for (let i = 0; i < data.length; i++) {
+      let dataItem = data[i];
+      let valueObj = {
+        name: dataItem[this.locationName],
+        valueInfo: {
+          valueName : this.valuesName,
+          value : dataItem[this.valuesName]
+        }
+      };
+
+      let geoCoord;
+      if (this.bindCoords) {
+        geoCoord = [dataItem[this.long], dataItem[this.lat]];
+      } else {
+        geoCoord = this.queryData(dataItem[this.locationName]);
       }
+
+      if (geoCoord) {
+        valueObj['value'] = geoCoord.concat(dataItem[this.valuesName]);
+      }
+
+      let tooltips;
+      if (this.tooltipFields.length) {
+        tooltips = this.tooltipFields.map((filed) => {
+          return {
+            filed : filed,
+            value : dataItem[filed]
+          }
+        });
+        valueObj['tooltipFields'] = tooltips;
+      }
+      res.push(valueObj);
     }
     return res;
   }
 
-  private convertData1 = (data: any) => {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-      var dataItem = data[i];
-      var geoCoord = [dataItem[this.long], dataItem[this.lat]];
-      if (geoCoord) {
-        res.push({
-          name: dataItem[this.locationName],
-          value: geoCoord.concat(dataItem[this.valuesName])
-        });
-      }
-    }
-    return res;
-  }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
-    const dataView = options.dataViews[0];
     this.items = [];
-    if (dataView && dataView.plain.profile.long.values.length && dataView.plain.profile.lat.values.length) {
-      const plainData = dataView.plain;
+    this.tooltipFields = [];
+    let profileItems = options.dataViews[0] && options.dataViews[0].plain.profile;
+    if (profileItems && options.dataViews.length) {
+      let plainData = options.dataViews[0].plain;
       this.locationName = plainData.profile.location.values[0].display
       this.valuesName = plainData.profile.values.values[0].display;
-      this.long = plainData.profile.long.values[0].display
-      this.lat = plainData.profile.lat.values[0].display;
-      this.items = this.convertData1(plainData.data);
-    } else if (dataView) {
-      const plainData = dataView.plain;
-      this.locationName = plainData.profile.location.values[0].display
-      this.valuesName = plainData.profile.values.values[0].display;
+
+      this.bindCoords = !!(profileItems.long.values.length && profileItems.lat.values.length);
+      if (this.bindCoords) {
+        this.long = plainData.profile.long.values[0].display
+        this.lat = plainData.profile.lat.values[0].display;
+      }
+
+      let toolTipValues = profileItems.tooltipFields.values;
+      if (toolTipValues.length) {
+        this.tooltipFields = toolTipValues.map(value => value.display);
+      }
       this.items = this.convertData(plainData.data);
     }
-
     this.properties = options.properties;
     this.render();
   }
@@ -164,13 +196,29 @@ export default class Visual extends WynVisual {
   public render() {
     this.chart.clear();
     this.shadowDiv.style.cssText = '';
+    const options = this.properties;
     let myTooltip = this.myTooltip;
+    myTooltip.config['text'] = {
+      time: 0.3,
+      font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
+      color: options.tooltipTextStyle.color,
+      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+      width: options.tooltipWidth,
+      height: options.tooltipHeight,
+      lineHeight: 24,
+      backgroundColor: options.tooltipBackgroundColor,
+      borderColor: options.tooltipBorderColor,
+      borderWidth: 1,
+      angle: {
+        width: 2,
+        long: 15
+      }
+    }
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items;
     let locationName = isMock ? '地点' : this.locationName;
     let valuesName = isMock ? '数量' : this.valuesName;
     this.container.style.opacity = isMock ? '0.3' : '1';
-    const options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     var maxValue = Math.max.apply(null, items.map(function (item) {
       return item.value[2];
@@ -278,6 +326,19 @@ export default class Visual extends WynVisual {
         zlevel: 1
       });
     }
+
+    function tooltipTemplate(data) {
+      let locationStr = `${data.name}\n`;
+      let tooltipStr = '';
+      let valueStr = `${data.valueInfo.valueName} : ${data.valueInfo.value}\n`;
+      if (data.tooltipFields) {
+        data.tooltipFields.forEach((tooltip) => {
+          tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
+        })
+      }
+      return `${locationStr}${valueStr}${tooltipStr}`;
+    }
+
     var option = {
       tooltip: {
         trigger: 'item',
@@ -288,9 +349,8 @@ export default class Visual extends WynVisual {
         },
         formatter(params: any) {
           if (params.seriesType != "map") {
-            let text = locationName + ' : ' + params.name + '\n' + valuesName + ' : ' + params.value[2];
-            let tooltipDom = myTooltip.getTooltipDom(text)
-            return tooltipDom
+            let text = tooltipTemplate(params.data);
+            return myTooltip.getTooltipDom(text);
           }
         }
       },
