@@ -3,6 +3,7 @@ import _ = require('lodash');
 import * as echarts from 'echarts';
 import china from "echarts/map/json/china.json";
 import namedata from './mapname.json';
+import { myTooltipC } from './myTooltip.js';
 import $ from 'jquery';
 (window as any).jQuery = $;
 
@@ -27,6 +28,8 @@ export default class Visual extends WynVisual {
   private cityName: any;
   private valuesName: any;
   private map: any;
+  private shadowDiv: any;
+  private tooltipFields: any;
 
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
@@ -370,6 +373,7 @@ export default class Visual extends WynVisual {
 
   private render() {
     this.chart.clear();
+    this.shadowDiv.style.cssText = '';
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items[0];
     this.container.style.opacity = isMock ? '0.3' : '1';
