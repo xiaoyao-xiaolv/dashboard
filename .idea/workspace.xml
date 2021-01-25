@@ -11,11 +11,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/点地图/.babelrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/combinedMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/combinedMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/combinedMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/combinedMap/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/combinedMap/组合地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/combinedMap/组合地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/流向地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/流向地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/点地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/src/myTooltip.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/src/myTooltip.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/点地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/点地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/点地图.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +126,7 @@
       <workItem from="1611288268485" duration="3702000" />
       <workItem from="1611542734070" duration="4345000" />
       <workItem from="1611553320352" duration="4988000" />
-      <workItem from="1611558509430" duration="4369000" />
+      <workItem from="1611558509430" duration="6154000" />
     </task>
     <servers />
   </component>
@@ -198,39 +207,39 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
-    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611562352533">
+    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611565062471">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253888366" />
     <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123486623" />
-    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611562352533" />
+    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611565062471" />
     <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="2552" y="154" key="FileChooserDialogImpl/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1609728131440" />
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom" timestamp="1611558405274">
+    <state width="1899" height="281" key="GridCell.Tab.0.bottom" timestamp="1611565015256">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611558405274" />
+    <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611565015256" />
     <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
-    <state width="1899" height="281" key="GridCell.Tab.0.center" timestamp="1611558405274">
+    <state width="1899" height="281" key="GridCell.Tab.0.center" timestamp="1611565015255">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
-    <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611558405274" />
+    <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611565015255" />
     <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
-    <state width="1899" height="281" key="GridCell.Tab.0.left" timestamp="1611558405274">
+    <state width="1899" height="281" key="GridCell.Tab.0.left" timestamp="1611565015255">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
-    <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611558405274" />
+    <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611565015255" />
     <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
-    <state width="1899" height="281" key="GridCell.Tab.0.right" timestamp="1611558405274">
+    <state width="1899" height="281" key="GridCell.Tab.0.right" timestamp="1611565015255">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
-    <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611558405274" />
+    <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611565015255" />
     <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state x="2700" y="135" key="RollbackChangesDialog" timestamp="1611309814465">
       <screen x="1920" y="7" width="1920" height="1040" />

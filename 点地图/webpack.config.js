@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const config = {
   entry: './src/visual.ts',
@@ -17,9 +17,9 @@ const config = {
       filename: 'visual.css',
     }),
   ],
-  optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin({})],
-  },
+    optimization: {
+        minimizer: [new OptimizeCSSAssetsPlugin({}), new UglifyJsPlugin()],
+    },
   module: {
     rules: [
       {
@@ -27,6 +27,11 @@ const config = {
         exclude: /node_modules/,
         use: ['babel-loader', 'awesome-typescript-loader?silent=true'],
       },
+        {
+            test: /\.(js)$/,
+            exclude: /node_modules/,
+            use: ['babel-loader'],
+        },
       {
         test: /\.less|.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
