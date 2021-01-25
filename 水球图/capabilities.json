@@ -182,7 +182,10 @@
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "28px"
+                        }
                     }
                 ]
             },
