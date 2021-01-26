@@ -12,11 +12,8 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carrouselKPI/3D旋转KPI.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/dist/visual.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +115,7 @@
       <workItem from="1611288268485" duration="3702000" />
       <workItem from="1611542734070" duration="4345000" />
       <workItem from="1611553320352" duration="4988000" />
-      <workItem from="1611558509430" duration="9659000" />
+      <workItem from="1611558509430" duration="10826000" />
     </task>
     <servers />
   </component>

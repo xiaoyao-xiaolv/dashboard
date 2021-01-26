@@ -7,10 +7,14 @@ export default class Visual {
   private properties: any;
   private items: any;
   private dataView: any;
+  private shadowDiv: any;
   static mockItems = [];
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = require('echarts').init(dom)
+    this.chart = require('echarts').init(dom);
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
+    this.container.firstElementChild.setAttribute('style','height : 0');
     this.items = [];
     this.dataView = [];
     this.properties = {
@@ -49,10 +53,12 @@ export default class Visual {
 
   private render() {
     this.chart.clear();
+    this.shadowDiv.style.cssText = '';
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items;
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     let pieces = JSON.parse(options.pieces).map(function (item: number[], i: number) {
       let j = i % options.piecesColor.length;
       item['color'] = options.piecesColor[j];

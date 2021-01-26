@@ -100,6 +100,23 @@
                         "type": "Integer",
                         "displayName": "Y轴旋转角度",
                         "defaultValue": 5
+                    },
+                    {
+                        "name": "borderShadowColor",
+                        "type": "Color",
+                        "displayName": "边框阴影颜色"
+                    },
+                    {
+                        "name": "borderShadowWidth",
+                        "type": "Integer",
+                        "displayName": "边框阴影宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "borderShadowBlurLevel",
+                        "type": "Integer",
+                        "displayName": "边框阴影模糊度",
+                        "defaultValue": 0
                     }
                 ]
             },
