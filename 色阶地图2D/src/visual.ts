@@ -30,12 +30,17 @@ export default class Visual extends WynVisual {
   private map: any;
   private shadowDiv: any;
   private tooltipFields: any;
+  private myTooltip: any;
+  private config: any;
 
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
     this.chart = echarts.init(dom);
+    this.shadowDiv = document.createElement("div");
+    this.container.appendChild(this.shadowDiv);
+    this.container.firstElementChild.setAttribute('style','height : 0');
     this.host = host;
     this.items = [];
     this.data = [];
@@ -48,6 +53,55 @@ export default class Visual extends WynVisual {
     this.selection = [];
     this.selectionManager = host.selectionService.createSelectionManager();
     this.bindEvents();
+    this.config = {
+      priority: 'top',        // 默认在点上方OR下方（top/bottom）
+      partition: 2,         // 左右分割比例
+      lineColor: 'rgba(253, 129, 91, 0.8)',      // 引导线颜色
+      offset: [5, 5],
+      L1: {
+        time: 0.2,          // L1动画时长(单位s)
+        long: 40            // L1长度
+      },
+      L2: {
+        time: 0.2,
+        long: 40
+      }
+    }
+    this.myTooltip = new myTooltipC('visualDom', this.config);
+    this.autoPlayTooltip();
+  }
+  public autoPlayTooltip() {
+    let timer = null;
+    const autoPlay = () => {
+      let index = 0;
+      if (timer) clearInterval(timer);
+      timer = setInterval(() => {
+        this.chart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: index
+        });
+        index++;
+        if (index >= this.items.length) {
+          index = 0;
+        }
+      }, 2000);
+    }
+
+    this.chart.on('mousemove', (e) => {
+      if (timer) clearInterval(timer);
+      this.chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
+    })
+
+    this.chart.on('mouseout', (e) => {
+      autoPlay();
+    })
+
+    autoPlay();
   }
 
   private dispatch = (type, payload) => this.chart.dispatchAction({ type, ...payload });
@@ -55,7 +109,6 @@ export default class Visual extends WynVisual {
   private bindEvents = () => {
     this.chart.getZr().on('click', (e) => {
       if (!e.target) {
-        this.hideTooltip();
         this.selection.forEach(item => this.dispatch('downplay', item));
         this.selection = [];
         this.selectionManager.clear();
@@ -67,7 +120,6 @@ export default class Visual extends WynVisual {
       clearTimeout(this.timeFn);
       this.timeFn = setTimeout(() => {
         if (!params.data) {
-          this.hideTooltip();
           this.selection.forEach(item => this.dispatch('downplay', item));
           this.selection = [];
           this.selectionManager.clear();
@@ -83,12 +135,10 @@ export default class Visual extends WynVisual {
             dataIndex: dataIndex,
           };
           if (this.selectionManager.contains(sid)) {
-            this.hideTooltip();
             this.dispatch('downplay', selectedInfo);
             this.selectionManager.clear(sid);
             return;
           }
-          this.showTooltip(params, true);
           this.dispatch('highlight', selectedInfo);
           this.selectionManager.select(sid, true);
           this.selection.push(selectedInfo);
@@ -98,7 +148,6 @@ export default class Visual extends WynVisual {
     this.chart.on('dblclick', (params) => {
       clearTimeout(this.timeFn);
       if (!params.data) {
-        this.hideTooltip();
         this.selection = [];
         this.selectionManager.clear();
         return;
@@ -125,37 +174,9 @@ export default class Visual extends WynVisual {
             this.drilldown = false;
             break;
         }
-        this.hideTooltip();
         this.render();
       }
     })
-    this.chart.on('mouseout', (e) => {
-      if (this.isTooltipModelShown) return;
-      this.hideTooltip();
-    });
-    this.chart.on('mousemove', (params) => {
-      if (!params.data) return;
-      if (!this.isTooltipModelShown) this.showTooltip(params);
-    });
-  }
-
-  private showTooltip = _.debounce((params, asModel = false) => {
-    if (asModel) this.isTooltipModelShown = true;
-    const fields = [{ label: params.name, value: params.data.value }]
-    this.host.toolTipService.show({
-      position: {
-        x: params.event.event.x,
-        y: params.event.event.y,
-      },
-      fields,
-      selected: this.selectionManager.getSelectionIds(),
-      menu: asModel,
-    }, 10);
-  });
-
-  private hideTooltip = () => {
-    this.host.toolTipService.hide();
-    this.isTooltipModelShown = false;
   }
 
   private getMapId(name: any) {
@@ -225,7 +246,6 @@ export default class Visual extends WynVisual {
                 this.graphic[0].children[0].shape.x2 -= 60;
                 this.graphic[0].children[1].shape.x2 -= 60;
                 this.getGeoJson(name);
-                this.hideTooltip();
                 this.drilldown = true;
               }
               this.render();
@@ -298,7 +318,6 @@ export default class Visual extends WynVisual {
             this.getGeoJson("中国");
             this.drilldown = true;
             this.items = this.data[0];
-            this.hideTooltip();
             this.selection = [];
             this.selectionManager.clear();
             this.getgraphic();
@@ -372,12 +391,30 @@ export default class Visual extends WynVisual {
   }
 
   private render() {
+    let myTooltip = this.myTooltip;
     this.chart.clear();
     this.shadowDiv.style.cssText = '';
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items[0];
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
+    myTooltip.config['text'] = {
+      time: 0.3,
+      font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
+      color: options.tooltipTextStyle.color,
+      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+      width: options.tooltipWidth,
+      height: options.tooltipHeight,
+      lineHeight: 24,
+      backgroundColor: options.tooltipBackgroundColor,
+      borderColor: options.tooltipBorderColor,
+      borderWidth: 1,
+      angle: {
+        width: 2,
+        long: 15
+      }
+    }
     let pieces = JSON.parse(options.pieces).map(function (item: number[], i: number) {
       let j = i % options.piecesColor.length;
       item['color'] = options.piecesColor[j];
@@ -405,9 +442,32 @@ export default class Visual extends WynVisual {
       left = 'auto'
       right = '2%'
     }
+
+    let tooltipTemplate = (data) => {
+      let locationStr = `${data.name}\n`;
+      // let tooltipStr = '';
+      let valueStr = `${this.valuesName} : ${data.value}\n`;
+
+      //
+      // if (data.tooltipFields) {
+      //   data.tooltipFields.forEach((tooltip) => {
+      //     tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
+      //   })
+      // }
+      return `${locationStr}${valueStr}`;
+    }
+
     var option = {
       tooltip: {
-        show: false,
+        trigger: 'item',
+        backgroundColor : 'transparent',
+        position (pos) {
+          return myTooltip.getPosOrSize('pos', pos);
+        },
+        formatter(params: any) {
+          let text = tooltipTemplate(params.data);
+          return myTooltip.getTooltipDom(text);
+        },
       },
       graphic: this.graphic,
       series: [
@@ -545,11 +605,16 @@ export default class Visual extends WynVisual {
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
     let data = [[], [], []];
+    this.tooltipFields = [];
     if (dataView) {
       const plainData = dataView.plain;
       this.provinceName = plainData.profile.province.values[0].display;
       this.cityName = plainData.profile.city.values;
       this.valuesName = plainData.profile.values.values[0].display;
+      let toolTipValues = dataView.plain.profile.tooltipFields.values;
+      if (toolTipValues.length) {
+        this.tooltipFields = toolTipValues.map(value => value.display);
+      }
       data[0] = this.getSumData(this.classify(plainData.data, this.provinceName), plainData.profile.province.values[0], this.provinceName, 1);
       if (this.cityName.length) {
         this.drilldown = true;
