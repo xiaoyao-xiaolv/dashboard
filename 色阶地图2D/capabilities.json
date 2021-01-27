@@ -151,6 +151,12 @@
             "displayName": "提示标签",
             "properties": [
               {
+                "name": "showTooltip",
+                "type": "Boolean",
+                "displayName": "显示提示标签",
+                "defaultValue": true
+              },
+              {
                 "name": "tooltipBackgroundColor",
                 "type": "Color",
                 "displayName": "背景颜色",

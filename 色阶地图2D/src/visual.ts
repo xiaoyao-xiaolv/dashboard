@@ -489,6 +489,7 @@ export default class Visual extends WynVisual {
 
     var option = {
       tooltip: {
+        show: options.showTooltip,
         trigger: 'item',
         backgroundColor : 'transparent',
         position (pos) {
@@ -685,6 +686,10 @@ export default class Visual extends WynVisual {
     }
     if (!options.properties.showVisualMap) {
       return ['textColor'];
+    }
+
+    if(!options.properties.showTooltip) {
+      return ['tooltipBackgroundColor','tooltipWidth','tooltipHeight','tooltipBorderColor','tooltipPadding','tooltipTextStyle'];
     }
 
     if (!options.properties.showLabel) {
