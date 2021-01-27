@@ -134,12 +134,6 @@
                         "inheritFrom": "dashboard.textStyle"
                     },
                     {
-                        "name": "detailTextStyle",
-                        "type": "TextStyle",
-                        "displayName": "图例字体设置",
-                        "inheritFrom": "dashboard.textStyle"
-                    },
-                    {
                         "name": "pieces",
                         "type": "LongText",
                         "displayName": "分段颜色",
