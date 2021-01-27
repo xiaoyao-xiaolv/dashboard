@@ -12,6 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/色阶地图2D/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/capabilities.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/色阶地图2D/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/src/visual.ts" afterDir="false" />
     </list>
@@ -115,7 +116,7 @@
       <workItem from="1611288268485" duration="3702000" />
       <workItem from="1611542734070" duration="4345000" />
       <workItem from="1611553320352" duration="4988000" />
-      <workItem from="1611558509430" duration="17115000" />
+      <workItem from="1611558509430" duration="28718000" />
     </task>
     <servers />
   </component>
@@ -196,12 +197,12 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
-    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611632389190">
+    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog" timestamp="1611715378205">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253888366" />
     <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123486623" />
-    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611632389190" />
+    <state x="13" y="59" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611715378205" />
     <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
@@ -239,13 +240,13 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611049100080" />
-    <state width="747" height="609" key="SwitcherDM" timestamp="1611557177263">
+    <state width="747" height="609" key="SwitcherDM" timestamp="1611725981792">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603195048049" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603265879442" />
     <state width="498" height="399" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123394184" />
-    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611557177263" />
+    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611725981792" />
     <state x="2633" y="64" key="VCS.ChangeListViewerDialog" timestamp="1611632053321">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
@@ -272,9 +273,9 @@
     </state>
     <state x="297" y="151" key="run.anything.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611050516303" />
     <state x="2366" y="238" key="run.anything.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611569422936" />
-    <state x="2543" y="232" width="672" height="678" key="search.everywhere.popup" timestamp="1611570353700">
+    <state x="2543" y="232" width="672" height="678" key="search.everywhere.popup" timestamp="1611716504728">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state x="2543" y="232" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611570353700" />
+    <state x="2543" y="232" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611716504728" />
   </component>
 </project>

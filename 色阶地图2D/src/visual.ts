@@ -330,26 +330,28 @@ export default class Visual extends WynVisual {
     this.graphic = arr;
   }
 
-  private classify = (arr: any, name: any) => {
-    let obj = {}
-    arr.map(v => {
-      obj[v[name]] = 0
-    })
-    let nameArr = Object.keys(obj)
-    let result = [];
-    nameArr.map(v => {
-      let temp = arr.filter(_v => v == _v[name]);
-      if (temp.length) {
-        result.push(temp)
+  private classifyMapData = (originMapData: any, level: any) => {
+    let mapNames = [];
+    originMapData.forEach((data) => {
+      if(mapNames.indexOf(data[level]) < 0) {
+        mapNames.push(data[level]);
       }
     })
-    return result
+
+    let classifiedMapData = [];
+    mapNames.map(mapName => {
+      let mapData = originMapData.filter(data => mapName === data[level]);
+      if (mapData.length) {
+        classifiedMapData.push(mapData);
+      }
+    })
+    return classifiedMapData;
   }
 
-  private sum(arr: any) {
+  private sum(arr: any, filed) {
     let s = 0;
     arr.forEach(item => {
-      s += item[this.valuesName];
+      s += item[filed];
     });
     return s;
   }
@@ -357,11 +359,30 @@ export default class Visual extends WynVisual {
   private getSumData(data: any, dimension: any, name: any, drilldown: number) {
     let arr = [[], []];
     data.map((item) => {
-      arr[0].push({
+      let dataObj = {
         name: item[0][name],
-        value: this.sum(item) || 0,
+        value: this.sum(item, this.valuesName) || 0,
         drilldownIndex: drilldown
-      });
+      }
+
+      let tooltips;
+      if (this.tooltipFields.length) {
+        tooltips = this.tooltipFields.map((filed) => {
+          if (filed.dataType === 'number') {
+            return {
+              filed : filed.display,
+              value : this.sum(item, filed.display)
+            }
+          } else {
+            return {
+              filed : filed.display,
+              value : item[0][filed.display]
+            }
+          }
+        });
+        dataObj['tooltipFields'] = tooltips;
+      }
+      arr[0].push(dataObj);
       const getSelectionId = (item) => {
         const selectionId = this.host.selectionService.createSelectionId();
         selectionId.withDimension(dimension, item[0]);
@@ -375,10 +396,21 @@ export default class Visual extends WynVisual {
   private getMapData(data: any, dimension: any, name: any) {
     let arr = [[], [], []];
     data.map((item) => {
-      arr[0].push({
+      let dataObj = {
         name: item[name],
         value: item[this.valuesName] || 0,
-      })
+      }
+      arr[0].push(dataObj);
+      let tooltips;
+      if (this.tooltipFields.length) {
+        tooltips = this.tooltipFields.map((filed) => {
+            return {
+              filed : filed.display,
+              value : item[filed.display]
+            }
+        });
+        dataObj['tooltipFields'] = tooltips;
+      }
       const getSelectionId = (item) => {
         const selectionId = this.host.selectionService.createSelectionId();
         selectionId.withDimension(dimension, item);
@@ -445,16 +477,14 @@ export default class Visual extends WynVisual {
 
     let tooltipTemplate = (data) => {
       let locationStr = `${data.name}\n`;
-      // let tooltipStr = '';
+      let tooltipStr = '';
       let valueStr = `${this.valuesName} : ${data.value}\n`;
-
-      //
-      // if (data.tooltipFields) {
-      //   data.tooltipFields.forEach((tooltip) => {
-      //     tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
-      //   })
-      // }
-      return `${locationStr}${valueStr}`;
+      if (data.tooltipFields) {
+        data.tooltipFields.forEach((tooltip) => {
+          tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
+        })
+      }
+      return `${locationStr}${valueStr}${tooltipStr}`;
     }
 
     var option = {
@@ -488,11 +518,11 @@ export default class Visual extends WynVisual {
             }
           },
           label: {
-            show: options.showlabel || options.showposition,
+            show: options.showData || options.showposition,
             formatter: (params) => {
               if (!Number.isNaN(params.value)) {
                 let name = options.showposition ? params.name + '\n\n' : '';
-                let value = options.showlabel ? this.formatData(params.value, options.dataindicateUnit, options.dataindicateType) : '';
+                let value = options.showData ? this.formatData(params.value, options.dataindicateUnit, options.dataindicateType) : '';
                 return name + value;
               } else {
                 let name = options.showposition ? params.name + '\n\n' : '';
@@ -613,15 +643,20 @@ export default class Visual extends WynVisual {
       this.valuesName = plainData.profile.values.values[0].display;
       let toolTipValues = dataView.plain.profile.tooltipFields.values;
       if (toolTipValues.length) {
-        this.tooltipFields = toolTipValues.map(value => value.display);
+        this.tooltipFields = toolTipValues.map((value) => {
+          return {
+            display : value.display,
+            dataType : value.dataType
+          }
+        });
       }
-      data[0] = this.getSumData(this.classify(plainData.data, this.provinceName), plainData.profile.province.values[0], this.provinceName, 1);
+      data[0] = this.getSumData(this.classifyMapData(plainData.data, this.provinceName), plainData.profile.province.values[0], this.provinceName, 1);
       if (this.cityName.length) {
         this.drilldown = true;
-        this.classify(plainData.data, this.provinceName).map((item) => {
+        this.classifyMapData(plainData.data, this.provinceName).map((item) => {
           if (this.cityName.length > 1) {
-            data[1].push(this.getSumData(this.classify(item, this.cityName[0].display), this.cityName[0], this.cityName[0].display, 2));
-            this.classify(item, this.cityName[0].display).map((item) => {
+            data[1].push(this.getSumData(this.classifyMapData(item, this.cityName[0].display), this.cityName[0], this.cityName[0].display, 2));
+            this.classifyMapData(item, this.cityName[0].display).map((item) => {
               data[2].push(this.getMapData(item, this.cityName[1], this.cityName[1].display));
             })
           } else {
@@ -650,6 +685,16 @@ export default class Visual extends WynVisual {
     }
     if (!options.properties.showVisualMap) {
       return ['textColor'];
+    }
+
+    if (!options.properties.showLabel) {
+      if (options.properties.showData) {
+        options.properties.showData = false;
+      }
+      if (options.properties.showposition) {
+        options.properties.showposition = false;
+      }
+      return ['showData','showposition','textStyle','dataindicateType','dataindicateUnit'];
     }
     return null;
   }

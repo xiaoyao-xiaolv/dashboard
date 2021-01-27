@@ -208,9 +208,15 @@
                 "displayName": "数据标注",
                 "properties": [
                     {
-                        "name": "showlabel",
+                      "name": "showLabel",
+                      "type": "Boolean",
+                      "displayName": "显示数据标注",
+                      "defaultValue": true
+                    },
+                    {
+                        "name": "showData",
                         "type": "Boolean",
-                        "displayName": "显示数据标注",
+                        "displayName": "数值",
                         "defaultValue": true
                     },
                     {
