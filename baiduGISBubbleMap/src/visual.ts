@@ -362,8 +362,8 @@ export default class Visual {
     let option = {
       bmap: bmap,
       tooltip: {
+        show: options.showTooltip,
         trigger: 'item',
-        triggerOn: 'click',
         backgroundColor : 'transparent',
         position (pos) {
           return myTooltip.getPosOrSize('pos', pos);
@@ -452,6 +452,10 @@ export default class Visual {
     }
     if(!properties.showRankData) {
       hiddenStates.push('rank','level', 'rankSymbolColor');
+    }
+
+    if(!properties.showTooltip) {
+      hiddenStates.push('tooltipBackgroundColor','tooltipWidth','tooltipHeight','tooltipBorderColor','tooltipPadding','tooltipTextStyle');
     }
     return hiddenStates;
   }

@@ -330,7 +330,12 @@ export default class Visual extends WynVisual {
     function tooltipTemplate(data) {
       let locationStr = `${data.name}\n`;
       let tooltipStr = '';
-      let valueStr = `${data.valueInfo.valueName} : ${data.valueInfo.value}\n`;
+      let valueStr = '';
+
+      if (data.valueInfo) {
+        valueStr = `${data.valueInfo.valueName} : ${data.valueInfo.value}\n`;
+      }
+
       if (data.tooltipFields) {
         data.tooltipFields.forEach((tooltip) => {
           tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
@@ -341,6 +346,7 @@ export default class Visual extends WynVisual {
 
     var option = {
       tooltip: {
+        show: options.showTooltip,
         trigger: 'item',
         backgroundColor: 'transparent',
         position(pos: any) {
@@ -424,6 +430,10 @@ export default class Visual extends WynVisual {
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     if (!(options.properties.symbolStyle == 'effectScatter')) {
       return ['pointSize', 'pointMaxSize', 'pointMinSize'];
+    }
+
+    if(!options.properties.showTooltip) {
+      return ['tooltipBackgroundColor','tooltipWidth','tooltipHeight','tooltipBorderColor','tooltipPadding','tooltipTextStyle'];
     }
     return ['showLabel', 'textColor', 'textFont']
   }

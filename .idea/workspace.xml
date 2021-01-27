@@ -11,15 +11,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/自定义地图3D/.babelrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/色阶地图2D/.babelrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图3D/3D色阶地图.viz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图3D/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/webpack.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/色阶地图2D/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/色阶地图2D/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/色阶地图2D/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/点地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/点地图/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +119,7 @@
       <workItem from="1611288268485" duration="3702000" />
       <workItem from="1611542734070" duration="4345000" />
       <workItem from="1611553320352" duration="4988000" />
-      <workItem from="1611558509430" duration="36031000" />
+      <workItem from="1611558509430" duration="36607000" />
     </task>
     <servers />
   </component>
@@ -164,17 +162,6 @@
                   <entry key="Show.Git.Branches" value="false" />
                 </map>
               </option>
-              <option name="FILTERS">
-                <map>
-                  <entry key="user">
-                    <value>
-                      <list>
-                        <option value="*" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
             </State>
           </value>
         </entry>
@@ -202,12 +189,12 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
-    <state x="-249" y="40" width="1714" height="742" maximized="true" key="DiffContextDialog" timestamp="1611731280799">
+    <state x="-249" y="40" width="1714" height="742" maximized="true" key="DiffContextDialog" timestamp="1611733976619">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253888366" />
     <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123486623" />
-    <state x="-249" y="40" width="1714" height="742" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611731280799" />
+    <state x="-249" y="40" width="1714" height="742" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611733976619" />
     <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
@@ -261,13 +248,13 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603246422051" />
-    <state x="2748" y="109" width="860" height="909" key="find.popup" timestamp="1611733172612">
+    <state x="2748" y="109" width="860" height="909" key="find.popup" timestamp="1611733728998">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603191748048" />
     <state x="459" y="86" width="750" height="594" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603263983411" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611554190446" />
-    <state x="2748" y="109" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611733172612" />
+    <state x="2748" y="109" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611733728998" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1603269210622" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1603189285910">
       <screen x="0" y="0" width="1280" height="680" />
