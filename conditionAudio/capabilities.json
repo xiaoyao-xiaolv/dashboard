@@ -1,0 +1,183 @@
+{
+  "dataBinding": {
+    "dataRoles": [
+      {
+        "name": "values",
+        "displayNameKey": "数值",
+        "kind": "value"
+      }
+    ],
+    "dataViewMappings": [
+      {
+        "plain": {
+          "required": [
+            {
+              "values": {
+                "min": 1
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "values": {
+          "max": 1
+        }
+      }
+    ]
+  },
+  "options": {
+    "visual": [
+      {
+        "displayName": "区间一",
+        "properties": [
+          {
+            "name": "Interval1",
+            "type": "Text",
+            "displayName": "区间",
+            "defaultValue": "(,1000)",
+            "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+          },
+          {
+            "name": "Audio1",
+            "type": "Text",
+            "displayName": "音频地址"
+          }
+        ]
+      },
+      {
+        "displayName": "区间二",
+        "properties": [
+          {
+            "name": "Interval2",
+            "type": "Text",
+            "displayName": "区间",
+            "defaultValue": "[1000,10000)",
+            "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+          },
+          {
+            "name": "Audio2",
+            "type": "Text",
+            "displayName": "音频地址"
+          }
+        ]
+      },
+      {
+        "displayName": "区间三",
+        "properties": [
+          {
+            "name": "Interval3",
+            "type": "Text",
+            "displayName": "区间",
+            "defaultValue": "[10000,)",
+            "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+          },
+          {
+            "name": "Audio3",
+            "type": "Text",
+            "displayName": "音频地址"
+          }
+        ]
+      },
+      {
+        "displayName": "区间四",
+        "properties": [
+          {
+            "name": "Interval4",
+            "type": "Text",
+            "displayName": "区间",
+            "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+          },
+          {
+            "name": "Audio4",
+            "type": "Text",
+            "displayName": "音频地址"
+          }
+        ]
+      },
+      {
+        "displayName": "区间五",
+        "properties": [
+          {
+            "name": "Interval5",
+            "type": "Text",
+            "displayName": "区间",
+            "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+          },
+          {
+            "name": "Audio5",
+            "type": "Text",
+            "displayName": "音频地址"
+          }
+        ]
+      },
+      {
+        "displayName": "播放设置",
+        "properties": [
+          {
+            "name": "loop",
+            "type": "Boolean",
+            "displayName": "是否开启循环播放",
+            "defaultValue": true
+          },
+          {
+            "name": "buttonText",
+            "type": "Text",
+            "displayName": "按钮文本提示",
+            "defaultValue": "关闭"
+          },
+          {
+            "name": "buttonColor",
+            "type": "Color",
+            "displayName": "按钮背景色",
+            "defaultValue": "#cccccc"
+          },
+          {
+            "name": "buttonTextStyle",
+            "type": "TextStyle",
+            "displayName": "按钮字体设置",
+            "inheritFrom": "dashboard.textStyle",
+            "defaultValue": {
+              "fontSize": "14px"
+            }
+          }
+        ]
+      },
+      {
+        "type": "interaction"
+      },
+      {
+        "type": "title"
+      },
+      {
+        "type": "appearance"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "type": "focus"
+    },
+    {
+      "type": "export"
+    },
+    {
+      "type": "filter"
+    },
+    {
+      "type": "sort"
+    },
+    {
+      "type": "rank"
+    },
+    {
+      "type": "convertVisual"
+    },
+    {
+      "type": "annotation"
+    }
+  ],
+  "analysis": []
+}
