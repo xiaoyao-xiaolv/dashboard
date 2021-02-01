@@ -90,7 +90,14 @@ export default class Visual extends WynVisual {
       if (satisfied) {
         let audioIndex = 'Audio' + (index + 1);
         let audioSrc = options[audioIndex];
-        audio.setAttribute("src", audioSrc);
+        if(/(http|https):\/\//.test(audioSrc)) {
+          audio.setAttribute("src", audioSrc);
+        } else {
+          let protocol = window.location.protocol;
+          let host = window.location.host;
+          audioSrc = `${protocol}//${host}/api/dashboards/WebContents/${audioSrc}`;
+          audio.setAttribute("src", audioSrc);
+        }
 
         // create button
         let button = document.createElement('button');

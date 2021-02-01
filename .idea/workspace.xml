@@ -11,13 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/conditionAudio/assets/icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/style/visual.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISFlowMap/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISFlowMap/style/visual.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISHotMap/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISHotMap/style/visual.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图标预警/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/图标预警/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/图标预警/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/图标预警/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +117,7 @@
       <workItem from="1611542734070" duration="4345000" />
       <workItem from="1611553320352" duration="4988000" />
       <workItem from="1611558509430" duration="42010000" />
-      <workItem from="1611797758551" duration="39844000" />
+      <workItem from="1611797758551" duration="42398000" />
     </task>
     <servers />
   </component>
