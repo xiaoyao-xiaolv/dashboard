@@ -1,7 +1,6 @@
 import '../style/visual.less';
 import chinaMap from './china.json';
-const echarts = require('echarts');
-echarts.registerMap('china', chinaMap, {});
+
 export default class Visual {
   private visualHost: any;
   private chart: any;
