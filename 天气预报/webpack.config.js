@@ -49,6 +49,9 @@ const config = {
     publicPath: '/assets/'
   },
   mode: 'development',
+  resolve: {
+    extensions: ['.ts', '.tsx', '.jsx', '.js', '.json', '.css', '.less'],
+  }
 };
 
 module.exports = config;

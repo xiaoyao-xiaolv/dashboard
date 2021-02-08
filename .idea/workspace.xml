@@ -11,10 +11,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/天气预报/src/cityID.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrouselKPI/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carrouselKPI/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/dist/visual.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/音频预警.viz" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/音频预警.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/3D旋转三棱锥.viz" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/3D旋转三棱锥.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/3D倾斜旋转KPI.viz" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/3D倾斜旋转KPI.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天气预报/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天气预报/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天气预报/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天气预报/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天气预报/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/天气预报/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/自定义地图3D/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/色阶地图2D/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/色阶地图2D/色阶地图2D.viz" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/色阶地图2D.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +75,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/conditionAudio/assets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/天气预报/src" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -60,23 +83,23 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.TypeScript" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\BubbleChart\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\天气预报\src" />
+      <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\自定义地图3D" />
+      <recent name="D:\Wyn plugins code\dashboard\色阶地图2D" />
+      <recent name="D:\Wyn plugins code\dashboard\自定义地图3D\src" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
       <recent name="D:\Wyn plugins code\dashboard\DateSlicer\style" />
       <recent name="D:\Wyn plugins code\dashboard\DateSlicer\src" />
       <recent name="D:\Wyn plugins code\dashboard\DateSlicer" />
       <recent name="D:\Wyn plugins code\dashboard\日期时间\assets" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\自定义地图3D" />
-      <recent name="D:\Wyn plugins code\dashboard\色阶地图2D" />
-      <recent name="D:\Wyn plugins code\dashboard\自定义地图3D\src" />
-      <recent name="D:\Wyn plugins code\dashboard\色阶地图2D\node_modules\echarts\map" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -117,7 +140,8 @@
       <workItem from="1611542734070" duration="4345000" />
       <workItem from="1611553320352" duration="4988000" />
       <workItem from="1611558509430" duration="42010000" />
-      <workItem from="1611797758551" duration="42398000" />
+      <workItem from="1611797758551" duration="44329000" />
+      <workItem from="1612660821433" duration="28792000" />
     </task>
     <servers />
   </component>
@@ -183,15 +207,14 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2498" y="223" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1611818228637">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state x="-1342" y="216" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612748437324">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="385" y="141" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189502724" />
+    <state x="-1342" y="216" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1612748437324" />
     <state x="2498" y="223" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611818228637" />
     <state x="-20" y="0" width="1280" height="680" maximized="true" key="DiffContextDialog" timestamp="1611900558630">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="61" y="60" width="1158" height="560" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603253888366" />
     <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123486623" />
     <state x="-20" y="0" width="1280" height="680" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900558630" />
     <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
@@ -201,64 +224,47 @@
     <state width="1899" height="281" key="GridCell.Tab.0.bottom" timestamp="1611797224253">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state width="1899" height="281" key="GridCell.Tab.0.center" timestamp="1611797224253">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state width="1899" height="281" key="GridCell.Tab.0.left" timestamp="1611797224253">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state width="1899" height="281" key="GridCell.Tab.0.right" timestamp="1611797224253">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603187905457" />
     <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603267425725" />
     <state x="2700" y="135" key="RollbackChangesDialog" timestamp="1611900561567">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
-    <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603271925213" />
     <state x="2700" y="135" key="RollbackChangesDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900561567" />
-    <state x="142" y="0" key="SettingsEditor" timestamp="1611049100080">
+    <state x="142" y="0" key="SettingsEditor" timestamp="1612682103896">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state x="142" y="0" key="SettingsEditor/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612682103896" />
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611049100080" />
-    <state width="747" height="609" key="SwitcherDM" timestamp="1611900247154">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state width="498" height="399" key="SwitcherDM" timestamp="1612762841564">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603195048049" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603265879442" />
+    <state width="498" height="399" key="SwitcherDM/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612762841564" />
     <state width="498" height="399" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123394184" />
     <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900247154" />
-    <state x="2633" y="64" key="VCS.ChangeListViewerDialog" timestamp="1611734041546">
+    <state x="2633" y="64" key="VCS.ChangeListViewerDialog" timestamp="1612145967202">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="475" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123384787" />
-    <state x="2633" y="64" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611734041546" />
-    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1603246422051">
+    <state x="2633" y="64" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1612145967202" />
+    <state x="551" y="66" width="661" height="595" key="find.popup" timestamp="1612758579501">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603246422051" />
-    <state x="2747" y="108" width="860" height="909" key="find.popup" timestamp="1611900180180">
-      <screen x="1920" y="7" width="1920" height="1040" />
-    </state>
-    <state x="662" y="-828" width="596" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1603191748048" />
-    <state x="459" y="86" width="750" height="594" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603263983411" />
+    <state x="-1093" y="101" width="992" height="910" key="find.popup/0.0.1280.680/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1612755602389" />
+    <state x="551" y="66" width="661" height="595" key="find.popup/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612758579501" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611805162910" />
     <state x="2747" y="108" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900180180" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1611841545642" />
-    <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1603189285910">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1603189285910" />
     <state x="2366" y="238" key="run.anything.popup" timestamp="1611569422936">
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
