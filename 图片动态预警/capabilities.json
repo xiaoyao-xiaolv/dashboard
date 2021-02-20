@@ -2,23 +2,23 @@
     "dataBinding": {
         "dataRoles": [
             {
-                "name": "values",
+                "name": "status",
                 "displayNameKey": "设备状态",
                 "kind": "value"
             },
             {
-                "name": "xname",
-                "displayNameKey": "分类_X",
+                "name": "axisX",
+                "displayNameKey": "X轴",
                 "kind": "grouping"
             },
             {
-                "name": "yname",
-                "displayNameKey": "分类_Y",
+                "name": "axisY",
+                "displayNameKey": "Y轴",
                 "kind": "grouping"
             },
             {
-                "name": "imageurl",
-                "displayNameKey": "图片信息",
+                "name": "deviceImg",
+                "displayNameKey": "设备图片",
                 "kind": "grouping"
             }
         ],
@@ -27,16 +27,16 @@
                 "plain": {
                     "required": [
                         {
-                            "values": {
+                            "status": {
                                 "min": 1
                             },
-                            "xname": {
+                            "deviceImg": {
                                 "min": 1
                             },
-                            "yname": {
+                            "axisX": {
                                 "min": 1
                             },
-                            "imageurl": {
+                            "axisY": {
                                 "min": 1
                             }
                         }
@@ -46,22 +46,97 @@
         ],
         "conditions": [
             {
-                "values": {
+                "status": {
                     "max": 1
                 },
-                "xname": {
+                "deviceImg": {
                     "max": 1
                 },
-                "yname": {
+                "axisX": {
                     "max": 1
                 },
-                "imageurl": {
+                "axisY": {
                     "max": 1
                 }
             }
         ]
     },
-    "options": {},
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "W_H",
+                        "type": "Float",
+                        "displayName": "图片宽高比",
+                        "defaultValue": 1.3
+                    },
+                    {
+                        "name": "arrColor",
+                        "type": "LongText",
+                        "displayName": "状态颜色",
+                        "defaultValue": "{\"1\": \"yellow\",\"2\": \"red\"}"
+                    }
+                ]
+            },
+            {
+                "displayName": "X轴",
+                "properties": [
+                    {
+                        "name": "showXAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "Xrotate",
+                        "type": "Integer",
+                        "displayName": "标签显示角度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "XTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "标签字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "displayName": "Y轴",
+                "properties": [
+                    {
+                        "name": "showYAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "Yrotate",
+                        "type": "Integer",
+                        "displayName": "标签显示角度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "YTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "标签字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
     "actions": [
         {
             "type": "focus"
@@ -73,7 +148,13 @@
             "type": "filter"
         },
         {
+            "type": "sort"
+        },
+        {
             "type": "rank"
+        },
+        {
+            "type": "convertVisual"
         },
         {
             "type": "annotation"

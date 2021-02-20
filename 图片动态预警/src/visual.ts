@@ -1,245 +1,336 @@
 import '../style/visual.less';
-import chinaMap from './china.json';
+import _ = require('lodash');
+import * as echarts from 'echarts';
 
-export default class Visual {
-  private visualHost: any;
-  private chart: any;
+export default class Visual extends WynVisual {
   private container: HTMLDivElement;
+  private host: any;
+  private chart: any;
   private items: any;
   private x: any;
   private y: any;
-  private width: number;
-  private height: number;
+  private axisX: any;
+  private axisY: any;
+  private status: any;
+  private selection: any;
+  private selectionManager: any;
+  private isTooltipModelShown: boolean;
+  private properties: any;
+  private mockItems: any;
+  static mockx = ['印刷机', '贴片机', 'AOI', '回流焊', '测试设备']
+  static mocky = ['产品线1', '产品线2', '产品线3']
 
-  static mockItems = [
-    [
-      [{ name: '北京' }, { name: '上海', value: 95 }],
-      [{ name: '北京' }, { name: '广州', value: 90 }],
-      [{ name: '北京' }, { name: '大连', value: 80 }],
-      [{ name: '北京' }, { name: '南宁', value: 70 }],
-      [{ name: '北京' }, { name: '南昌', value: 60 }],
-      [{ name: '北京' }, { name: '拉萨', value: 50 }],
-      [{ name: '北京' }, { name: '长春', value: 40 }],
-      [{ name: '北京' }, { name: '包头', value: 30 }],
-      [{ name: '北京' }, { name: '重庆', value: 20 }],
-      [{ name: '北京' }, { name: '常州', value: 10 }]
-    ],
-    [
-      [{ name: '上海' }, { name: '包头', value: 95 }],
-      [{ name: '上海' }, { name: '昆明', value: 90 }],
-      [{ name: '上海' }, { name: '广州', value: 80 }],
-      [{ name: '上海' }, { name: '郑州', value: 70 }],
-      [{ name: '上海' }, { name: '长春', value: 60 }],
-      [{ name: '上海' }, { name: '重庆', value: 50 }],
-      [{ name: '上海' }, { name: '长沙', value: 40 }],
-      [{ name: '上海' }, { name: '北京', value: 30 }],
-      [{ name: '上海' }, { name: '丹东', value: 20 }],
-      [{ name: '上海' }, { name: '大连', value: 10 }]
-    ],
-    [
-      [{ name: '广州' }, { name: '福州', value: 95 }],
-      [{ name: '广州' }, { name: '太原', value: 90 }],
-      [{ name: '广州' }, { name: '长春', value: 80 }],
-      [{ name: '广州' }, { name: '重庆', value: 70 }],
-      [{ name: '广州' }, { name: '西安', value: 60 }],
-      [{ name: '广州' }, { name: '成都', value: 50 }],
-      [{ name: '广州' }, { name: '常州', value: 40 }],
-      [{ name: '广州' }, { name: '北京', value: 30 }],
-      [{ name: '广州' }, { name: '北海', value: 20 }],
-      [{ name: '广州' }, { name: '海口', value: 10 }]
-    ]
-  ]
-
-  constructor(dom: HTMLDivElement, host: any) {
+  constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
+    super(dom, host, options);
+    this.host = host;
     this.container = dom;
-    this.visualHost = host;
-    this.chart = echarts.init(dom)
+    this.chart = echarts.init(dom);
     this.items = [];
     this.x = [];
     this.y = [];
-    this.width;
-    this.height;
+    this.properties = {
+    };
+    this.bindEvents();
+    this.isTooltipModelShown = false;
+    this.selection = [];
+    this.selectionManager = host.selectionService.createSelectionManager();
+    this.mockItems = [{
+      value: [0, 0, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img1")
+    },
+    {
+      value: [1, 0, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img2")
+    },
+    {
+      value: [2, 0, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img3")
+    },
+    {
+      value: [3, 0, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img4")
+    },
+    {
+      value: [4, 0, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img5")
+    },
+    {
+      value: [0, 1, 1],
+      symbol: "image://" + this.host.assetsManager.getImage("Img6")
+    },
+    {
+      value: [1, 1, 2],
+      symbol: "image://" + this.host.assetsManager.getImage("Img7")
+    },
+    {
+      value: [2, 1, 1],
+      symbol: "image://" + this.host.assetsManager.getImage("Img8")
+    },
+    {
+      value: [3, 1, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img9")
+    },
+    {
+      value: [4, 1, 2],
+      symbol: "image://" + this.host.assetsManager.getImage("Img10")
+    },
+    {
+      value: [0, 2, 1],
+      symbol: "image://" + this.host.assetsManager.getImage("Img11")
+    },
+    {
+      value: [1, 2, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img12")
+    },
+    {
+      value: [2, 2, 2],
+      symbol: "image://" + this.host.assetsManager.getImage("Img13")
+    },
+    {
+      value: [3, 2, 1],
+      symbol: "image://" + this.host.assetsManager.getImage("Img14")
+    },
+    {
+      value: [4, 2, 0],
+      symbol: "image://" + this.host.assetsManager.getImage("Img15")
+    }
+    ]
+
+  }
+
+  public bindEvents = () => {
+    this.container.addEventListener('click', (e: any) => {
+      if (!e.seriesClick) {
+        this.hideTooltip();
+        this.selection = [];
+        this.selectionManager.clear();
+        return;
+      }
+    })
+
+    this.chart.on('click', (params) => {
+      if (params.componentType !== 'series') return;
+      params.event.event.seriesClick = true;
+      let dataIndex = params.dataIndex;
+      let sid = this.items[1][dataIndex];
+      let selectedInfo = {
+        seriesIndex: 1,
+        dataIndex: dataIndex,
+      };
+      if (this.selectionManager.contains(sid)) {
+        this.selectionManager.clear(sid);
+        if (this.selectionManager.isEmpty()) {
+          this.hideTooltip();
+        } else {
+          this.showTooltip(params);
+        }
+        return;
+      }
+      this.showTooltip(params);
+      this.selectionManager.select(sid, true);
+      this.selection.push(selectedInfo);
+    })
+  }
+
+  private showTooltip = _.debounce((params) => {
+    this.isTooltipModelShown = true;
+    const fields = [{ label: this.axisX.display, value: `${params.value[0]}` }, { label: this.axisY.display, value: `${params.value[1]}` }, { label: this.status, value: `${params.value[2]}` }]
+    this.host.toolTipService.show({
+      position: {
+        x: params.event.event.x,
+        y: params.event.event.y,
+      },
+      title: params.seriesName,
+      fields,
+      selected: this.selectionManager.getSelectionIds(),
+      menu: true,
+    }, 10);
+  });
+
+  private hideTooltip = () => {
+    this.host.toolTipService.hide();
+    this.isTooltipModelShown = false;
+  }
+
+  public update(options: VisualNS.IVisualUpdateOptions) {
+    const dataView = options.dataViews[0];
+    let data = [[], []];
+    if (dataView) {
+      const plainData = dataView.plain;
+      this.axisX = plainData.profile.axisX.values[0];
+      this.axisY = plainData.profile.axisY.values[0];
+      let deviceImg = plainData.profile.deviceImg.values[0].display;
+      this.status = plainData.profile.status.values[0].display;
+      this.x = plainData.sort[this.axisX.display].order;
+      this.y = plainData.sort[this.axisY.display].order;
+      plainData.data.map((item) => {
+        data[0].push({
+          value: [item[this.axisX.display], item[this.axisY.display], item[this.status]],
+          symbol: 'image://' + item[deviceImg],
+        })
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(this.axisX, item)
+          .withDimension(this.axisY, item);
+        data[1].push(selectionId);
+      })
+    }
+    this.items = data;
+    this.properties = options.properties;
     this.render();
   }
 
-  public update(options: any) {
-    const dataView = options.dataViews[0];
-    this.items = [];
-    if (dataView &&
-      dataView.plain.profile.values.values.length && dataView.plain.profile.departure.values.length && dataView.plain.profile.destination.values.length) {
-      const plainData = dataView.plain;
-      let destinationName = plainData.profile.destination.values[0].display
-      let valuesName = plainData.profile.values.values[0].display;
-      let departureName = plainData.profile.departure.values[0].display
-      let departureValue = plainData.sort[departureName].order;
-      for (let i = 0; i < departureValue.length; i++) {
-        this.items[i] = plainData.data.map(function (item) {
-          if (departureValue[i] == item[departureName]) {
-            return [
-              { name: item[departureName] },
-              {
-                name: item[destinationName],
-                value: item[valuesName] || 0,
-              }];
-          }
-        })
-          .filter(function (item) {
-            if (!(typeof item == "undefined")) {
-              return [
-                { name: item[departureName] },
-                {
-                  name: item[destinationName],
-                  value: item[valuesName] || 0,
-                }];
-            }
-          });
+  private finditem(items) {
+    let datatemp;
+    let i, j;
+    let datas = [];
+    let obj = JSON.parse(this.properties.arrColor);
+    for (i = 0; i < items.length; i++) {
+      if (obj[items[i].value[2]]) {
+        datatemp = { value: items[i].value, itemStyle: { color: obj[items[i].value[2]] } }
+        datas.push(datatemp);
       }
     }
-    this.render();
+    return datas;
+  }
+
+  private render() {
+    this.chart.clear();
+    const isMock = !this.items[0].length;
+    const items = isMock ? this.mockItems : this.items[0];
+    this.container.style.opacity = isMock ? '0.3' : '1';
+    const x = isMock ? Visual.mockx : this.x
+    const y = isMock ? Visual.mocky : this.y
+    const options = this.properties;
+    let XfontWeight: string;
+    if (options.XTextStyle.fontWeight == "Light") {
+      XfontWeight = options.XTextStyle.fontWeight + "er"
+    } else {
+      XfontWeight = options.XTextStyle.fontWeight
+    }
+    let YfontWeight: string;
+    if (options.YTextStyle.fontWeight == "Light") {
+      YfontWeight = options.YTextStyle.fontWeight + "er"
+    } else {
+      YfontWeight = options.YTextStyle.fontWeight
+    }
+    let size = getComputedStyle(this.container)
+    let width = Number(size.width.replace('px', '')) / (x.length + 3)
+    let height = Number(size.height.replace('px', '')) / (y.length + 3)
+    if ((width / options.W_H) > height) {
+      width = height * options.W_H
+    } else {
+      height = width / options.W_H
+    }
+    width = Number(width.toFixed());
+    height = Number(height.toFixed());
+
+    var option = {
+      tooltip: {
+        show: true,
+        trigger: 'item',
+        axisPointer: {
+          type: 'shadow'
+        },
+        formatter: (param) => {
+          return (param.seriesName + '</br>' + this.axisX.display + ' : ' + param.value[0] + '</br>' + this.axisY.display + ' : ' + param.value[1] + '</br>' + this.status + ' : ' + param.value[2])
+        }
+      },
+      grid: {
+        left: '9%',
+        top: '9%',
+        right: 0,
+        bottom: 0
+      },
+      xAxis: {
+        type: 'category',
+        data: x,
+        position: 'top',
+        axisLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: options.showXAxisLabel,
+          rotate: options.Xrotate,
+          fontSize: options.XTextStyle.fontSize.substr(0, 2),
+          fontWeight: XfontWeight,
+          fontFamily: options.XTextStyle.fontFamily,
+          fontStyle: options.XTextStyle.fontStyle,
+          color: options.XTextStyle.color,
+        }
+      },
+      yAxis: {
+        type: 'category',
+        data: y,
+        inverse: true,
+        axisLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: options.showYAxisLabel,
+          rotate: options.Yrotate,
+          fontSize: options.YTextStyle.fontSize.substr(0, 2),
+          fontWeight: YfontWeight,
+          fontFamily: options.YTextStyle.fontFamily,
+          fontStyle: options.YTextStyle.fontStyle,
+          color: options.YTextStyle.color,
+        }
+      },
+      series: [{
+        name: '设备状态',
+        type: 'scatter',
+        label: {
+          show: true
+        },
+        data: items,
+        symbolSize: [width, height],
+        zlevel: 1
+      }, {
+        name: '设备状态',
+        type: 'effectScatter',
+        coordinateSystem: 'cartesian2d',
+        data: this.finditem(items),
+        // data:[{ value: [0,0], itemStyle: { color: 'yellow' } },{ value: [0,1], itemStyle: { color: 'yello' } },{ value: [0,2], itemStyle: { color: 'blue' } }],
+        symbol: 'rect',
+        symbolSize: [width + 5, height + 10],
+        showEffectOn: 'render',
+        rippleEffect: {
+          brushType: 'stroke',
+          scale: 1.5,
+          period: 3
+        },
+
+      }]
+    }
+    this.chart.setOption(option)
   }
 
 
-  private render() {
-    this.container.innerHTML = "";
-    const isMock = !this.items.length;
-    const items = isMock ? Visual.mockItems : this.items;
-    this.container.style.opacity = isMock ? '0.3' : '1';
-    this.chart.clear()
-    var x = isMock? Visual.mockx : this.x;
-    var y = isMock ? Visual.mocky : this.y;
-
-    var size = getComputedStyle(this.container)
-    this.width = parseInt(size.width)
-    this.height = parseInt(size.height)
-
-    var options = this.options
-    var FontSize = options.textFont
-
-    var w = this.width / (x.length + 3)
-    var h = this.height / (y.length + 3)
-
-    if (options.textFont == 'auto') {
-        FontSize = (parseInt(this.width / (x.length + 3) / 7) > 12) ? parseInt(this.width / (x.length + 3) / 7) : 12
-        FontSize = FontSize > 35 ? 35 : FontSize
-    }
-    
-    if (parseInt(w / options.W_H) > h) {
-        w = parseInt(h * options.W_H)
-    } else {
-        h = parseInt(w / options.W_H)
-    }
-    var option = {
-        tooltip: {
-            show: !this.isMock && options.showTooltip,
-            trigger: 'item',
-            axisPointer: {
-                type: 'shadow'
-            },
-            formatter: function(param) {
-                var str =  param.value[2]>1?'故障':(param.value[2]<1?'正常':'告警')
-                return (param.seriesName + ' : ' +str)
-            }
-        },
-        grid: {
-            left: '9%',
-            top: '9%',
-            right: 0,
-            bottom: 0
-        },
-        xAxis: {
-            type: 'category',
-            data: x.map(function (item) {
-                return {
-                    value: item,
-                    textStyle: {
-                        fontSize: FontSize,
-                        color: options.textColor
-                    }
-                }
-            }),
-            position: 'top',
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-            axisPointer: {
-                label: {
-                    show: true,
-                    margin: 30,
-                }
-            }
-        },
-        yAxis: {
-            type: 'category',
-            data: y.map(function (item) {
-                return {
-                    value: item,
-                    textStyle: {
-                        fontSize: FontSize,
-                        color: options.textColor
-                    }
-                }
-            }),
-            inverse: true,
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-
-            axisPointer: {
-                label: {
-                    show: true,
-                    margin: 30
-                }
-            }
-        },
-        series: [{
-            name: '设备状态',
-            type: 'scatter',
-            label: {
-                show: true
-            },
-            data: items,
-            symbolSize: [w - 5, h],
-            zlevel: 1
-        }, {
-            name: '设备状态',
-            type: 'effectScatter',
-            coordinateSystem: 'cartesian2d',
-            data: this.finditem(items, options),
-            // data:[{ value: [0,0], itemStyle: { color: 'yellow' } },{ value: [0,1], itemStyle: { color: 'yello' } },{ value: [0,2], itemStyle: { color: 'blue' } }],
-            symbol: 'rect',
-            symbolSize: [w + 5, h + 10],
-            showEffectOn: 'render',
-            rippleEffect: {
-                brushType: 'stroke',
-                scale: 1.5,
-                period: 3
-            },
-
-        }]
-    }
-    this.chart.setOption(option);
+  public onDestroy() {
+    this.chart.dispose();
   }
 
   public onResize() {
-    this.chart.resize();
-    this.render();
+    this.chart.resize()
+    this.render()
   }
 
-  public getInspectorVisibilityState(properties: any): string[] {
+  public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+    if (!options.properties.showXAxisLabel) {
+      return ['Xrotate', 'XTextStyle'];
+    }
+    if (!options.properties.showYAxisLabel) {
+      return ['Yrotate', 'YTextStyle'];
+    }
     return null;
   }
 
-  public getActionBarVisibilityState(updateOptions: any): string[] {
+  public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     return null;
-  }
-
-  public onActionEventHandler = (name: string) => {
-    console.log(name);
   }
 }

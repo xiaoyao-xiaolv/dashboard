@@ -1,14 +1,30 @@
 {
-    "name": "imageView",
-    "version": "0.0.1",
+    "name": "图片动态预警",
     "displayName": "图片动态预警",
     "displayNameKey": "",
-    "icon": "assets/icon.png",
+    "icon": "visualIcon",
     "description": "",
     "externalJs": [],
     "externalCss": [],
     "assets": {
-        "images": {}
+        "images": {
+            "visualIcon": "assets/icon.png",
+            "Img1": "assets/1.jpg",
+            "Img2": "assets/2.jpg",
+            "Img3": "assets/3.jpeg",
+            "Img4": "assets/4.jpg",
+            "Img5": "assets/5.jpg",
+            "Img6": "assets/6.jpg",
+            "Img7": "assets/7.jpg",
+            "Img8": "assets/8.jpg",
+            "Img9": "assets/9.jpg",
+            "Img10": "assets/10.jpg",
+            "Img11": "assets/11.png",
+            "Img12": "assets/12.jpg",
+            "Img13": "assets/13.jpg",
+            "Img14": "assets/14.jpg",
+            "Img15": "assets/15.jpg"
+        }
     },
     "configuration": {}
 }
