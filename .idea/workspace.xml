@@ -11,33 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/天气预报/src/cityID.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/timeStatusBar/assets/icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/GIS气泡地图.viz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/baiduGISBubbleMap/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carrouselKPI/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carrouselKPI/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/音频预警.viz" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/音频预警.viz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/3D旋转三棱锥.viz" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/3D旋转三棱锥.viz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/pyramidCarrousel/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/3D倾斜旋转KPI.viz" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/3D倾斜旋转KPI.viz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/topCarrouseKPI/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/天气预报/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/天气预报/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/天气预报/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/天气预报/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/天气预报/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/天气预报/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/天气预报/webpack.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图3D/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/自定义地图3D/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/自定义地图3D/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/色阶地图2D/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/色阶地图2D/色阶地图2D.viz" beforeDir="false" afterPath="$PROJECT_DIR$/色阶地图2D/色阶地图2D.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +50,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/天气预报/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/timeStatusBar/assets" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -84,15 +59,15 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
-    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\BubbleChart\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\流向地图GEO\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\timeStatusBar\assets" />
       <recent name="D:\Wyn plugins code\dashboard\天气预报\src" />
       <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
       <recent name="D:\Wyn plugins code\dashboard\自定义地图3D" />
       <recent name="D:\Wyn plugins code\dashboard\色阶地图2D" />
-      <recent name="D:\Wyn plugins code\dashboard\自定义地图3D\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
@@ -141,7 +116,10 @@
       <workItem from="1611553320352" duration="4988000" />
       <workItem from="1611558509430" duration="42010000" />
       <workItem from="1611797758551" duration="44329000" />
-      <workItem from="1612660821433" duration="28792000" />
+      <workItem from="1612660821433" duration="49004000" />
+      <workItem from="1613702657254" duration="35966000" />
+      <workItem from="1613958073540" duration="858000" />
+      <workItem from="1613960132651" duration="28986000" />
     </task>
     <servers />
   </component>
@@ -221,34 +199,40 @@
       <screen x="1920" y="7" width="1920" height="1040" />
     </state>
     <state x="2552" y="154" key="FileChooserDialogImpl/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1609728131440" />
-    <state width="1899" height="281" key="GridCell.Tab.0.bottom" timestamp="1611797224253">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1612766212051">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612766212051" />
     <state width="1899" height="281" key="GridCell.Tab.0.bottom/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state width="1899" height="281" key="GridCell.Tab.0.center" timestamp="1611797224253">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state width="1259" height="162" key="GridCell.Tab.0.center" timestamp="1612766212051">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="162" key="GridCell.Tab.0.center/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612766212051" />
     <state width="1899" height="281" key="GridCell.Tab.0.center/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state width="1899" height="281" key="GridCell.Tab.0.left" timestamp="1611797224253">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state width="1259" height="162" key="GridCell.Tab.0.left" timestamp="1612766212051">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="162" key="GridCell.Tab.0.left/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612766212051" />
     <state width="1899" height="281" key="GridCell.Tab.0.left/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state width="1899" height="281" key="GridCell.Tab.0.right" timestamp="1611797224253">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state width="1259" height="162" key="GridCell.Tab.0.right" timestamp="1612766212051">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="162" key="GridCell.Tab.0.right/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612766212051" />
     <state width="1899" height="281" key="GridCell.Tab.0.right/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611797224253" />
-    <state x="2700" y="135" key="RollbackChangesDialog" timestamp="1611900561567">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state x="520" y="84" key="RollbackChangesDialog" timestamp="1612765976450">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state x="520" y="84" key="RollbackChangesDialog/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612765976450" />
     <state x="2700" y="135" key="RollbackChangesDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900561567" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1612682103896">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612682103896" />
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611049100080" />
-    <state width="498" height="399" key="SwitcherDM" timestamp="1612762841564">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state width="747" height="611" key="SwitcherDM" timestamp="1614061870147">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state width="747" height="611" key="SwitcherDM/0.0.1280.680/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1614061870147" />
     <state width="498" height="399" key="SwitcherDM/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612762841564" />
     <state width="498" height="399" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123394184" />
     <state width="747" height="609" key="SwitcherDM/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900247154" />
@@ -257,11 +241,11 @@
     </state>
     <state x="475" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123384787" />
     <state x="2633" y="64" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1612145967202" />
-    <state x="551" y="66" width="661" height="595" key="find.popup" timestamp="1612758579501">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="-1093" y="101" width="992" height="910" key="find.popup" timestamp="1614061392583">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1093" y="101" width="992" height="910" key="find.popup/0.0.1280.680/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1612755602389" />
-    <state x="551" y="66" width="661" height="595" key="find.popup/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1612758579501" />
+    <state x="-1093" y="101" width="992" height="910" key="find.popup/0.0.1280.680/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1614061392583" />
+    <state x="551" y="66" width="661" height="595" key="find.popup/0.0.1280.680/-1920.0.1920.1040@0.0.1280.680" timestamp="1613719069660" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611805162910" />
     <state x="2747" y="108" width="860" height="909" key="find.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900180180" />
     <state x="441" y="86" width="573" height="594" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1611841545642" />
@@ -270,9 +254,10 @@
     </state>
     <state x="297" y="151" key="run.anything.popup/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611050516303" />
     <state x="2366" y="238" key="run.anything.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611569422936" />
-    <state x="2543" y="232" width="672" height="678" key="search.everywhere.popup" timestamp="1611903601335">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state x="-1297" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1613806700490">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state x="-1297" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1613806700490" />
     <state x="2543" y="232" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611903601335" />
   </component>
 </project>

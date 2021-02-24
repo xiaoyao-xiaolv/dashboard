@@ -1,0 +1,222 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "status",
+                "displayNameKey": "运行状态",
+                "kind": "grouping"
+            },
+            {
+                "name": "startTime",
+                "displayNameKey": "开始时间",
+                "kind": "grouping",
+                "requiredTypes": ["datetime"]
+            },
+            {
+                "name": "endTime",
+                "displayNameKey": "结束时间",
+                "kind": "grouping",
+                "requiredTypes": ["datetime"]
+            },
+            {
+                "name": "workTime",
+                "displayNameKey": "上班时间",
+                "kind": "grouping",
+                "requiredTypes": ["datetime"]
+            },
+            {
+                "name": "offTime",
+                "displayNameKey": "下班时间",
+                "kind": "grouping",
+                "requiredTypes": ["datetime"]
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "status": {
+                                "min": 1
+                            },
+                            "startTime": {
+                                "min": 1
+                            },
+                            "endTime": {
+                                "min": 1
+                            },
+                            "workTime": {
+                                "min": 1
+                            },
+                            "offTime": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "status": {
+                    "max": 1
+                },
+                "startTime": {
+                    "max": 1
+                },
+                "endTime": {
+                    "max": 1
+                },
+                "workTime": {
+                    "max": 1
+                },
+                "offTime": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "statusColors",
+                        "type": "Palette",
+                        "displayName": "状态颜色"
+                    },
+                    {
+                        "name": "height",
+                        "type": "Float",
+                        "displayName": "柱子高度",
+                        "defaultValue": 50.0,
+                        "min": 10.0
+                    }
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "name": "showLegend",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "legendIcon",
+                        "type": "Enum",
+                        "displayName": "图标",
+                        "items": [
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "rect",
+                                "displayNameKey": "方形"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "圆角方形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            }
+                        ],
+                        "defaultValue": "roundRect"
+                    },
+                    {
+                        "name": "legendOrient",
+                        "type": "Enum",
+                        "displayName": "图例布局方向",
+                        "items": [
+                            {
+                                "value": "horizontal",
+                                "displayNameKey": "水平方向"
+                            },
+                            {
+                                "value": "vertical",
+                                "displayNameKey": "垂直方向"
+                            }
+                        ],
+                        "defaultValue": "horizontal"
+                    },
+                    {
+                        "name": "legendHorizontalPosition",
+                        "type": "Enum",
+                        "displayName": "水平位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "middle",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "bottom"
+                    },
+                    {
+                        "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
