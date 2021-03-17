@@ -19,6 +19,7 @@ export default class Visual extends WynVisual {
   private provincegraphic: any;
   private graphic: any;
   private sid: any;
+  private pieces: any;
   private data: any;
   static mockItems = [];
   private selection: any;
@@ -32,6 +33,7 @@ export default class Visual extends WynVisual {
   private tooltipFields: any;
   private myTooltip: any;
   private config: any;
+  private valueFormat: any;
 
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
@@ -40,7 +42,7 @@ export default class Visual extends WynVisual {
     this.chart = echarts.init(dom);
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
-    this.container.firstElementChild.setAttribute('style','height : 0');
+    this.container.firstElementChild.setAttribute('style', 'height : 0');
     this.host = host;
     this.items = [];
     this.data = [];
@@ -82,7 +84,7 @@ export default class Visual extends WynVisual {
           dataIndex: index
         });
         index++;
-        if (index >= this.items.length) {
+        if (this.items.length && index >= this.items[0].length) {
           index = 0;
         }
       }, 2000);
@@ -164,13 +166,15 @@ export default class Visual extends WynVisual {
             this.graphic[0].children[0].shape.x2 += 60;
             this.graphic[0].children[1].shape.x2 += 60;
             this.provincedata = this.items;
-            this.provincegraphic = this.graphic
+            this.provincegraphic = this.graphic;
+            this.getPieces(this.properties.citypieces);
             break;
           case 2:
             this.items = this.data[2].find(item => item[2] == params.name);
             this.graphic.push(this.createBreadcrumb(params.name, 120, 2))
             this.graphic[0].children[0].shape.x2 += 60;
             this.graphic[0].children[1].shape.x2 += 60;
+            this.getPieces(this.properties.pieces);
             this.drilldown = false;
             break;
         }
@@ -246,6 +250,7 @@ export default class Visual extends WynVisual {
                 this.graphic[0].children[0].shape.x2 -= 60;
                 this.graphic[0].children[1].shape.x2 -= 60;
                 this.getGeoJson(name);
+                this.getPieces(this.properties.citypieces);
                 this.drilldown = true;
               }
               this.render();
@@ -321,6 +326,7 @@ export default class Visual extends WynVisual {
             this.selection = [];
             this.selectionManager.clear();
             this.getgraphic();
+            this.getPieces(this.properties.provincepieces);
             this.sid = [];
             this.render();
           },
@@ -333,7 +339,7 @@ export default class Visual extends WynVisual {
   private classifyMapData = (originMapData: any, level: any) => {
     let mapNames = [];
     originMapData.forEach((data) => {
-      if(mapNames.indexOf(data[level]) < 0) {
+      if (mapNames.indexOf(data[level]) < 0) {
         mapNames.push(data[level]);
       }
     })
@@ -370,13 +376,13 @@ export default class Visual extends WynVisual {
         tooltips = this.tooltipFields.map((filed) => {
           if (filed.dataType === 'number') {
             return {
-              filed : filed.display,
-              value : this.sum(item, filed.display)
+              filed: filed.display,
+              value: this.sum(item, filed.display)
             }
           } else {
             return {
-              filed : filed.display,
-              value : item[0][filed.display]
+              filed: filed.display,
+              value: item[0][filed.display]
             }
           }
         });
@@ -404,10 +410,10 @@ export default class Visual extends WynVisual {
       let tooltips;
       if (this.tooltipFields.length) {
         tooltips = this.tooltipFields.map((filed) => {
-            return {
-              filed : filed.display,
-              value : item[filed.display]
-            }
+          return {
+            filed: filed.display,
+            value: item[filed.display]
+          }
         });
         dataObj['tooltipFields'] = tooltips;
       }
@@ -421,6 +427,14 @@ export default class Visual extends WynVisual {
     arr[2] = data[0][this.cityName[0].display]
     return arr;
   }
+  private getPieces(param) {
+    this.pieces = JSON.parse(param).map((item: number[], i: number) => {
+      let j = i % this.properties.piecesColor.length;
+      item['color'] = this.properties.piecesColor[j];
+      return item;
+    });
+  }
+
 
   private render() {
     let myTooltip = this.myTooltip;
@@ -430,12 +444,15 @@ export default class Visual extends WynVisual {
     const items = isMock ? Visual.mockItems : this.items[0];
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
+    let max = Math.max.apply(Math, items.map(function (o) { return o.value }));
+    let min = Math.min.apply(Math, items.map(function (o) { return o.value }));
+    min = min > 0 ? 0 : min;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     myTooltip.config['text'] = {
       time: 0.3,
       font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
       color: options.tooltipTextStyle.color,
-      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left],
       width: options.tooltipWidth,
       height: options.tooltipHeight,
       lineHeight: 24,
@@ -447,12 +464,6 @@ export default class Visual extends WynVisual {
         long: 15
       }
     }
-    let pieces = JSON.parse(options.pieces).map(function (item: number[], i: number) {
-      let j = i % options.piecesColor.length;
-      item['color'] = options.piecesColor[j];
-      return item;
-    });
-
     let fontWeight: string;
     if (options.textStyle.fontWeight == "Light") {
       fontWeight = options.textStyle.fontWeight + "er"
@@ -474,11 +485,10 @@ export default class Visual extends WynVisual {
       left = 'auto'
       right = '2%'
     }
-
     let tooltipTemplate = (data) => {
       let locationStr = `${data.name}\n`;
       let tooltipStr = '';
-      let valueStr = `${this.valuesName} : ${data.value}\n`;
+      let valueStr = `${this.valuesName} : ${this.formatData(data.value, options.dataindicateUnit, options.dataindicateType)}\n`;
       if (data.tooltipFields) {
         data.tooltipFields.forEach((tooltip) => {
           tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
@@ -491,13 +501,16 @@ export default class Visual extends WynVisual {
       tooltip: {
         show: options.showTooltip,
         trigger: 'item',
-        backgroundColor : 'transparent',
-        position (pos) {
+        backgroundColor: 'transparent',
+        position(pos) {
           return myTooltip.getPosOrSize('pos', pos);
         },
         formatter(params: any) {
-          let text = tooltipTemplate(params.data);
-          return myTooltip.getTooltipDom(text);
+          if (params.data) {
+            let text = tooltipTemplate(params.data);
+            return myTooltip.getTooltipDom(text);
+          }
+
         },
       },
       graphic: this.graphic,
@@ -561,7 +574,31 @@ export default class Visual extends WynVisual {
             fontFamily: options.detailTextStyle.fontFamily,
             fontStyle: options.detailTextStyle.fontStyle
           },
-          pieces: pieces
+          pieces: this.pieces
+        },
+      })
+    } else {
+      this.chart.setOption({
+        visualMap: {
+          show: options.showVisualMap,
+          min: min,
+          max: max,
+          type: 'continuous',
+          left: left,
+          right: right,
+          bottom: '5%',
+          text: ['高', '低'],
+          calculable: true,
+          inRange: {
+            color: options.piecesColor
+          },
+          textStyle: {
+            color: options.detailTextStyle.color,
+            fontSize: options.detailTextStyle.fontSize.substr(0, 2),
+            fontWeight: detailfontWeight,
+            fontFamily: options.detailTextStyle.fontFamily,
+            fontStyle: options.detailTextStyle.fontStyle
+          }
         },
       })
     }
@@ -586,7 +623,7 @@ export default class Visual extends WynVisual {
     });
   }
 
-  public formatData = (number: any, dataUnit: any, dataType: any) => {
+  public formatData = (number, dataUnit, dataType) => {
     let format = number
     const units = [{
       value: 1,
@@ -623,8 +660,8 @@ export default class Visual extends WynVisual {
     const formatUnit = units.find((item) => item.value === Number(dataUnit))
     format = (format / formatUnit.value).toFixed(2)
 
-    if (dataType === 'number') {
-      format = format.toLocaleString()
+    if (dataType === 'number' || dataType === 'none' || dataType === '') {
+      format = this.host.formatService.format(this.valueFormat, format).toLocaleString();
     } else if (dataType === '%') {
       format = format + dataType
     } else {
@@ -642,12 +679,13 @@ export default class Visual extends WynVisual {
       this.provinceName = plainData.profile.province.values[0].display;
       this.cityName = plainData.profile.city.values;
       this.valuesName = plainData.profile.values.values[0].display;
+      this.valueFormat = plainData.profile.values.options.valueFormat;
       let toolTipValues = dataView.plain.profile.tooltipFields.values;
       if (toolTipValues.length) {
         this.tooltipFields = toolTipValues.map((value) => {
           return {
-            display : value.display,
-            dataType : value.dataType
+            display: value.display,
+            dataType: value.dataType
           }
         });
       }
@@ -669,6 +707,7 @@ export default class Visual extends WynVisual {
     this.data = data;
     this.items = data[0];
     this.properties = options.properties;
+    this.getPieces(this.properties.provincepieces);
     this.getgraphic();
     this.render();
   }
@@ -682,14 +721,14 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     if (!options.properties.showPieces) {
-      return ['showVisualMap', 'textColor', 'pieces', 'piecesColor'];
+      return ['pieces'];
     }
     if (!options.properties.showVisualMap) {
       return ['textColor'];
     }
 
-    if(!options.properties.showTooltip) {
-      return ['tooltipBackgroundColor','tooltipWidth','tooltipHeight','tooltipBorderColor','tooltipPadding','tooltipTextStyle'];
+    if (!options.properties.showTooltip) {
+      return ['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipTextStyle'];
     }
 
     if (!options.properties.showLabel) {
@@ -699,7 +738,7 @@ export default class Visual extends WynVisual {
       if (options.properties.showposition) {
         options.properties.showposition = false;
       }
-      return ['showData','showposition','textStyle','dataindicateType','dataindicateUnit'];
+      return ['showData', 'showposition', 'textStyle', 'dataindicateType', 'dataindicateUnit'];
     }
     return null;
   }

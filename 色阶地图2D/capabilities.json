@@ -85,7 +85,7 @@
                     {
                         "name": "showPieces",
                         "type": "Boolean",
-                        "displayName": "是否采用分段填充",
+                        "displayName": "采用分段填充",
                         "defaultValue": true
                     },
                     {
@@ -108,7 +108,7 @@
                     {
                         "name": "showVisualMap",
                         "type": "Boolean",
-                        "displayName": "是否显示分段图例",
+                        "displayName": "显示分段图例",
                         "defaultValue": true
                     },
                     {
@@ -134,10 +134,22 @@
                         "inheritFrom": "dashboard.textStyle"
                     },
                     {
+                        "name": "provincepieces",
+                        "type": "LongText",
+                        "displayName": "省份分段颜色",
+                        "defaultValue": "[{\"gt\": 100000,\"label\": \">100000\"},{\"gte\": 10000,\"lte\": 100000,\"label\": \"10000 - 100000\"},{\"gte\": 1000,\"lt\": 10000,\"label\": \"1000 - 9999\"},{\"gte\": 1,\"lt\": 1000,\"label\": \"1 - 999\"},{\"lte\": 0,\"label\": \"0\"}]"
+                    },
+                    {
+                        "name": "citypieces",
+                        "type": "LongText",
+                        "displayName": "城市分段颜色",
+                        "defaultValue": "[{\"gt\": 10000,\"label\": \">10000\"},{\"gte\": 1000,\"lte\": 10000,\"label\": \"1000 - 10000\"},{\"gte\": 100,\"lt\": 1000,\"label\": \"100 - 999\"},{\"gte\": 1,\"lt\": 100,\"label\": \"1 - 99\"},{\"lte\": 0,\"label\": \"0\"}]"
+                    },
+                    {
                         "name": "pieces",
                         "type": "LongText",
-                        "displayName": "分段颜色",
-                        "defaultValue": "[{\"gt\": 10000,\"label\": \">10000\"},{\"gte\": 1000,\"lte\": 10000,\"label\": \"1000 - 10000\"},{\"gte\": 100,\"lt\": 1000,\"label\": \"100 - 999\"},{\"gte\": 1,\"lt\": 100,\"label\": \"1 - 99\"},{\"lte\": 0,\"label\": \"0\"}]"
+                        "displayName": "区县分段颜色",
+                        "defaultValue": "[{\"gt\": 1000,\"label\": \">1000\"},{\"gte\": 100,\"lte\": 1000,\"label\": \"100 - 1000\"},{\"gte\": 10,\"lt\": 100,\"label\": \"10 - 99\"},{\"gte\": 1,\"lt\": 10,\"label\": \"1 - 9\"},{\"lte\": 0,\"label\": \"0\"}]"
                     },
                     {
                         "name": "piecesColor",
