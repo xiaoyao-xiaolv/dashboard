@@ -8,6 +8,7 @@ export default class Visual {
   private properties: any;
   private isMock: boolean;
   private items: any;
+  private valueFormat: any;
   private host: any;
   private selection: any;
   private selectionManager: any;
@@ -96,27 +97,31 @@ export default class Visual {
 
   public update(options: any) {
     const dataView = options.dataViews[0];
+    console.log(dataView)
     this.isMock = !dataView;
-    this.items = [[], [], [], [], [], []];
+    this.items = [[], [], [], [], [], [], []];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length && dataView.plain.profile.dimension.values.length) {
       const plainData = dataView.plain;
       let dimension = plainData.profile.dimension.values[0].display;
       let ActualValue = plainData.profile.ActualValue.values[0].display;
       let ContrastValue = plainData.profile.ContrastValue.values[0].display;
+      let Compare = plainData.profile.Compare.values[0].display;
       let data = plainData.data;
       this.items[0] = plainData.sort[dimension].order;
       this.items[4] = [ActualValue, ContrastValue];
-
+      this.valueFormat = plainData.profile.ActualValue.options.valueFormat;
       for (let index = 0; index < data.length; index++) {
         data.forEach((item) => {
           if (item[dimension] == this.items[0][index]) {
             this.items[1].push(item[ActualValue]);
             this.items[2].push(item[ContrastValue]);
             this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
+            this.items[6].push(item[Compare]);
             const getSelectionId = (item) => {
               const selectionId = this.host.selectionService.createSelectionId();
               selectionId.withDimension(plainData.profile.dimension.values[0], item);
+              selectionId.withDimension(plainData.profile.jump.values[0], item);
               return selectionId;
             }
             this.items[5].push(getSelectionId(item));
@@ -132,14 +137,28 @@ export default class Visual {
     this.chart.clear();
     const options = this.properties;
     const items = this.isMock ? Visual.mockItems : this.items;
+    console.log(items)
     this.container.style.opacity = this.isMock ? '0.3' : '1';
+    let fontWeight: string;
+    if (options.textStyle.fontWeight == "Light") {
+      fontWeight = options.textStyle.fontWeight + "er"
+    } else {
+      fontWeight = options.textStyle.fontWeight
+    }
+    let labelfontWeight: string;
+    if (options.labelTextStyle.fontWeight == "Light") {
+      labelfontWeight = options.labelTextStyle.fontWeight + "er"
+    } else {
+      labelfontWeight = options.labelTextStyle.fontWeight
+    }
     let option = {
       tooltip: {
         show: true,
-        formatter(params) {
+        formatter: (params) => {
           for (var i = 0; i < items[0].length; i++) {
             if (items[0][i] === params.name) {
-              return items[4][0] + ":" + items[1][i] + "<br/>" + items[4][1] + ":" + items[2][i];
+              // return items[4][0] + ":" + items[1][i] + "<br/>" + items[4][1] + ":" + items[2][i];
+              return items[4][0] + ":" + this.host.formatService.format(this.valueFormat, items[1][i]).toLocaleString() + "<br/>" + items[4][1] + ":" + this.host.formatService.format(this.valueFormat, items[2][i]).toLocaleString();
             }
           }
         }
@@ -155,15 +174,19 @@ export default class Visual {
         type: 'category',
         data: items[0],
         inverse: true,
+        offset: options.offset,
         axisTick: {
           show: false
         },
         axisLabel: {
+          show: options.showLabel,
           margin: 20,
-          textStyle: {
-            fontSize: options.fontSize,
-            color: options.textColor
-          }
+          align: options.align,
+          color: options.textStyle.color,
+          fontSize: options.textStyle.fontSize.substr(0, 2),
+          fontWeight: fontWeight,
+          fontFamily: options.textStyle.fontFamily,
+          fontStyle: options.textStyle.fontStyle,
         },
         axisLine: {
           show: false
@@ -186,20 +209,21 @@ export default class Visual {
         barWidth: options.barWidth,
         data: items[3],
         label: {
-          show: true,
+          show: options.showBarLabel,
           position: 'inside',
-          formatter: '{c}%',
-          color: '#ffffff',
-          fontSize: 12,
+          formatter: (params) => {
+            return this.host.formatService.format(this.valueFormat, params.value).toLocaleString() + "%";
+          },
+          color: options.labelTextStyle.color,
+          fontSize: options.labelTextStyle.fontSize.substr(0, 2),
+          fontWeight: labelfontWeight,
+          fontFamily: options.labelTextStyle.fontFamily,
+          fontStyle: options.labelTextStyle.fontStyle,
         },
         itemStyle: {
-          color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
-            offset: 0,
-            color: options.barStartColor // 0% 处的颜色
-          }, {
-            offset: 1,
-            color: options.barEndcolor // 100% 处的颜色
-          }], false),
+          color: (params) => {
+            return params.value / 100 > items[6][params.dataIndex] ? options.piecesColor[0] : params.value / 100 == items[6][params.dataIndex] ? options.piecesColor[1] : options.piecesColor[2]
+          },
           barBorderRadius: 14
         }
       }, {

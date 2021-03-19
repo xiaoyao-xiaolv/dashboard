@@ -4,7 +4,14 @@
             {
                 "name": "ActualValue",
                 "displayNameKey": "实际值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "ContrastValue",
@@ -12,8 +19,18 @@
                 "kind": "value"
             },
             {
+                "name": "Compare",
+                "displayNameKey": "比较字段",
+                "kind": "value"
+            },
+            {
                 "name": "dimension",
                 "displayNameKey": "分类",
+                "kind": "grouping"
+            },
+            {
+                "name": "jump",
+                "displayNameKey": "跳转字段",
                 "kind": "grouping"
             }
         ],
@@ -29,6 +46,12 @@
                                 "min": 1
                             },
                             "dimension": {
+                                "min": 1
+                            },
+                            "Compare": {
+                                "min": 1
+                            },
+                            "jump": {
                                 "min": 1
                             }
                         }
@@ -46,6 +69,12 @@
                 },
                 "dimension": {
                     "max": 1
+                },
+                "Compare": {
+                    "max": 1
+                },
+                "jump": {
+                    "max": 1
                 }
             }
         ]
@@ -53,7 +82,7 @@
     "options": {
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "图表样式",
                 "properties": [
                     {
                         "name": "barWidth",
@@ -62,34 +91,72 @@
                         "defaultValue": 14
                     },
                     {
-                        "name": "fontSize",
-                        "type": "Integer",
-                        "displayName": "分类字体大小",
-                        "defaultValue": 14
-                    },
-                    {
-                        "name": "textColor",
-                        "type": "Color",
-                        "displayName": "分类字体颜色",
-                        "defaultValue": "#ffffff"
-                    },
-                    {
                         "name": "barBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",
                         "defaultValue": "#444a58"
                     },
                     {
-                        "name": "barStartColor",
-                        "type": "Color",
-                        "displayName": "起始颜色",
-                        "defaultValue": "#57eabf"
+                        "name": "piecesColor",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "inheritFrom": "dashboard.palette"
+                    }
+                ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+                    {
+                        "name": "showLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
                     },
                     {
-                        "name": "barEndcolor",
-                        "type": "Color",
-                        "displayName": "终止颜色",
-                        "defaultValue": "#2563f9"
+                        "displayNameKey": "对齐方式",
+                        "name": "align",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            }
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "offset",
+                        "type": "Integer",
+                        "displayName": "偏移距离",
+                        "defaultValue": 180
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
+                    {
+                        "name": "showBarLabel",
+                        "type": "Boolean",
+                        "displayName": "显示数据标注",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "labelTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     }
                 ]
             },
