@@ -11,8 +11,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/timeStatusBar/assets/icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversebar/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversebar/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diversebar/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversepie/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversepie/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversepie/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversepie/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/style/visual.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/diversepie/扩展扇形图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/diversepie/扩展扇形图.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +36,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
   </component>
   <component name="GithubPullRequestsUISettings">
     <option name="hiddenUrls">
@@ -120,6 +127,7 @@
       <workItem from="1613702657254" duration="35966000" />
       <workItem from="1613958073540" duration="858000" />
       <workItem from="1613960132651" duration="28986000" />
+      <workItem from="1616386990938" duration="1527000" />
     </task>
     <servers />
   </component>
@@ -195,9 +203,10 @@
     </state>
     <state x="61" y="60" width="1158" height="561" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123486623" />
     <state x="-20" y="0" width="1280" height="680" maximized="true" key="DiffContextDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1611900558630" />
-    <state x="2552" y="154" key="FileChooserDialogImpl" timestamp="1609728131440">
-      <screen x="1920" y="7" width="1920" height="1040" />
+    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1616145537989">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/-1920.1.1920.1040@0.0.1280.680" timestamp="1616145537989" />
     <state x="2552" y="154" key="FileChooserDialogImpl/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1609728131440" />
     <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1612766212051">
       <screen x="0" y="0" width="1280" height="680" />
@@ -241,6 +250,10 @@
     </state>
     <state x="475" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@0.0.1280.680" timestamp="1611123384787" />
     <state x="2633" y="64" key="VCS.ChangeListViewerDialog/0.0.1280.680/1920.7.1920.1040@1920.7.1920.1040" timestamp="1612145967202" />
+    <state x="-1828" y="93" width="1736" height="856" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1616129124660">
+      <screen x="-1920" y="1" width="1920" height="1040" />
+    </state>
+    <state x="-1828" y="93" width="1736" height="856" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/-1920.1.1920.1040@0.0.1280.680" timestamp="1616129124660" />
     <state x="-1093" y="101" width="992" height="910" key="find.popup" timestamp="1614061392583">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>

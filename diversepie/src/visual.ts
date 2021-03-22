@@ -292,7 +292,6 @@ export default class Visual extends WynVisual {
             itemStyle: {
               normal: {
                 color: (params) => {
-                  console.log(params, 'color params')
                   return {
                     type: 'radial',
                     x: 0.5,
