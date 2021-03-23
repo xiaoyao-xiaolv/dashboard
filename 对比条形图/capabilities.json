@@ -16,7 +16,14 @@
             {
                 "name": "ContrastValue",
                 "displayNameKey": "对比值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "Compare",
@@ -151,6 +158,12 @@
                         "type": "Boolean",
                         "displayName": "显示数据标注",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "jumpUrl",
+                        "type": "Text",
+                        "displayName": "跳转地址",
+                        "defaultValue": "http://www.baidu.com"
                     },
                     {
                         "name": "labelTextStyle",
