@@ -44,7 +44,7 @@ export default class Visual {
       if (params.componentType !== 'series') return;
       params.event.event.seriesClick = true;
       let dataIndex = params.dataIndex;
-      window.top.open(this.properties.jumpUrl + '?params=[' + this.items[6][dataIndex] + ']')
+      window.open(this.properties.jumpUrl + '?params=[' + this.items[6][dataIndex] + ']')
     })
   }
 
