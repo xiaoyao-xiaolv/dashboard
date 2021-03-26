@@ -44,7 +44,7 @@ export default class Visual {
       if (params.componentType !== 'series') return;
       params.event.event.seriesClick = true;
       let dataIndex = params.dataIndex;
-      window.top.open(this.properties.jumpUrl + '?params=[' + this.items[6][dataIndex] + ']')
+      window.open(this.properties.jumpUrl + '?params=[' + this.items[6][dataIndex] + ']')
     })
   }
 
@@ -188,7 +188,7 @@ export default class Visual {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(255, 255, 255, 0.5)',
+            shadowColor: 'rgba(255, 255, 255, 0.2)',
             borderWidth: 1,
           }
         },
