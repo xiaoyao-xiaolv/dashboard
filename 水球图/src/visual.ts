@@ -94,7 +94,12 @@ export default class Visual {
                 label: {
                     show: options.showlabel,
                     formatter: function () {
-                        return (items * 100).toFixed(2) + '%';
+                        if (options.displayFormat == "number") {
+                            return (items * 1).toFixed(2);
+                        } else {
+                            return (items * 100).toFixed(2) + '%';
+                        }
+
                     },
                     color: options.textStyle.color,
                     fontSize: options.textStyle.fontSize.substr(0, 2),
@@ -117,10 +122,10 @@ export default class Visual {
     // 自定义属性可见性
     public getInspectorHiddenState(updateOptions: any): string[] {
         if (!updateOptions.properties.showColor) {
-            return ['Interval1','Interval2','Interval3','Interval4','Interval5'];
+            return ['Interval1', 'Interval2', 'Interval3', 'Interval4', 'Interval5'];
         }
         if (!updateOptions.properties.showoutline) {
-            return ['borderDistance','outlineborderWidth','outlineborderColor'];
+            return ['borderDistance', 'outlineborderWidth', 'outlineborderColor'];
         }
         if (!updateOptions.properties.showlabel) {
             return ['textStyle'];

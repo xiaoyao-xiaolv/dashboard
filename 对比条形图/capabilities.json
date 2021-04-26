@@ -4,12 +4,26 @@
             {
                 "name": "ActualValue",
                 "displayNameKey": "实际值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "ContrastValue",
                 "displayNameKey": "对比值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "dimension",
@@ -53,25 +67,13 @@
     "options": {
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "图表样式",
                 "properties": [
                     {
                         "name": "barWidth",
                         "type": "Integer",
                         "displayName": "柱子宽度",
                         "defaultValue": 14
-                    },
-                    {
-                        "name": "fontSize",
-                        "type": "Integer",
-                        "displayName": "分类字体大小",
-                        "defaultValue": 14
-                    },
-                    {
-                        "name": "textColor",
-                        "type": "Color",
-                        "displayName": "分类字体颜色",
-                        "defaultValue": "#ffffff"
                     },
                     {
                         "name": "barBackgroundColor",
@@ -90,6 +92,60 @@
                         "type": "Color",
                         "displayName": "终止颜色",
                         "defaultValue": "#2563f9"
+                    }
+                ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+                    {
+                        "name": "showLabel",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
+                    {
+                        "name": "showBarLabel",
+                        "type": "Boolean",
+                        "displayName": "显示数据标注",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "labelTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "displayNameKey": "排序方式",
+                        "name": "sorttype",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "asc",
+                                "displayNameKey": "升序"
+                            },
+                            {
+                                "value": "desc",
+                                "displayNameKey": "降序"
+                            },
+                            {
+                                "value": "default",
+                                "displayNameKey": "默认"
+                            }
+                        ],
+                        "defaultValue": "desc"
                     }
                 ]
             },

@@ -179,6 +179,22 @@
                         "defaultValue": true
                     },
                     {
+                        "displayNameKey": "显示格式",
+                        "name": "displayFormat",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "number",
+                                "displayNameKey": "数值"
+                            },
+                            {
+                                "value": "percent",
+                                "displayNameKey": "百分比"
+                            }
+                        ],
+                        "defaultValue": "percent"
+                    },
+                    {
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
