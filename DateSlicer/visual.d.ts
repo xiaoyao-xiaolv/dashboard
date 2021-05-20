@@ -30,11 +30,15 @@ declare namespace VisualNS {
     };
   }
   interface IFieldProfile {
+    id: any;
     name: string;
     display: string;
     format: string;
     method: string;
     dataType: string;
+    options: {
+      [name: string]: any;
+    }
   }
   interface IDataPoint {
     [datasetColumnDisplay: string]: string | number;
@@ -98,8 +102,8 @@ declare namespace VisualNS {
     position: ITootipPosition;
     title?: string;
     fields?: ILabelFields[];
-    selectionId?: any;
-    selected?: [];
+    selectionId?: SelectionId;
+    selected?: SelectionId[];
     menu?: boolean;
   }
   type Language = 'en-US' | 'zh-CN' | 'zh-TW';
@@ -110,6 +114,7 @@ declare namespace VisualNS {
     ScaleChange = 'scaleChange',
     FilterChange = 'filterChange',
     FullyChange = 'fullyChange',
+    ViewportChange = 'viewportChange',
   }
   interface ICommandDescription {
     name: string;
@@ -130,7 +135,25 @@ declare namespace VisualNS {
     language: Language;
     scale: number;
     filters: IFilter[];
+    viewport: {
+      width: number;
+      height: number;
+      scale: number;
+    };
   }
+
+  interface IDimensionColorAssignmentConfig {
+    values: any[];
+    type: 'dimension';
+    columns: IFieldProfile[];
+  }
+  interface IMeasureColorAssignmentConfig {
+    type: 'measure';
+    columns: IFieldProfile[];
+  }
+  export type IColorAssignmentConfigMapping = {
+    [name: string]: IDimensionColorAssignmentConfig | IMeasureColorAssignmentConfig,
+  };
 
   class EventService {
     renderStart(): void;
@@ -153,8 +176,24 @@ declare namespace VisualNS {
     setProperty(propertyName: string, value: any): void;
   }
 
+  enum DisplayUnit {
+    Auto = 'auto',
+    None = 'none',
+    Hundreds = 'hundreds',
+    Thousands = 'thousands',
+    TenThousand = 'tenThousands',
+    HundredThousand = 'hundredThousand',
+    Millions = 'millions',
+    TenMillion = 'tenMillion',
+    HundredMillion = 'hundredMillion',
+    Billions = 'billions',
+    Trillions = 'trillions',
+  }
+
   class FormatService {
-    format(format: string, value: number): string;
+    isAutoDisplayUnit(displayUnit: DisplayUnit): boolean;
+    getAutoDisplayUnit(values: number[]): DisplayUnit;
+    format(format: string, value: number, displayUnit?: DisplayUnit): string;
   }
 
   class SelectionId {
@@ -169,7 +208,7 @@ declare namespace VisualNS {
     getSelectionIds(): Array<SelectionId>;
     getCount(): number;
     select(id: SelectionId | Array<SelectionId>, multiSelect: boolean): Promise<void>;
-    clear(id?: SelectionId): Promise<void>;
+    clear(id?: SelectionId | Array<SelectionId>): Promise<void>;
     registerOnSelectCallback(onSelectCallback: (ids: SelectionId[]) => void);
     contains(id: SelectionId): boolean;
     isEmpty(): boolean;
@@ -250,10 +289,6 @@ declare namespace VisualNS {
     value: any;
     operator: AdvancedFilterOperator;
   }
-  enum EAdvancedFilterLogicalOperator {
-    And,
-    Or,
-  }
   enum AdvancedFilterLogicalOperator {
     And = 'And',
     Or = 'Or',
@@ -306,8 +341,7 @@ declare namespace VisualNS {
     setOperator(operator: BasicFilterOperator);
     getOperator(): BasicFilterOperator;
     getValues(): ITuple[];
-
-    setValues(vals: ({ year: number } | { month: number } | { day: number })[][]);
+    setValues(vals: ITuple[]);
     toJSON(): ITupleFilter;
     fromJSON(obj: ITupleFilter);
     contains(tuple: ITuple): boolean;
@@ -330,6 +364,7 @@ declare namespace VisualNS {
     AdvancedFilterOperator: typeof AdvancedFilterOperator,
     AdvancedFilterLogicalOperator: typeof AdvancedFilterLogicalOperator,
     UpdateType: typeof VisualUpdateType,
+    DisplayUnit: typeof DisplayUnit,
   }
 }
 
@@ -341,6 +376,6 @@ declare class WynVisual {
   update(options: VisualNS.IVisualUpdateOptions): void;
   getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
   getActionBarHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
-  onResize(): void;
+  getColorAssignmentConfigMapping(dataViews: VisualNS.IDataView[]): VisualNS.IColorAssignmentConfigMapping;
   onDestroy(): void;
 }

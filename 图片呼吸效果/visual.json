@@ -13,5 +13,7 @@
             "testImg2": "assets/2.png"
         }
     },
-    "configuration": {}
+    "configuration": {},
+    "id": "82766110-b93a-11eb-bb7e-4b016ba3414f",
+    "cliVersion": "5.0.0-alpha"
 }

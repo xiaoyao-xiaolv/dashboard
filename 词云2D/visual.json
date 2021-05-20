@@ -8,7 +8,11 @@
     "externalJs": [],
     "externalCss": [],
     "assets": {
-        "images": {"testImg": "assets/logo.png"}
+        "images": {
+            "testImg": "assets/logo.png"
+        }
     },
-    "configuration": {}
+    "configuration": {},
+    "id": "88368c10-b93a-11eb-91f4-3da39fb1ee49",
+    "cliVersion": "5.0.0-alpha"
 }

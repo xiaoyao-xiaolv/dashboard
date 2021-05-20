@@ -4,13 +4,14 @@
     "displayNameKey": "分级日期筛选器",
     "icon": "visualIcon",
     "description": "",
-    "externalJs": [
-    ],
+    "externalJs": [],
     "externalCss": [],
     "assets": {
         "images": {
             "visualIcon": "assets/icon.png"
         }
     },
-    "configuration": {}
+    "configuration": {},
+    "id": "7c2f04b0-b93a-11eb-83f3-d31e32be0527",
+    "cliVersion": "5.0.0-alpha"
 }

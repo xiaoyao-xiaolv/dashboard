@@ -12,5 +12,6 @@
         }
     },
     "configuration": {},
-    "cliVersion": "4.1.0"
+    "cliVersion": "5.0.0-alpha",
+    "id": "7e07bc50-b93a-11eb-aed1-3fedd986a98f"
 }

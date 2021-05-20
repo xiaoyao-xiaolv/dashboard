@@ -36,6 +36,9 @@ declare namespace VisualNS {
     format: string;
     method: string;
     dataType: string;
+    options: {
+      [name: string]: any;
+    }
   }
   interface IDataPoint {
     [datasetColumnDisplay: string]: string | number;
@@ -111,6 +114,7 @@ declare namespace VisualNS {
     ScaleChange = 'scaleChange',
     FilterChange = 'filterChange',
     FullyChange = 'fullyChange',
+    ViewportChange = 'viewportChange',
   }
   interface ICommandDescription {
     name: string;
@@ -131,6 +135,11 @@ declare namespace VisualNS {
     language: Language;
     scale: number;
     filters: IFilter[];
+    viewport: {
+      width: number;
+      height: number;
+      scale: number;
+    };
   }
 
   interface IDimensionColorAssignmentConfig {
@@ -167,8 +176,24 @@ declare namespace VisualNS {
     setProperty(propertyName: string, value: any): void;
   }
 
+  enum DisplayUnit {
+    Auto = 'auto',
+    None = 'none',
+    Hundreds = 'hundreds',
+    Thousands = 'thousands',
+    TenThousand = 'tenThousands',
+    HundredThousand = 'hundredThousand',
+    Millions = 'millions',
+    TenMillion = 'tenMillion',
+    HundredMillion = 'hundredMillion',
+    Billions = 'billions',
+    Trillions = 'trillions',
+  }
+
   class FormatService {
-    format(format: string, value: number): string;
+    isAutoDisplayUnit(displayUnit: DisplayUnit): boolean;
+    getAutoDisplayUnit(values: number[]): DisplayUnit;
+    format(format: string, value: number, displayUnit?: DisplayUnit): string;
   }
 
   class SelectionId {
@@ -339,6 +364,7 @@ declare namespace VisualNS {
     AdvancedFilterOperator: typeof AdvancedFilterOperator,
     AdvancedFilterLogicalOperator: typeof AdvancedFilterLogicalOperator,
     UpdateType: typeof VisualUpdateType,
+    DisplayUnit: typeof DisplayUnit,
   }
 }
 
@@ -351,6 +377,5 @@ declare class WynVisual {
   getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
   getActionBarHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
   getColorAssignmentConfigMapping(dataViews: VisualNS.IDataView[]): VisualNS.IColorAssignmentConfigMapping;
-  onResize(): void;
   onDestroy(): void;
 }

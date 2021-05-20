@@ -4,7 +4,9 @@
     "displayNameKey": "气泡散点组合地图",
     "icon": "visualIcon",
     "description": "",
-    "externalJs": ["https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66&callback=__init&plugin=AMap.CustomLayer,AMap.DistrictSearch"],
+    "externalJs": [
+        "https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66&callback=__init&plugin=AMap.CustomLayer,AMap.DistrictSearch"
+    ],
     "externalCss": [],
     "assets": {
         "images": {
@@ -12,5 +14,6 @@
         }
     },
     "configuration": {},
-    "cliVersion": "4.0.1"
+    "cliVersion": "5.0.0-alpha",
+    "id": "85527ef0-b93a-11eb-abad-8be4bf9f6132"
 }

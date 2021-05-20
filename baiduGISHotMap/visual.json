@@ -4,7 +4,9 @@
     "displayNameKey": "",
     "icon": "visualIcon",
     "description": "",
-    "externalJs": ["https://api.map.baidu.com/api?v=3.0&ak={{百度地图API服务密钥}}"],
+    "externalJs": [
+        "https://api.map.baidu.com/api?v=3.0&ak={{百度地图API服务密钥}}"
+    ],
     "externalCss": [],
     "assets": {
         "images": {
@@ -14,5 +16,6 @@
     "configuration": {
         "百度地图API服务密钥": ""
     },
-    "cliVersion": "4.0.1"
+    "cliVersion": "5.0.0-alpha",
+    "id": "7a9f8b10-b93a-11eb-b42f-752c431e445f"
 }

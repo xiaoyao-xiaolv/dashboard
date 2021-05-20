@@ -14,5 +14,7 @@
     },
     "configuration": {
         "token": "xxxxxxx"
-    }
+    },
+    "id": "7b27f4f0-b93a-11eb-922e-cfe0dfb98d30",
+    "cliVersion": "5.0.0-alpha"
 }

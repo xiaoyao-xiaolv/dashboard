@@ -30,11 +30,15 @@ declare namespace VisualNS {
     };
   }
   interface IFieldProfile {
+    id: any;
     name: string;
     display: string;
     format: string;
     method: string;
     dataType: string;
+    options: {
+      [name: string]: any;
+    }
   }
   interface IDataPoint {
     [datasetColumnDisplay: string]: string | number;
@@ -102,14 +106,23 @@ declare namespace VisualNS {
     selected?: SelectionId[];
     menu?: boolean;
   }
-  type VisualUpdateType = 'dataViewChange' | 'propertyChange' | 'environmentChange' | 'scaleChange' | 'fullyChange';
   type Language = 'en-US' | 'zh-CN' | 'zh-TW';
+  enum VisualUpdateType {
+    DataViewChange = 'dataViewChange',
+    PropertyChange = 'propertyChange',
+    EnvironmentChange = 'environmentChange',
+    ScaleChange = 'scaleChange',
+    FilterChange = 'filterChange',
+    FullyChange = 'fullyChange',
+    ViewportChange = 'viewportChange',
+  }
   interface ICommandDescription {
     name: string;
     payload: {
       target: string;
     };
   }
+  type IFilter = IBasicFilter | IAdvancedFilter | ITupleFilter;
   interface IVisualUpdateOptions {
     isViewer: boolean;
     isMobile: boolean;
@@ -121,7 +134,26 @@ declare namespace VisualNS {
     docTheme: IDocTheme;
     language: Language;
     scale: number;
+    filters: IFilter[];
+    viewport: {
+      width: number;
+      height: number;
+      scale: number;
+    };
   }
+
+  interface IDimensionColorAssignmentConfig {
+    values: any[];
+    type: 'dimension';
+    columns: IFieldProfile[];
+  }
+  interface IMeasureColorAssignmentConfig {
+    type: 'measure';
+    columns: IFieldProfile[];
+  }
+  export type IColorAssignmentConfigMapping = {
+    [name: string]: IDimensionColorAssignmentConfig | IMeasureColorAssignmentConfig,
+  };
 
   class EventService {
     renderStart(): void;
@@ -134,7 +166,6 @@ declare namespace VisualNS {
     getDisplay(displayNameKey: string): string;
   }
 
-  
   class ToolTipService {
     show(config: ITooltipConfig): void;
     hide(): void;
@@ -145,8 +176,24 @@ declare namespace VisualNS {
     setProperty(propertyName: string, value: any): void;
   }
 
+  enum DisplayUnit {
+    Auto = 'auto',
+    None = 'none',
+    Hundreds = 'hundreds',
+    Thousands = 'thousands',
+    TenThousand = 'tenThousands',
+    HundredThousand = 'hundredThousand',
+    Millions = 'millions',
+    TenMillion = 'tenMillion',
+    HundredMillion = 'hundredMillion',
+    Billions = 'billions',
+    Trillions = 'trillions',
+  }
+
   class FormatService {
-    format(format: string, value: number): string;
+    isAutoDisplayUnit(displayUnit: DisplayUnit): boolean;
+    getAutoDisplayUnit(values: number[]): DisplayUnit;
+    format(format: string, value: number, displayUnit?: DisplayUnit): string;
   }
 
   class SelectionId {
@@ -161,7 +208,7 @@ declare namespace VisualNS {
     getSelectionIds(): Array<SelectionId>;
     getCount(): number;
     select(id: SelectionId | Array<SelectionId>, multiSelect: boolean): Promise<void>;
-    clear(id?: SelectionId): Promise<void>;
+    clear(id?: SelectionId | Array<SelectionId>): Promise<void>;
     registerOnSelectCallback(onSelectCallback: (ids: SelectionId[]) => void);
     contains(id: SelectionId): boolean;
     isEmpty(): boolean;
@@ -184,6 +231,19 @@ declare namespace VisualNS {
     execute(desc: Array<ICommandDescription>): void;
   }
 
+  abstract class FilterBase {
+    public abstract toJSON(): Object;
+  
+    public abstract fromJSON(obj): void;
+  
+    public abstract isEmpty(): boolean;
+  }
+
+  class FilterService {
+    applyFilter(filter: FilterBase);
+    clean();
+  }
+
   class VisualHost {
     public eventService: EventService;
     public localizationManager: LocalizationManager;
@@ -194,14 +254,128 @@ declare namespace VisualNS {
     public assetsManager: AssetsManager;
     public configurationManager: ConfigurationManager;
     public commandService: CommandService;
+    public filterService: FilterService;
+  }
+
+  interface IFilterTarget {
+    column: string;
+  }
+  enum VisualFilterType {
+    Basic = 'basic',
+    Advanced = 'advanced',
+    Tuple = 'tuple',
+  }
+  interface IFilterBase {
+    target: IFilterTarget;
+    filterType: VisualFilterType;
+  }
+
+  enum BasicFilterOperator {
+    In = 'In',
+    NotIn = 'NotIn',
+  }
+  interface IBasicFilter extends IFilterBase {
+    operator: BasicFilterOperator;
+    values: any[];
+  }
+
+  enum AdvancedFilterOperator {
+    LessThan = 'LessThan',
+    LessThanOrEqual = 'LessThanOrEqual',
+    GreaterThan = 'GreaterThan',
+    GreaterThanOrEqual = 'GreaterThanOrEqual',
+  }
+  interface IAdvancedFilterCondition {
+    value: any;
+    operator: AdvancedFilterOperator;
+  }
+  enum AdvancedFilterLogicalOperator {
+    And = 'And',
+    Or = 'Or',
+  }
+  interface IAdvancedFilter extends IFilterBase {
+    conditions: IAdvancedFilterCondition[];
+    logicalOperator: AdvancedFilterLogicalOperator;
+  }
+
+  type ITuple = { value: any }[];
+  interface ITupleFilter {
+    target: IFilterTarget[];
+    filterType: 'tuple';
+    operator: BasicFilterOperator;
+    values: ITuple[];
+  }
+
+  class BasicFilter extends FilterBase {
+    constructor(targetProfile: IFieldProfile, operator?: BasicFilterOperator, values?: any[]);
+
+    setOperator(operator: BasicFilterOperator);
+    getOperator(): BasicFilterOperator;
+    getValues(): any[];
+    setValues(vals: any[]);
+    toJSON(): IBasicFilter;
+    fromJSON(obj: IBasicFilter);
+    contains(value: any): boolean;
+    remove(val: any);
+    add(val: any);
+    isEmpty(): boolean;
+  }
+
+  class AdvancedFilter extends FilterBase {
+    constructor(targetProfile: IFieldProfile, logicalOperator?: AdvancedFilterLogicalOperator, conditions?: IAdvancedFilterCondition[]);
+  
+    setLogicalOperator(operator: AdvancedFilterLogicalOperator);
+    getLogicalOperator(): AdvancedFilterLogicalOperator;
+    setConditions(conditions: IAdvancedFilterCondition[]);
+    getConditions(): IAdvancedFilterCondition[];
+    toJSON(): IAdvancedFilter;
+    fromJSON(obj: IAdvancedFilter);
+    remove(condtion: IAdvancedFilterCondition);
+    add(condtion: IAdvancedFilterCondition);
+    isEmpty(): boolean;
+  }
+
+  class TupleFilter extends FilterBase {
+    constructor(targetProfiles: IFieldProfile[], operator?: BasicFilterOperator, values?: ITuple[]);
+
+    setOperator(operator: BasicFilterOperator);
+    getOperator(): BasicFilterOperator;
+    getValues(): ITuple[];
+    setValues(vals: ITuple[]);
+    toJSON(): ITupleFilter;
+    fromJSON(obj: ITupleFilter);
+    contains(tuple: ITuple): boolean;
+    remove(tuple: ITuple);
+    add(tuple: ITuple);
+    createTuple(dp: IDataPoint, depth?: number): ITuple;
+    isEmpty(): boolean;
+  }
+
+  interface WynVisualModels {
+    Filter: {
+      BasicFilter: typeof VisualNS.BasicFilter,
+      AdvancedFilter: typeof VisualNS.AdvancedFilter,
+      TupleFilter: typeof VisualNS.TupleFilter,
+    },
+  }
+  interface WynVisualEnums {
+    FilterType: typeof VisualFilterType,
+    BasicFilterOperator: typeof BasicFilterOperator,
+    AdvancedFilterOperator: typeof AdvancedFilterOperator,
+    AdvancedFilterLogicalOperator: typeof AdvancedFilterLogicalOperator,
+    UpdateType: typeof VisualUpdateType,
+    DisplayUnit: typeof DisplayUnit,
   }
 }
 
 declare class WynVisual {
+  static Models: VisualNS.WynVisualModels;
+  static Enums: VisualNS.WynVisualEnums;
+
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, updateOptions: VisualNS.IVisualUpdateOptions);
   update(options: VisualNS.IVisualUpdateOptions): void;
   getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
   getActionBarHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
-  onResize(): void;
+  getColorAssignmentConfigMapping(dataViews: VisualNS.IDataView[]): VisualNS.IColorAssignmentConfigMapping;
   onDestroy(): void;
 }
