@@ -1,0 +1,25 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "description": "可视化组件",
+  "dependencies": {},
+  "devDependencies": {
+    "@grapecity/wyn-visual-tools": "5.0.0-alpha",
+    "glob": "^7.1.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "node migrate",
+    "package": "node prepare"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoyao-xiaolv/dashboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaoyao-xiaolv/dashboard/issues"
+  },
+  "homepage": "https://github.com/xiaoyao-xiaolv/dashboard#readme"
+}
