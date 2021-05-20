@@ -40,8 +40,6 @@ const buildVisuals = async dirs => {
       await buildVisual(dir);
     } catch (err) {
       console.error(err);
-      console.log('Retrying...');
-      await buildVisual(dir);
     }
   }
 };
@@ -57,8 +55,4 @@ if (!fs.existsSync('dist')) {
 buildVisuals(directories)
   .then(() => {
     console.log('Build visuals successfully completed.');
-  })
-  .catch(err => {
-    console.error(err);
-    throw err;
   });
