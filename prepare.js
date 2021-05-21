@@ -40,6 +40,8 @@ const buildVisuals = async dirs => {
       await buildVisual(dir);
     } catch (err) {
       console.error(err);
+      console.log('Retrying...');
+      await buildVisual(dir);
     }
   }
 };
