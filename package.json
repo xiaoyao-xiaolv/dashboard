@@ -4,7 +4,7 @@
   "description": "可视化组件",
   "dependencies": {},
   "devDependencies": {
-    "@grapecity/wyn-visual-tools": "5.0.0-alpha",
+    "@grapecity/wyn-visual-tools": "5.0.0",
     "glob": "^7.1.7"
   },
   "scripts": {

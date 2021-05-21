@@ -90,10 +90,11 @@ declare namespace VisualNS {
     plain: IPlainDataView;
     single: ISingleDataView;
   }
-  interface ITootipPosition {
+  interface IPosition {
     x: number;
     y: number;
   }
+  type ITootipPosition = IPosition;
   interface ILabelFields {
     label: string;
     value: string;
@@ -105,6 +106,9 @@ declare namespace VisualNS {
     selectionId?: SelectionId;
     selected?: SelectionId[];
     menu?: boolean;
+  }
+  interface IContextMenuConfig {
+    position: IPosition;
   }
   type Language = 'en-US' | 'zh-CN' | 'zh-TW';
   enum VisualUpdateType {
@@ -119,8 +123,30 @@ declare namespace VisualNS {
   interface ICommandDescription {
     name: string;
     payload: {
-      target: string;
+      [key: string]: any;
     };
+  }
+  interface ISwitchPageCommand extends ICommandDescription {
+    name: 'SwitchPage';
+    payload: {
+      index?: number;
+      name?: string;
+    };
+  }
+  interface ISwitchTabCommand extends ICommandDescription {
+    name: 'SwitchTab';
+    payload: {
+      target: string;
+      index?: number;
+      name?: string;
+    };
+  }
+  interface IInteractionCommand extends ICommandDescription {
+    name: 'Keep' | 'Exclude' | 'Drill' | 'Jump';
+    payload: {
+      selectionIds?: SelectionId[] | SelectionId;
+      position?: IPosition;
+    }
   }
   type IFilter = IBasicFilter | IAdvancedFilter | ITupleFilter;
   interface IVisualUpdateOptions {
@@ -190,6 +216,15 @@ declare namespace VisualNS {
     Trillions = 'trillions',
   }
 
+  enum InteractionAction {
+    ShowTooltip = 'showTooltip',
+    None = 'none',
+    Keep = 'keep',
+    Exclude = 'exclude',
+    DrillTo = 'drillTo',
+    JumpTo = 'jumpTo',
+  }
+
   class FormatService {
     isAutoDisplayUnit(displayUnit: DisplayUnit): boolean;
     getAutoDisplayUnit(values: number[]): DisplayUnit;
@@ -217,6 +252,11 @@ declare namespace VisualNS {
   class SelectionService {
     createSelectionManager(): SelectionManager;
     createSelectionId(src?: SelectionId): SelectionId;
+  }
+
+  class ContextMenuService {
+    show(config: IContextMenuConfig): void;
+    hide(): void;
   }
 
   class AssetsManager {
@@ -255,6 +295,7 @@ declare namespace VisualNS {
     public configurationManager: ConfigurationManager;
     public commandService: CommandService;
     public filterService: FilterService;
+    public contextMenuService: ContextMenuService;
   }
 
   interface IFilterTarget {
@@ -365,6 +406,7 @@ declare namespace VisualNS {
     AdvancedFilterLogicalOperator: typeof AdvancedFilterLogicalOperator,
     UpdateType: typeof VisualUpdateType,
     DisplayUnit: typeof DisplayUnit,
+    InteractionAction: typeof InteractionAction,
   }
 }
 
