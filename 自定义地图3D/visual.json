@@ -10,5 +10,7 @@
     "assets": {
         "images": {}
     },
-    "configuration": {}
+    "configuration": {},
+    "id": "876dbdd0-b93a-11eb-a9b1-0995a4c79192",
+    "cliVersion": "5.0.0"
 }

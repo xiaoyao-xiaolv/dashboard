@@ -30,11 +30,15 @@ declare namespace VisualNS {
     };
   }
   interface IFieldProfile {
+    id: any;
     name: string;
     display: string;
     format: string;
     method: string;
     dataType: string;
+    options: {
+      [name: string]: any;
+    }
   }
   interface IDataPoint {
     [datasetColumnDisplay: string]: string | number;
@@ -86,10 +90,11 @@ declare namespace VisualNS {
     plain: IPlainDataView;
     single: ISingleDataView;
   }
-  interface ITootipPosition {
+  interface IPosition {
     x: number;
     y: number;
   }
+  type ITootipPosition = IPosition;
   interface ILabelFields {
     label: string;
     value: string;
@@ -98,9 +103,12 @@ declare namespace VisualNS {
     position: ITootipPosition;
     title?: string;
     fields?: ILabelFields[];
-    selectionId?: any;
-    selected?: [];
+    selectionId?: SelectionId;
+    selected?: SelectionId[];
     menu?: boolean;
+  }
+  interface IContextMenuConfig {
+    position: IPosition;
   }
   type Language = 'en-US' | 'zh-CN' | 'zh-TW';
   enum VisualUpdateType {
@@ -110,12 +118,35 @@ declare namespace VisualNS {
     ScaleChange = 'scaleChange',
     FilterChange = 'filterChange',
     FullyChange = 'fullyChange',
+    ViewportChange = 'viewportChange',
   }
   interface ICommandDescription {
     name: string;
     payload: {
-      target: string;
+      [key: string]: any;
     };
+  }
+  interface ISwitchPageCommand extends ICommandDescription {
+    name: 'SwitchPage';
+    payload: {
+      index?: number;
+      name?: string;
+    };
+  }
+  interface ISwitchTabCommand extends ICommandDescription {
+    name: 'SwitchTab';
+    payload: {
+      target: string;
+      index?: number;
+      name?: string;
+    };
+  }
+  interface IInteractionCommand extends ICommandDescription {
+    name: 'Keep' | 'Exclude' | 'Drill' | 'Jump';
+    payload: {
+      selectionIds?: SelectionId[] | SelectionId;
+      position?: IPosition;
+    }
   }
   type IFilter = IBasicFilter | IAdvancedFilter | ITupleFilter;
   interface IVisualUpdateOptions {
@@ -130,7 +161,25 @@ declare namespace VisualNS {
     language: Language;
     scale: number;
     filters: IFilter[];
+    viewport: {
+      width: number;
+      height: number;
+      scale: number;
+    };
   }
+
+  interface IDimensionColorAssignmentConfig {
+    values: any[];
+    type: 'dimension';
+    columns: IFieldProfile[];
+  }
+  interface IMeasureColorAssignmentConfig {
+    type: 'measure';
+    columns: IFieldProfile[];
+  }
+  export type IColorAssignmentConfigMapping = {
+    [name: string]: IDimensionColorAssignmentConfig | IMeasureColorAssignmentConfig,
+  };
 
   class EventService {
     renderStart(): void;
@@ -153,8 +202,33 @@ declare namespace VisualNS {
     setProperty(propertyName: string, value: any): void;
   }
 
+  enum DisplayUnit {
+    Auto = 'auto',
+    None = 'none',
+    Hundreds = 'hundreds',
+    Thousands = 'thousands',
+    TenThousand = 'tenThousands',
+    HundredThousand = 'hundredThousand',
+    Millions = 'millions',
+    TenMillion = 'tenMillion',
+    HundredMillion = 'hundredMillion',
+    Billions = 'billions',
+    Trillions = 'trillions',
+  }
+
+  enum InteractionAction {
+    ShowTooltip = 'showTooltip',
+    None = 'none',
+    Keep = 'keep',
+    Exclude = 'exclude',
+    DrillTo = 'drillTo',
+    JumpTo = 'jumpTo',
+  }
+
   class FormatService {
-    format(format: string, value: number): string;
+    isAutoDisplayUnit(displayUnit: DisplayUnit): boolean;
+    getAutoDisplayUnit(values: number[]): DisplayUnit;
+    format(format: string, value: number, displayUnit?: DisplayUnit): string;
   }
 
   class SelectionId {
@@ -169,7 +243,7 @@ declare namespace VisualNS {
     getSelectionIds(): Array<SelectionId>;
     getCount(): number;
     select(id: SelectionId | Array<SelectionId>, multiSelect: boolean): Promise<void>;
-    clear(id?: SelectionId): Promise<void>;
+    clear(id?: SelectionId | Array<SelectionId>): Promise<void>;
     registerOnSelectCallback(onSelectCallback: (ids: SelectionId[]) => void);
     contains(id: SelectionId): boolean;
     isEmpty(): boolean;
@@ -178,6 +252,11 @@ declare namespace VisualNS {
   class SelectionService {
     createSelectionManager(): SelectionManager;
     createSelectionId(src?: SelectionId): SelectionId;
+  }
+
+  class ContextMenuService {
+    show(config: IContextMenuConfig): void;
+    hide(): void;
   }
 
   class AssetsManager {
@@ -216,6 +295,7 @@ declare namespace VisualNS {
     public configurationManager: ConfigurationManager;
     public commandService: CommandService;
     public filterService: FilterService;
+    public contextMenuService: ContextMenuService;
   }
 
   interface IFilterTarget {
@@ -249,10 +329,6 @@ declare namespace VisualNS {
   interface IAdvancedFilterCondition {
     value: any;
     operator: AdvancedFilterOperator;
-  }
-  enum EAdvancedFilterLogicalOperator {
-    And,
-    Or,
   }
   enum AdvancedFilterLogicalOperator {
     And = 'And',
@@ -306,8 +382,7 @@ declare namespace VisualNS {
     setOperator(operator: BasicFilterOperator);
     getOperator(): BasicFilterOperator;
     getValues(): ITuple[];
-
-    setValues(vals: ({ year: number } | { month: number } | { day: number })[][]);
+    setValues(vals: ITuple[]);
     toJSON(): ITupleFilter;
     fromJSON(obj: ITupleFilter);
     contains(tuple: ITuple): boolean;
@@ -330,6 +405,8 @@ declare namespace VisualNS {
     AdvancedFilterOperator: typeof AdvancedFilterOperator,
     AdvancedFilterLogicalOperator: typeof AdvancedFilterLogicalOperator,
     UpdateType: typeof VisualUpdateType,
+    DisplayUnit: typeof DisplayUnit,
+    InteractionAction: typeof InteractionAction,
   }
 }
 
@@ -341,6 +418,6 @@ declare class WynVisual {
   update(options: VisualNS.IVisualUpdateOptions): void;
   getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
   getActionBarHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[];
-  onResize(): void;
+  getColorAssignmentConfigMapping(dataViews: VisualNS.IDataView[]): VisualNS.IColorAssignmentConfigMapping;
   onDestroy(): void;
 }

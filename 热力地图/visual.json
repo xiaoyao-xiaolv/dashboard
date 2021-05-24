@@ -5,10 +5,14 @@
     "displayNameKey": "",
     "icon": "assets/heatMap.png",
     "description": "",
-    "externalJs": ["https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66&callback=__init&plugin=AMap.CustomLayer"],
+    "externalJs": [
+        "https://webapi.amap.com/maps?v=1.4.15&key=208338164a17fe03eaf82daa4045bd66&callback=__init&plugin=AMap.CustomLayer"
+    ],
     "externalCss": [],
     "assets": {
         "images": {}
     },
-    "configuration": {}
+    "configuration": {},
+    "id": "8727b420-b93a-11eb-8533-c30365b13077",
+    "cliVersion": "5.0.0"
 }

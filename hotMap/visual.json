@@ -15,5 +15,7 @@
             "visualIcon": "assets/icon.png"
         }
     },
-    "configuration": {}
+    "configuration": {},
+    "id": "7f144a50-b93a-11eb-be8f-039916e18827",
+    "cliVersion": "5.0.0"
 }
