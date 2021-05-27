@@ -30,10 +30,16 @@ export default class Visual extends WynVisual {
   private value: string;
   private dimensions: string;
   private valueFormat: any;
+  private container: JQuery<HTMLDivElement>;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
-    this.root = $(dom);
+    dom.classList.add('visual-pyramid-carrousel-container');
+    this.container = $(dom);
+    const div = document.createElement('div');
+    div.classList.add('visual-pyramid-carrousel');
+    dom.appendChild(div);
+    this.root = $(div);
     this.isMock = true;
     this.visualHost = host;
     this.isFirstRender = true;
@@ -326,8 +332,8 @@ export default class Visual extends WynVisual {
   private resize() {
     var width = Visual.width,
       height = Visual.height,
-      winWidth = $(window).width(),
-      winHeight = $(window).height(),
+      winWidth = this.container.width(),
+      winHeight = this.container.height(),
       xZoom = winWidth / width,
       yZoom = winHeight / height,
       zoom = Math.min(xZoom, yZoom);
