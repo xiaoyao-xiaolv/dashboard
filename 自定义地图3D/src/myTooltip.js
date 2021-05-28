@@ -34,7 +34,7 @@ export class myTooltipC {
                 height
             }
         } else {
-            let box = document.getElementById(this.box)
+            let box = this.box;
             let bw = box.offsetWidth
             let bh = box.offsetHeight
             let x = point[0]
