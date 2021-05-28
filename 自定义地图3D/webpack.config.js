@@ -18,7 +18,13 @@ const config = {
     }),
   ],
   optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin({}), new UglifyJsPlugin()],
+    minimizer: [new OptimizeCSSAssetsPlugin({}), new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          passes: 2,
+        },
+      }
+    })],
   },
   module: {
     rules: [
