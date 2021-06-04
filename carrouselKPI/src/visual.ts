@@ -36,6 +36,9 @@ export default class Visual extends WynVisual {
   private dimensions: any;
   private value: any;
   private contrast: any;
+  private selection: any;
+  private selectionManager: any;
+  private selectionIds: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -43,6 +46,8 @@ export default class Visual extends WynVisual {
     this.totalItem = null;
     this.isMock = true;
     this.visualHost = host;
+    this.selection = [];
+    this.selectionManager = host.selectionService.createSelectionManager();
 
     //  custom font famliy
     var newStyle = document.createElement('style');
@@ -80,9 +85,57 @@ export default class Visual extends WynVisual {
     options.circleSmallImage && $(".small-circle").css('backgroundImage', `url(${options.circleSmallImage})`)
   };
 
+  private showTooltip = (x, y, id) => {
+    let currentItem = this.items[id];
+    const config = {
+      position: {x,y},
+      title: currentItem[this.dimensions],
+      fields: [],
+      selected: this.selectionManager.getSelectionIds(),
+      menu: true,
+    }
+
+    if (this.contrast) {
+      config.fields.push({
+        label: this.contrast,
+        value: currentItem[this.contrast],
+      })
+    }
+
+    if (this.value) {
+      config.fields.push({
+        label: this.value,
+        value: currentItem[this.value],
+      })
+    }
+
+    this.visualHost.toolTipService.show(config);
+  }
+
+  private bindEvents = () => {
+    this.root.on('click', ()=> {
+      this.selectionManager.clear();
+      this.visualHost.toolTipService.hide();
+      return;
+    })
+
+    $('.figure').on('click', (event ) => {
+      event.stopPropagation();
+      let id = event .currentTarget.attributes[1].value;
+      let sid = this.selectionIds[id];
+      if(this.selectionManager.contains(sid)) {
+        this.selectionManager.clear(sid);
+        this.visualHost.toolTipService.hide();
+        return;
+      }
+      this.selectionManager.select(sid);
+      this.showTooltip(event.clientX, event.clientY, id);
+    })
+  }
 
   public update(updateOptions: VisualNS.IVisualUpdateOptions) {
     const options = updateOptions;
+    this.selectionIds = [];
     const dataView = options.dataViews[0];
     this.isMock = !(dataView && dataView.plain.profile.dimensions.values.length);
     const plainData: any = this.isMock ? {} : dataView.plain;
@@ -102,6 +155,11 @@ export default class Visual extends WynVisual {
       this.contrast = this.isContrast && plainData.profile.contrast.values[0].display || '';
       this.items = plainData.data;
       this.valueFormat = plainData.profile.values.options.valueFormat;
+      this.items.forEach((item) => {
+        const selectionId = this.visualHost.selectionService.createSelectionId();
+        selectionId.withDimension(plainData.profile.dimensions.values[0], item);
+        this.selectionIds.push(selectionId);
+      });
     }
 
     if (this.value) {
@@ -126,11 +184,12 @@ export default class Visual extends WynVisual {
     }
 
     this.render();
+    if(!this.isMock){
+      this.bindEvents();
+    }
   }
 
   public render() {
-
-
     this.root.html('').width(Visual.width).height(Visual.height).css('position', 'relative');
     const options = this.options
 
@@ -165,14 +224,12 @@ export default class Visual extends WynVisual {
 
     element.css('transform-origin', `${origin}px 0px -${elementZ}px`).height(height).width(width);
 
-    for (var i = 0; i < rotateY.length; i++) {
-
-      let dataText = this.items[i]
+    for (let i = 0; i < rotateY.length; i++) {
+      let dataText = this.items[i];
       let figureTitle;
       let figureValues;
 
       if (this.isMock || this.isRate) {
-
         figureTitle = $("<div class='figure-title'>")
           .css({ ...options.textStyle, 'justifyContent': options.titlePosition })
           .width(width).text(dataText[this.dimensions])
@@ -221,6 +278,7 @@ export default class Visual extends WynVisual {
       }
 
       let figureElement = $("<div>").attr('class', 'figure frame')
+        .attr('selectionId',() => this.isMock ? -1 : i)
         .css({ 'transform': 'rotateY(' + rotateY[i] + 'deg) translateZ(' + translateZ + 'px)' })
         .height(height).width(width).data('rotateY', rotateY[i])
         .append(figureTitle, figureValues)
