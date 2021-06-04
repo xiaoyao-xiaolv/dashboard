@@ -7,6 +7,7 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
+    this.container.classList.add('visual-rotate-image-2d');
     this.visualHost = host;
     this.properties = {
     };

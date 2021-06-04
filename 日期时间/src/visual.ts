@@ -4,6 +4,7 @@ export default class Visual {
     private properties: any;
     constructor(dom: HTMLDivElement, host: any) {
         this.container = dom;
+        this.container.classList.add('visual-date-time');
         this.properties = {
             shape: 'detailed',
             textStyle: {

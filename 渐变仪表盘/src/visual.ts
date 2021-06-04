@@ -21,6 +21,7 @@ export default class Visual extends WynVisual {
   public update(options: VisualNS.IVisualUpdateOptions) {
     console.log(options)
     const dataView = options.dataViews[0];
+    this.items = [];
     if (dataView) {
       const plainData = dataView.plain;
       let ActualValue = plainData.profile.ActualValue.values[0].display;

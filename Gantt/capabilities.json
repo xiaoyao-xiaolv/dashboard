@@ -20,13 +20,15 @@
                 "name": "startTime",
                 "displayNameKey": "开始时间",
                 "kind": "grouping",
-                "requiredTypes": ["datetime","date"]
+                "_noHierarchy": true,
+                "acceptedTypes": ["datetime","date"]
             },
             {
                 "name": "endTime",
                 "displayNameKey": "结束时间",
                 "kind": "grouping",
-                "requiredTypes": ["datetime","date"]
+                "_noHierarchy": true,
+                "acceptedTypes": ["datetime","date"]
             },
             {
                 "name": "status",

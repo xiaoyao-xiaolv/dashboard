@@ -12,6 +12,7 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
+    this.container.classList.add('visual-dynamic-text');
     this.items = [];
     this.properties = {
       custom: true,

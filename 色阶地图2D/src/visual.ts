@@ -69,7 +69,7 @@ export default class Visual extends WynVisual {
         long: 40
       }
     }
-    this.myTooltip = new myTooltipC('visualDom', this.config);
+    this.myTooltip = new myTooltipC(dom, this.config);
     this.autoPlayTooltip();
   }
   public autoPlayTooltip() {

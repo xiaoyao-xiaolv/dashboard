@@ -19,6 +19,7 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
+    this.container.style.overflow = 'hidden';
     this.chart = require('echarts').init(dom);
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
@@ -50,7 +51,7 @@ export default class Visual {
         long: 40
       }
     }
-    this.myTooltip = new myTooltipC('visualDom', this.config);
+    this.myTooltip = new myTooltipC(this.container, this.config);
   }
 
   private convertData = (dataItems: any) => {

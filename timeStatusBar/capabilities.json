@@ -10,25 +10,29 @@
                 "name": "startTime",
                 "displayNameKey": "开始时间",
                 "kind": "grouping",
-                "requiredTypes": ["datetime"]
+                "_noHierarchy": true,
+                "acceptedTypes": ["datetime"]
             },
             {
                 "name": "endTime",
                 "displayNameKey": "结束时间",
                 "kind": "grouping",
-                "requiredTypes": ["datetime"]
+                "_noHierarchy": true,
+                "acceptedTypes": ["datetime"]
             },
             {
                 "name": "workTime",
                 "displayNameKey": "上班时间",
                 "kind": "grouping",
-                "requiredTypes": ["datetime"]
+                "_noHierarchy": true,
+                "acceptedTypes": ["datetime"]
             },
             {
                 "name": "offTime",
                 "displayNameKey": "下班时间",
                 "kind": "grouping",
-                "requiredTypes": ["datetime"]
+                "_noHierarchy": true,
+                "acceptedTypes": ["datetime"]
             }
         ],
         "dataViewMappings": [

@@ -13,9 +13,9 @@ var _ = require('lodash');
  */
 
 export class myTooltipC {
-    constructor (boxId, config = {}) {
-        if (!boxId) throw Error('boxId为必传项')
-        this.boxId = boxId
+    constructor (box, config = {}) {
+        if (!box) throw Error('box为必传项')
+        this.box = box
         this.config = {}
         _.merge(this.config, config, {
             left: false,
@@ -34,7 +34,7 @@ export class myTooltipC {
                 height
             }
         } else {
-            let box = document.getElementById(this.boxId)
+            let box = this.box;
             let bw = box.offsetWidth
             let bh = box.offsetHeight
             let x = point[0]
