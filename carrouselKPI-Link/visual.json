@@ -1,0 +1,17 @@
+{
+    "name": "3D旋转KPI(跳转版)",
+    "displayName": "3D旋转KPI(跳转版)",
+    "displayNameKey": "3D旋转KPI(跳转版)",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "id": "7b683240-b93a-11eb-af81-35ebfac599f2",
+    "cliVersion": "5.0.0"
+}
