@@ -388,6 +388,7 @@ export default class Visual {
           }
         },
         roam: options.roam,
+        zoom: options.zoom,
         layoutCenter: ["50%", "50%"], //地图位置
         layoutSize: "125%",
         itemStyle: {

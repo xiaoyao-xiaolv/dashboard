@@ -129,6 +129,12 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "zoom",
+                        "type": "Float",
+                        "displayName": "缩放级别",
+                        "defaultValue": 1.0
+                    },
+                    {
                         "name": "showLegend",
                         "type": "Boolean",
                         "displayName": "是否显示图例",
