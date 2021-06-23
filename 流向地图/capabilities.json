@@ -210,7 +210,7 @@
                         "name": "pointSize",
                         "type": "Integer",
                         "displayName": "数据点大小",
-                        "defaultValue": 6
+                        "defaultValue": 10
                     },
                     {
                         "name": "effect",

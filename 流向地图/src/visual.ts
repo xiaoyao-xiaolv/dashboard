@@ -51,7 +51,9 @@ export default class Visual {
   private departurelatName: string;
   private departurelongName: string;
   private items: any;
+  private host: any;
   private shadowDiv: any;
+
   static mockItems = [
     [
       { fromName: "广州", toName: "福州", coords: [[113.280637, 23.125178], [119.306239, 26.075302]], value: 13 }
@@ -114,6 +116,27 @@ export default class Visual {
       shadowColor: 'rgba(128, 217, 248, 1)',
       emphasisColor: '#389BB7',
     };
+    this.host = host;
+    this.bindEvents();
+  }
+
+  public bindEvents = () => {
+    this.chart.on('click', (params) => {
+      if (params.componentSubType !== 'effectScatter') return;
+      let dataIndex = params.dataIndex;
+      let sid = this.items[0][dataIndex] && this.items[0][dataIndex].selectionId || 0;
+
+      this.host.commandService.execute([{
+        name: 'Jump',
+        payload: {
+          selectionIds: [sid],
+          position: {
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+        },
+      }]);
+    })
   }
 
   private queryData = (keyWord: string) => {
@@ -233,6 +256,13 @@ export default class Visual {
       this.items = this.classify(plainData.data);
     }
 
+    if (this.items.length && this.items[0]) {
+      this.items[0].forEach((item) => {
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(dataView.plain.profile.values.values[0], item);
+        item.selectionId= selectionId;
+      })
+    }
     this.properties = options.properties;
     this.render();
   }

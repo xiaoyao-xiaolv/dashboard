@@ -1,0 +1,115 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "projectName",
+                "displayNameKey": "项目名称",
+                "kind": "grouping"
+            },
+            {
+                "name": "taskName",
+                "displayNameKey": "任务名称",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [{
+                        "projectName": {
+                            "min": 1
+                        },
+                        "taskName": {
+                            "min": 1
+                        },
+                        "startTime": {
+                            "min": 1
+                        },
+                        "endTime": {
+                            "min": 1
+                        }
+                    },{
+                        "projectName": {
+                            "min": 1
+                        },
+                        "taskName": {
+                            "max": 0
+                        },
+                        "startTime": {
+                            "min": 1
+                        },
+                        "endTime": {
+                            "min": 1
+                        }
+                    }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "projectName": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "label",
+                        "type": "Text",
+                        "displayName": "列头名称",
+                        "defaultValue": "任务名称"
+                    },
+                    {
+                        "displayNameKey": "列头宽度",
+                        "name": "projectWidth",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 200
+                    },
+                    {
+                        "displayNameKey": "日期列宽度",
+                        "name": "dateColumnWidth",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "projectColor",
+                        "type": "Color",
+                        "displayName": "项目颜色",
+                        "defaultValue": "#0856f2"
+                    },
+                    {
+                        "name": "taskColors",
+                        "type": "Palette",
+                        "displayName": "任务状态颜色"
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
