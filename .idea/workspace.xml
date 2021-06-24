@@ -12,8 +12,11 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/流向地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/流向地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/流向地图.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +130,8 @@
       <workItem from="1623290336691" duration="12631000" />
       <workItem from="1623817344734" duration="19141000" />
       <workItem from="1624328789603" duration="20091000" />
-      <workItem from="1624428274874" duration="328000" />
+      <workItem from="1624428274874" duration="13186000" />
+      <workItem from="1624517059213" duration="7400000" />
     </task>
     <servers />
   </component>
@@ -223,11 +227,11 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624356849392" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1624428600763">
+    <state width="498" height="398" key="SwitcherDM" timestamp="1624519654146">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1623915449616" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624428600763" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624519654146" />
     <state x="778" y="-864" key="VCS.ChangeListViewerDialog" timestamp="1623910202659">
       <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
@@ -236,11 +240,11 @@
       <screen x="-1920" y="1" width="1920" height="1040" />
     </state>
     <state x="-1828" y="93" width="1736" height="856" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/-1920.1.1920.1040@0.0.1280.680" timestamp="1616129124660" />
-    <state x="259" y="113" width="891" height="536" key="find.popup" timestamp="1624428530234">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="662" y="-828" width="816" height="536" key="find.popup" timestamp="1624501873130">
+      <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
-    <state x="662" y="-828" width="816" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1623915315780" />
-    <state x="259" y="113" width="891" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624428530234" />
+    <state x="662" y="-828" width="816" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1624501873130" />
+    <state x="289" y="112" width="891" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624431300103" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1624336170325">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

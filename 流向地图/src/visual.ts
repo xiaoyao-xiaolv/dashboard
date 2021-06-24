@@ -123,13 +123,12 @@ export default class Visual {
   public bindEvents = () => {
     this.chart.on('click', (params) => {
       if (params.componentSubType !== 'effectScatter') return;
-      let dataIndex = params.dataIndex;
-      let sid = this.items[0][dataIndex] && this.items[0][dataIndex].selectionId || 0;
-
+      const items = [].concat.apply([],this.items);
+      const item = items.find(item =>  item.fromName === params.name || item.toName === params.name);
       this.host.commandService.execute([{
         name: 'Jump',
         payload: {
-          selectionIds: [sid],
+          selectionIds: [item.selectionId],
           position: {
             x: params.event.event.x,
             y: params.event.event.y,
@@ -255,12 +254,13 @@ export default class Visual {
       this.departureName = plainData.profile.departure.values[0].display
       this.items = this.classify(plainData.data);
     }
-
-    if (this.items.length && this.items[0]) {
-      this.items[0].forEach((item) => {
+    if(this.items && this.items.length) {
+      const items = [].concat.apply([],this.items);
+      dataView.plain.data.forEach((item, index) => {
         const selectionId = this.host.selectionService.createSelectionId();
-        selectionId.withDimension(dataView.plain.profile.values.values[0], item);
-        item.selectionId= selectionId;
+        selectionId.withDimension(dataView.plain.profile.departure.values[0], item);
+        selectionId.withDimension(dataView.plain.profile.destination.values[0], item);
+        items[index].selectionId = selectionId;
       })
     }
     this.properties = options.properties;
