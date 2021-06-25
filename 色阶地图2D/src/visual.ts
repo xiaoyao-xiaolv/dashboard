@@ -34,7 +34,8 @@ export default class Visual extends WynVisual {
   private myTooltip: any;
   private config: any;
   private valueFormat: any;
-
+  private flag: any;
+  private linelen: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -48,7 +49,6 @@ export default class Visual extends WynVisual {
     this.data = [];
     this.graphic = [];
     this.drilldown = false;
-    this.getGeoJson("中国");
     this.properties = {
     };
     this.isTooltipModelShown = false;
@@ -162,18 +162,24 @@ export default class Visual extends WynVisual {
         switch (params.data.drilldownIndex) {
           case 1:
             this.items = this.data[1][dataIndex];
-            this.graphic.push(this.createBreadcrumb(params.name, 50, 1));
-            this.graphic[0].children[0].shape.x2 += 60;
-            this.graphic[0].children[1].shape.x2 += 60;
             this.provincedata = this.items;
             this.provincegraphic = this.graphic;
-            this.getPieces(this.properties.citypieces);
+            if (this.flag) {
+              this.getPieces(this.properties.pieces);
+              this.graphic.push(this.createBreadcrumb(params.name, this.linelen, 2));
+            } else {
+              this.getPieces(this.properties.citypieces);
+              this.graphic.push(this.createBreadcrumb(params.name, this.linelen, 1));
+            }
+            this.linelen += params.name.length * 20;
+            this.graphic[0].children[0].shape.x2 += params.name.length * 20;
+            this.graphic[0].children[1].shape.x2 += params.name.length * 20;
             break;
           case 2:
             this.items = this.data[2].find(item => item[2] == params.name);
-            this.graphic.push(this.createBreadcrumb(params.name, 120, 2))
-            this.graphic[0].children[0].shape.x2 += 60;
-            this.graphic[0].children[1].shape.x2 += 60;
+            this.graphic.push(this.createBreadcrumb(params.name, this.linelen, 2))
+            this.graphic[0].children[0].shape.x2 += params.name.length * 20;
+            this.graphic[0].children[1].shape.x2 += params.name.length * 20;
             this.getPieces(this.properties.pieces);
             this.drilldown = false;
             break;
@@ -243,16 +249,14 @@ export default class Visual extends WynVisual {
         onclick: () => {
           switch (index) {
             case 1:
-              if (!this.drilldown) {
-                this.items = this.provincedata;
-                this.provincegraphic.pop();
-                this.graphic = this.provincegraphic;
-                this.graphic[0].children[0].shape.x2 -= 60;
-                this.graphic[0].children[1].shape.x2 -= 60;
-                this.getGeoJson(name);
-                this.getPieces(this.properties.citypieces);
-                this.drilldown = true;
-              }
+              this.items = this.provincedata;
+              this.provincegraphic.pop();
+              this.graphic = this.provincegraphic;
+              this.graphic[0].children[0].shape.x2 -= name.length * 20;
+              this.graphic[0].children[1].shape.x2 -= name.length * 20;
+              this.getGeoJson(name);
+              this.getPieces(this.properties.citypieces);
+              this.drilldown = true;
               this.render();
               break;
             case 2:
@@ -266,7 +270,9 @@ export default class Visual extends WynVisual {
     return breadcrumb;
   }
 
-  private getgraphic() {
+  private getgraphic(mapName: any) {
+    let namelen = mapName.length * 20;
+    this.linelen = namelen;
     let arr = [{
       //标题的线
       type: "group",
@@ -279,7 +285,7 @@ export default class Visual extends WynVisual {
         shape: {
           x1: 0,
           y1: 0,
-          x2: 50,
+          x2: namelen,
           y2: 0,
         },
         style: {
@@ -293,7 +299,7 @@ export default class Visual extends WynVisual {
         shape: {
           x1: 0,
           y1: 0,
-          x2: 50,
+          x2: namelen,
           y2: 0,
         },
         style: {
@@ -304,7 +310,7 @@ export default class Visual extends WynVisual {
     },
     {
       //省级标题样式
-      id: "中国",
+      id: mapName,
       type: "group",
       left: 20,
       top: 20,
@@ -314,19 +320,23 @@ export default class Visual extends WynVisual {
           left: 0,
           top: 0,
           style: {
-            text: "中国",
+            text: mapName,
             textAlign: "center",
             fill: "#0ab7ff",
             font: '12px "Microsoft YaHei", sans-serif',
           },
           onclick: () => {
-            this.getGeoJson("中国");
+            this.getGeoJson(mapName);
             this.drilldown = true;
             this.items = this.data[0];
             this.selection = [];
             this.selectionManager.clear();
-            this.getgraphic();
-            this.getPieces(this.properties.provincepieces);
+            this.getgraphic(mapName);
+            if (this.flag) {
+              this.getPieces(this.properties.citypieces);
+            } else {
+              this.getPieces(this.properties.provincepieces);
+            }
             this.sid = [];
             this.render();
           },
@@ -439,7 +449,6 @@ export default class Visual extends WynVisual {
   private render() {
     let myTooltip = this.myTooltip;
     this.chart.clear();
-    this.shadowDiv.style.cssText = '';
     const isMock = !this.items.length;
     const items = isMock ? Visual.mockItems : this.items[0];
     this.container.style.opacity = isMock ? '0.3' : '1';
@@ -447,7 +456,6 @@ export default class Visual extends WynVisual {
     let max = Math.max.apply(Math, items.map(function (o) { return o.value }));
     let min = Math.min.apply(Math, items.map(function (o) { return o.value }));
     min = min > 0 ? 0 : min;
-    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     myTooltip.config['text'] = {
       time: 0.3,
       font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
@@ -523,7 +531,7 @@ export default class Visual extends WynVisual {
           roam: options.roam,
           itemStyle: {
             opacity: 1,
-            areaColor: options.mapColor,
+            areaColor: "#0a4880",
             borderWidth: 1,
             borderColor: options.borderColor,
             emphasis: {
@@ -707,8 +715,14 @@ export default class Visual extends WynVisual {
     this.data = data;
     this.items = data[0];
     this.properties = options.properties;
-    this.getPieces(this.properties.provincepieces);
-    this.getgraphic();
+    this.flag = this.properties.mapName == "中国" ? false : true;
+    if (this.flag) {
+      this.getPieces(this.properties.citypieces);
+    } else {
+      this.getPieces(this.properties.provincepieces);
+    }
+    this.getgraphic(this.properties.mapName);
+    this.getGeoJson(this.properties.mapName);
     this.render();
   }
 
@@ -721,10 +735,7 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     if (!options.properties.showPieces) {
-      return ['pieces'];
-    }
-    if (!options.properties.showVisualMap) {
-      return ['textColor'];
+      return ['provincepieces', 'citypieces', 'pieces'];
     }
 
     if (!options.properties.showTooltip) {

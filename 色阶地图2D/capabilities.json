@@ -15,7 +15,7 @@
             },
             {
                 "name": "province",
-                "displayNameKey": "省份",
+                "displayNameKey": "位置",
                 "kind": "grouping"
             },
             {
@@ -65,10 +65,152 @@
                 "displayName": "地图属性",
                 "properties": [
                     {
-                        "name": "mapColor",
-                        "type": "Color",
-                        "displayName": "地图填充颜色",
-                        "defaultValue": "#0a4880"
+                        "displayNameKey": "地图名称",
+                        "name": "mapName",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "中国",
+                                "displayNameKey": "中国"
+                            },
+                            {
+                                "value": "北京市",
+                                "displayNameKey": "北京市"
+                            },
+                            {
+                                "value": "天津市",
+                                "displayNameKey": "天津市"
+                            },
+                            {
+                                "value": "河北省",
+                                "displayNameKey": "河北省"
+                            },
+                            {
+                                "value": "山西省",
+                                "displayNameKey": "山西省"
+                            },
+                            {
+                                "value": "内蒙古自治区",
+                                "displayNameKey": "内蒙古自治区"
+                            },
+                            {
+                                "value": "辽宁省",
+                                "displayNameKey": "辽宁省"
+                            },
+                            {
+                                "value": "吉林省",
+                                "displayNameKey": "吉林省"
+                            },
+                            {
+                                "value": "黑龙江省",
+                                "displayNameKey": "黑龙江省"
+                            },
+                            {
+                                "value": "上海市",
+                                "displayNameKey": "上海市"
+                            },
+                            {
+                                "value": "江苏省",
+                                "displayNameKey": "江苏省"
+                            },
+                            {
+                                "value": "浙江省",
+                                "displayNameKey": "浙江省"
+                            },
+                            {
+                                "value": "安徽省",
+                                "displayNameKey": "安徽省"
+                            },
+                            {
+                                "value": "福建省",
+                                "displayNameKey": "福建省"
+                            },
+                            {
+                                "value": "江西省",
+                                "displayNameKey": "江西省"
+                            },
+                            {
+                                "value": "山东省",
+                                "displayNameKey": "山东省"
+                            },
+                            {
+                                "value": "河南省",
+                                "displayNameKey": "河南省"
+                            },
+                            {
+                                "value": "湖北省",
+                                "displayNameKey": "湖北省"
+                            },
+                            {
+                                "value": "湖南省",
+                                "displayNameKey": "湖南省"
+                            },
+                            {
+                                "value": "广东省",
+                                "displayNameKey": "广东省"
+                            },
+                            {
+                                "value": "广西壮族自治区",
+                                "displayNameKey": "广西壮族自治区"
+                            },
+                            {
+                                "value": "海南省",
+                                "displayNameKey": "海南省"
+                            },
+                            {
+                                "value": "重庆市",
+                                "displayNameKey": "重庆市"
+                            },
+                            {
+                                "value": "四川省",
+                                "displayNameKey": "四川省"
+                            },
+                            {
+                                "value": "贵州省",
+                                "displayNameKey": "贵州省"
+                            },
+                            {
+                                "value": "云南省",
+                                "displayNameKey": "云南省"
+                            },
+                            {
+                                "value": "西藏自治区",
+                                "displayNameKey": "西藏自治区"
+                            },
+                            {
+                                "value": "陕西省",
+                                "displayNameKey": "陕西省"
+                            },
+                            {
+                                "value": "甘肃省",
+                                "displayNameKey": "甘肃省"
+                            },
+                            {
+                                "value": "青海省",
+                                "displayNameKey": "青海省"
+                            },
+                            {
+                                "value": "宁夏回族自治区",
+                                "displayNameKey": "宁夏回族自治区"
+                            },
+                            {
+                                "value": "新疆维吾尔自治区",
+                                "displayNameKey": "新疆维吾尔自治区"
+                            },
+                            {
+                                "value": "台湾省",
+                                "displayNameKey": "台湾省"
+                            },
+                            {
+                                "value": "香港特别行政区",
+                                "displayNameKey": "香港特别行政区"
+                            },
+                            {
+                                "value": "澳门特别行政区",
+                                "displayNameKey": "澳门特别行政区"
+                            }
+                        ],
+                        "defaultValue": "中国"
                     },
                     {
                         "name": "emphasisColor",
@@ -89,21 +231,22 @@
                         "defaultValue": true
                     },
                     {
-                        "name": "borderShadowColor",
-                        "type": "Color",
-                        "displayName": "边框阴影颜色"
+                        "name": "provincepieces",
+                        "type": "LongText",
+                        "displayName": "省份分段颜色",
+                        "defaultValue": "[{\"gt\": 100000,\"label\": \">100000\"},{\"gte\": 10000,\"lte\": 100000,\"label\": \"10000 - 100000\"},{\"gte\": 1000,\"lt\": 10000,\"label\": \"1000 - 9999\"},{\"gte\": 1,\"lt\": 1000,\"label\": \"1 - 999\"},{\"lte\": 0,\"label\": \"0\"}]"
                     },
                     {
-                        "name": "borderShadowWidth",
-                        "type": "Integer",
-                        "displayName": "边框阴影宽度",
-                        "defaultValue": 0
+                        "name": "citypieces",
+                        "type": "LongText",
+                        "displayName": "城市分段颜色",
+                        "defaultValue": "[{\"gt\": 10000,\"label\": \">10000\"},{\"gte\": 1000,\"lte\": 10000,\"label\": \"1000 - 10000\"},{\"gte\": 100,\"lt\": 1000,\"label\": \"100 - 999\"},{\"gte\": 1,\"lt\": 100,\"label\": \"1 - 99\"},{\"lte\": 0,\"label\": \"0\"}]"
                     },
                     {
-                        "name": "borderShadowBlurLevel",
-                        "type": "Integer",
-                        "displayName": "边框阴影模糊度",
-                        "defaultValue": 0
+                        "name": "pieces",
+                        "type": "LongText",
+                        "displayName": "区县分段颜色",
+                        "defaultValue": "[{\"gt\": 1000,\"label\": \">1000\"},{\"gte\": 100,\"lte\": 1000,\"label\": \"100 - 1000\"},{\"gte\": 10,\"lt\": 100,\"label\": \"10 - 99\"},{\"gte\": 1,\"lt\": 10,\"label\": \"1 - 9\"},{\"lte\": 0,\"label\": \"0\"}]"
                     },
                     {
                         "name": "showVisualMap",
@@ -134,24 +277,6 @@
                         "inheritFrom": "dashboard.textStyle"
                     },
                     {
-                        "name": "provincepieces",
-                        "type": "LongText",
-                        "displayName": "省份分段颜色",
-                        "defaultValue": "[{\"gt\": 100000,\"label\": \">100000\"},{\"gte\": 10000,\"lte\": 100000,\"label\": \"10000 - 100000\"},{\"gte\": 1000,\"lt\": 10000,\"label\": \"1000 - 9999\"},{\"gte\": 1,\"lt\": 1000,\"label\": \"1 - 999\"},{\"lte\": 0,\"label\": \"0\"}]"
-                    },
-                    {
-                        "name": "citypieces",
-                        "type": "LongText",
-                        "displayName": "城市分段颜色",
-                        "defaultValue": "[{\"gt\": 10000,\"label\": \">10000\"},{\"gte\": 1000,\"lte\": 10000,\"label\": \"1000 - 10000\"},{\"gte\": 100,\"lt\": 1000,\"label\": \"100 - 999\"},{\"gte\": 1,\"lt\": 100,\"label\": \"1 - 99\"},{\"lte\": 0,\"label\": \"0\"}]"
-                    },
-                    {
-                        "name": "pieces",
-                        "type": "LongText",
-                        "displayName": "区县分段颜色",
-                        "defaultValue": "[{\"gt\": 1000,\"label\": \">1000\"},{\"gte\": 100,\"lte\": 1000,\"label\": \"100 - 1000\"},{\"gte\": 10,\"lt\": 100,\"label\": \"10 - 99\"},{\"gte\": 1,\"lt\": 10,\"label\": \"1 - 9\"},{\"lte\": 0,\"label\": \"0\"}]"
-                    },
-                    {
                         "name": "piecesColor",
                         "type": "Palette",
                         "displayName": "调色板",
@@ -159,71 +284,71 @@
                     }
                 ]
             },
-          {
-            "displayName": "提示标签",
-            "properties": [
-              {
-                "name": "showTooltip",
-                "type": "Boolean",
-                "displayName": "显示提示标签",
-                "defaultValue": true
-              },
-              {
-                "name": "tooltipBackgroundColor",
-                "type": "Color",
-                "displayName": "背景颜色",
-                "defaultValue": "rgba(66, 125, 249, 0.3)"
-              },
-              {
-                "displayNameKey": "宽度",
-                "name": "tooltipWidth",
-                "type": "Integer",
-                "min": 10,
-                "defaultValue": 200
-              },
-              {
-                "displayNameKey": "高度",
-                "name": "tooltipHeight",
-                "type": "Integer",
-                "min": 10,
-                "defaultValue": 80
-              },
-              {
-                "name": "tooltipBorderColor",
-                "type": "Color",
-                "displayName": "边框颜色",
-                "defaultValue": "rgba(115, 216, 255, 0.88)"
-              },
-              {
-                "displayNameKey": "边框内边距",
-                "name": "tooltipPadding",
-                "type": "Position",
-                "defaultValue": {
-                  "top": 10,
-                  "bottom": 10,
-                  "left": 10,
-                  "right": 10
-                }
-              },
-              {
-                "name": "tooltipTextStyle",
-                "type": "TextStyle",
-                "displayName": "字体设置",
-                "inheritFrom": "dashboard.textStyle",
-                "defaultValue": {
-                  "fontSize": "14px"
-                }
-              }
-            ]
-          },
+            {
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "showTooltip",
+                        "type": "Boolean",
+                        "displayName": "显示提示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "tooltipBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "displayNameKey": "宽度",
+                        "name": "tooltipWidth",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 200
+                    },
+                    {
+                        "displayNameKey": "高度",
+                        "name": "tooltipHeight",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 80
+                    },
+                    {
+                        "name": "tooltipBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "tooltipPadding",
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 10,
+                            "bottom": 10,
+                            "left": 10,
+                            "right": 10
+                        }
+                    },
+                    {
+                        "name": "tooltipTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
             {
                 "displayName": "数据标注",
                 "properties": [
                     {
-                      "name": "showLabel",
-                      "type": "Boolean",
-                      "displayName": "显示数据标注",
-                      "defaultValue": true
+                        "name": "showLabel",
+                        "type": "Boolean",
+                        "displayName": "显示数据标注",
+                        "defaultValue": true
                     },
                     {
                         "name": "showData",
