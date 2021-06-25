@@ -140,9 +140,6 @@ export default class Visual extends WynVisual {
     }
 
     this.render();
-    if(!this.isMock && this.hasLink){
-      this.bindEvents();
-    }
   }
 
   public render() {
@@ -414,6 +411,9 @@ export default class Visual extends WynVisual {
     options.rotateType === 'pause' && retateY(-deltaAngle)
 
     this.resize();
+    if(!this.isMock && this.hasLink){
+      this.bindEvents();
+    }
   }
 
   public formatData = (number, dataUnit, dataType) => {
