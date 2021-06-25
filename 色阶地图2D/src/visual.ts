@@ -727,7 +727,6 @@ export default class Visual extends WynVisual {
   }
 
   public onDestroy() {
-    this.chart.dispose();
   }
 
   public onResize() {
