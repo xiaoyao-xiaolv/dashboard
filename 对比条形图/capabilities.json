@@ -26,18 +26,8 @@
                 ]
             },
             {
-                "name": "Compare",
-                "displayNameKey": "比较字段",
-                "kind": "value"
-            },
-            {
                 "name": "dimension",
                 "displayNameKey": "分类",
-                "kind": "grouping"
-            },
-            {
-                "name": "jump",
-                "displayNameKey": "跳转字段",
                 "kind": "grouping"
             }
         ],
@@ -53,12 +43,6 @@
                                 "min": 1
                             },
                             "dimension": {
-                                "min": 1
-                            },
-                            "Compare": {
-                                "min": 1
-                            },
-                            "jump": {
                                 "min": 1
                             }
                         }
@@ -76,12 +60,6 @@
                 },
                 "dimension": {
                     "max": 1
-                },
-                "Compare": {
-                    "max": 1
-                },
-                "jump": {
-                    "max": 1
                 }
             }
         ]
@@ -95,6 +73,12 @@
                         "name": "barWidth",
                         "type": "Integer",
                         "displayName": "柱子宽度",
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "barBorderRadius",
+                        "type": "Integer",
+                        "displayName": "圆角弧度",
                         "defaultValue": 14
                     },
                     {
@@ -151,6 +135,23 @@
                 ]
             },
             {
+                "displayName": "图例设置",
+                "properties": [
+                    {
+                        "name": "showlegend",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "legendtextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
                 "displayName": "数据标注",
                 "properties": [
                     {
@@ -158,12 +159,6 @@
                         "type": "Boolean",
                         "displayName": "显示数据标注",
                         "defaultValue": true
-                    },
-                    {
-                        "name": "jumpUrl",
-                        "type": "Text",
-                        "displayName": "跳转地址",
-                        "defaultValue": "http://www.baidu.com"
                     },
                     {
                         "name": "labelTextStyle",
@@ -208,13 +203,5 @@
         }
     ],
     "analysis": [
-        {
-            "type": "drill",
-            "rule": {
-                "roles": [
-                    "dimension"
-                ]
-            }
-        }
     ]
 }

@@ -16,7 +16,6 @@ export default class Visual {
     , [74, 64, 78, 65, 79, 21, 28, 91, 38]
     , [78.38, 71.88, 60.26, 75.38, 74.68, 80.95, 89.29, 91.21, 89.47]
     , ["复工人数", "总人数"]
-    , [1, 1, 1, 1, 1, 1, 1, 1, 1]
   ];
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
@@ -25,40 +24,18 @@ export default class Visual {
     this.isMock = true;
     this.host = host;
     this.properties = {
-      barWidth: 14,
-      fontSize: 14,
-      textColor: '#ffffff',
-      barBackgroundColor: '#444a58',
-      barStartColor: '#57eabf',
-      barEndColor: '#2563f9',
     };
-    this.bindEvents();
-  }
-  public bindEvents = () => {
-    this.container.addEventListener('click', (e: any) => {
-      if (!e.seriesClick) {
-        return;
-      }
-    })
-    this.chart.on('click', (params) => {
-      if (params.componentType !== 'series') return;
-      params.event.event.seriesClick = true;
-      let dataIndex = params.dataIndex;
-      window.open(this.properties.jumpUrl + '?params=[' + this.items[6][dataIndex] + ']')
-    })
   }
 
   public update(options: any) {
     const dataView = options.dataViews[0];
     this.isMock = !dataView;
-    this.items = [[], [], [], [], [], [], []];
+    this.items = [[], [], [], [], [], []];
     if (dataView) {
       const plainData = dataView.plain;
       let dimension = plainData.profile.dimension.values[0].display;
       let ActualValue = plainData.profile.ActualValue.values[0].display;
       let ContrastValue = plainData.profile.ContrastValue.values[0].display;
-      let Compare = plainData.profile.Compare.values[0].display;
-      let jump = plainData.profile.jump.values[0].display;
       let data = plainData.data;
       this.items[0] = plainData.sort[dimension].order;
       this.items[4] = [ActualValue, ContrastValue];
@@ -70,8 +47,6 @@ export default class Visual {
             this.items[1].push(item[ActualValue]);
             this.items[2].push(item[ContrastValue]);
             this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
-            this.items[5].push(item[Compare]);
-            this.items[6].push(item[jump]);
           }
         })
       }
@@ -97,6 +72,13 @@ export default class Visual {
     } else {
       labelfontWeight = options.labelTextStyle.fontWeight
     }
+    let legendfontWeight: string;
+    if (options.legendtextStyle.fontWeight == "Light") {
+      labelfontWeight = options.legendtextStyle.fontWeight + "er"
+    } else {
+      labelfontWeight = options.legendtextStyle.fontWeight
+    }
+
     let option = {
       tooltip: {
         show: true,
@@ -112,32 +94,74 @@ export default class Visual {
       grid: {
         top: '0',
         left: '0',
-        right: '4.75%',
         bottom: '0',
         containLabel: true
       },
-      yAxis: [{
-        type: 'category',
-        data: items[0],
-        inverse: true,
-        offset: options.offset,
-        axisTick: {
-          show: false
+      legend: {
+        show: options.showlegend,
+        left: 'center',
+        top: 0,
+        textStyle: {
+          color: options.legendtextStyle.color,
+          fontSize: options.legendtextStyle.fontSize.substr(0, 2),
+          fontWeight: legendfontWeight,
+          fontFamily: options.legendtextStyle.fontFamily,
+          fontStyle: options.legendtextStyle.fontStyle
         },
-        axisLabel: {
-          show: options.showLabel,
-          margin: 20,
-          align: options.align,
-          color: options.textStyle.color,
-          fontSize: options.textStyle.fontSize.substr(0, 2),
-          fontWeight: fontWeight,
-          fontFamily: options.textStyle.fontFamily,
-          fontStyle: options.textStyle.fontStyle,
+        data: items[4]
+      },
+      color: [options.piecesColor[0], options.barBackgroundColor],
+      yAxis: [
+        {
+          type: 'category',
+          data: items[0],
+          offset: options.offset,
+          inverse: true,
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            show: options.showLabel,
+            margin: 20,
+            align: options.align,
+            color: options.textStyle.color,
+            fontSize: options.textStyle.fontSize.substr(0, 2),
+            fontWeight: fontWeight,
+            fontFamily: options.textStyle.fontFamily,
+            fontStyle: options.textStyle.fontStyle,
+          },
+          axisLine: {
+            show: false
+          },
         },
-        axisLine: {
-          show: false
-        },
-      }],
+        {
+          show: true,
+          type: 'category',
+          data: items[0],
+          inverse: true,
+          axisTick: "none",
+          axisLine: "none",
+          align: "right",
+          axisLabel: {
+            show: options.showLabel,
+            align: options.align,
+            color: options.textStyle.color,
+            fontSize: options.textStyle.fontSize.substr(0, 2),
+            fontWeight: fontWeight,
+            fontFamily: options.textStyle.fontFamily,
+            fontStyle: options.textStyle.fontStyle,
+            rich: {
+              a: { width: 75, align: "left" }
+            },
+            formatter: (params) => {
+              var index = items[0].indexOf(params)
+              return [
+                "{a|" + items[2][index] + "}{a|" + items[1][index] + "}"
+              ];
+            }
+          }
+        }
+      ],
       xAxis: [{
         type: 'value',
         axisLabel: {
@@ -152,6 +176,7 @@ export default class Visual {
       }],
       series: [{
         type: 'bar',
+        name: items[4][0],
         barWidth: options.barWidth,
         data: items[3],
         label: {
@@ -167,13 +192,12 @@ export default class Visual {
           fontStyle: options.labelTextStyle.fontStyle,
         },
         itemStyle: {
-          color: (params) => {
-            return params.value / 100 > items[5][params.dataIndex] ? options.piecesColor[0] : params.value / 100 == items[5][params.dataIndex] ? options.piecesColor[1] : options.piecesColor[2]
-          },
-          barBorderRadius: 14
+          color: options.piecesColor[0],
+          barBorderRadius: options.barBorderRadius
         }
       }, {
         type: "bar",
+        name: items[4][1],
         barWidth: options.barWidth,
         xAxisIndex: 0,
         barGap: "-100%",
@@ -182,7 +206,7 @@ export default class Visual {
         }),
         itemStyle: {
           color: options.barBackgroundColor,
-          barBorderRadius: 14
+          barBorderRadius: options.barBorderRadius
         },
         emphasis: {
           itemStyle: {
