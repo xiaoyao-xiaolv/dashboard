@@ -147,14 +147,22 @@ export default class Visual {
     }
   }
 
-  private convertData = (data: number[]) => {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-      var dataItem = data[i];
-      var fromCoord = this.queryData(dataItem[this.departureName]);
-      var toCoord = this.queryData(dataItem[this.destinationName]);
+  private convertData = (data, bindCoords) => {
+    const res = [];
+    for (let i = 0; i < data.length; i++) {
+      const dataItem = data[i];
+      let fromCoord;
+      let toCoord;
+      if ( bindCoords ) {
+        fromCoord = [dataItem[this.departurelongName],dataItem[this.departurelatName]];
+        toCoord = [dataItem[this.destinationlongName],dataItem[this.destinationlatName]];
+      } else {
+        fromCoord = this.queryData(dataItem[this.departureName]);
+        toCoord = this.queryData(dataItem[this.destinationName]);
+      }
       if (fromCoord && toCoord) {
         res.push({
+          index: dataItem.index,
           fromName: dataItem[this.departureName],
           toName: dataItem[this.destinationName],
           coords: [fromCoord, toCoord],
@@ -165,52 +173,20 @@ export default class Visual {
     return res;
   };
 
-  private classify = (arr: any) => {
+  private classify = (arr: any, bindCoords) => {
     let obj = {}
-    arr.map(v => {
-      obj[v[this.departureName]] = 0
+    arr.forEach((item, index) => {
+      item.index = index;
+      obj[item[this.departureName]] = 0;
     })
     let nameArr = Object.keys(obj)
     this.legendData = nameArr
     let result = [];
-    nameArr.map(v => {
-      let temp = this.convertData(arr.filter(_v => v == _v[this.departureName]));
-      if (temp.length) {
-        result.push(temp)
-      }
-    })
-    return result
-  }
-
-  private convertData1 = (data: number[]) => {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-      var dataItem = data[i];
-      var fromCoord = [dataItem[this.departurelongName],dataItem[this.departurelatName]];
-      var toCoord = [dataItem[this.destinationlongName],dataItem[this.destinationlatName]];
-      if (fromCoord && toCoord) {
-        res.push({
-          fromName: dataItem[this.departureName],
-          toName: dataItem[this.destinationName],
-          coords: [fromCoord, toCoord],
-          value: dataItem[this.valuesName]
-        });
-      }
-    }
-    return res;
-  };
-  private classify1 = (arr: any) => {
-    let obj = {}
-    arr.map(v => {
-      obj[v[this.departureName]] = 0
-    })
-    let nameArr = Object.keys(obj)
-    this.legendData = nameArr
-    let result = [];
-    nameArr.map(v => {
-      let temp = this.convertData1(arr.filter(_v => v == _v[this.departureName]));
-      if (temp.length) {
-        result.push(temp)
+    nameArr.map(name => {
+      const departureNameArr = arr.filter(item => name == item[this.departureName]);
+      let convertedMapData = this.convertData(departureNameArr, bindCoords);
+      if (convertedMapData.length) {
+        result.push(convertedMapData)
       }
     })
     return result
@@ -234,33 +210,30 @@ export default class Visual {
   public update(options: any) {
     const dataView = options.dataViews[0];
     this.items = [];
-    if (dataView &&
-      dataView.plain.profile.values.values.length && dataView.plain.profile.departure.values.length && dataView.plain.profile.destination.values.length &&
-      dataView.plain.profile.departurelat.values.length && dataView.plain.profile.departurelong.values.length &&
-      dataView.plain.profile.destinationlong.values.length && dataView.plain.profile.destinationlat.values.length) {
-      const plainData = dataView.plain;
-      this.destinationName = plainData.profile.destination.values[0].display
-      this.valuesName = plainData.profile.values.values[0].display;
-      this.departureName = plainData.profile.departure.values[0].display
-      this.destinationlatName = plainData.profile.destinationlat.values[0].display
-      this.destinationlongName = plainData.profile.destinationlong.values[0].display;
-      this.departurelatName = plainData.profile.departurelat.values[0].display
-      this.departurelongName = plainData.profile.departurelong.values[0].display
-      this.items = this.classify1(plainData.data);
-    } else if (dataView) {
-      const plainData = dataView.plain;
-      this.destinationName = plainData.profile.destination.values[0].display
-      this.valuesName = plainData.profile.values.values[0].display;
-      this.departureName = plainData.profile.departure.values[0].display
-      this.items = this.classify(plainData.data);
-    }
-    if(this.items && this.items.length) {
-      const items = [].concat.apply([],this.items);
-      dataView.plain.data.forEach((item, index) => {
+    if (dataView) {
+      const plainProfile = dataView.plain.profile;
+      const plainData = dataView.plain.data;
+      this.destinationName = plainProfile.destination.values[0].display
+      this.valuesName = plainProfile.values.values[0].display;
+      this.departureName = plainProfile.departure.values[0].display
+      if (plainProfile.values.values.length && plainProfile.departure.values.length && plainProfile.destination.values.length &&
+        plainProfile.departurelat.values.length && plainProfile.departurelong.values.length &&
+        plainProfile.destinationlong.values.length && plainProfile.destinationlat.values.length) {
+        this.destinationlatName = plainProfile.destinationlat.values[0].display;
+        this.destinationlongName = plainProfile.destinationlong.values[0].display;
+        this.departurelatName = plainProfile.departurelat.values[0].display;
+        this.departurelongName = plainProfile.departurelong.values[0].display;
+        this.items = this.classify(plainData, true);
+      } else {
+        this.items = this.classify(plainData, false);
+      }
+      const mapItems = [].concat.apply([],this.items);
+      plainData.forEach((item,index) => {
         const selectionId = this.host.selectionService.createSelectionId();
-        selectionId.withDimension(dataView.plain.profile.departure.values[0], item);
-        selectionId.withDimension(dataView.plain.profile.destination.values[0], item);
-        items[index].selectionId = selectionId;
+        selectionId.withDimension(plainProfile.departure.values[0], item);
+        selectionId.withDimension(plainProfile.destination.values[0], item);
+        const mapItem = mapItems.find((data) => data.index === index);
+        mapItem.selectionId = selectionId;
       })
     }
     this.properties = options.properties;
