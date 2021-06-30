@@ -124,7 +124,12 @@ export default class Visual {
     this.chart.on('click', (params) => {
       if (params.componentSubType !== 'effectScatter') return;
       const items = [].concat.apply([],this.items);
-      const item = items.find(item =>  item.fromName === params.name || item.toName === params.name);
+      let item = items.find((item) => {
+        return (item.fromName === params.name) && (item.toName === params.name);
+      });
+      if(!item) {
+        item = items.find(item =>  item.fromName === params.name || item.toName === params.name);
+      }
       this.host.commandService.execute([{
         name: 'Jump',
         payload: {

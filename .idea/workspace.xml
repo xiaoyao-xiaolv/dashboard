@@ -12,9 +12,11 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carrouselKPI-Link/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/carrouselKPI-Link/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/dist/visual.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/流向地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/流向地图/流向地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/流向地图.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
