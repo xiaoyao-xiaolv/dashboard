@@ -82,6 +82,12 @@
                         "defaultValue": 14
                     },
                     {
+                        "name": "LabelWidth",
+                        "type": "Integer",
+                        "displayName": "数据显示间隔",
+                        "defaultValue": 20
+                    },
+                    {
                         "name": "barBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",

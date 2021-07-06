@@ -151,12 +151,14 @@ export default class Visual {
             fontFamily: options.textStyle.fontFamily,
             fontStyle: options.textStyle.fontStyle,
             rich: {
-              a: { width: 75, align: "left" }
+              a: { width: options.LabelWidth, align: "left" }
             },
             formatter: (params) => {
               var index = items[0].indexOf(params)
+              var item1 = this.host.formatService.format(this.contrastFormat, items[2][index]).toLocaleString()
+              var item2 = this.host.formatService.format(this.actualFormat, items[1][index]).toLocaleString()
               return [
-                "{a|" + items[2][index] + "}{a|" + items[1][index] + "}"
+                "{a|" + item1 + "}{a|" + item2 + "}"
               ];
             }
           }

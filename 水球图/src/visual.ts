@@ -22,6 +22,7 @@ export default class Visual {
     }
 
     public update(options: any) {
+        console.log(options.dataViews[0]);
         const dataView = options.dataViews[0];
         if (dataView && dataView.plain.profile.ActualValue.values.length) {
             const plainData = dataView.plain;
