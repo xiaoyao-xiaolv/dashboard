@@ -11,14 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片4.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carouselPicture/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carouselPicture/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carouselPicture/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/style/visual.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/assets/图片1.png" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/assets/图片1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/assets/图片2.png" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/assets/图片2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/assets/图片3.png" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/assets/图片3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/assets/图片4.png" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/assets/图片4.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/carouselPicture/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/visual.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -137,7 +135,7 @@
       <workItem from="1624517059213" duration="18432000" />
       <workItem from="1625123277749" duration="15000" />
       <workItem from="1625628279855" duration="46156000" />
-      <workItem from="1625794804269" duration="7504000" />
+      <workItem from="1625794804269" duration="8935000" />
     </task>
     <servers />
   </component>
@@ -260,5 +258,9 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="297" y="151" key="run.anything.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625645511372" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1625803929011">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625803929011" />
   </component>
 </project>
