@@ -1,13 +1,18 @@
+::-webkit-scrollbar {display:none}
+#visualDom{
+  overflow: hidden;
+}
 html,
 body {
   position: relative;
   height: 100%;
-  background: #eee;
+  background: transparent;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #000;
   margin: 0;
   padding: 0;
+  margin-bottom: 10px;
 
   .swiper-container {
     width: 100%;
@@ -16,7 +21,7 @@ body {
     .swiper-slide {
       text-align: center;
       font-size: 18px;
-      background: #fff;
+      background: transparent;
 
       /* Center slide text vertically */
       display: -webkit-box;
@@ -37,7 +42,18 @@ body {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        position: absolute;
+        bottom: 28px;
+      }
+
+      .swiper-desc {
+        position: absolute;
+        bottom: 0;
+        color: #fff;
       }
     }
+  }
+  .swiper-pagination {
+    bottom: 28px!important;
   }
 }

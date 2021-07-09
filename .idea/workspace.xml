@@ -11,12 +11,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carouselPicture/assets/图片4.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/流向地图/流向地图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/流向地图/流向地图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/style/visual.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/visual.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,19 +70,19 @@
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\漏斗图\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\carouselPicture\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\DateSlicer\style" />
+      <recent name="D:\Wyn plugins code\dashboard\DateSlicer\src" />
+      <recent name="D:\Wyn plugins code\dashboard\DateSlicer" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\timeStatusBar\assets" />
       <recent name="D:\Wyn plugins code\dashboard\天气预报\src" />
       <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
       <recent name="D:\Wyn plugins code\dashboard\自定义地图3D" />
       <recent name="D:\Wyn plugins code\dashboard\色阶地图2D" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\DateSlicer\style" />
-      <recent name="D:\Wyn plugins code\dashboard\DateSlicer\src" />
-      <recent name="D:\Wyn plugins code\dashboard\DateSlicer" />
-      <recent name="D:\Wyn plugins code\dashboard\日期时间\assets" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -132,6 +135,9 @@
       <workItem from="1624328789603" duration="20091000" />
       <workItem from="1624428274874" duration="13186000" />
       <workItem from="1624517059213" duration="18432000" />
+      <workItem from="1625123277749" duration="15000" />
+      <workItem from="1625628279855" duration="46156000" />
+      <workItem from="1625794804269" duration="7504000" />
     </task>
     <servers />
   </component>
@@ -205,7 +211,6 @@
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1624420536733">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/-1920.1.1920.1040@0.0.1280.680" timestamp="1616145537989" />
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624420536733" />
     <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1623922571332">
       <screen x="0" y="0" width="1280" height="680" />
@@ -227,27 +232,33 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602468942" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1624602130265">
+    <state width="498" height="398" key="SwitcherDM" timestamp="1625803235889">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1623915449616" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602130265" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625803235889" />
     <state x="778" y="-864" key="VCS.ChangeListViewerDialog" timestamp="1623910202659">
       <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
     <state x="778" y="-864" key="VCS.ChangeListViewerDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1623910202659" />
-    <state x="-1828" y="93" width="1736" height="856" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1616129124660">
-      <screen x="-1920" y="1" width="1920" height="1040" />
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1625733640829">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="-1828" y="93" width="1736" height="856" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1280.680/-1920.1.1920.1040@0.0.1280.680" timestamp="1616129124660" />
-    <state x="662" y="-828" width="816" height="536" key="find.popup" timestamp="1624501873130">
-      <screen x="0" y="-1080" width="1920" height="1040" />
+    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625733640829" />
+    <state x="441" y="144" width="573" height="536" key="find.popup" timestamp="1625801625687">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="662" y="-828" width="816" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1624501873130" />
     <state x="289" y="112" width="891" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624431300103" />
+    <state x="441" y="144" width="573" height="536" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625801625687" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1624336170325">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624336170325" />
+    <state x="297" y="151" key="run.anything.popup" timestamp="1625645511372">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="297" y="151" key="run.anything.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625645511372" />
   </component>
 </project>

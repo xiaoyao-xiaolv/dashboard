@@ -2,13 +2,13 @@
     "dataBinding": {
         "dataRoles": [
             {
-                "name": "projectName",
-                "displayNameKey": "项目名称",
+                "name": "image",
+                "displayNameKey": "图片",
                 "kind": "grouping"
             },
             {
-                "name": "taskName",
-                "displayNameKey": "任务名称",
+                "name": "imageDescription",
+                "displayNameKey": "图片说明",
                 "kind": "grouping"
             }
         ],
@@ -16,39 +16,29 @@
             {
                 "plain": {
                     "required": [{
-                        "projectName": {
+                        "image": {
                             "min": 1
                         },
-                        "taskName": {
-                            "min": 1
-                        },
-                        "startTime": {
-                            "min": 1
-                        },
-                        "endTime": {
+                        "imageDescription": {
                             "min": 1
                         }
                     },{
-                        "projectName": {
+                        "image": {
                             "min": 1
                         },
-                        "taskName": {
+                        "imageDescription": {
                             "max": 0
-                        },
-                        "startTime": {
-                            "min": 1
-                        },
-                        "endTime": {
-                            "min": 1
                         }
-                    }
-                    ]
+                    }]
                 }
             }
         ],
         "conditions": [
             {
-                "projectName": {
+                "image": {
+                    "max": 1
+                },
+                "imageDescription": {
                     "max": 1
                 }
             }
@@ -60,35 +50,63 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
-                        "name": "label",
-                        "type": "Text",
-                        "displayName": "列头名称",
-                        "defaultValue": "任务名称"
+                        "name": "useButton",
+                        "type": "Boolean",
+                        "displayName": "是否启用翻页按钮",
+                        "defaultValue": false
                     },
                     {
-                        "displayNameKey": "列头宽度",
-                        "name": "projectWidth",
+                        "name": "autoPlay",
+                        "type": "Boolean",
+                        "displayName": "是否开启自动轮播",
+                        "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "自动轮播间隔(毫秒)",
+                        "name": "delay",
                         "type": "Integer",
-                        "min": 10,
-                        "defaultValue": 200
+                        "min": 100,
+                        "defaultValue": 1000
                     },
                     {
-                        "displayNameKey": "日期列宽度",
-                        "name": "dateColumnWidth",
+                        "name": "effect",
+                        "type": "Enum",
+                        "displayName": "切换动效",
+                        "items": [
+                            {
+                                "value": "fade",
+                                "displayNameKey": "渐变"
+                            },
+                            {
+                                "value": "coverflow",
+                                "displayNameKey": "3D滚动"
+                            },
+                            {
+                                "value": "cube",
+                                "displayNameKey": "3D方块"
+                            },
+                            {
+                                "value": "flip",
+                                "displayNameKey": "3D反转"
+                            }
+                        ],
+                        "defaultValue": "fade"
+                    },
+                    {
+                        "displayNameKey": "切换动效速度",
+                        "name": "speed",
                         "type": "Integer",
-                        "min": 10,
-                        "defaultValue": 50
+                        "min": 100,
+                        "defaultValue": 1000
                     },
                     {
-                        "name": "projectColor",
-                        "type": "Color",
-                        "displayName": "项目颜色",
-                        "defaultValue": "#0856f2"
-                    },
-                    {
-                        "name": "taskColors",
-                        "type": "Palette",
-                        "displayName": "任务状态颜色"
+                        "name": "imageDescSetting",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
                     }
                 ]
             },
