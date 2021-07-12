@@ -66,7 +66,7 @@
                         "name": "delay",
                         "type": "Integer",
                         "min": 100,
-                        "defaultValue": 1000
+                        "defaultValue": 2000
                     },
                     {
                         "name": "effect",
@@ -90,14 +90,14 @@
                                 "displayNameKey": "3D反转"
                             }
                         ],
-                        "defaultValue": "fade"
+                        "defaultValue": "cube"
                     },
                     {
                         "displayNameKey": "切换动效速度",
                         "name": "speed",
                         "type": "Integer",
                         "min": 100,
-                        "defaultValue": 1000
+                        "defaultValue": 2000
                     },
                     {
                         "name": "imageDescSetting",
