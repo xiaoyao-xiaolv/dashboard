@@ -1,14 +1,17 @@
 import '../style/visual.less';
-import "echarts/map/js/china.js"
 import "echarts-gl"
+import * as echarts from 'echarts';
+import mapJson from './foshan.json';
 import { myTooltipC } from './myTooltip.js';
 
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
+  private host: any;
   private properties: any;
   private items: any;
-  private dataView: any;
+  private valueFormat: any;
+  private tooltipFormat: any;
   private shadowDiv: any;
   private locationName: any;
   private valuesName: any;
@@ -19,12 +22,12 @@ export default class Visual {
 
   constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
-    this.chart = require('echarts').init(dom);
+    this.chart = echarts.init(dom);
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
-    this.container.firstElementChild.setAttribute('style','height : 0');
+    this.container.firstElementChild.setAttribute('style', 'height : 0');
     this.items = [];
-    this.dataView = [];
+    this.host = host;
     this.properties = {
       showPieces: true,
       showVisualMap: true,
@@ -58,19 +61,20 @@ export default class Visual {
     dataItems.forEach((dataItem) => {
       let valueObj = {
         name: dataItem[this.locationName],
-        value : dataItem[this.valuesName] || 0,
-        valueInfo : {
-          valueName : this.valuesName,
-          value : dataItem[this.valuesName] || 0
+        value: this.host.formatService.format(this.valueFormat, dataItem[this.valuesName]).toLocaleString() || 0,
+        valueInfo: {
+          valueName: this.valuesName,
+          value: this.host.formatService.format(this.valueFormat, dataItem[this.valuesName]).toLocaleString() || 0
         }
       };
 
       let tooltips;
       if (this.tooltipFields.length) {
         tooltips = this.tooltipFields.map((filed) => {
+          let tooltipvalue = this.host.formatService.format(this.tooltipFormat, dataItem[filed]).toLocaleString()
           return {
-            filed : filed,
-            value : dataItem[filed]
+            filed: filed,
+            value: tooltipvalue
           }
         });
         valueObj['tooltipFields'] = tooltips;
@@ -88,7 +92,8 @@ export default class Visual {
       let plainData = options.dataViews[0].plain;
       this.locationName = profileItems.province.values[0].display;
       this.valuesName = profileItems.values.values[0].display;
-
+      this.valueFormat = plainData.profile.values.options.valueFormat;
+      this.tooltipFormat = plainData.profile.tooltipFields.options.valueFormat;
       let toolTipValues = profileItems.tooltipFields.values;
       if (toolTipValues.length) {
         this.tooltipFields = toolTipValues.map(value => value.display);
@@ -107,12 +112,13 @@ export default class Visual {
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
+    echarts.registerMap('CustomMap', mapJson, {});
     let myTooltip = this.myTooltip;
     myTooltip.config['text'] = {
       time: 0.3,
       font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
       color: options.tooltipTextStyle.color,
-      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left],
       width: options.tooltipWidth,
       height: options.tooltipHeight,
       lineHeight: 24,
@@ -131,31 +137,17 @@ export default class Visual {
       return item;
     });
 
-    function tooltipTemplate(data) {
-      let locationStr = `${data.name}\n`;
-      let valueStr = `${data.valueInfo.valueName} : ${data.valueInfo.value}\n`;
-      let tooltipStr = '';
-
-      if (data.tooltipFields) {
-        data.tooltipFields.forEach((tooltip) => {
-          tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
-        })
-      }
-      return `${locationStr}${valueStr}${tooltipStr}`;
-    }
-
-
     var option = {
       tooltip: {
         trigger: 'item',
         triggerOn: 'click',
-        backgroundColor : 'transparent',
-        position (pos) {
+        backgroundColor: 'transparent',
+        position(pos) {
           return myTooltip.getPosOrSize('pos', pos);
         },
-        formatter(params: any) {
-          if(params.data.valueInfo) {
-            let text = tooltipTemplate(params.data);
+        formatter: (params: any) => {
+          if (params.data.valueInfo) {
+            let text = this.tooltipTemplate(params.data);
             return myTooltip.getTooltipDom(text);
           }
         },
@@ -164,10 +156,10 @@ export default class Visual {
         {
           name: 'map',
           type: 'map3D',
-          map: 'china',
+          map: 'CustomMap',
           itemStyle: {
             opacity: 1,
-            areaColor:options.mapColor,
+            areaColor: options.mapColor,
             borderWidth: 1,
             borderColor: options.borderColor
           },
@@ -204,6 +196,20 @@ export default class Visual {
       })
     }
   }
+
+  private tooltipTemplate = (data) => {
+    let locationStr = `${data.name}\n`;
+    let valueStr = `${data.valueInfo.valueName} : ${data.valueInfo.value}\n`;
+    let tooltipStr = '';
+
+    if (data.tooltipFields) {
+      data.tooltipFields.forEach((tooltip) => {
+        tooltipStr = tooltipStr + `${tooltip.filed} : ${tooltip.value}\n`;
+      })
+    }
+    return `${locationStr}${valueStr}${tooltipStr}`;
+  }
+
   public onResize() {
     this.chart.resize();
     this.render();
