@@ -18,14 +18,14 @@ export default class Visual {
         this.properties = {
             showSubTitle: false,
             subtitle: '示例',
-            fontColor:'#fff',
-            fontSize:10,
+            fontColor: '#fff',
+            fontSize: 10,
             borderColor: '#20da97',
-            scaleBackgroundColor:'#5effea',
-            scaleColor:'rgba(0, 0, 0, 0.5)',
-            scaleFontColor:'#fff',
-            scaleFontSize:10,
-            pointerColor:'#5effea'
+            scaleBackgroundColor: '#5effea',
+            scaleColor: 'rgba(0, 0, 0, 0.5)',
+            scaleFontColor: '#fff',
+            scaleFontSize: 10,
+            pointerColor: '#5effea'
         };
     }
 
@@ -40,9 +40,9 @@ export default class Visual {
             this.ActualValue = plainData.profile.ActualValue.values;
             this.ContrastValue = plainData.profile.ContrastValue.values;
             if (this.valueField.length == 1) {
-                this.items = plainData.data[0][this.valueField[0].display].toFixed(4);
+                this.items[0] = plainData.data[0][this.valueField[0].display];
             } else {
-                this.items = (plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]).toFixed(4);
+                this.items[0] = (plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]);
             }
         }
         this.properties = options.properties;
@@ -55,13 +55,13 @@ export default class Visual {
         const items = (isMock ? Visual.mockItems : this.items) * 100;
         this.container.style.opacity = isMock ? '0.3' : '1';
         const options = this.properties;
-        let subtitle = options.showSubTitle?options.subtitle+' : ':''
+        let subtitle = options.showSubTitle ? options.subtitle + ' : ' : ''
         var option = {
             title: {
                 show: true,
                 x: "center",
                 bottom: 10,
-                text: subtitle + items + '%',
+                text: subtitle + items.toFixed(options.decimalsize) + '%',
                 textStyle: {
                     fontWeight: 'normal',
                     fontSize: options.fontSize,
@@ -74,11 +74,11 @@ export default class Visual {
                 textStyle: {
                     color: 'fff'
                 },
-                formatter: function(param) {
+                formatter: function (param) {
                     //return '<em style="color:' + param.color + ';">' + param.value + '</em> 分'
-                    return '<em style="color:#ffffff;">' + param.value + '%</em> '
+                    return '<em style="color:#ffffff;">' + param.value.toFixed(options.decimalsize) + '%</em> '
                 }
-        
+
             },
             series: [{
                 name: "白色圈刻度",
@@ -198,7 +198,7 @@ export default class Visual {
                 axisLine: {
                     lineStyle: { // 属性lineStyle控制线条样式//控制外圈位置
                         color: [
-                            [items/100, options.borderColor],
+                            [items / 100, options.borderColor],
                             [1, options.borderBgColor]
                         ],
                         width: 5,
@@ -253,6 +253,6 @@ export default class Visual {
         return null;
     }
     public onActionEventHandler = (name: string) => {
-      console.log(name);
+        console.log(name);
     }
 }

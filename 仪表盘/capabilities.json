@@ -101,6 +101,12 @@
                         "type": "Color",
                         "displayName": "指针颜色",
                         "defaultValue": "#5effea"
+                    },
+                    {
+                        "name": "decimalsize",
+                        "type": "Integer",
+                        "displayName": "小数位数",
+                        "defaultValue": 2
                     }
                 ]
             },
