@@ -265,7 +265,7 @@ export default class Visual extends WynVisual {
             data: data,
             startAngle: options.startAngle,
             minAngle: options.minAngle,
-            roseType: options.pieRoseType === 'rose' ? options.pieType : '',
+            roseType: options.pieRoseType === 'pie' ? '' : options.pieRoseType,
             label: {
               show: options.showLabel,
               ...options.labelTextStyle,
@@ -374,7 +374,7 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[] {
     let hiddenOptions: Array<string> = [''];
-
+    
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
@@ -383,10 +383,6 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
     } else {
       hiddenOptions = hiddenOptions.concat(['legendHorizontalPosition'])
-    }
-    //  rose type 
-    if (updateOptions.properties.pieRoseType === 'pie') {
-      hiddenOptions = hiddenOptions.concat(['pieType'])
     }
     // label
     if (!updateOptions.properties.showLabel) {

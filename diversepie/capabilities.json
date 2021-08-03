@@ -59,27 +59,15 @@
                                 "displayNameKey": "饼图"
                             },
                             {
-                                "value": "rose",
-                                "displayNameKey": "玫瑰图"
+                                "value": "area",
+                                "displayNameKey": "径向玫瑰图"
+                            },
+                            {
+                                "value": "radius",
+                                "displayNameKey": "角度玫瑰图"
                             }
                         ],
                         "defaultValue": "pie"
-                    },
-                    {
-                        "name": "pieType",
-                        "type": "Enum",
-                        "displayName": "显示模式",
-                        "items": [
-                            {
-                                "value": "radius",
-                                "displayNameKey": "圆心角"
-                            },
-                            {
-                                "value": "area",
-                                "displayNameKey": "半径"
-                            }
-                        ],
-                        "defaultValue": "radius"
                     },
                     {
                         "name": "pieStartType",
