@@ -209,7 +209,12 @@ export default class Visual extends WynVisual {
 
     const data: any = this.isMock ? Visual.mockItems : this.items[1];
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
-
+    
+    function hexToRgba(hex, opacity) {
+      return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
+              + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
+    }
+     
     const getColors = (index, position: number) => {
       let backgroundColor = ''
       const pieColor: [{
@@ -249,7 +254,8 @@ export default class Visual extends WynVisual {
                   }
                   ],
                   global: false
-                },borderRadius: [options.borderRadius, options.borderRadius]
+                },
+                borderRadius: [options.borderRadius, options.borderRadius]
               },
               emphasis: {
                 opacity: 1
@@ -301,17 +307,18 @@ export default class Visual extends WynVisual {
               normal: {
                 color: (params) => {
                   return {
-                    type: 'radial',
-                    x: 0.5,
-                    y: 0.5,
-                    r: 1,
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 1,
+                    y2: 1,
                     colorStops: [{
                       offset: 0,
-                      color: getColors(params.dataIndex, 0)
+                      color: options.showGradient ? hexToRgba(getColors(params.dataIndex, 0), 0.2) : getColors(params.dataIndex, 0), 
                     },
                     {
                       offset: 1,
-                      color: getColors(params.dataIndex, 1)
+                      color: options.showGradient ? hexToRgba(getColors(params.dataIndex, 0), 1) : getColors(params.dataIndex, 1), 
                     }
                     ],
                     global: false

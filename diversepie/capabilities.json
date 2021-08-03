@@ -120,6 +120,12 @@
                         "type": "Integer",
                         "displayName": "圆角弧度",
                         "defaultValue": 0
+                    },
+                    {
+                        "name": "showGradient",
+                        "type": "Boolean",
+                        "displayName": "显示渐变",
+                        "defaultValue": true
                     }
                 ]
             },
