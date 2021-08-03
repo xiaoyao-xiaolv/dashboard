@@ -1,7 +1,13 @@
 import '../style/visual.less';
 import _ = require('lodash');
-import * as echarts from 'echarts';
+import * as echarts from 'echarts/core';
+import { PieChart } from 'echarts/charts';
+import { AriaComponent , TooltipComponent, LegendComponent, GridComponent   } from 'echarts/components';
+import {CanvasRenderer} from 'echarts/renderers';
 
+echarts.use(
+  [ PieChart, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
+);
 
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
@@ -206,7 +212,9 @@ export default class Visual extends WynVisual {
 
     const getColors = (index, position: number) => {
       let backgroundColor = ''
-      const pieColor = options.pieColor;
+      const pieColor: [{
+        colorStops: [] | any
+      }] = options.pieColor && options.pieColor || [];
       if (index < pieColor.length) {
         backgroundColor = pieColor[index].colorStops ? pieColor[index].colorStops[position] : pieColor[index]
       } else {
@@ -261,7 +269,7 @@ export default class Visual extends WynVisual {
             label: {
               show: options.showLabel,
               ...options.labelTextStyle,
-              fontSize: parseFloat(options.labelTextStyle.fontSize),
+              fontSize: parseInt(options.labelTextStyle.fontSize),
               position: options.labelPosition,
               formatter: (params) => {
                 let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
@@ -276,13 +284,13 @@ export default class Visual extends WynVisual {
                   align: 'center',
                   padding: [2, 2],
                   ...options.labelTextStyle,
-                  fontSize: parseFloat(options.labelTextStyle.fontSize),
+                  fontSize: parseInt(options.labelTextStyle.fontSize),
                 },
                 c: {
                   lineHeight: 20,
                   align: 'center',
                   ...options.labelTextStyle,
-                  fontSize: parseFloat(options.labelTextStyle.fontSize),
+                  fontSize: parseInt(options.labelTextStyle.fontSize),
                 }
               },
             },
@@ -338,7 +346,7 @@ export default class Visual extends WynVisual {
         icon: options.legendIcon === 'none' ? '' : options.legendIcon,
         textStyle: {
           ...legendTextStyle,
-          fontSize: parseFloat(options.legendTextStyle.fontSize),
+          fontSize: parseInt(options.legendTextStyle.fontSize),
         },
         orient: orient,
       },

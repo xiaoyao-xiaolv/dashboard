@@ -28,7 +28,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "echarts": "^4.8.0",
+    "@types/echarts": "^4.9.9",
+    "echarts": "^5.1.2",
     "lodash": "^4.17.15"
   }
 }
