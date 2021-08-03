@@ -114,6 +114,12 @@
                         "type": "Integer",
                         "displayName": "最小扇形角度",
                         "defaultValue": 0
+                    },
+                    {
+                        "name": "borderRadius",
+                        "type": "Integer",
+                        "displayName": "圆角弧度",
+                        "defaultValue": 0
                     }
                 ]
             },

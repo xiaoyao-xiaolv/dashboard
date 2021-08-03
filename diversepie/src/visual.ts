@@ -249,7 +249,7 @@ export default class Visual extends WynVisual {
                   }
                   ],
                   global: false
-                }
+                },borderRadius: [options.borderRadius, options.borderRadius]
               },
               emphasis: {
                 opacity: 1
@@ -316,7 +316,8 @@ export default class Visual extends WynVisual {
                     ],
                     global: false
                   }
-                }
+                },
+                borderRadius: [options.borderRadius, options.borderRadius]
               },
               emphasis: {
                 opacity: 1
