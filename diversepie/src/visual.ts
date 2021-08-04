@@ -207,7 +207,29 @@ export default class Visual extends WynVisual {
     this.container.style.opacity = isMock ? '0.3' : '1';
     const legendTextStyle = { ...options.legendTextStyle };
 
-    const data: any = this.isMock ? Visual.mockItems : this.items[1];
+    let data: any = this.isMock ? Visual.mockItems : this.items[1];
+    if(options.endAngle !== options.startAngle){
+      let totalValue = 0
+      data.forEach(element => {
+        totalValue += element.value 
+      })
+      let finalAngle = 0;
+      if(options.startAngle%360 < options.endAngle%360){
+        finalAngle = 360 - options.endAngle%360 + options.startAngle%360
+      }else if(options.startAngle%360 > options.endAngle%360){
+        finalAngle = options.startAngle%360 - options.endAngle%360
+      }
+      let ratio = finalAngle/360
+      data = [...data,{
+        value:totalValue/ratio*(1-ratio), 
+        name:'',
+        label: {
+          show:false,
+        },
+        itemStyle:{normal:{color:'rgba(0,0,0,0)'}}
+      }]
+    }
+    
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
     
     function hexToRgba(hex, opacity) {
@@ -367,7 +389,7 @@ export default class Visual extends WynVisual {
       },
       series: getSeries()
     }
-
+    
     this.chart.setOption(option)
   }
 
