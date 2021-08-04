@@ -415,7 +415,28 @@
                         "type": "Percentage",
                         "displayName": "连接线平滑度",
                         "defaultValue": 0
-                    }
+                    },
+                    {
+                        "name": "setLabelLineColor",
+                        "type": "Enum",
+                        "displayName": "设置连接线颜色",
+                        "items": [
+                            {
+                                "value": "labelThemeColor",
+                                "displayNameKey": "主题色"
+                            },
+                            {
+                                "value": "labelCustomColor",
+                                "displayNameKey": "自定义颜色"
+                            }
+                        ],
+                        "defaultValue": "labelThemeColor"
+                    },
+                    {
+                        "name": "labelLineColor",
+                        "type": "Color",
+                        "displayName": "连接线颜色"
+                    }          
                 ]
             },
             {

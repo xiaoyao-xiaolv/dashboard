@@ -209,7 +209,7 @@ export default class Visual extends WynVisual {
     const legendTextStyle = { ...options.legendTextStyle };
 
     let data: any = this.isMock ? Visual.mockItems : this.items[1];
-    if(options.endAngle%360 !== options.startAngle%360){
+    if (options.endAngle%360 !== options.startAngle%360) {
       let totalValue = 0
       data.forEach(element => {
         totalValue += element.value 
@@ -217,8 +217,10 @@ export default class Visual extends WynVisual {
       let finalAngle = 0;
       if(options.startAngle%360 < options.endAngle%360){
         finalAngle = 360 - options.endAngle%360 + options.startAngle%360
+        // finalAngle = options.endAngle%360 - options.startAngle%360
       }else if(options.startAngle%360 > options.endAngle%360){
         finalAngle = options.startAngle%360 - options.endAngle%360
+        // finalAngle = 360 - options.startAngle%360 + options.endAngle%360
       }
       let ratio = finalAngle/360
       data = [...data,{
@@ -331,7 +333,7 @@ export default class Visual extends WynVisual {
               length2:options.labelLineSecond,
               smooth: `${options.labelLineSmooth * 0.01}`,
               lineStyle:{
-                // color:options.setLineColor?options.lineColor:'',
+                color:options.setLabelLineColor === options.labelThemeColor ? null : options.labelLineColor,
                 width:options.labelLineWidth
               }
             },
@@ -437,8 +439,8 @@ export default class Visual extends WynVisual {
     if (updateOptions.properties.labelPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['outer'])
     }
-    if(!updateOptions.properties.setLineColor){
-      hiddenOptions = hiddenOptions.concat(['lineColor'])
+    if(updateOptions.properties.setLabelLineColor === 'labelThemeColor'){
+      hiddenOptions = hiddenOptions.concat(['labelLineColor'])
     }
 
     return hiddenOptions;
