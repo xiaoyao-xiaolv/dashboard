@@ -326,7 +326,14 @@ export default class Visual extends WynVisual {
               },
             },
             labelLine: {
-              show: options.showLabelLine
+              show: options.showLabelLine,
+              length:options.labelLineFirst,
+              length2:options.labelLineSecond,
+              smooth: `${options.labelLineSmooth * 0.01}`,
+              lineStyle:{
+                // color:options.setLineColor?options.lineColor:'',
+                width:options.labelLineWidth
+              }
             },
             itemStyle: {
               normal: {
@@ -429,6 +436,9 @@ export default class Visual extends WynVisual {
     }
     if (updateOptions.properties.labelPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['outer'])
+    }
+    if(!updateOptions.properties.setLineColor){
+      hiddenOptions = hiddenOptions.concat(['lineColor'])
     }
 
     return hiddenOptions;

@@ -143,7 +143,7 @@
                         "name": "breakPointNumber",
                         "type": "Integer",
                         "displayName": "数据间隔",
-                        "defaultValue": 10
+                        "defaultValue": 0
                     }
                 ]
             },
@@ -289,12 +289,6 @@
                         "defaultValue": "outside"
                     },
                     {
-                        "name": "showLabelLine",
-                        "type": "Boolean",
-                        "displayName": "显示指示线",
-                        "defaultValue": true
-                    },
-                    {
                         "name": "showLabelValue",
                         "type": "Boolean",
                         "displayName": "显示数值",
@@ -386,6 +380,41 @@
                         "defaultValue": {
                             "fontSize": "14px"
                         }
+                    }
+                ]
+            },
+            {
+                "displayName": "标签连接线",
+                "properties": [             
+                    {
+                        "name": "showLabelLine",
+                        "type": "Boolean",
+                        "displayName": "显示连接线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "labelLineFirst",
+                        "type": "Integer",
+                        "displayName": "连接线第一长度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "labelLineSecond",
+                        "type": "Integer",
+                        "displayName": "连接线第二长度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "labelLineWidth",
+                        "type": "Integer",
+                        "displayName": "连接线宽度",
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "labelLineSmooth",
+                        "type": "Percentage",
+                        "displayName": "连接线平滑度",
+                        "defaultValue": 0
                     }
                 ]
             },
