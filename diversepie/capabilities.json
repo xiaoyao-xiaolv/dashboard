@@ -126,6 +126,18 @@
                         "type": "Boolean",
                         "displayName": "显示渐变",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "breakPointColor",
+                        "type": "Color",
+                        "displayName": "数据间隔颜色",
+                        "defaultValue": "#05092e"
+                    },
+                    {
+                        "name": "breakPointNumber",
+                        "type": "Integer",
+                        "displayName": "数据间隔",
+                        "defaultValue": 10
                     }
                 ]
             },

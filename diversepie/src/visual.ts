@@ -20,6 +20,7 @@ export default class Visual extends WynVisual {
     { name: "五月", value: 548 },
     { name: "六月", value: 133 },
   ];
+  private static minInner = 1;
 
   private container: HTMLDivElement;
   private host: any;
@@ -255,7 +256,9 @@ export default class Visual extends WynVisual {
                   ],
                   global: false
                 },
-                borderRadius: [options.borderRadius, options.borderRadius]
+                borderRadius: options.borderRadius,
+                borderColor: options.breakPointColor,
+                borderWidth: options.breakPointNumber
               },
               emphasis: {
                 opacity: 1
@@ -266,7 +269,7 @@ export default class Visual extends WynVisual {
           return {
             name: '',
             type: 'pie',
-            radius: options.labelPosition === 'inside' ? [`${options.inner}%`, `${options.outer}%`] : [`${options.inner}%`, `${options.outerOutside}%`],
+            radius: options.labelPosition === 'inside' ? [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outer}%`] : [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outerOutside}%`],
             center: ['50%', '50%'],
             data: data,
             startAngle: options.startAngle,
@@ -324,7 +327,9 @@ export default class Visual extends WynVisual {
                     global: false
                   }
                 },
-                borderRadius: [options.borderRadius, options.borderRadius]
+                borderRadius: options.borderRadius,
+                borderColor: options.breakPointColor,
+                borderWidth: options.breakPointNumber
               },
               emphasis: {
                 opacity: 1
