@@ -209,7 +209,7 @@ export default class Visual extends WynVisual {
     const legendTextStyle = { ...options.legendTextStyle };
 
     let data: any = this.isMock ? Visual.mockItems : this.items[1];
-    if(options.endAngle !== options.startAngle){
+    if(options.endAngle%360 !== options.startAngle%360){
       let totalValue = 0
       data.forEach(element => {
         totalValue += element.value 

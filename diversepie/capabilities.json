@@ -113,7 +113,7 @@
                         "name": "endAngle",
                         "type": "Integer",
                         "displayName": "结束角度",
-                        "defaultValue": 0
+                        "defaultValue": 90
                     },
                     {
                         "name": "minAngle",
@@ -396,13 +396,13 @@
                         "name": "labelLineFirst",
                         "type": "Integer",
                         "displayName": "连接线第一长度",
-                        "defaultValue": 0
+                        "defaultValue": 30
                     },
                     {
                         "name": "labelLineSecond",
                         "type": "Integer",
                         "displayName": "连接线第二长度",
-                        "defaultValue": 0
+                        "defaultValue": 15
                     },
                     {
                         "name": "labelLineWidth",
