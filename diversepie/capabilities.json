@@ -110,6 +110,12 @@
                         "defaultValue": 90
                     },
                     {
+                        "name": "endAngle",
+                        "type": "Integer",
+                        "displayName": "结束角度",
+                        "defaultValue": 0
+                    },
+                    {
                         "name": "minAngle",
                         "type": "Integer",
                         "displayName": "最小扇形角度",
