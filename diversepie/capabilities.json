@@ -262,7 +262,7 @@
                                 "displayNameKey": "底部"
                             }
                         ],
-                        "defaultValue": "top"
+                        "defaultValue": "middle"
                     },
                     {
                         "name": "legendArea",

@@ -413,7 +413,6 @@ export default class Visual extends WynVisual {
         formatter:(name) => {
           const _target = data.find((item: any) => item.name === name)
           const _total = data.map((item) => item.value).reduce((prev, next) => prev + next);
-          console.log(_total, '==_total')
           return `${_target.name}  ${_target.value}  ${Number((_target.value / _total* 100 ).toFixed(0))　}%`;
         },
       },
@@ -444,7 +443,7 @@ export default class Visual extends WynVisual {
     
     // legend
     if (!updateOptions.properties.showLegend) {
-      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
