@@ -312,7 +312,6 @@ export default class Visual extends WynVisual {
               formatter: (params) => {
                 let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
                 let percent = options.showLabelPercent ? `${value ? '/' : ''}${params.percent.toFixed(0)}%` : '';
-                console.log(`{b|${params.name} } \n {c|${value}${percent}}`);
                 
                 return !options.showLabelValue && !options.showLabelPercent
                 ? `\n {hr|}\n {b|${params.name}}`
