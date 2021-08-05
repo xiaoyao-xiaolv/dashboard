@@ -215,12 +215,17 @@ export default class Visual extends WynVisual {
         totalValue += element.value 
       })
       let finalAngle = 0;
+      // if(options.startAngle%360 < options.endAngle%360){
+      //   finalAngle = 360 - options.endAngle%360 + options.startAngle%360
+      // }else if(options.startAngle%360 > options.endAngle%360){
+      //   finalAngle = options.startAngle%360 - options.endAngle%360
+      // }
+      let drawingStartAngle = 360-options.startAngle%360
+      let drawingEndAngle = 360-options.endAngle%360
       if(options.startAngle%360 < options.endAngle%360){
-        finalAngle = 360 - options.endAngle%360 + options.startAngle%360
-        // finalAngle = options.endAngle%360 - options.startAngle%360
+        finalAngle = drawingStartAngle - drawingEndAngle
       }else if(options.startAngle%360 > options.endAngle%360){
-        finalAngle = options.startAngle%360 - options.endAngle%360
-        // finalAngle = 360 - options.startAngle%360 + options.endAngle%360
+        finalAngle = (drawingEndAngle + options.startAngle%360)%360
       }
       let ratio = finalAngle/360
       data = [...data,{
@@ -307,15 +312,17 @@ export default class Visual extends WynVisual {
               formatter: (params) => {
                 let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
                 let percent = options.showLabelPercent ? `${value ? '/' : ''}${params.percent.toFixed(0)}%` : '';
+                console.log(`{b|${params.name} } \n {c|${value}${percent}}`);
+                
                 return !options.showLabelValue && !options.showLabelPercent
-                  ? `{b|${params.name}}`
-                  : `{b|${params.name}} \n {c|${value}${percent}}`
+                ? `\n {hr|}\n {b|${params.name}}`
+                : '\n{hr|}\n' + '{b|' + params.name + "}" + '\n' +" {c|" + value + percent + "}"           
               },
               rich: {
                 b: {
                   lineHeight: 20,
                   align: 'center',
-                  padding: [2, 2],
+                  padding: [-20, 5,10,5],
                   ...options.labelTextStyle,
                   fontSize: parseInt(options.labelTextStyle.fontSize),
                 },
@@ -324,8 +331,19 @@ export default class Visual extends WynVisual {
                   align: 'center',
                   ...options.labelTextStyle,
                   fontSize: parseInt(options.labelTextStyle.fontSize),
-                }
-              },
+                  width: 0,
+                  height: 10,
+                },
+                hr: {
+                  backgroundColor: 'transparent',
+                  borderRadius: 12,
+                  width: 0,
+                  height: 10,
+                  padding: [3, -7, 0, -7],
+                },
+              },              
+              
+
             },
             labelLine: {
               show: options.showLabelLine,
@@ -401,7 +419,7 @@ export default class Visual extends WynVisual {
       yAxis: {
         show: false
       },
-      series: getSeries()
+      series: getSeries(),
     }
     
     this.chart.setOption(option)
@@ -442,6 +460,7 @@ export default class Visual extends WynVisual {
     if(updateOptions.properties.setLabelLineColor === 'labelThemeColor'){
       hiddenOptions = hiddenOptions.concat(['labelLineColor'])
     }
+
 
     return hiddenOptions;
   }
