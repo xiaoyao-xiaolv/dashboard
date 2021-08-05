@@ -144,6 +144,18 @@
                         "type": "Integer",
                         "displayName": "数据间隔",
                         "defaultValue": 0
+                    },
+                    {
+                        "name": "centerX",
+                        "type": "Percentage",
+                        "displayName": "扇形中心-X",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "centerY",
+                        "type": "Percentage",
+                        "displayName": "扇形中心-Y",
+                        "defaultValue": 50
                     }
                 ]
             },

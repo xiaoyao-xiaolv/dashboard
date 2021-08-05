@@ -235,7 +235,7 @@ export default class Visual extends WynVisual {
     
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
     
-    function hexToRgba(hex, opacity) {
+    const hexToRgba = (hex, opacity) => {
       return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
               + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
     }
@@ -294,8 +294,8 @@ export default class Visual extends WynVisual {
             name: '',
             type: 'pie',
             radius: options.labelPosition === 'inside' ? [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outer}%`] : [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outerOutside}%`],
-            center: ['50%', '50%'],
-            data: data,
+            center: [`${options.centerX}%`, `${options.centerY}%`],
+            data: data, 
             startAngle: options.startAngle,
             minAngle: options.minAngle,
             roseType: options.pieRoseType === 'pie' ? '' : options.pieRoseType,
