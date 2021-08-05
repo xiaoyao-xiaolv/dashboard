@@ -171,7 +171,7 @@
                     {
                         "name": "legendIcon",
                         "type": "Enum",
-                        "displayName": "图标",
+                        "displayName": "图例形状",
                         "items": [
                             {
                                 "value": "none",
@@ -203,7 +203,7 @@
                     {
                         "name": "legendPosition",
                         "type": "Enum",
-                        "displayName": "位置",
+                        "displayName": "水平位置",
                         "items": [
                             {
                                 "value": "left",
@@ -222,12 +222,12 @@
                                 "displayNameKey": "底部"
                             }
                         ],
-                        "defaultValue": "top"
+                        "defaultValue": "right"
                     },
                     {
                         "name": "legendVerticalPosition",
                         "type": "Enum",
-                        "displayName": "水平位置",
+                        "displayName": "垂直位置",
                         "items": [
                             {
                                 "value": "left",
@@ -263,6 +263,34 @@
                             }
                         ],
                         "defaultValue": "top"
+                    },
+                    {
+                        "name": "legendArea",
+                        "type": "Enum",
+                        "displayName": "图例宽高",
+                        "items": [
+                            {
+                                "value": "auto",
+                                "displayNameKey": "默认"
+                            },
+                            {
+                                "value": "custom",
+                                "displayNameKey": "自定义"
+                            }
+                        ],
+                        "defaultValue": "auto"
+                    },
+                    {
+                        "name": "legendWidth",
+                        "type": "Percentage",
+                        "displayName": "图例宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "legendHeight",
+                        "type": "Percentage",
+                        "displayName": "图例高度",
+                        "defaultValue": 0
                     },
                     {
                         "name": "legendTextStyle",

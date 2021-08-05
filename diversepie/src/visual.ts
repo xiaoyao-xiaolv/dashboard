@@ -393,6 +393,14 @@ export default class Visual extends WynVisual {
           fontSize: parseInt(options.legendTextStyle.fontSize),
         },
         orient: orient,
+        width: options.legendArea === 'custom' ? `${options.legendWidth}%` : 'auto',
+        height: options.legendArea === 'custom' ? `${options.legendHeight}%` : 'auto',
+        formatter:(name) => {
+          const _target = data.find((item: any) => item.name === name)
+          const _total = data.map((item) => item.value).reduce((prev, next) => prev + next);
+          console.log(_total, '==_total')
+          return `${_target.name}  ${_target.value}  ${Number((_target.value / _total* 100 ).toFixed(0))　}%`;
+        },
       },
       calculable: true,
       xAxis: {
