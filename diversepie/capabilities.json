@@ -313,6 +313,12 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "showLabelName",
+                        "type": "Boolean",
+                        "displayName": "显示系列名",
+                        "defaultValue": false
+                    },
+                    {
                         "name": "labelPosition",
                         "type": "Enum",
                         "displayName": "标注位置",
@@ -329,15 +335,15 @@
                         "defaultValue": "outside"
                     },
                     {
-                        "name": "showLabelValue",
-                        "type": "Boolean",
-                        "displayName": "显示数值",
-                        "defaultValue": true
-                    },
-                    {
                         "name": "showLabelPercent",
                         "type": "Boolean",
                         "displayName": "显示比值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showLabelValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
                         "defaultValue": true
                     },
                     {
@@ -413,6 +419,33 @@
                         "defaultValue": "1"
                     },
                     {
+                        "name": "showLabelTwoLine",
+                        "type": "Boolean",
+                        "displayName": "两行显示",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "setLabelTextColor",
+                        "type": "Enum",
+                        "displayName": "设置字体颜色",
+                        "items": [
+                            {
+                                "value": "labelThemeTextColor",
+                                "displayNameKey": "主题色"
+                            },
+                            {
+                                "value": "labelCustomTextColor",
+                                "displayNameKey": "自定义颜色"
+                            }
+                        ],
+                        "defaultValue": "labelThemeTextColor"
+                    },
+                    {
+                        "name": "labelTextColor",
+                        "type": "Color",
+                        "displayName": "字体颜色"
+                    },
+                    {
                         "name": "labelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -421,6 +454,7 @@
                             "fontSize": "14px"
                         }
                     }
+                  
                 ]
             },
             {
@@ -476,7 +510,7 @@
                         "name": "labelLineColor",
                         "type": "Color",
                         "displayName": "连接线颜色"
-                    }          
+                    }
                 ]
             },
             {

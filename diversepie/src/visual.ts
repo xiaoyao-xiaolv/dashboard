@@ -215,11 +215,6 @@ export default class Visual extends WynVisual {
         totalValue += element.value 
       })
       let finalAngle = 0;
-      // if(options.startAngle%360 < options.endAngle%360){
-      //   finalAngle = 360 - options.endAngle%360 + options.startAngle%360
-      // }else if(options.startAngle%360 > options.endAngle%360){
-      //   finalAngle = options.startAngle%360 - options.endAngle%360
-      // }
       let drawingStartAngle = 360-options.startAngle%360
       let drawingEndAngle = 360-options.endAngle%360
       if(options.startAngle%360 < options.endAngle%360){
@@ -310,26 +305,29 @@ export default class Visual extends WynVisual {
               fontSize: parseInt(options.labelTextStyle.fontSize),
               position: options.labelPosition,
               formatter: (params) => {
+                let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${'/'}`:params.name):''
                 let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
                 let percent = options.showLabelPercent ? `${value ? '/' : ''}${params.percent.toFixed(0)}%` : '';
-                
+                let lineFeed = options.showLabelTwoLine ? '\n':''
                 return !options.showLabelValue && !options.showLabelPercent
-                ? `\n {hr|}\n {b|${params.name}}`
-                : '\n{hr|}\n' + '{b|' + params.name + "}" + '\n' +" {c|" + value + percent + "}"           
+                ? `\n {hr|}\n {b|${name}}`
+                : '{b|' + name + "}" + lineFeed +" {c|" + value + percent + "}"           
               },
               rich: {
                 b: {
                   lineHeight: 20,
                   align: 'center',
-                  padding: [-20, 5,10,5],
+                  padding: [2,50],
                   ...options.labelTextStyle,
                   fontSize: parseInt(options.labelTextStyle.fontSize),
+                  color: options.setLabelTextColor === 'labelThemeTextColor' ? null : options.labelTextColor,
                 },
                 c: {
                   lineHeight: 20,
                   align: 'center',
                   ...options.labelTextStyle,
                   fontSize: parseInt(options.labelTextStyle.fontSize),
+                  color: options.setLabelTextColor === 'labelThemeTextColor' ? null : options.labelTextColor,
                   width: 0,
                   height: 10,
                 },
@@ -455,7 +453,7 @@ export default class Visual extends WynVisual {
     }
     // label
     if (!updateOptions.properties.showLabel) {
-      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle', 'showLabelTwoLine', 'showLabelName', 'labelTextColor', 'setLabelTextColor'])
     }
 
     if (updateOptions.properties.labelPosition === 'inside') {
@@ -464,8 +462,14 @@ export default class Visual extends WynVisual {
     if (updateOptions.properties.labelPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['outer'])
     }
-    if(updateOptions.properties.setLabelLineColor === 'labelThemeColor'){
+    if (updateOptions.properties.setLabelLineColor === 'labelThemeColor') {
       hiddenOptions = hiddenOptions.concat(['labelLineColor'])
+    }
+    if (updateOptions.properties.setLabelTextColor === 'labelThemeTextColor') {
+      hiddenOptions = hiddenOptions.concat(['labelTextColor'])
+    }
+    if (!updateOptions.properties.showLabelValue) {
+      hiddenOptions = hiddenOptions.concat(['labelDataType', 'labelDataUnit'])
     }
 
 
