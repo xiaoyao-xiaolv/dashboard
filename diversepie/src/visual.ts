@@ -441,7 +441,7 @@ export default class Visual extends WynVisual {
             _title += `{a|系列}`
           }
           if (options.showLegendValue) {
-            _legendText += ` ${_target.value}`;
+            _legendText += ` ${this.formatData(_target.value, options.labelDataUnit, options.labelDataType)}`;
             _title += `{b|数值}`
           }
           if (options.showLegendPercent) {
