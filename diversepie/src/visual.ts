@@ -385,7 +385,10 @@ export default class Visual extends WynVisual {
     const option = {
       tooltip: {
         trigger: 'item',
-        formatter: `${this.isMock ? '访问量' : this.dimension} <br/>{b} : {c} ({d}%)`
+        formatter: (params) => {
+          console.log(params, 'www')
+          return `${this.isMock ? '访问量' : this.dimension} <br/>${params.name} :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)} (${params.percent}%)`
+        }
       },
       legend: {
         data: this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0],
