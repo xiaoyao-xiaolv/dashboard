@@ -346,7 +346,7 @@
                         "name": "showLabelName",
                         "type": "Boolean",
                         "displayName": "显示系列名",
-                        "defaultValue": false
+                        "defaultValue": true
                     },
                     {
                         "name": "labelPosition",
@@ -396,9 +396,13 @@
                             {
                                 "value": "%",
                                 "displayNameKey": "百分比"
+                            },
+                            {
+                                "value": ",",
+                                "displayNameKey": "千分符"
                             }
                         ],
-                        "defaultValue": "none"
+                        "defaultValue": ","
                     },
                     {
                         "name": "labelDataUnit",
@@ -488,7 +492,7 @@
                 ]
             },
             {
-                "displayName": "标签连接线",
+                "displayName": "标注连接线",
                 "properties": [             
                     {
                         "name": "showLabelLine",

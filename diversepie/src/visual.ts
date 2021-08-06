@@ -194,6 +194,9 @@ export default class Visual extends WynVisual {
       format = format + dataType
     } else if (dataType === 'none') {
       format = Number(format).toFixed(0)
+    } else if (dataType === ',') {
+      let integer = format.split('.')
+      format = integer[0].replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
     } else {
       format = dataType + format
     }
@@ -301,35 +304,23 @@ export default class Visual extends WynVisual {
             roseType: options.pieRoseType === 'pie' ? '' : options.pieRoseType,
             label: {
               show: options.showLabel,
-              ...options.labelTextStyle,
-              fontSize: parseInt(options.labelTextStyle.fontSize),
               position: options.labelPosition,
               formatter: (params) => {
-                let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${'/'}`:params.name):''
+                let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${' '}`:params.name):''
                 let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                let percent = options.showLabelPercent ? `${value ? '/' : ''}${params.percent.toFixed(0)}%` : '';
+                let percent = options.showLabelPercent ? `${value ? (options.showLabelTwoLine?'/':' ') : ''}${params.percent.toFixed(2)}%` : '';
                 let lineFeed = options.showLabelTwoLine ? '\n':''
                 return !options.showLabelValue && !options.showLabelPercent
-                ? `\n {hr|}\n {b|${name}}`
-                : '{b|' + name + "}" + lineFeed +" {c|" + value + percent + "}"           
+                ? `{b|${name}}`
+                :  `{b|${name}}${lineFeed}{b|${value}${percent}}`
               },
-              rich: {
+              rich:{
                 b: {
                   lineHeight: 20,
-                  align: 'center',
-                  padding: [2,50],
                   ...options.labelTextStyle,
                   fontSize: parseInt(options.labelTextStyle.fontSize),
-                  color: options.setLabelTextColor === 'labelThemeTextColor' ? null : options.labelTextColor,
-                },
-                c: {
-                  lineHeight: 20,
-                  align: 'center',
-                  ...options.labelTextStyle,
-                  fontSize: parseInt(options.labelTextStyle.fontSize),
-                  color: options.setLabelTextColor === 'labelThemeTextColor' ? null : options.labelTextColor,
-                  width: 0,
-                  height: 10,
+                  // color: options.setLabelTextColor === 'labelThemeTextColor' ? getColors(index, 1) : options.labelTextColor,
+
                 },
                 hr: {
                   backgroundColor: 'transparent',
@@ -337,8 +328,9 @@ export default class Visual extends WynVisual {
                   width: 0,
                   height: 10,
                   padding: [3, -7, 0, -7],
-                },
-              },              
+                }
+              }   
+                         
               
 
             },
@@ -519,6 +511,11 @@ export default class Visual extends WynVisual {
     if (!updateOptions.properties.showLabelValue) {
       hiddenOptions = hiddenOptions.concat(['labelDataType', 'labelDataUnit'])
     }
+    if (!(updateOptions.properties.showLabelName && updateOptions.properties.showLabelPercent && updateOptions.properties.showLabelValue)) {
+      hiddenOptions = hiddenOptions.concat(['showLabelTwoLine'])
+      updateOptions.properties.showLabelTwoLine = false
+    }
+
 
 
     return hiddenOptions;
