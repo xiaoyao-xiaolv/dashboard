@@ -395,10 +395,10 @@ export default class Visual extends WynVisual {
         trigger: 'item',
         formatter: `${this.isMock ? '访问量' : this.dimension} <br/>{b} : {c} ({d}%)`
       },
-      // grid: gridStyle,
       legend: {
         data: this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0],
         show: options.showLegend,
+        type: options.openLegendPage ?  'scroll' : 'plain',
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
         align: 'left',
@@ -406,15 +406,60 @@ export default class Visual extends WynVisual {
         textStyle: {
           ...legendTextStyle,
           fontSize: parseInt(options.legendTextStyle.fontSize),
+          rich: {
+            a: {
+              align: 'left',
+              fontSize: 14,
+              color: legendTextStyle.color,
+              width:20,
+              padding: [0, 0, 10, 0]
+            },
+            b: {
+              align: 'center',
+              fontSize: 14,
+              color: legendTextStyle.color,
+              width:5,
+              padding: [0, 0, 10, 0]
+            },
+            c: {
+              align: 'right',
+              fontSize: 14,
+              color: legendTextStyle.color,
+              width:5,
+              padding: [0, 0, 10, 0]
+            }
+          }
         },
         orient: orient,
         width: options.legendArea === 'custom' ? `${options.legendWidth}%` : 'auto',
         height: options.legendArea === 'custom' ? `${options.legendHeight}%` : 'auto',
-        formatter:(name) => {
-          const _target = data.find((item: any) => item.name === name)
+        formatter: (name) => {
+          let _firstLegendText = false;
+          const _target = data.find((item: any, index) => {
+            if (item.name === name && !index) {
+              _firstLegendText = true;
+            }
+            return item.name === name
+          })
           const _total = data.map((item) => item.value).reduce((prev, next) => prev + next);
-          return `${_target.name}  ${_target.value}  ${Number((_target.value / _total* 100 ).toFixed(0))　}%`;
+          let _legendText = '';
+          let _title = '';
+          if (options.showLegendSeries) {
+            _legendText += `${_target.name}`;
+            _title += `{a|系列}`
+          }
+          if (options.showLegendValue) {
+            _legendText += ` ${_target.value}`;
+            _title += `{b|数值}`
+          }
+          if (options.showLegendPercent) {
+            _legendText += ` ${Number((_target.value / _total * 100).toFixed(2))}%`;
+            _title += `{c|占比}`
+          }
+          _title += '\n'
+          return _firstLegendText ? `${options.showLegendTitle ?_title : ''}${_legendText}`: _legendText;
         },
+        
       },
       calculable: true,
       xAxis: {
@@ -443,12 +488,16 @@ export default class Visual extends WynVisual {
     
     // legend
     if (!updateOptions.properties.showLegend) {
-      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'])
+      hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'
+      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'showLegendTitle', 'openLegendPage'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
     } else {
       hiddenOptions = hiddenOptions.concat(['legendHorizontalPosition'])
+    }
+    if (updateOptions.properties.legendArea === 'auto') {
+      hiddenOptions = hiddenOptions.concat(['legendWidth', 'legendHeight'])
     }
     // label
     if (!updateOptions.properties.showLabel) {
