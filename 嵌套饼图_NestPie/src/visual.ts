@@ -148,147 +148,7 @@ export default class Visual extends WynVisual {
       }
       return backgroundColor
     }
-    /*
-    const getSeries = () => {
-      const seriesData = this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0];
-      return seriesData.map((item, index) => {
-        if (index) {
-          return {
-            name: seriesData[index],
-            type: 'pie',
-            data: [],
-            itemStyle: {
-              normal: {
-                color: {
-                  type: 'radial',
-                  x: 0.5,
-                  y: 0.5,
-                  r: 1,
-                  colorStops: [{
-                    offset: 0,
-                    color: getColors(index, 1)
-                  },
-                  {
-                    offset: 1,
-                    color: getColors(index, 0)
-                  }
-                  ],
-                  global: false
-                }
-              },
-              emphasis: {
-                opacity: 1
-              }
-            },
-          }
-        } else {
-          return {
-            name: '',
-            type: 'pie',
-            radius: options.labelPosition === 'inside' ? [`${options.inner}%`, `${options.outer}%`] : [`${options.inner}%`, `${options.outerOutside}%`],
-            center: ['50%', '50%'],
-            data: data,
-            startAngle: options.startAngle,
-            minAngle: options.minAngle,
-            roseType: options.pieRoseType === 'rose' ? options.pieType : '',
-            label: {
-              show: options.showLabel,
-              ...options.labelTextStyle,
-              fontSize: parseFloat(options.labelTextStyle.fontSize),
-              position: options.labelPosition,
-              formatter: (params) => {
-                let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                let percent = options.showLabelPercent ? `${value ? '/' : ''}${params.percent.toFixed(0)}%` : '';
-                return !options.showLabelValue && !options.showLabelPercent
-                  ? `{b|${params.name}}`
-                  : `{b|${params.name}} \n {c|${value}${percent}}`
-              },
-              rich: {
-                b: {
-                  lineHeight: 20,
-                  align: 'center',
-                  padding: [2, 2],
-                  ...options.labelTextStyle,
-                  fontSize: parseFloat(options.labelTextStyle.fontSize),
-                },
-                c: {
-                  lineHeight: 20,
-                  align: 'center',
-                  ...options.labelTextStyle,
-                  fontSize: parseFloat(options.labelTextStyle.fontSize),
-                }
-              },
-            },
-            labelLine: {
-              show: options.showLabelLine
-            },
-            itemStyle: {
-              normal: {
-                color: (params) => {
-                  return {
-                    type: 'radial',
-                    x: 0.5,
-                    y: 0.5,
-                    r: 1,
-                    colorStops: [{
-                      offset: 0,
-                      color: getColors(params.dataIndex, 0)
-                    },
-                    {
-                      offset: 1,
-                      color: getColors(params.dataIndex, 1)
-                    }
-                    ],
-                    global: false
-                  }
-                }
-              },
-              emphasis: {
-                opacity: 1
-              }
-            },
-            animationType: options.pieStartType,
-            animationEasing: options.pieStartType === 'scale' ? 'elasticOut' : 'linear',
-            animationDelay: function (idx) {
-              return Math.random() * 200;
-            }
-          }
-        }
-      })
-    }*/
 
-
-
-    /*const option = {
-      tooltip: {
-        trigger: 'item',
-        formatter: `${this.isMock ? '访问量' : this.dimension} <br/>{b} : {c} ({d}%)`
-      },
-      // grid: gridStyle,
-      legend: {
-        data: this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0],
-        show: options.showLegend,
-        left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
-        top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
-        align: 'left',
-        icon: options.legendIcon === 'none' ? '' : options.legendIcon,
-        textStyle: {
-          ...legendTextStyle,
-          fontSize: parseFloat(options.legendTextStyle.fontSize),
-        },
-        orient: orient,
-      },
-      calculable: true,
-      xAxis: {
-        show: false,
-      },
-      yAxis: {
-        show: false
-      },
-      series: getSeries()
-    }*/
-
-    debugger;
     const option = {
         tooltip: {
             trigger: 'item',
@@ -338,6 +198,7 @@ export default class Visual extends WynVisual {
     };
 
     this.chart.setOption(option)
+    this.chart.resize();
   }
 
 
