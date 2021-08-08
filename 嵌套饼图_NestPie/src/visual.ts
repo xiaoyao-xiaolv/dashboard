@@ -287,6 +287,8 @@ export default class Visual extends WynVisual {
       },
       series: getSeries()
     }*/
+
+    debugger;
     const option = {
         tooltip: {
             trigger: 'item',
@@ -296,7 +298,7 @@ export default class Visual extends WynVisual {
             data: isMock? Visual.mockItemsIn.map(a=>a.name).concat(Visual.mockItemsOut.map(a=>a.name)):
             this.items[0].concat(this.items[2]),
             textStyle:{//图例文字的样式
-              color:'#fff'
+              color: options.legendTextColor
           }
         },
         series: [
@@ -322,37 +324,13 @@ export default class Visual extends WynVisual {
                     length: 30,
                 },
                 label: {
-                    formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                    formatter: isMock?"{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ": options.legendRichFormat,
                     backgroundColor: '#F6F8FC',
                     borderColor: '#8C8D8E',
                     borderWidth: 1,
                     borderRadius: 4,
                     
-                    rich: {
-                        a: {
-                            color: '#6E7079',
-                            lineHeight: 22,
-                            align: 'center'
-                        },
-                        hr: {
-                            borderColor: '#8C8D8E',
-                            width: '100%',
-                            borderWidth: 1,
-                            height: 0
-                        },
-                        b: {
-                            color: '#4C5058',
-                            fontSize: 14,
-                            fontWeight: 'bold',
-                            lineHeight: 33
-                        },
-                        per: {
-                            color: '#fff',
-                            backgroundColor: '#4C5058',
-                            padding: [3, 4],
-                            borderRadius: 4
-                        }
-                    }
+                    rich: JSON.parse(options.legendRichStyle)
                 },
                 data: isMock?Visual.mockItemsOut: this.items[3]
             }
