@@ -1,0 +1,74 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "valueIn",
+                "displayNameKey": "内圈数值",
+                "kind": "value"
+            },
+            {
+                "name": "dimensionIn",
+                "aliasName": "dimension",
+                "displayNameKey": "内圈分类",
+                "kind": "grouping"
+            },    {
+                "name": "valueOut",
+                "displayNameKey": "外圈数值",
+                "kind": "value"
+            },
+            {
+                "name": "dimensionOut",
+                "aliasName": "dimension",
+                "displayNameKey": "外圈分类",
+                "kind": "groupingOrValue"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "value": {
+                                "min": 1
+                            },
+                            "dimension": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "value": {
+                    "max": 1
+                },
+                "dimension": {
+                    "max": 1
+                },
+                "series": { "min": 2 }
+            }
+        ]
+    },
+    "options": {
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
