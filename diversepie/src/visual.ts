@@ -2,11 +2,11 @@ import '../style/visual.less';
 import _ = require('lodash');
 import * as echarts from 'echarts/core';
 import { PieChart } from 'echarts/charts';
-import { AriaComponent , TooltipComponent, LegendComponent, GridComponent   } from 'echarts/components';
+import { GraphicComponent ,AriaComponent , TooltipComponent, LegendComponent, GridComponent   } from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
 
 echarts.use(
-  [ PieChart, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
+  [ PieChart, GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
 );
 
 let isTooltipModelShown = false;
@@ -460,6 +460,17 @@ export default class Visual extends WynVisual {
         },
         
       },
+      // graphic: {
+      //   type: "text",
+      //   left: "center",
+      //   top: "40%",
+      //   style: {
+      //     text: "总计",
+      //     textAlign: "center",
+      //     fill: "#FFF",
+      //     fontSize: 20,
+      //   }
+      // },
       calculable: true,
       xAxis: {
         show: false,
