@@ -360,6 +360,9 @@
                             {
                                 "value": "inside",
                                 "displayNameKey": "内侧"
+                            }, {
+                                "value": "center",
+                                "displayNameKey": "中心"
                             }
                         ],
                         "defaultValue": "outside"

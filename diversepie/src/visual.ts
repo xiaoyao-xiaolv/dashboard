@@ -303,7 +303,7 @@ export default class Visual extends WynVisual {
             minAngle: options.minAngle,
             roseType: options.pieRoseType === 'pie' ? '' : options.pieRoseType,
             label: {
-              show: options.showLabel,
+              show: options.labelPosition === 'center' ? false: options.showLabel,
               position: options.labelPosition,
               formatter: (params) => {
                 let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${' '}`:params.name):''
@@ -330,9 +330,13 @@ export default class Visual extends WynVisual {
                   padding: [3, -7, 0, -7],
                 }
               }   
-                         
-              
-
+            },
+            emphasis: {
+              label: {
+                  show: true,
+                  ...options.labelTextStyle,
+                fontSize: parseInt(options.labelTextStyle.fontSize)
+              }
             },
             labelLine: {
               show: options.showLabelLine,
