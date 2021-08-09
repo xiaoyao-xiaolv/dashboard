@@ -1,8 +1,8 @@
 {
     "id": "ec080670-e3a5-11eb-b740-13dca33449c7",
-    "name": "pointmap2.0",
-    "displayName": "",
-    "displayNameKey": "",
+    "name": "3D效果点地图",
+    "displayName": "3D效果点地图",
+    "displayNameKey": "3D效果点地图",
     "icon": "visualIcon",
     "description": "",
     "externalJs": [],
