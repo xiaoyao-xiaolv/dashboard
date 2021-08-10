@@ -10,6 +10,8 @@ echarts.use(
 );
 
 let isTooltipModelShown = false;
+const clickLeftMouse = 0;
+const clickRightMouse = 2;
 export default class Visual extends WynVisual {
 
   private static mockItems = [
@@ -48,20 +50,17 @@ export default class Visual extends WynVisual {
   // toolTip
   private showTooltip = _.debounce((params, asModel = false) => {
     if (asModel) isTooltipModelShown = true;
-    const fields = [{ label: this.dimension, value: '' }, { label: params.name, value: params.value }]
-    this.host.toolTipService.show({
+    this.host.contextMenuService.show({
       position: {
-        x: params.event.event.x,
-        y: params.event.event.y,
+      x: params.event.event.x,
+      y: params.event.event.y,
       },
-      fields,
-      selected: this.selectionManager.getSelectionIds(),
-      menu: true,
-    }, 10);
+      menu: true
+    }, 10)
   });
 
   private hideTooltip = () => {
-    this.host.toolTipService.hide();
+    this.host.contextMenuService.hide();
     isTooltipModelShown = false;
   }
 
@@ -70,8 +69,8 @@ export default class Visual extends WynVisual {
   private dispatch = (type, payload) => this.chart.dispatchAction({ ...payload, type });
 
   public bindEvents = () => {
-    // lister click 
-    this.container.addEventListener('click', (e: any) => {
+    this.container.addEventListener('mousedown', (e: any) => {
+      document.oncontextmenu = function () { return false; }; 
       if (!e.seriesClick) {
         // clear tooltip
         this.hideTooltip();
@@ -93,9 +92,11 @@ export default class Visual extends WynVisual {
       this.hideTooltip();
     })
 
-    this.chart.on('click', (params) => {
+    
+    this.chart.on('mousedown', (params) => {
+      const clickMouse = params.event.event.button;
       if (params.componentType !== 'series') return;
-      this.showTooltip(params, true);
+      
       params.event.event.seriesClick = true;
       const selectInfo = {
         seriesIndex: params.seriesIndex,
@@ -106,7 +107,32 @@ export default class Visual extends WynVisual {
         this.selectionManager.select(sid, true);
       }
       this.dispatch('highlight', selectInfo);
-      this.selection.push(selectInfo)
+      this.selection.push(selectInfo);
+
+      if (clickMouse === clickLeftMouse) {
+        // show data jump
+        console.log(this.properties.clickLeftMouse, '==== this.properties')
+        if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
+          return
+        } else {
+          if (isTooltipModelShown) return;
+          this.hideTooltip();
+          const selectionIds = this.selectionManager.getSelectionIds();
+          this.host.commandService.execute([{
+            name: this.properties.clickLeftMouse,
+            payload: {
+              selectionIds,
+              position: {
+                x: params.event.event.x,
+                y: params.event.event.y,
+                },
+            }
+          }])
+        }
+      } else if (clickMouse === clickRightMouse) {  
+        params.event.event.preventDefault();
+        this.showTooltip(params, true);
+      }
     })
   }
 
@@ -126,9 +152,9 @@ export default class Visual extends WynVisual {
 
       // data sort 
       if (isSort) {
-        const sortFlage = plainData.sort[this.dimension].order;
-        let newItems: any = sortFlage.map((flage) => {
-          return newItems = items.find((item) => item[this.dimension] === flage && item)
+        const sortFlags = plainData.sort[this.dimension].order;
+        let newItems: any = sortFlags.map((flags) => {
+          return newItems = items.find((item) => item[this.dimension] === flags && item)
         })
         items = newItems.filter((item) => item)
       }
@@ -390,7 +416,6 @@ export default class Visual extends WynVisual {
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
-          console.log(params, 'www')
           return `${this.isMock ? '访问量' : this.dimension} <br/>${params.name} :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)} (${params.percent}%)`
         }
       },
