@@ -54,6 +54,12 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
+                        "name": "showLine",
+                        "type": "Boolean",
+                        "displayName": "显示参考线",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "lineColor",
                         "type": "Color",
                         "displayName": "参考线颜色",
@@ -83,7 +89,7 @@
                         "name": "autoLeftBarWidth",
                         "type": "Boolean",
                         "displayName": "柱子宽度自适应",
-                        "defaultValue": false
+                        "defaultValue": true
                     },
                     {
                         "name": "leftBarWidth",
@@ -115,6 +121,21 @@
                             }
                         ],
                         "defaultValue": "top"
+                    },
+                    {
+                        "name": "showLeftLabel",
+                        "type": "Boolean",
+                        "displayName": "是否显示数值标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "leftLabelText",
+                        "type": "TextStyle",
+                        "displayName": "数值标签字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
                     }
                 ]
             },
@@ -131,7 +152,7 @@
                         "name": "autoRightBarWidth",
                         "type": "Boolean",
                         "displayName": "柱子宽度自适应",
-                        "defaultValue": false
+                        "defaultValue": true
                     },
                     {
                         "name": "rightBarWidth",
@@ -163,6 +184,21 @@
                             }
                         ],
                         "defaultValue": "top"
+                    },
+                    {
+                        "name": "showRightLabel",
+                        "type": "Boolean",
+                        "displayName": "是否显示数值标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "rightLabelText",
+                        "type": "TextStyle",
+                        "displayName": "数值标签字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
                     }
                 ]
             },
