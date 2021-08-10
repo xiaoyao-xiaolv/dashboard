@@ -1,8 +1,8 @@
 {
     "id": "d3efccd0-f665-11eb-96fe-71a1931d9308",
-    "name": "double_column",
-    "displayName": "",
-    "displayNameKey": "",
+    "name": "双向柱状图",
+    "displayName": "双向柱状图",
+    "displayNameKey": "双向柱状图",
     "icon": "visualIcon",
     "description": "",
     "externalJs": [],

@@ -12,8 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doubleColumnChart/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/doubleColumnChart/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doubleColumnChart/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/doubleColumnChart/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doubleColumnChart/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/doubleColumnChart/visual.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -257,12 +256,12 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625733640829" />
-    <state x="554" y="78" width="726" height="602" key="find.popup" timestamp="1628498059242">
+    <state x="554" y="78" width="726" height="602" key="find.popup" timestamp="1628585216366">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="662" y="-828" width="816" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1624501873130" />
     <state x="289" y="112" width="891" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624431300103" />
-    <state x="554" y="78" width="726" height="602" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628498059242" />
+    <state x="554" y="78" width="726" height="602" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628585216366" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1628492788235">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
