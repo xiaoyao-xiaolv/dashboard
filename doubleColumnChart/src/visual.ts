@@ -111,7 +111,7 @@ export default class Visual extends WynVisual {
             }
           },
           splitLine:{
-            show: true,
+            show: this.properties.showLine,
             lineStyle:{
               color: this.properties.lineColor
             }
@@ -139,7 +139,7 @@ export default class Visual extends WynVisual {
             }
           },
           splitLine:{
-            show: true,
+            show: this.properties.showLine,
             lineStyle:{
               color:this.properties.lineColor
             }
@@ -215,8 +215,16 @@ export default class Visual extends WynVisual {
           }
         },
         label: {
-          normal: {
-            show: false,
+          show: this.properties.showLeftLabel,
+          position: 'left',
+          textStyle: {
+            ...this.properties.leftLabelText,
+            fontSize: parseFloat(this.properties.leftLabelText.fontSize),
+          },
+          formatter: function (params) {
+            if (leftFormat) {
+              return visualHost.formatService.format(leftFormat, params.value)
+            }
           }
         },
         data: data.leftData,
@@ -233,8 +241,16 @@ export default class Visual extends WynVisual {
             }
           },
           label: {
-            normal: {
-              show: false,
+            show: this.properties.showRightLabel,
+            position: 'right',
+            textStyle: {
+              ...this.properties.rightLabelText,
+              fontSize: parseFloat(this.properties.rightLabelText.fontSize),
+            },
+            formatter: function (params) {
+              if (rightFormat) {
+                return visualHost.formatService.format(rightFormat, params.value)
+              }
             }
           },
           data: data.rightData,
@@ -271,6 +287,14 @@ export default class Visual extends WynVisual {
 
     if (properties.autoInterval) {
       hiddenStates.push('intervalValue');
+    }
+
+    if (!properties.showLine) {
+      hiddenStates.push('lineColor');
+    }
+
+    if (!properties.showRightLabel) {
+      hiddenStates.push('rightLabelText');
     }
     return hiddenStates;
 
