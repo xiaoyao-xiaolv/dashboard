@@ -1,0 +1,285 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "location",
+                "displayNameKey": "位置",
+                "kind": "grouping"
+            },
+            {
+                "name": "longitude",
+                "displayNameKey": "经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "latitude",
+                "displayNameKey": "纬度",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "max": 0
+                            },
+                            "latitude": {
+                                "max": 0
+                            }
+                        },
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "min": 1
+                            },
+                            "latitude": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "location": {
+                    "max": 1
+                },
+                "longitude": {
+                    "max": 1
+                },
+                "latitude": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "地图设置",
+                "properties": [
+                    {
+                        "name": "symbolStyle",
+                        "type": "Enum",
+                        "displayName": "数据点样式",
+                        "items": [
+                            {
+                                "value": "pyramid",
+                                "displayNameKey": "四棱锥"
+                            },
+                            {
+                                "value": "water",
+                                "displayNameKey": "水滴型"
+                            }
+                        ],
+                        "defaultValue": "water"
+                    },
+                    {
+                        "displayNameKey": "地图缩放级别",
+                        "name": "zoom",
+                        "type": "Float",
+                        "defaultValue": 1.2
+                    },
+                    {
+                        "name": "mapShadowColor",
+                        "type": "Color",
+                        "displayName": "地图阴影颜色",
+                        "defaultValue": "rgba(0, 56, 149, 0.8)"
+                    },
+                    {
+                        "name": "mapBorderColor",
+                        "type": "Color",
+                        "displayName": "地图边线颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.4)"
+                    },
+                    {
+                        "name": "mapBorderShadowColor",
+                        "type": "Color",
+                        "displayName": "地图边线阴影",
+                        "defaultValue": "rgba(115, 171, 255, 0.6)"
+                    },
+                    {
+                        "name": "mapColor",
+                        "type": "Color",
+                        "displayName": "地图填充颜色",
+                        "defaultValue": "rgba(0, 56, 149, 0.8)"
+                    },
+                    {
+                        "name": "emphasisColor",
+                        "type": "Color",
+                        "displayName": "悬浮背景颜色",
+                        "defaultValue": "#73d8ff"
+                    },
+                    {
+                        "displayNameKey": "地图名称",
+                        "name": "mapName",
+                        "type": "Enum",
+                        "items": [
+                            {"value":"world","displayNameKey":"世界"},
+                            {"value":"china","displayNameKey":"中国"},
+                            {"value":"安徽","displayNameKey":"安徽"},
+                            {"value":"澳门","displayNameKey":"澳门"},
+                            {"value":"北京","displayNameKey":"北京"},
+                            {"value":"重庆","displayNameKey":"重庆"},
+                            {"value":"福建","displayNameKey":"福建"},
+                            {"value":"甘肃","displayNameKey":"甘肃"},
+                            {"value":"广东","displayNameKey":"广东"},
+                            {"value":"广西","displayNameKey":"广西"},
+                            {"value":"贵州","displayNameKey":"贵州"},
+                            {"value":"海南","displayNameKey":"海南"},
+                            {"value":"河北","displayNameKey":"河北"},
+                            {"value":"黑龙江","displayNameKey":"黑龙江"},
+                            {"value":"河南","displayNameKey":"河南"},
+                            {"value":"湖北","displayNameKey":"湖北"},
+                            {"value":"湖南","displayNameKey":"湖南"},
+                            {"value":"江苏","displayNameKey":"江苏"},
+                            {"value":"江西","displayNameKey":"江西"},
+                            {"value":"吉林","displayNameKey":"吉林"},
+                            {"value":"辽宁","displayNameKey":"辽宁"},
+                            {"value":"内蒙古","displayNameKey":"内蒙古"},
+                            {"value":"宁夏","displayNameKey":"宁夏"},
+                            {"value":"青海","displayNameKey":"青海"},
+                            {"value":"山东","displayNameKey":"山东"},
+                            {"value":"上海","displayNameKey":"上海"},
+                            {"value":"山西","displayNameKey":"山西"},
+                            {"value":"陕西","displayNameKey":"陕西"},
+                            {"value":"四川","displayNameKey":"四川"},
+                            {"value":"台湾","displayNameKey":"台湾"},
+                            {"value":"天津","displayNameKey":"天津"},
+                            {"value":"香港","displayNameKey":"香港"},
+                            {"value":"新疆","displayNameKey":"新疆"},
+                            {"value":"西藏","displayNameKey":"西藏"},
+                            {"value":"云南","displayNameKey":"云南"},
+                            {"value":"浙江","displayNameKey":"浙江"}
+                        ],
+                        "defaultValue": "china"
+                    }
+                ]
+            },
+            {
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "showTooltip",
+                        "type": "Boolean",
+                        "displayName": "是否显示",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "tooltipBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "name": "tooltipDistance",
+                        "type": "Integer",
+                        "displayName": "底部距离",
+                        "defaultValue": 55
+                    },
+                    {
+                        "name": "tooltipBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "name": "tooltipBorderRadius",
+                        "type": "Integer",
+                        "displayName": "边框圆角",
+                        "defaultValue": 3
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "tooltipPadding",
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 5,
+                            "bottom": 5,
+                            "left": 5,
+                            "right": 5
+                        }
+                    },
+                    {
+                        "name": "tooltipTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "15px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "borderShadowColor",
+                        "type": "Color",
+                        "displayName": "边框阴影颜色"
+                    },
+                    {
+                        "name": "borderShadowWidth",
+                        "type": "Integer",
+                        "displayName": "边框阴影宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "borderShadowBlurLevel",
+                        "type": "Integer",
+                        "displayName": "边框阴影模糊度",
+                        "defaultValue": 0
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "annotation"
+        }
+
+    ],
+    "analysis": []
+}
