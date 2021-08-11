@@ -101,7 +101,7 @@
                         "name": "outerOutside",
                         "type": "Percentage",
                         "displayName": "外径",
-                        "defaultValue": 75
+                        "defaultValue": 65
                     },
                     {
                         "name": "startAngle",
@@ -228,7 +228,7 @@
                                 "displayNameKey": "菱形"
                             }
                         ],
-                        "defaultValue": "roundRect"
+                        "defaultValue": "circle"
                     },
                     {
                         "name": "legendPosition",
@@ -330,6 +330,36 @@
                         "defaultValue": {
                             "fontSize": "14px"
                         }
+                    },
+                    {
+                        "name": "showLabelLine",
+                        "type": "Boolean",
+                        "displayName": "显示连接线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "labelLineFirst",
+                        "type": "Integer",
+                        "displayName": "连接线第一长度",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "labelLineSecond",
+                        "type": "Integer",
+                        "displayName": "连接线第二长度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "labelLineWidth",
+                        "type": "Integer",
+                        "displayName": "连接线宽度",
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "labelLineSmooth",
+                        "type": "Percentage",
+                        "displayName": "连接线平滑度",
+                        "defaultValue": 0
                     }
                 ]
             },
@@ -374,15 +404,21 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "LabelPercentDecimalPlaces",
+                        "type": "Integer",
+                        "displayName": "比值小数位数",
+                        "defaultValue": 2
+                    },
+                    {
                         "name": "showLabelValue",
                         "type": "Boolean",
                         "displayName": "显示数值",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "labelDataType",
                         "type": "Enum",
-                        "displayName": "数据格式",
+                        "displayName": "数值格式",
                         "items": [
                             {
                                 "value": "none",
@@ -410,7 +446,7 @@
                     {
                         "name": "labelDataUnit",
                         "type": "Enum",
-                        "displayName": "数据单位",
+                        "displayName": "数值单位",
                         "items": [
                             {
                                 "value": "1",
@@ -462,27 +498,6 @@
                         "defaultValue": true
                     },
                     {
-                        "name": "setLabelTextColor",
-                        "type": "Enum",
-                        "displayName": "设置字体颜色",
-                        "items": [
-                            {
-                                "value": "labelThemeTextColor",
-                                "displayNameKey": "主题色"
-                            },
-                            {
-                                "value": "labelCustomTextColor",
-                                "displayNameKey": "自定义颜色"
-                            }
-                        ],
-                        "defaultValue": "labelThemeTextColor"
-                    },
-                    {
-                        "name": "labelTextColor",
-                        "type": "Color",
-                        "displayName": "字体颜色"
-                    },
-                    {
                         "name": "labelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -492,62 +507,6 @@
                         }
                     }
                   
-                ]
-            },
-            {
-                "displayName": "标注连接线",
-                "properties": [             
-                    {
-                        "name": "showLabelLine",
-                        "type": "Boolean",
-                        "displayName": "显示连接线",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "labelLineFirst",
-                        "type": "Integer",
-                        "displayName": "连接线第一长度",
-                        "defaultValue": 30
-                    },
-                    {
-                        "name": "labelLineSecond",
-                        "type": "Integer",
-                        "displayName": "连接线第二长度",
-                        "defaultValue": 15
-                    },
-                    {
-                        "name": "labelLineWidth",
-                        "type": "Integer",
-                        "displayName": "连接线宽度",
-                        "defaultValue": 2
-                    },
-                    {
-                        "name": "labelLineSmooth",
-                        "type": "Percentage",
-                        "displayName": "连接线平滑度",
-                        "defaultValue": 0
-                    },
-                    {
-                        "name": "setLabelLineColor",
-                        "type": "Enum",
-                        "displayName": "设置连接线颜色",
-                        "items": [
-                            {
-                                "value": "labelThemeColor",
-                                "displayNameKey": "主题色"
-                            },
-                            {
-                                "value": "labelCustomColor",
-                                "displayNameKey": "自定义颜色"
-                            }
-                        ],
-                        "defaultValue": "labelThemeColor"
-                    },
-                    {
-                        "name": "labelLineColor",
-                        "type": "Color",
-                        "displayName": "连接线颜色"
-                    }
                 ]
             },
             {
