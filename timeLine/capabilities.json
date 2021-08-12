@@ -2,7 +2,58 @@
     "dataBinding": {
     },
     "options": {
-    },
+        "visual": [ {
+            "displayName": "图表样式",
+            "properties": [
+                {
+                    "name": "timeLineDirection",
+                    "type": "Enum",
+                    "displayName": "轴方向",
+                    "items": [
+                        {
+                            "value": "10",
+                            "displayNameKey": "横向"
+                        },
+                        {
+                            "value": "1000",
+                            "displayNameKey": "纵向"
+                        },{
+                            "value": "auto",
+                            "displayNameKey": "自适应"
+                        }
+                    ],
+                    "defaultValue": "10"
+                },
+                {
+                    "name": "visibleItems",
+                    "type": "Integer",
+                    "displayName": "节点个数",
+                    "defaultValue": 6,
+                    "min": 2
+                }
+            ]
+        },{
+            "displayName": "标签样式",
+            "properties": [
+                {
+                    "name": "labelStyle",
+                    "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.5x",
+                            "color": "#3eb2ff"
+                        }
+                },
+                {
+                    "name": "labelBg",
+                    "type": "Color",
+                    "displayName": "标签背景",
+                    "defaultValue": "#fff"
+                }
+            ]
+        }]
+    }, 
     "actions": [],
     "analysis": []
 }
