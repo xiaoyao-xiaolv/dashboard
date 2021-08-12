@@ -34,7 +34,8 @@ export default class Visual extends WynVisual {
   private selection: any[] = [];
   private dimension: string;
   private value: string;
-
+  private _total : any;
+  
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
     this.container = dom;
@@ -111,7 +112,6 @@ export default class Visual extends WynVisual {
 
       if (clickMouse === clickLeftMouse) {
         // show data jump
-        console.log(this.properties.clickLeftMouse, '==== this.properties')
         if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
           return
         } else {
@@ -238,11 +238,8 @@ export default class Visual extends WynVisual {
     const legendTextStyle = { ...options.legendTextStyle };
 
     let data: any = this.isMock ? Visual.mockItems : this.items[1];
+    this._total = data.map((item) => item.value).reduce((prev, next) => prev + next);
     if (options.endAngle%360 !== options.startAngle%360) {
-      let totalValue = 0
-      data.forEach(element => {
-        totalValue += element.value 
-      })
       let finalAngle = 0;
       let drawingStartAngle = 360-options.startAngle%360
       let drawingEndAngle = 360-options.endAngle%360
@@ -253,7 +250,7 @@ export default class Visual extends WynVisual {
       }
       let ratio = finalAngle/360
       data = [...data,{
-        value:totalValue/ratio*(1-ratio), 
+        value:this._total/ratio*(1-ratio), 
         name:'',
         label: {
           show:false,
@@ -334,7 +331,7 @@ export default class Visual extends WynVisual {
               formatter: (params) => {
                 let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${' '}`:params.name):''
                 let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                let percent = options.showLabelPercent ? `${value ? (options.showLabelTwoLine?'/':' ') : ''}${params.percent.toFixed(2)}%` : '';
+                let percent = options.showLabelPercent ? `${value ? (options.showLabelTwoLine?'/':' ') : ''}${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
                 let lineFeed = options.showLabelTwoLine ? '\n':''
                 return !options.showLabelValue && !options.showLabelPercent
                 ? `{b|${name}}`
@@ -370,7 +367,7 @@ export default class Visual extends WynVisual {
               length2:options.labelLineSecond,
               smooth: `${options.labelLineSmooth * 0.01}`,
               lineStyle:{
-                color:options.setLabelLineColor === options.labelThemeColor ? null : options.labelLineColor,
+                color:null,
                 width:options.labelLineWidth
               }
             },
@@ -416,7 +413,7 @@ export default class Visual extends WynVisual {
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
-          return `${this.isMock ? '访问量' : this.dimension} <br/>${params.name} :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)} (${params.percent}%)`
+          return `${this.isMock ? '访问量' : this.dimension} <br/>${params.name} :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)} (${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%)`
         }
       },
       legend: {
@@ -465,19 +462,18 @@ export default class Visual extends WynVisual {
             }
             return item.name === name
           })
-          const _total = data.map((item) => item.value).reduce((prev, next) => prev + next);
           let _legendText = '';
           let _title = '';
           if (options.showLegendSeries) {
             _legendText += `${_target.name}`;
-            _title += `{a|系列}`
+            _title += `{a|${this.dimension}}`
           }
           if (options.showLegendValue) {
             _legendText += ` ${this.formatData(_target.value, options.labelDataUnit, options.labelDataType)}`;
             _title += `{b|数值}`
           }
           if (options.showLegendPercent) {
-            _legendText += ` ${Number((_target.value / _total * 100).toFixed(2))}%`;
+            _legendText += ` ${Number((_target.value / this._total * 100).toFixed(options.LabelPercentDecimalPlaces))}%`;
             _title += `{c|占比}`
           }
           _title += '\n'
@@ -524,7 +520,7 @@ export default class Visual extends WynVisual {
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'
-      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'showLegendTitle', 'openLegendPage'])
+      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'showLegendTitle', 'openLegendPage', 'showLabelLine'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
@@ -545,18 +541,42 @@ export default class Visual extends WynVisual {
     if (updateOptions.properties.labelPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['outer'])
     }
-    if (updateOptions.properties.setLabelLineColor === 'labelThemeColor') {
-      hiddenOptions = hiddenOptions.concat(['labelLineColor'])
+    if (!updateOptions.properties.showLabelLine || !updateOptions.properties.showLegend){
+      hiddenOptions = hiddenOptions.concat(['labelLineFirst', 'labelLineSecond', 'labelLineWidth', 'labelLineSmooth'])
     }
-    if (updateOptions.properties.setLabelTextColor === 'labelThemeTextColor') {
-      hiddenOptions = hiddenOptions.concat(['labelTextColor'])
-    }
+    // if (updateOptions.properties.setLabelLineColor === 'labelThemeColor') {
+    //   hiddenOptions = hiddenOptions.concat(['labelLineColor'])
+    //   {
+    //     "name": "setLabelLineColor",
+    //     "type": "Enum",
+    //     "displayName": "设置连接线颜色",
+    //     "items": [
+    //         {
+    //             "value": "labelThemeColor",
+    //             "displayNameKey": "主题色"
+    //         },
+    //         {
+    //             "value": "labelCustomColor",
+    //             "displayNameKey": "自定义颜色"
+    //         }
+    //     ],
+    //     "defaultValue": "labelThemeColor"
+    // },
+    // {
+    //     "name": "labelLineColor",
+    //     "type": "Color",
+    //     "displayName": "连接线颜色"
+    // }
+    // }
     if (!updateOptions.properties.showLabelValue) {
       hiddenOptions = hiddenOptions.concat(['labelDataType', 'labelDataUnit'])
     }
     if (!(updateOptions.properties.showLabelName && updateOptions.properties.showLabelPercent && updateOptions.properties.showLabelValue)) {
       hiddenOptions = hiddenOptions.concat(['showLabelTwoLine'])
       updateOptions.properties.showLabelTwoLine = false
+    }
+    if (!updateOptions.properties.showLabelPercent) {
+      hiddenOptions = hiddenOptions.concat(['LabelPercentDecimalPlaces'])
     }
 
 
