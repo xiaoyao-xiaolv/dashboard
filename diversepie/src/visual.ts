@@ -29,6 +29,7 @@ export default class Visual extends WynVisual {
   private isMock: boolean;
   private chart: any;
   private properties: any;
+  private format: any;
   private items: any = [];
   private selectionManager: any;
   private selection: any[] = [];
@@ -46,6 +47,7 @@ export default class Visual extends WynVisual {
     this.bindEvents();
     this.selectionManager = host.selectionService.createSelectionManager();
     this.properties = {}
+    this.format = {}
   }
 
   // toolTip
@@ -173,60 +175,69 @@ export default class Visual extends WynVisual {
       this.isMock = true;
     }
     this.properties = options.properties;
+    this.format = options.dataViews[0].plain.profile.value.values[0].format;
     this.render()
   }
 
 
   public formatData = (number, dataUnit, dataType) => {
     let format = number
-    const units = [{
-      value: 1,
-      unit: ''
-    },
-    {
-      value: 100,
-      unit: '百'
-    }, {
-      value: 1000,
-      unit: '千'
-    }, {
-      value: 10000,
-      unit: '万'
-    }, {
-      value: 100000,
-      unit: '十万'
-    }, {
-      value: 1000000,
-      unit: '百万'
-    }, {
-      value: 10000000,
-      unit: '千万'
-    }, {
-      value: 100000000,
-      unit: '亿'
-    }, {
-      value: 1000000000,
-      unit: '十亿'
-    }, {
-      value: 100000000000,
-      unit: '万亿'
-    }]
-    const formatUnit = units.find((item) => item.value === Number(dataUnit))
-    format = (format / formatUnit.value).toFixed(2)
-
-    if (dataType === 'number') {
-      format = format.toLocaleString()
-    } else if (dataType === '%') {
-      format = format + dataType
-    } else if (dataType === 'none') {
-      format = Number(format).toFixed(0)
-    } else if (dataType === ',') {
-      let integer = format.split('.')
-      format = integer[0].replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
+    if(dataUnit === 'auto'){
+      const formatService = this.host.formatService;
+      let realDisplayUnit = dataUnit;
+      if (formatService.isAutoDisplayUnit(dataUnit)) {
+          realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+      }
+      return format = formatService.format(this.format, number,  realDisplayUnit);
     } else {
-      format = dataType + format
+      const units = [{
+        value: 1,
+        unit: ''
+      },{
+        value: 100,
+        unit: '百'
+      }, {
+        value: 1000,
+        unit: '千'
+      }, {
+        value: 10000,
+        unit: '万'
+      }, {
+        value: 100000,
+        unit: '十万'
+      }, {
+        value: 1000000,
+        unit: '百万'
+      }, {
+        value: 10000000,
+        unit: '千万'
+      }, {
+        value: 100000000,
+        unit: '亿'
+      }, {
+        value: 1000000000,
+        unit: '十亿'
+      }, {
+        value: 100000000000,
+        unit: '万亿'
+      }]
+      let formatUnit = units.find((item) => item.value === Number(dataUnit))
+      format = (format / formatUnit.value).toFixed(2)
+  
+      if (dataType === 'number') {
+        format = format.toLocaleString()
+      } else if (dataType === '%') {
+        format = format + dataType
+      } else if (dataType === 'none') {
+        format = Number(format).toFixed(0)
+      } else if (dataType === ',') {
+        let integer = format.split('.')
+        format = integer[0].replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
+      } else {
+        format = dataType + format
+      }
+      return format + formatUnit.unit
     }
-    return format + formatUnit.unit
   }
 
   public render() {
@@ -336,6 +347,18 @@ export default class Visual extends WynVisual {
                 return !options.showLabelValue && !options.showLabelPercent
                 ? `{b|${name}}`
                 :  `{b|${name}}${lineFeed}{b|${value}${percent}}`
+                
+                // let name = options.showLabelName ? params.name : ''
+                // let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
+                // let percent = options.showLabelPercent ? `${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
+                // let lineFeed = options.showLabelTwoLine ? '\n':''
+
+                // if(name||value||percent){
+                //   return `{b|${name?name+lineFeed:(value&&percent?value+lineFeed:'')}${!name||!percent?'':value}${percent}}`
+                // }
+                // return !options.showLabelValue && !options.showLabelPercent
+                // ? `{b|${name}}`
+                // : !options.showLabelName ? `{b|${value}${lineFeed}${percent}}`:`{b|${name}${lineFeed}${value}${options.showLabelTwoLine?'/':' '}${percent}}`
               },
               rich:{
                 b: {
@@ -532,7 +555,8 @@ export default class Visual extends WynVisual {
     }
     // label
     if (!updateOptions.properties.showLabel) {
-      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle', 'showLabelTwoLine', 'showLabelName', 'labelTextColor', 'setLabelTextColor'])
+      hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle', 'showLabelTwoLine',
+       'showLabelName', 'labelTextColor', 'setLabelTextColor', 'LabelPercentDecimalPlaces'])
     }
 
     if (updateOptions.properties.labelPosition === 'inside') {
@@ -570,10 +594,6 @@ export default class Visual extends WynVisual {
     // }
     if (!updateOptions.properties.showLabelValue) {
       hiddenOptions = hiddenOptions.concat(['labelDataType', 'labelDataUnit'])
-    }
-    if (!(updateOptions.properties.showLabelName && updateOptions.properties.showLabelPercent && updateOptions.properties.showLabelValue)) {
-      hiddenOptions = hiddenOptions.concat(['showLabelTwoLine'])
-      updateOptions.properties.showLabelTwoLine = false
     }
     if (!updateOptions.properties.showLabelPercent) {
       hiddenOptions = hiddenOptions.concat(['LabelPercentDecimalPlaces'])

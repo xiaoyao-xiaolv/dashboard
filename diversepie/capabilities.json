@@ -112,7 +112,7 @@
                     {
                         "name": "endAngle",
                         "type": "Integer",
-                        "displayName": "结束角度",
+                        "displayName": "扇形角度",
                         "defaultValue": 90
                     },
                     {
@@ -407,7 +407,8 @@
                         "name": "LabelPercentDecimalPlaces",
                         "type": "Integer",
                         "displayName": "比值小数位数",
-                        "defaultValue": 2
+                        "defaultValue": 2,
+                        "min": 0
                     },
                     {
                         "name": "showLabelValue",
@@ -449,7 +450,7 @@
                         "displayName": "数值单位",
                         "items": [
                             {
-                                "value": "1",
+                                "value": "auto",
                                 "displayNameKey": "自动"
                             },
                             {
@@ -489,7 +490,7 @@
                                 "displayNameKey": "十亿"
                             }
                         ],
-                        "defaultValue": "1"
+                        "defaultValue": "auto"
                     },
                     {
                         "name": "showLabelTwoLine",
