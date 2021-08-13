@@ -36,6 +36,7 @@ export default class Visual extends WynVisual {
   private dimension: string;
   private value: string;
   private _total : any;
+  private timeInterval : any;
   
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -71,6 +72,28 @@ export default class Visual extends WynVisual {
 
   private dispatch = (type, payload) => this.chart.dispatchAction({ ...payload, type });
 
+  public timer = () => {
+    let index = 0
+    let dataLength = this.properties.pieColor.length 
+    this.timeInterval =  setInterval(() => {
+      const autoStopInfo = {
+        seriesIndex: 0,
+        dataIndex: index,
+      };
+      this.dispatch('downplay', autoStopInfo)
+      index = (index + 1) % dataLength
+      const autoInfo = {
+        seriesIndex: 0,
+        dataIndex: index ,
+      };
+      this.dispatch('highlight',autoInfo)
+      if (index > dataLength) {
+        index = 0
+      }
+    }, Number(this.properties.rotationInterval)*1000)
+  }
+    
+
   public bindEvents = () => {
     this.container.addEventListener('mousedown', (e: any) => {
       document.oncontextmenu = function () { return false; }; 
@@ -86,20 +109,44 @@ export default class Visual extends WynVisual {
     })
 
     this.container.addEventListener('mouseenter', (e: any) => {
+      this.items[2].forEach((element,index) => {
+          const selectInfo = {
+            seriesIndex: 0,
+            dataIndex: index,
+          };
+          this.dispatch('downplay',selectInfo)
+      });
+      clearInterval(this.timeInterval)
       if (isTooltipModelShown) return;
       this.hideTooltip();
     })
 
     this.container.addEventListener('mouseleave', (e: any) => {
+      if (this.properties.automaticRotation) this.timer()
       if (isTooltipModelShown) return;
       this.hideTooltip();
     })
 
-    
+
+    this.chart.on('mouseover',(params)=> {
+      const selectInfo = {
+        seriesIndex: params.seriesIndex,
+        dataIndex: params.dataIndex,
+      };
+      this.dispatch('highlight',selectInfo)
+    })
+
+    this.chart.on('mouseout', (params) => {
+      const selectInfo = {
+        seriesIndex: params.seriesIndex,
+        dataIndex: params.dataIndex,
+      };
+      this.dispatch('downplay',selectInfo)
+    })
+
     this.chart.on('mousedown', (params) => {
       const clickMouse = params.event.event.button;
       if (params.componentType !== 'series') return;
-      
       params.event.event.seriesClick = true;
       const selectInfo = {
         seriesIndex: params.seriesIndex,
@@ -170,12 +217,11 @@ export default class Visual extends WynVisual {
         return selectionId
       }
       this.items[2] = items.map((item) => getSelectionId(item));
-
+      this.format = options.dataViews[0].plain.profile.value.values[0].format;
     } else {
       this.isMock = true;
     }
     this.properties = options.properties;
-    this.format = options.dataViews[0].plain.profile.value.values[0].format;
     this.render()
   }
 
@@ -340,14 +386,6 @@ export default class Visual extends WynVisual {
               show: options.labelPosition === 'center' ? false: options.showLabel,
               position: options.labelPosition,
               formatter: (params) => {
-                // let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${' '}`:params.name):''
-                // let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                // let percent = options.showLabelPercent ? `${value ? (options.showLabelTwoLine?'/':' ') : ''}${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
-                // let lineFeed = options.showLabelTwoLine ? '\n':''
-                // return !options.showLabelValue && !options.showLabelPercent
-                // ? `{b|${name}}`
-                // :  `{b|${name}}${lineFeed}{b|${value}${percent}}`
-                
                 let name = options.showLabelName ? params.name : ''
                 let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
                 let percent = options.showLabelPercent ? `${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
@@ -537,7 +575,6 @@ export default class Visual extends WynVisual {
       },
       series: getSeries(),
     }
-    
     this.chart.setOption(option)
   }
 
@@ -581,38 +618,15 @@ export default class Visual extends WynVisual {
     if (!updateOptions.properties.showLabelLine || !updateOptions.properties.showLegend){
       hiddenOptions = hiddenOptions.concat(['labelLineFirst', 'labelLineSecond', 'labelLineWidth', 'labelLineSmooth'])
     }
-    // if (updateOptions.properties.setLabelLineColor === 'labelThemeColor') {
-    //   hiddenOptions = hiddenOptions.concat(['labelLineColor'])
-    //   {
-    //     "name": "setLabelLineColor",
-    //     "type": "Enum",
-    //     "displayName": "设置连接线颜色",
-    //     "items": [
-    //         {
-    //             "value": "labelThemeColor",
-    //             "displayNameKey": "主题色"
-    //         },
-    //         {
-    //             "value": "labelCustomColor",
-    //             "displayNameKey": "自定义颜色"
-    //         }
-    //     ],
-    //     "defaultValue": "labelThemeColor"
-    // },
-    // {
-    //     "name": "labelLineColor",
-    //     "type": "Color",
-    //     "displayName": "连接线颜色"
-    // }
-    // }
     if (!updateOptions.properties.showLabelValue) {
       hiddenOptions = hiddenOptions.concat(['labelDataType', 'labelDataUnit'])
     }
     if (!updateOptions.properties.showLabelPercent) {
       hiddenOptions = hiddenOptions.concat(['LabelPercentDecimalPlaces'])
     }
-
-
+    if (!updateOptions.properties.automaticRotation) {
+      hiddenOptions = hiddenOptions.concat(['rotationInterval'])
+    }
 
     return hiddenOptions;
   }

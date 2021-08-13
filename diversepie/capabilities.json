@@ -364,6 +364,24 @@
                 ]
             },
             {
+                "displayName": "数据设置",
+                "properties": [
+                    {
+                    "name": "automaticRotation",
+                    "type": "Boolean",
+                    "displayName": "自动轮播",
+                    "defaultValue": true
+                    },
+                    {
+                        "name": "rotationInterval",
+                        "type": "Integer",
+                        "displayName": "轮播间隔",
+                        "defaultValue": 3,
+                        "min": 1
+                    }
+                ]
+            },
+            {
                 "displayName": "数据标注",
                 "properties": [
                     {
