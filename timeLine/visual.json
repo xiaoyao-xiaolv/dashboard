@@ -1,0 +1,17 @@
+{
+    "id": "25746ad0-f9b7-11eb-9d45-61fc14cf00b1",
+    "name": "timeline",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "5.0.0"
+}
