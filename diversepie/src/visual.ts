@@ -340,25 +340,38 @@ export default class Visual extends WynVisual {
               show: options.labelPosition === 'center' ? false: options.showLabel,
               position: options.labelPosition,
               formatter: (params) => {
-                let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${' '}`:params.name):''
-                let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                let percent = options.showLabelPercent ? `${value ? (options.showLabelTwoLine?'/':' ') : ''}${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
-                let lineFeed = options.showLabelTwoLine ? '\n':''
-                return !options.showLabelValue && !options.showLabelPercent
-                ? `{b|${name}}`
-                :  `{b|${name}}${lineFeed}{b|${value}${percent}}`
-                
-                // let name = options.showLabelName ? params.name : ''
+                // let name = options.showLabelName?(!options.showLabelTwoLine?`${params.name}${' '}`:params.name):''
                 // let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                // let percent = options.showLabelPercent ? `${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
+                // let percent = options.showLabelPercent ? `${value ? (options.showLabelTwoLine?'/':' ') : ''}${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
                 // let lineFeed = options.showLabelTwoLine ? '\n':''
-
-                // if(name||value||percent){
-                //   return `{b|${name?name+lineFeed:(value&&percent?value+lineFeed:'')}${!name||!percent?'':value}${percent}}`
-                // }
                 // return !options.showLabelValue && !options.showLabelPercent
                 // ? `{b|${name}}`
-                // : !options.showLabelName ? `{b|${value}${lineFeed}${percent}}`:`{b|${name}${lineFeed}${value}${options.showLabelTwoLine?'/':' '}${percent}}`
+                // :  `{b|${name}}${lineFeed}{b|${value}${percent}}`
+                
+                let name = options.showLabelName ? params.name : ''
+                let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
+                let percent = options.showLabelPercent ? `${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
+                let lineFeed = options.showLabelTwoLine ? '\n':''
+
+                if(!options.showLabelTwoLine){
+                  return `{b|${name} ${value} ${percent}}`
+                }else{
+                  if(name && !value && !percent){
+                    return `{b|${name}}`
+                  }else if(!name && value && !percent){
+                    return `{b|${value}}`
+                  }else if(!name && !value && percent){
+                    return `{b|${percent}}`
+                  }else if(name && value && !percent){
+                    return `{b|${name}${lineFeed}${value}}`
+                  }else if(name && !value && percent){
+                    return `{b|${name}${lineFeed}${percent}}`
+                  }else if(!name && value && percent){
+                    return `{b|${value}${lineFeed}${percent}}`
+                  }else {
+                    return `{b|${name} ${lineFeed}${value}${'/'}${percent}}`
+                  }
+                }
               },
               rich:{
                 b: {

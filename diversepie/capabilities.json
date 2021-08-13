@@ -406,7 +406,7 @@
                     {
                         "name": "LabelPercentDecimalPlaces",
                         "type": "Integer",
-                        "displayName": "比值小数位数",
+                        "displayName": "比值格式",
                         "defaultValue": 2,
                         "min": 0
                     },
