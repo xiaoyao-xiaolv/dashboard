@@ -37,6 +37,7 @@ export default class Visual extends WynVisual {
   private value: string;
   private _total : any;
   private timeInterval : any;
+  private preview : boolean;
   
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -47,8 +48,9 @@ export default class Visual extends WynVisual {
     this.isMock = true;
     this.bindEvents();
     this.selectionManager = host.selectionService.createSelectionManager();
-    this.properties = {}
-    this.format = {}
+    this.properties = {};
+    this.format = {};
+    this.preview = false
   }
 
   // toolTip
@@ -122,7 +124,7 @@ export default class Visual extends WynVisual {
     })
 
     this.container.addEventListener('mouseleave', (e: any) => {
-      if (this.properties.automaticRotation) this.timer()
+      if (this.properties.automaticRotation && this.preview) this.timer()
       if (isTooltipModelShown) return;
       this.hideTooltip();
     })
@@ -186,6 +188,7 @@ export default class Visual extends WynVisual {
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
+    this.preview = options.isViewer
     const dataView = options.dataViews[0];
     this.items = [];
     if (dataView &&
@@ -296,14 +299,16 @@ export default class Visual extends WynVisual {
 
     let data: any = this.isMock ? Visual.mockItems : this.items[1];
     this._total = data.map((item) => item.value).reduce((prev, next) => prev + next);
-      let finalAngle = 0;
+      let finalAngle = 360;
       let drawingStartAngle = options.startAngle%360
       let drawingEndAngle = options.endAngle%360
-      if(drawingEndAngle){
+      if (drawingStartAngle && drawingEndAngle) {
         finalAngle = drawingStartAngle + (drawingEndAngle-drawingStartAngle)
-      }else {
-        finalAngle = drawingStartAngle + drawingEndAngle
-      } 
+      } else if (drawingStartAngle && !drawingEndAngle) {
+        finalAngle = 360
+      } else if (!drawingStartAngle && drawingEndAngle) {
+        finalAngle = drawingEndAngle
+      }  
       let ratio = finalAngle/360
       data = [...data,{
         value:this._total/ratio*(1-ratio), 
