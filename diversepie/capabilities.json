@@ -113,7 +113,8 @@
                         "name": "endAngle",
                         "type": "Integer",
                         "displayName": "扇形角度",
-                        "defaultValue": 90
+                        "defaultValue": 90,
+                        "min": 1
                     },
                     {
                         "name": "minAngle",
@@ -330,36 +331,6 @@
                         "defaultValue": {
                             "fontSize": "14px"
                         }
-                    },
-                    {
-                        "name": "showLabelLine",
-                        "type": "Boolean",
-                        "displayName": "显示连接线",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "labelLineFirst",
-                        "type": "Integer",
-                        "displayName": "连接线第一长度",
-                        "defaultValue": 20
-                    },
-                    {
-                        "name": "labelLineSecond",
-                        "type": "Integer",
-                        "displayName": "连接线第二长度",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "labelLineWidth",
-                        "type": "Integer",
-                        "displayName": "连接线宽度",
-                        "defaultValue": 2
-                    },
-                    {
-                        "name": "labelLineSmooth",
-                        "type": "Percentage",
-                        "displayName": "连接线平滑度",
-                        "defaultValue": 0
                     }
                 ]
             },
@@ -370,7 +341,7 @@
                     "name": "automaticRotation",
                     "type": "Boolean",
                     "displayName": "自动轮播",
-                    "defaultValue": true
+                    "defaultValue": false
                     },
                     {
                         "name": "rotationInterval",
@@ -432,7 +403,7 @@
                         "name": "showLabelValue",
                         "type": "Boolean",
                         "displayName": "显示数值",
-                        "defaultValue": false
+                        "defaultValue": true
                     },
                     {
                         "name": "labelDataType",
@@ -514,7 +485,7 @@
                         "name": "showLabelTwoLine",
                         "type": "Boolean",
                         "displayName": "两行显示",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "labelTextStyle",
@@ -524,6 +495,36 @@
                         "defaultValue": {
                             "fontSize": "14px"
                         }
+                    },
+                    {
+                        "name": "showLabelLine",
+                        "type": "Boolean",
+                        "displayName": "显示连接线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "labelLineFirst",
+                        "type": "Integer",
+                        "displayName": "连接线第一长度",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "labelLineSecond",
+                        "type": "Integer",
+                        "displayName": "连接线第二长度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "labelLineWidth",
+                        "type": "Integer",
+                        "displayName": "连接线宽度",
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "labelLineSmooth",
+                        "type": "Percentage",
+                        "displayName": "连接线平滑度",
+                        "defaultValue": 0
                     }
                   
                 ]

@@ -296,15 +296,14 @@ export default class Visual extends WynVisual {
 
     let data: any = this.isMock ? Visual.mockItems : this.items[1];
     this._total = data.map((item) => item.value).reduce((prev, next) => prev + next);
-    if (options.endAngle%360 !== options.startAngle%360) {
       let finalAngle = 0;
-      let drawingStartAngle = 360-options.startAngle%360
-      let drawingEndAngle = 360-options.endAngle%360
-      if(options.startAngle%360 < options.endAngle%360){
-        finalAngle = drawingStartAngle - drawingEndAngle
-      }else if(options.startAngle%360 > options.endAngle%360){
-        finalAngle = (drawingEndAngle + options.startAngle%360)%360
-      }
+      let drawingStartAngle = options.startAngle%360
+      let drawingEndAngle = options.endAngle%360
+      if(drawingEndAngle){
+        finalAngle = drawingStartAngle + (drawingEndAngle-drawingStartAngle)
+      }else {
+        finalAngle = drawingStartAngle + drawingEndAngle
+      } 
       let ratio = finalAngle/360
       data = [...data,{
         value:this._total/ratio*(1-ratio), 
@@ -314,7 +313,6 @@ export default class Visual extends WynVisual {
         },
         itemStyle:{normal:{color:'rgba(0,0,0,0)'}}
       }]
-    }
     
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
     
@@ -593,7 +591,7 @@ export default class Visual extends WynVisual {
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'
-      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'showLegendTitle', 'openLegendPage', 'showLabelLine'])
+      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'showLegendTitle', 'openLegendPage'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
@@ -606,7 +604,7 @@ export default class Visual extends WynVisual {
     // label
     if (!updateOptions.properties.showLabel) {
       hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle', 'showLabelTwoLine',
-       'showLabelName', 'labelTextColor', 'setLabelTextColor', 'LabelPercentDecimalPlaces'])
+       'showLabelName', 'labelTextColor', 'setLabelTextColor', 'LabelPercentDecimalPlaces', 'showLabelLine'])
     }
 
     if (updateOptions.properties.labelPosition === 'inside') {
@@ -615,7 +613,7 @@ export default class Visual extends WynVisual {
     if (updateOptions.properties.labelPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['outer'])
     }
-    if (!updateOptions.properties.showLabelLine || !updateOptions.properties.showLegend){
+    if (!updateOptions.properties.showLabelLine || !updateOptions.properties.showLabel){
       hiddenOptions = hiddenOptions.concat(['labelLineFirst', 'labelLineSecond', 'labelLineWidth', 'labelLineSmooth'])
     }
     if (!updateOptions.properties.showLabelValue) {
