@@ -12,7 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doubleColumnChart/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/doubleColumnChart/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doubleColumnChart/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/doubleColumnChart/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,6 +138,10 @@
       <workItem from="1626938681643" duration="29811000" />
       <workItem from="1628126121762" duration="10407000" />
       <workItem from="1628243680286" duration="19277000" />
+      <workItem from="1628676193000" duration="1740000" />
+      <workItem from="1628739500259" duration="667000" />
+      <workItem from="1628741818734" duration="668000" />
+      <workItem from="1629097044274" duration="2008000" />
     </task>
     <servers />
   </component>
@@ -242,12 +246,13 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602468942" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1628584617682">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state width="747" height="609" key="SwitcherDM" timestamp="1629097720801">
+      <screen x="5" y="-1080" width="1920" height="1040" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1623915449616" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602130265" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628584617682" />
+    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1629097720801" />
     <state x="778" y="-864" key="VCS.ChangeListViewerDialog" timestamp="1623910202659">
       <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
@@ -256,12 +261,13 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625733640829" />
-    <state x="554" y="78" width="726" height="602" key="find.popup" timestamp="1628585216366">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="836" y="-961" width="1089" height="921" key="find.popup" timestamp="1628739514001">
+      <screen x="5" y="-1080" width="1920" height="1040" />
     </state>
     <state x="662" y="-828" width="816" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1624501873130" />
     <state x="289" y="112" width="891" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624431300103" />
     <state x="554" y="78" width="726" height="602" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628585216366" />
+    <state x="836" y="-961" width="1089" height="921" key="find.popup/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1628739514001" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1628492788235">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

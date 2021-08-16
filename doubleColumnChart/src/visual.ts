@@ -76,7 +76,7 @@ export default class Visual extends WynVisual {
           left: '5%',
           top: '10%',
           bottom: '8%',
-          containLabel: true,
+          containLabel: false,
           width: '37%'
         }, {
           show: false,
@@ -88,7 +88,7 @@ export default class Visual extends WynVisual {
           right: '5%',
           top: '10%',
           bottom: '8%',
-          containLabel: true,
+          containLabel: false,
           width: '37%'
         }],
         xAxis: [{
@@ -173,7 +173,7 @@ export default class Visual extends WynVisual {
           },
           axisLabel: {
             show: true,
-            padding: [0,0,0,15],
+            verticalAlign: 'middle',
             textStyle: {
               ...this.properties.categoryTextStyle,
               fontSize: parseFloat(this.properties.categoryTextStyle.fontSize),
