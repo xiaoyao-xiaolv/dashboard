@@ -75,7 +75,7 @@ export default class Visual extends WynVisual {
   private dispatch = (type, payload) => this.chart.dispatchAction({ ...payload, type });
 
   public timer = () => {
-    let index = 0
+    let index = -1
     let dataLength = this.properties.pieColor.length 
     this.timeInterval =  setInterval(() => {
       const autoStopInfo = {
@@ -419,8 +419,6 @@ export default class Visual extends WynVisual {
                   lineHeight: 20,
                   ...options.labelTextStyle,
                   fontSize: parseInt(options.labelTextStyle.fontSize),
-                  // color: options.setLabelTextColor === 'labelThemeTextColor' ? getColors(index, 1) : options.labelTextColor,
-
                 },
                 hr: {
                   backgroundColor: 'transparent',
@@ -436,7 +434,11 @@ export default class Visual extends WynVisual {
                   show: true,
                   ...options.labelTextStyle,
                 fontSize: parseInt(options.labelTextStyle.fontSize)
-              }
+              },
+              scale: true,
+              scaleSize: options.autoScaleSize,
+              focus: 'global',
+              blurScope: 'coordinateSystem'
             },
             labelLine: {
               show: options.showLabelLine,

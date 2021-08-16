@@ -349,6 +349,12 @@
                         "displayName": "轮播间隔",
                         "defaultValue": 3,
                         "min": 1
+                    },
+                    {
+                        "name": "autoScaleSize",
+                        "type": "Integer",
+                        "displayName": "放大尺寸",
+                        "defaultValue": 10
                     }
                 ]
             },
