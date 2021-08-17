@@ -1,0 +1,56 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "linkAddress",
+                "displayNameKey": "链接地址",
+                "kind": "groupingOrValue"
+            }],
+            "dataViewMappings": [
+                {
+                    "plain": {
+                        "required": [
+                            {
+                                "value": {
+                                    "min": 1
+                                }
+                            }
+                        ]
+                    }
+                }
+            ],
+            "conditions": [
+                {
+                    "value": {
+                        "max": 1
+                    },
+                    "series": { "min": 1 }
+                }
+            ]
+    },
+    "options": {
+        "visual": [
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "appearance"
+            }]
+    },
+    "actions": [       {
+        "type": "focus"
+    },
+    {
+        "type": "sort"
+    },
+    {
+        "type": "export"
+    },
+    {
+        "type": "filter"
+    }],
+    "analysis": []
+}

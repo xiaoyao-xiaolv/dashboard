@@ -98,6 +98,12 @@
                         "defaultValue": 30
                     },
                     {
+                        "name": "leftGridWidth",
+                        "type": "string",
+                        "displayName": "图表宽度",
+                        "defaultValue": "37%"
+                    },
+                    {
                         "name": "leftLabel",
                         "type": "TextStyle",
                         "displayName": "轴字体设置",
@@ -121,6 +127,12 @@
                             }
                         ],
                         "defaultValue": "top"
+                    },
+                    {
+                        "name": "showLeftAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "是否显示轴标签",
+                        "defaultValue": true
                     },
                     {
                         "name": "showLeftLabel",
@@ -161,6 +173,12 @@
                         "defaultValue": 30
                     },
                     {
+                        "name": "rightGridWidth",
+                        "type": "string",
+                        "displayName": "图表宽度",
+                        "defaultValue": "37%"
+                    },
+                    {
                         "name": "rightLabel",
                         "type": "TextStyle",
                         "displayName": "轴字体设置",
@@ -184,6 +202,12 @@
                             }
                         ],
                         "defaultValue": "top"
+                    },
+                    {
+                        "name": "showRightAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "是否显示轴标签",
+                        "defaultValue": true
                     },
                     {
                         "name": "showRightLabel",
