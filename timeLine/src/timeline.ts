@@ -421,6 +421,7 @@ const timeline = (collection, options?: any) => {
       tl.timelineEl.classList.add('timeline--loaded');
       setTimeout(() => {
         tl.timelineEl.style.opacity = 1;
+        tl.timelineEl.style.flex = 1;
       }, 500);
     });
   }

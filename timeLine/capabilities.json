@@ -11,45 +11,63 @@
                     "displayName": "轴方向",
                     "items": [
                         {
-                            "value": "10",
+                            "value": "horizontal",
                             "displayNameKey": "横向"
                         },
                         {
-                            "value": "1000",
+                            "value": "vertical",
                             "displayNameKey": "纵向"
                         },{
                             "value": "auto",
                             "displayNameKey": "自适应"
                         }
                     ],
-                    "defaultValue": "10"
+                    "defaultValue": "horizontal"
                 },
                 {
                     "name": "visibleItems",
                     "type": "Integer",
                     "displayName": "节点个数",
-                    "defaultValue": 6,
+                    "defaultValue": 3,
                     "min": 2
+                },
+                {
+                    "name": "timeLineBg",
+                    "type": "Color",
+                    "displayName": "时间轴颜色",
+                    "defaultValue": "#fff"
+                },
+                {
+                    "name": "timeLinePointBg",
+                    "type": "Color",
+                    "displayName": "节点背景色",
+                    "defaultValue": "#DDD"
+                },
+                {
+                    "name": "timeLinePointColor",
+                    "type": "Color",
+                    "displayName": "节点中心色",
+                    "defaultValue": "#fff"
                 }
             ]
         },{
             "displayName": "标签样式",
             "properties": [
                 {
-                    "name": "labelStyle",
+                    "name": "labelBg",
+                    "type": "Color",
+                    "displayName": "标签背景",
+                    "defaultValue": "#fff"
+                },
+                {
+                    "name": "labelTextStyle",
                     "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
                             "fontSize": "1.5x",
-                            "color": "#3eb2ff"
+                            "color": "#000"
                         }
-                },
-                {
-                    "name": "labelBg",
-                    "type": "Color",
-                    "displayName": "标签背景",
-                    "defaultValue": "#fff"
                 }
             ]
         }]

@@ -4,17 +4,16 @@ const {timeline} = require('./timeline');
 import $ from 'jquery';
 
 export default class Visual extends WynVisual {
-  // private static mockItems = [
-  //   { name: "Dept. 1", '实际值': 100, '对比值': 100 },
-  //   { name: "Dept. 2", '实际值': 153, '对比值': 95 },
-  //   { name: "Dept. 3", '实际值': 94, '对比值': 10 },
-  //   { name: "Dept. 4", '实际值': 60, '对比值': 80 },
-  //   { name: "Dept. 5", '实际值': 65, '对比值': 52 },
-  //   { name: "Dept. 6", '实际值': 55, '对比值': 62 },
-  //   { name: "Dept. 7", '实际值': 120, '对比值': 71 },
-  //   { name: "Dept. 8", '实际值': 52, '对比值': 66 },
-  // ];
-  private static mockItems = ['下达', '确认', '出厂', '预约', '到厂' , '入仓' ,'完成']
+  private static mockItems = [
+    { name: "下达", state: 1, image:'../assets/icon.png' , describe: '这个可能是一段文本'},
+    { name: "确认", state: 1, image:'../assets/icon.png' , describe: '这个可能是一段文本'},
+    { name: "出厂", state: 2, image:'../assets/icon.png' , describe: '这个可能是一段文本'},
+    { name: "预约", state: 0, image:'../assets/icon.png' , describe: '这个可能是一段文本'},
+    { name: "到厂", state: 0, image:'../assets/icon.png' , describe: '这个可能是一段文本'},
+    { name: "入仓", state: 0, image:'../assets/icon.png' , describe: '这个可能是一段文本'},
+    { name: "完成", state: 0, image:'../assets/icon.png' , describe: '这个可能是一段文本'}
+  ];
+  // private static mockItems = ['下达', '确认', '出厂', '预约', '到厂' , '入仓' ,'完成']
   private root: JQuery<HTMLElement>;
   private items = [];
 
@@ -91,18 +90,48 @@ export default class Visual extends WynVisual {
     let _timeline = $('<div class="timeline">').appendTo(this.root),
     _timeline__wrap = $('<div class="timeline__wrap">').appendTo(_timeline),
     _timeline__items = $('<div class="timeline__items">').appendTo(_timeline__wrap);
+    
+
+    // custom label text
+    const timeline__content__fontStyle = {
+      ..._options.labelTextStyle,
+      fontSize: parseInt(_options.labelTextStyle.fontSize),
+      backgroundColor: _options.labelBg,
+      border: `1px solid ${_options.labelBg}`
+    };
 
     [0,1,2,3,4,5,6,].forEach(element => {
       const _timeline__item = $('<div class="timeline__item">').appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">').appendTo(_timeline__item);
-      _timeline__content.text(Visual.mockItems[element])
+
+      _timeline__content.text(Visual.mockItems[element].name);
+      _timeline__content.css(timeline__content__fontStyle);
     });
-  
+    
+    // horizontal timeline content
+    $(`<style>.timeline--horizontal .timeline__item .timeline__content::before{border-top: 12px solid ${_options.labelBg};}</style>`).appendTo(document.head)
+    $(`<style>.timeline--horizontal .timeline__item .timeline__content::after{border-top: 10px solid ${_options.labelBg};}</style>`).appendTo(document.head)
+    // horizontal timeline bottom content
+    $(`<style>.timeline--horizontal .timeline__item--bottom .timeline__content::before{border-bottom: 12px solid ${_options.labelBg};border-top: none; }</style>`).appendTo(document.head)
+    $(`<style>.timeline--horizontal .timeline__item--bottom .timeline__content::after{border-bottom: 10px solid ${_options.labelBg};border-top: none;}</style>`).appendTo(document.head)
+    // mobile timeline content
+    $(`<style>.timeline--mobile .timeline__item .timeline__content::before {border-right: 12px solid ${_options.labelBg};}</style>`).appendTo(document.head)
+    $(`<style>.timeline--mobile .timeline__item .timeline__content::after  {border-right: 10px solid ${_options.labelBg};}</style>`).appendTo(document.head)
+        
     timeline(document.querySelectorAll('.timeline'), {
-      forceVerticalMode: _options.timeLineDirection,
-      mode: 'horizontal',
-      visibleItems: _options.visibleItems
+      forceVerticalMode: _options.timeLineDirection === 'auto' ? 'auto' : (_options.timeLineDirection === 'horizontal'? 10: 10000),
+      mode: _options.timeLineDirection === 'auto'? 'horizontal' : _options.timeLineDirection,
+      visibleItems: _options.visibleItems,
+      verticalStartPosition: 'right',
+      verticalTrigger: '15%',
     });
+
+    // custom vertical line color
+    $(`<style>.timeline:not(.timeline--horizontal)::before{background-color: ${_options.timeLineBg};}</style>`).appendTo(document.head)
+    // custom horizontal line color
+    $('.timeline-divider').css('backgroundColor', `${_options.timeLineBg}`);
+    // custom time line point color
+    $(`<style>.timeline__item::after {background-color: ${_options.timeLinePointColor}; border: 4px solid ${_options.timeLinePointBg}}</style>`).appendTo(document.head)
   };
 
   public render() {
@@ -110,9 +139,7 @@ export default class Visual extends WynVisual {
     this.root.html('').css({'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'});
     const options = this.options
     this._initHtml(options);
-
-     
-    this.resize();
+    // this.resize();
   }
 
 
