@@ -496,6 +496,29 @@ export default class Visual extends WynVisual {
     const option = {
       tooltip: {
         trigger: 'item',
+        position:(point,params,dom,rect,size)=>{
+          let x = 0;
+          let y = 0;
+          let pointX = point[0];
+          let pointY = point[1];
+          var boxWidth = size.contentSize[0];
+          var boxHeight = size.contentSize[1];
+          if (boxWidth > pointX) {
+            x = 0; 
+            y -= 5; 
+        } else { 
+            x = pointX - boxWidth - 5;
+        }
+        
+        if (boxHeight + 10 > pointY) {
+            y = pointY + 5;
+        } else if (boxHeight > pointY) {
+            y = 0;
+        } else { 
+            y += pointY - boxHeight;
+        }
+        return [x, y];
+        },
         formatter: (params) => {
           let eachSector = this.items[1].find((ele)=> ele.name === params.name)
           let lineWrap = '<br/>'
