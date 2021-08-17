@@ -74,22 +74,22 @@ export default class Visual extends WynVisual {
         grid: [{
           show: false,
           left: '5%',
-          top: '10%',
-          bottom: '8%',
+          top: this.properties.legendVerticalPosition!='top'?'0px':'30px',
+          bottom: this.properties.legendVerticalPosition!='bottom'?'0px':'30px',
           containLabel: false,
-          width: '37%'
+          width: this.properties.leftGridWidth
         }, {
           show: false,
-          left: '50%',
-          top: '10%',
-          bottom: '8%'
+          left: '51%',
+          top: this.properties.legendVerticalPosition!='top'?'0px':'30px',
+          bottom: this.properties.legendVerticalPosition!='bottom'?'0px':'30px'
         }, {
           show: false,
           right: '5%',
-          top: '10%',
-          bottom: '8%',
+          top: this.properties.legendVerticalPosition!='top'?'0px':'30px',
+          bottom: this.properties.legendVerticalPosition!='bottom'?'0px':'30px',
           containLabel: false,
-          width: '37%'
+          width: this.properties.rightGridWidth
         }],
         xAxis: [{
           type: 'value',
@@ -102,7 +102,7 @@ export default class Visual extends WynVisual {
           },
           position: this.properties.leftLabelLocation,
           axisLabel: {
-            show: true,
+            show: this.properties.showLeftAxisLabel,
             color: textColor,
             formatter: function (value) {
               if (leftFormat) {
@@ -130,7 +130,7 @@ export default class Visual extends WynVisual {
           },
           position: this.properties.rightLabelLocation,
           axisLabel: {
-            show: true,
+            show: this.properties.showRightAxisLabel,
             color: textColor,
             formatter: function (value) {
               if (rightFormat) {
