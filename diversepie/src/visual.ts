@@ -237,7 +237,7 @@ export default class Visual extends WynVisual {
       if (formatService.isAutoDisplayUnit(dataUnit)) {
           realDisplayUnit = formatService.getAutoDisplayUnit([number]);
       }
-      return format = formatService.format(this.format, number,  realDisplayUnit);
+      return format = formatService.format(this.format, number, realDisplayUnit);
     } else {
       const units = [{
         value: 1,
@@ -390,7 +390,7 @@ export default class Visual extends WynVisual {
               position: options.labelPosition,
               formatter: (params) => {
                 let name = options.showLabelName ? params.name : ''
-                let value = options.showLabelValue ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
+                let value = options.showLabelValue && !this.isMock ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
                 let percent = options.showLabelPercent ? `${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
                 let lineFeed = options.showLabelTwoLine ? '\n':''
 
