@@ -25,11 +25,65 @@
                     "defaultValue": "horizontal"
                 },
                 {
+                    "name": "horizontalItemsLayout",
+                    "type": "Enum",
+                    "displayName": "横向节点布局",
+                    "items": [
+                        {
+                            "value": "top",
+                            "displayNameKey": "居上"
+                        },
+                        {
+                            "value": "bottom",
+                            "displayNameKey": "居下"
+                        },{
+                            "value": "auto",
+                            "displayNameKey": "上下"
+                        }
+                    ],
+                    "defaultValue": "auto"
+                },
+                {
+                    "name": "verticalItemsLayout",
+                    "type": "Enum",
+                    "displayName": "纵向节点布局",
+                    "items": [
+                        {
+                            "value": "left",
+                            "displayNameKey": "居左"
+                        },
+                        {
+                            "value": "right",
+                            "displayNameKey": "居右"
+                        },{
+                            "value": "auto",
+                            "displayNameKey": "左右"
+                        }
+                    ],
+                    "defaultValue": "auto"
+                },
+                {
                     "name": "visibleItems",
-                    "type": "Integer",
+                    "type": "Enum",
                     "displayName": "节点个数",
-                    "defaultValue": 3,
-                    "min": 2
+                    "items": [
+                        {
+                            "value": "default",
+                            "displayNameKey": "默认"
+                        },
+                        {
+                            "value": "custom",
+                            "displayNameKey": "自定义"
+                        }
+                    ],
+                    "defaultValue": "default"
+                },
+                {
+                    "name": "customVisibleItems",
+                    "type": "Integer",
+                    "displayName": "调节个数",
+                    "defaultValue": 1,
+                    "min": 1
                 },
                 {
                     "name": "timeLineBg",
@@ -48,6 +102,11 @@
                     "type": "Color",
                     "displayName": "节点中心色",
                     "defaultValue": "#fff"
+                },  {
+                    "name": "verticalTrigger",
+                    "type": "Percentage",
+                    "displayName": "节点距离",
+                    "defaultValue": 15
                 }
             ]
         },{

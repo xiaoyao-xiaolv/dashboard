@@ -22,10 +22,8 @@ export default class Visual extends WynVisual {
   private options: any
   private visualHost: any;
   private renderTimer: any;
-  private static width = 800;
-  private static height = 500;
-  private static elementWidth = 200;
-  private static elementHeight = 100;
+  private static width = 600;
+  private static height = 100;
 
   private isDimensions: boolean;
   private isValue: boolean;
@@ -86,7 +84,7 @@ export default class Visual extends WynVisual {
     this.render();
   }
   
-  public _initHtml = (_options: any) => {
+  public _initHtml = (_options: any, timeLineData: any) => {
     let _timeline = $('<div class="timeline">').appendTo(this.root),
     _timeline__wrap = $('<div class="timeline__wrap">').appendTo(_timeline),
     _timeline__items = $('<div class="timeline__items">').appendTo(_timeline__wrap);
@@ -100,11 +98,11 @@ export default class Visual extends WynVisual {
       border: `1px solid ${_options.labelBg}`
     };
 
-    [0,1,2,3,4,5,6,].forEach(element => {
+    timeLineData.map((_element, index) => {
       const _timeline__item = $('<div class="timeline__item">').appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">').appendTo(_timeline__item);
 
-      _timeline__content.text(Visual.mockItems[element].name);
+      _timeline__content.text(Visual.mockItems[index].name);
       _timeline__content.css(timeline__content__fontStyle);
     });
     
@@ -119,11 +117,12 @@ export default class Visual extends WynVisual {
     $(`<style>.timeline--mobile .timeline__item .timeline__content::after  {border-right: 10px solid ${_options.labelBg};}</style>`).appendTo(document.head)
         
     timeline(document.querySelectorAll('.timeline'), {
-      forceVerticalMode: _options.timeLineDirection === 'auto' ? 'auto' : (_options.timeLineDirection === 'horizontal'? 10: 10000),
+      forceVerticalMode: _options.timeLineDirection === 'auto' ? 'auto' : (_options.timeLineDirection === 'horizontal'? 10: 600),
       mode: _options.timeLineDirection === 'auto'? 'horizontal' : _options.timeLineDirection,
-      visibleItems: _options.visibleItems,
-      verticalStartPosition: 'right',
-      verticalTrigger: '15%',
+      visibleItems: _options.visibleItems === 'default' ? timeLineData.length : _options.customVisibleItems,
+      horizontalAllPosition: _options.horizontalItemsLayout,
+      verticalAllPosition: _options.verticalItemsLayout,
+      // verticalTrigger: `${_options.verticalTrigger}%`,
     });
 
     // custom vertical line color
@@ -135,11 +134,12 @@ export default class Visual extends WynVisual {
   };
 
   public render() {
-
     this.root.html('').css({'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center'});
-    const options = this.options
-    this._initHtml(options);
-    // this.resize();
+    const options = this.options;
+    let _data = this.isMock ? Visual.mockItems : [];
+    this.resize();
+    this._initHtml(options, _data);
+    
   }
 
 
@@ -152,7 +152,7 @@ export default class Visual extends WynVisual {
   }
 
   public onResize() {
-    // this.resize();
+    this.resize();
     this.render();
   }
 
@@ -166,7 +166,7 @@ export default class Visual extends WynVisual {
       zoom = Math.min(xZoom, yZoom);
     const ua = navigator.userAgent;
     if (ua.indexOf("Firefox") != -1) {
-      this.root.css({ 'transform': `scale(${zoom}) translateY(-50%)`, 'transformOrigin': 'top left' });
+      this.root.css({ 'transform': `scale(${zoom})`, 'transformOrigin': 'top left' });
     } else {
       this.root.css({ "zoom": zoom });
     }
@@ -176,12 +176,16 @@ export default class Visual extends WynVisual {
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     let hiddenOptions: Array<any> = [];
 
-    // detail 
-    // if (options.properties.rotateType === 'continuous') {
-    //   hiddenOptions = hiddenOptions.concat(['stopSpeed'])
-    // }
+    if (options.properties.visibleItems === 'default') {
+      hiddenOptions = hiddenOptions.concat(['customVisibleItems'])
+    }
 
-  
+    // time line layout 
+    if (options.properties.timeLineDirection === 'horizontal') {
+      hiddenOptions = hiddenOptions.concat(['verticalItemsLayout'])
+    } else if(options.properties.timeLineDirection === 'vertical') {
+      hiddenOptions = hiddenOptions.concat(['horizontalItemsLayout'])
+    } 
     return hiddenOptions;
   }
 

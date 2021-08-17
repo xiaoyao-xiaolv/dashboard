@@ -47,7 +47,17 @@ const timeline = (collection, options?: any) => {
     visibleItems: {
       type: 'integer',
       defaultValue: 3
-    }
+    },
+    horizontalAllPosition: {
+      type: 'string',
+      acceptedValues: ['bottom', 'top', 'auto'],
+      defaultValue: 'auto'
+    },
+    verticalAllPosition: {
+      type: 'string',
+      acceptedValues: ['left', 'right', 'auto'],
+      defaultValue: 'auto'
+    },
   };
 
   // Helper function to test whether values are an integer
@@ -236,6 +246,7 @@ const timeline = (collection, options?: any) => {
       let evenIndexTallest = 0;
       tl.items.forEach((item, i) => {
         item.style.height = 'auto';
+        item.style.margin = '0 3%';
         const height = item.offsetHeight;
         if (i % 2 === 0) {
           evenIndexTallest = height > evenIndexTallest ? height : evenIndexTallest;
@@ -246,21 +257,29 @@ const timeline = (collection, options?: any) => {
 
       const transformString = `translateY(${evenIndexTallest}px)`;
       tl.items.forEach((item, i) => {
-        if (i % 2 === 0) {
+        if (tl.settings.horizontalAllPosition === 'top') {
           item.style.height = `${evenIndexTallest}px`;
-          if (tl.settings.horizontalStartPosition === 'bottom') {
-            item.classList.add('timeline__item--bottom');
-            addTransforms(item, transformString);
-          } else {
-            item.classList.add('timeline__item--top');
-          }
+          item.classList.add('timeline__item--top');
+        } else if (tl.settings.horizontalAllPosition === 'bottom') {
+          item.classList.add('timeline__item--bottom');
+          addTransforms(item, transformString);
         } else {
-          item.style.height = `${oddIndexTallest}px`;
-          if (tl.settings.horizontalStartPosition !== 'bottom') {
-            item.classList.add('timeline__item--bottom');
-            addTransforms(item, transformString);
+          if (i % 2 === 0) {
+            item.style.height = `${evenIndexTallest}px`;
+            if (tl.settings.horizontalStartPosition === 'bottom') {
+              item.classList.add('timeline__item--bottom');
+              addTransforms(item, transformString);
+            } else {
+              item.classList.add('timeline__item--top');
+            }
           } else {
-            item.classList.add('timeline__item--top');
+            item.style.height = `${oddIndexTallest}px`;
+            if (tl.settings.horizontalStartPosition !== 'bottom') {
+              item.classList.add('timeline__item--bottom');
+              addTransforms(item, transformString);
+            } else {
+              item.classList.add('timeline__item--top');
+            }
           }
         }
       });
@@ -368,11 +387,19 @@ const timeline = (collection, options?: any) => {
       } else {
         lastVisibleIndex = i;
       }
-      const divider = tl.settings.verticalStartPosition === 'left' ? 1 : 0;
-      if (i % 2 === divider && window.innerWidth > tl.settings.forceVerticalMode) {
+      if (tl.settings.verticalAllPosition === 'left') {
         item.classList.add('timeline__item--right');
-      } else {
+        console.log('靠左显示')
+      } else if(tl.settings.verticalAllPosition === 'right') {
         item.classList.add('timeline__item--left');
+        console.log('靠右显示')
+      } else {
+        const divider = tl.settings.verticalStartPosition === 'left' ? 1 : 0;
+        if (i % 2 === divider && window.innerWidth > tl.settings.forceVerticalMode) {
+          item.classList.add('timeline__item--left');
+        } else {
+          item.classList.add('timeline__item--right');
+        }
       }
     });
     for (let i = 0; i < lastVisibleIndex; i += 1) {
