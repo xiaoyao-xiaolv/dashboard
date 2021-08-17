@@ -200,19 +200,17 @@ export default class Visual extends WynVisual {
       this.value = plainData.profile.value.values[0].display;
 
       let items = plainData.data;
-      const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
-
+      // const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
       // data sort 
-      if (isSort) {
         const sortFlags = plainData.sort[this.dimension].order;
         let newItems: any = sortFlags.map((flags) => {
           return newItems = items.find((item) => item[this.dimension] === flags && item)
         })
         items = newItems.filter((item) => item)
-      }
 
       this.items[0] = items.map((item) => item[this.dimension]);
       this.items[1] = items.map((item) => { return { name: item[this.dimension], value: item[this.value] } });
+      
       // get data
       const getSelectionId = (item) => {
         const selectionId = this.createSelectionId();
@@ -272,7 +270,6 @@ export default class Visual extends WynVisual {
       }]
       let formatUnit = units.find((item) => item.value === Number(dataUnit))
       format = (format / formatUnit.value).toFixed(2)
-  
       if (dataType === 'number') {
         format = format.toLocaleString()
       } else if (dataType === '%') {
@@ -282,6 +279,8 @@ export default class Visual extends WynVisual {
       } else if (dataType === ',') {
         let integer = format.split('.')
         format = integer[0].replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
+      } else if (dataType === 'custom') {
+        
       } else {
         format = dataType + format
       }
