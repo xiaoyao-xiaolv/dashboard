@@ -4,12 +4,24 @@
             {
                 "name": "value",
                 "displayNameKey": "数值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    }
+                  ]
             },
             {
                 "name": "dimension",
                 "displayNameKey": "分类",
                 "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
             }
         ],
         "dataViewMappings": [
@@ -581,6 +593,9 @@
     },
     "actions": [
         {
+            "type": "focus"
+        },
+        {
             "type": "filter"
         },
         {
@@ -591,9 +606,6 @@
         },
         {
             "type": "convertVisual"
-        },
-        {
-            "type": "focus"
         },
         {
             "type": "edit"

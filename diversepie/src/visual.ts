@@ -38,6 +38,7 @@ export default class Visual extends WynVisual {
   private _total : any;
   private timeInterval : any;
   private preview : boolean;
+  private payWay: any;
   
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -111,14 +112,7 @@ export default class Visual extends WynVisual {
     })
 
     this.container.addEventListener('mouseenter', (e: any) => {
-      this.items[2].forEach((element,index) => {
-          const selectInfo = {
-            seriesIndex: 0,
-            dataIndex: index,
-          };
-          this.dispatch('downplay',selectInfo)
-      });
-      clearInterval(this.timeInterval)
+      this.clearOperation()
       if (isTooltipModelShown) return;
       this.hideTooltip();
     })
@@ -187,6 +181,17 @@ export default class Visual extends WynVisual {
     })
   }
 
+  public clearOperation = () => {
+    this.items[2] && this.items[2].forEach((element,index) => {
+      const selectInfo = {
+        seriesIndex: 0,
+        dataIndex: index,
+      };
+      this.dispatch('downplay',selectInfo)
+    });
+    clearInterval(this.timeInterval)
+  }
+
   public update(options: VisualNS.IVisualUpdateOptions) {
     this.preview = options.isViewer
     const dataView = options.dataViews[0];
@@ -198,7 +203,7 @@ export default class Visual extends WynVisual {
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
       this.value = plainData.profile.value.values[0].display;
-
+      this.payWay = plainData.profile.tooltipFields.values.length?plainData.profile.tooltipFields.values[0].display:''
       let items = plainData.data;
       // const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
       // data sort 
@@ -209,7 +214,7 @@ export default class Visual extends WynVisual {
         items = newItems.filter((item) => item)
 
       this.items[0] = items.map((item) => item[this.dimension]);
-      this.items[1] = items.map((item) => { return { name: item[this.dimension], value: item[this.value] } });
+      this.items[1] = items.map((item) => { return { name: item[this.dimension], value: item[this.value], way: item[this.payWay]}});
       
       // get data
       const getSelectionId = (item) => {
@@ -219,6 +224,7 @@ export default class Visual extends WynVisual {
       }
       this.items[2] = items.map((item) => getSelectionId(item));
       this.format = options.dataViews[0].plain.profile.value.values[0].format;
+      
     } else {
       this.isMock = true;
     }
@@ -491,7 +497,12 @@ export default class Visual extends WynVisual {
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
-          return `${this.isMock ? '访问量' : this.dimension} <br/>${params.name} :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)} (${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%)`
+          let eachSector = this.items[1].find((ele)=> ele.name === params.name)
+          let lineWrap = '<br/>'
+          return `${this.isMock ? '访问量' : this.dimension} ${lineWrap}${params.name}
+           :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)}
+            (${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%)
+            ${this.payWay?(lineWrap+this.payWay+':'+eachSector.way):''}`
         }
       },
       legend: {
