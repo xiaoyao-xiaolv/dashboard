@@ -98,12 +98,25 @@ export default class Visual extends WynVisual {
       border: `1px solid ${_options.labelBg}`
     };
 
+    const timeline__describe__fontStyle = {
+      ..._options.labelTextStyle,
+      fontSize: parseInt(_options.labelTextStyle.fontSize),
+      backgroundColor: _options.labelBg,
+      border: `1px solid ${_options.labelBg}`
+    };
+
+    const hiddenLabel = {
+      opacity: 0
+    }
     timeLineData.map((_element, index) => {
       const _timeline__item = $('<div class="timeline__item">').appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">').appendTo(_timeline__item);
-
+      // const _timeline__describe = $('<div class="timeline__describe">').append(_timeline__content);
       _timeline__content.text(Visual.mockItems[index].name);
       _timeline__content.css(timeline__content__fontStyle);
+      if (_options.showLabel === 'none') {
+        _timeline__content.css(hiddenLabel);
+      }
     });
     
     // horizontal timeline content
@@ -122,7 +135,7 @@ export default class Visual extends WynVisual {
       visibleItems: _options.visibleItems === 'default' ? timeLineData.length : _options.customVisibleItems,
       horizontalAllPosition: _options.horizontalItemsLayout,
       verticalAllPosition: _options.verticalItemsLayout,
-      // verticalTrigger: `${_options.verticalTrigger}%`,
+      // verticalTrigger: `${_options.verticalTrigger}`,
     });
 
     // custom vertical line color
@@ -131,6 +144,16 @@ export default class Visual extends WynVisual {
     $('.timeline-divider').css('backgroundColor', `${_options.timeLineBg}`);
     // custom time line point color
     $(`<style>.timeline__item::after {background-color: ${_options.timeLinePointColor}; border: 4px solid ${_options.timeLinePointBg}}</style>`).appendTo(document.head)
+    // add describe html
+    const _contentList = $('.timeline__content');
+    if (_options.showLabel === 'content') {
+      _contentList.map((index, item: any) => {
+        const _timeline__describe = $('<div class="timeline__describe">')
+        $(item).append(_timeline__describe)
+        _timeline__describe.text(Visual.mockItems[index].describe);
+        // _timeline__describe.css(timeline__describe__fontStyle);
+      })
+    }
   };
 
   public render() {

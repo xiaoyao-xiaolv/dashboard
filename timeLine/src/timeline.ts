@@ -71,6 +71,7 @@ const timeline = (collection, options?: any) => {
 
   // Helper function to wrap an element in another HTML element
   function itemWrap(el, wrapper, classes) {
+    console.log(el, classes)
     wrapper.classList.add(classes);
     el.parentNode.insertBefore(wrapper, el);
     wrapper.appendChild(el);
@@ -79,6 +80,7 @@ const timeline = (collection, options?: any) => {
   // Helper function to wrap each element in a group with other HTML elements
   function wrapElements(items) {
     items.forEach((item) => {
+      // itemWrap(item.querySelector('.timeline__describe'), document.createElement('div'), 'timeline__content');
       itemWrap(item.querySelector('.timeline__content'), document.createElement('div'), 'timeline__content__wrap');
       itemWrap(item.querySelector('.timeline__content__wrap'), document.createElement('div'), 'timeline__item__inner');
     });
@@ -246,7 +248,7 @@ const timeline = (collection, options?: any) => {
       let evenIndexTallest = 0;
       tl.items.forEach((item, i) => {
         item.style.height = 'auto';
-        item.style.margin = '0 3%';
+        item.style.margin = '0 1%';
         const height = item.offsetHeight;
         if (i % 2 === 0) {
           evenIndexTallest = height > evenIndexTallest ? height : evenIndexTallest;
@@ -389,10 +391,8 @@ const timeline = (collection, options?: any) => {
       }
       if (tl.settings.verticalAllPosition === 'left') {
         item.classList.add('timeline__item--right');
-        console.log('靠左显示')
       } else if(tl.settings.verticalAllPosition === 'right') {
         item.classList.add('timeline__item--left');
-        console.log('靠右显示')
       } else {
         const divider = tl.settings.verticalStartPosition === 'left' ? 1 : 0;
         if (i % 2 === divider && window.innerWidth > tl.settings.forceVerticalMode) {
