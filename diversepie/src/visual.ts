@@ -341,7 +341,7 @@ export default class Visual extends WynVisual {
       } else {
         backgroundColor = pieColor[Math.floor((Math.random() * pieColor.length))].colorStops
           ? pieColor[Math.floor((Math.random() * pieColor.length))].colorStops[position]
-          : pieColor[Math.floor((Math.random() * pieColor.length))]
+          : pieColor[index%(pieColor.length)]
       }
       return backgroundColor
     }
@@ -355,21 +355,24 @@ export default class Visual extends WynVisual {
             data: [],
             itemStyle: {
               normal: {
-                color: {
-                  type: 'radial',
-                  x: 0.5,
-                  y: 0.5,
-                  r: 1,
-                  colorStops: [{
-                    offset: 0,
-                    color: getColors(index, 1)
-                  },
-                  {
-                    offset: 1,
-                    color: getColors(index, 0)
+                color: (params) => {                  
+                  return {
+                    type: 'radial',
+                    x: 0.5,
+                    y: 0.5,
+                    r: 1,
+                    colorStops: [{
+                      offset: 0,
+                      color: getColors(index, 1)
+                    },
+                    {
+                      offset: 1,
+                      color: getColors(index, 0)
+                    }
+                    ],
+                    global: false
+
                   }
-                  ],
-                  global: false
                 },
                 borderRadius: options.borderRadius,
                 borderColor: options.breakPointColor,
@@ -458,7 +461,7 @@ export default class Visual extends WynVisual {
             itemStyle: {
               normal: {
                 color: (params) => {
-                  return {
+                  return options.showGradient?{
                     type: 'linear',
                     x: 0,
                     y: 0,
@@ -474,7 +477,7 @@ export default class Visual extends WynVisual {
                     }
                     ],
                     global: false
-                  }
+                  }:getColors(params.dataIndex, 1)
                 },
                 borderRadius: options.borderRadius,
                 borderColor: options.breakPointColor,

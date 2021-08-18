@@ -422,7 +422,7 @@
                         "name": "showLabelValue",
                         "type": "Boolean",
                         "displayName": "显示数值",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "labelDataType",
