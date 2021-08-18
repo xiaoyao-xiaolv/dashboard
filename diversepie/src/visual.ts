@@ -159,13 +159,7 @@ export default class Visual extends WynVisual {
       this.dispatch('highlight', selectInfo);
       this.selection.push(selectInfo);
       if (clickMouse === clickLeftMouse) {
-        // dataIndex = (params.dataIndex === dataIndex)?'':params.dataIndex
-        if(params.dataIndex === dataIndex){
-          dataIndex = ''
-        }else{
-          dataIndex = params.dataIndex
-        }
-        
+        dataIndex = (params.dataIndex === dataIndex)?'':params.dataIndex
         // show data jump
         if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
           return
@@ -367,24 +361,22 @@ export default class Visual extends WynVisual {
             data: [],
             itemStyle: {
               normal: {
-                color: (params) => {                  
-                  return {
-                    type: 'radial',
-                    x: 0.5,
-                    y: 0.5,
-                    r: 1,
-                    colorStops: [{
-                      offset: 0,
-                      color: getColors(index, 1)
-                    },
-                    {
-                      offset: 1,
-                      color: getColors(index, 0)
-                    }
-                    ],
-                    global: false
-
+                color: {
+                  type: 'radial',
+                  x: 0.5,
+                  y: 0.5,
+                  r: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: getColors(index, 1)
+                  },
+                  {
+                    offset: 1,
+                    color: getColors(index, 0)
                   }
+                  ],
+                  global: false
+
                 },
                 borderRadius: options.borderRadius,
                 borderColor: options.breakPointColor,
