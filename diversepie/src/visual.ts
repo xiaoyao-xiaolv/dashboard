@@ -10,6 +10,8 @@ echarts.use(
 );
 
 let isTooltipModelShown = false;
+let dataIndex = ''
+
 const clickLeftMouse = 0;
 const clickRightMouse = 2;
 export default class Visual extends WynVisual {
@@ -79,7 +81,7 @@ export default class Visual extends WynVisual {
 
   public timer = () => {
     let index = -1
-    let dataLength = this.properties.pieColor.length 
+    let dataLength = this.items[2].length 
     this.timeInterval =  setInterval(() => {
       const autoStopInfo = {
         seriesIndex: 0,
@@ -120,7 +122,7 @@ export default class Visual extends WynVisual {
     })
 
     this.container.addEventListener('mouseleave', (e: any) => {
-      if (this.properties.automaticRotation && this.preview) this.timer()
+      if (this.properties.automaticRotation && this.preview && !dataIndex) this.timer()
       if (isTooltipModelShown) return;
       this.hideTooltip();
     })
@@ -156,8 +158,14 @@ export default class Visual extends WynVisual {
       }
       this.dispatch('highlight', selectInfo);
       this.selection.push(selectInfo);
-
       if (clickMouse === clickLeftMouse) {
+        // dataIndex = (params.dataIndex === dataIndex)?'':params.dataIndex
+        if(params.dataIndex === dataIndex){
+          dataIndex = ''
+        }else{
+          dataIndex = params.dataIndex
+        }
+        
         // show data jump
         if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
           return
@@ -503,29 +511,6 @@ export default class Visual extends WynVisual {
     const option = {
       tooltip: {
         trigger: 'item',
-        position:(point,params,dom,rect,size)=>{
-          let x = 0;
-          let y = 0;
-          let pointX = point[0];
-          let pointY = point[1];
-          var boxWidth = size.contentSize[0];
-          var boxHeight = size.contentSize[1];
-          if (boxWidth > pointX) {
-            x = 0; 
-            y -= 5; 
-        } else { 
-            x = pointX - boxWidth - 5;
-        }
-        
-        if (boxHeight + 10 > pointY) {
-            y = pointY + 5;
-        } else if (boxHeight > pointY) {
-            y = 0;
-        } else { 
-            y += pointY - boxHeight;
-        }
-        return [x, y];
-        },
         formatter: (params) => {
           let eachSector = this.allItems.find((ele)=> ele[this.dimension] === params.name)
           let toolTips = ''
