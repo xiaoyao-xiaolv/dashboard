@@ -40,6 +40,7 @@ export default class Visual extends WynVisual {
   private preview : boolean;
   private payWay: any;
   private allItems: any;
+
   
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -52,7 +53,7 @@ export default class Visual extends WynVisual {
     this.selectionManager = host.selectionService.createSelectionManager();
     this.properties = {};
     this.format = {};
-    this.preview = false
+    this.preview = false;
   }
 
   // toolTip
@@ -390,6 +391,8 @@ export default class Visual extends WynVisual {
           return {
             name: '',
             type: 'pie',
+            selectedMode: true,
+            selectedOffset:20,
             radius: options.labelPosition === 'inside' ? [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outer}%`] : [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outerOutside}%`],
             center: [`${options.centerX}%`, `${options.centerY}%`],
             data: data, 
@@ -448,8 +451,6 @@ export default class Visual extends WynVisual {
               },
               scale: true,
               scaleSize: options.autoScaleSize,
-              focus: 'global',
-              blurScope: 'coordinateSystem'
             },
             labelLine: {
               show: options.showLabelLine,
