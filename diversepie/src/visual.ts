@@ -39,6 +39,7 @@ export default class Visual extends WynVisual {
   private timeInterval : any;
   private preview : boolean;
   private payWay: any;
+  private allItems: any;
   
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -203,7 +204,9 @@ export default class Visual extends WynVisual {
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
       this.value = plainData.profile.value.values[0].display;
-      this.payWay = plainData.profile.tooltipFields.values.length?plainData.profile.tooltipFields.values[0].display:''
+      this.payWay = plainData.profile.tooltipFields.values.length?plainData.profile.tooltipFields.values.map((value,index) => {
+        return value.display
+      }):''
       let items = plainData.data;
       // const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
       // data sort 
@@ -212,9 +215,9 @@ export default class Visual extends WynVisual {
           return newItems = items.find((item) => item[this.dimension] === flags && item)
         })
         items = newItems.filter((item) => item)
-
+      this.allItems = items;
       this.items[0] = items.map((item) => item[this.dimension]);
-      this.items[1] = items.map((item) => { return { name: item[this.dimension], value: item[this.value], way: item[this.payWay]}});
+      this.items[1] = items.map((item) => {return { name: item[this.dimension], value: item[this.value]}});
       
       // get data
       const getSelectionId = (item) => {
@@ -523,12 +526,17 @@ export default class Visual extends WynVisual {
         return [x, y];
         },
         formatter: (params) => {
-          let eachSector = this.items[1].find((ele)=> ele.name === params.name)
+          let eachSector = this.allItems.find((ele)=> ele[this.dimension] === params.name)
+          let toolTips = ''
           let lineWrap = '<br/>'
+          this.payWay && this.payWay.forEach((element,index) => {
+            toolTips += `${lineWrap}${element}${': '}${eachSector[this.payWay[index]]}`
+          });
+          
           return `${this.isMock ? '访问量' : this.dimension} ${lineWrap}${params.name}
            :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)}
             (${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%)
-            ${this.payWay?(lineWrap+this.payWay+':'+eachSector.way):''}`
+            ${toolTips}`
         }
       },
       legend: {
@@ -592,7 +600,7 @@ export default class Visual extends WynVisual {
             _title += `{c|占比}`
           }
           _title += '\n'
-          return _firstLegendText ? `${options.showLegendTitle ?_title : ''}${_legendText}`: _legendText;
+          return _firstLegendText ? `${_legendText}`: _legendText;
         },
         
       },
@@ -634,7 +642,7 @@ export default class Visual extends WynVisual {
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'
-      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'showLegendTitle', 'openLegendPage'])
+      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'openLegendPage'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
