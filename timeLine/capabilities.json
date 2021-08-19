@@ -1,5 +1,61 @@
 {
     "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "name",
+                "displayNameKey": "节点名称",
+                "kind": "grouping"
+            },
+            {
+                "name": "value",
+                "displayNameKey": "节点状态",
+                "kind": "value"
+            },
+            {
+                "name": "image",
+                "displayNameKey": "节点图片",
+                "kind": "value"
+            },
+            {
+                "name": "describe",
+                "displayNameKey": "节点详情",
+                "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "name": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "name": {
+                    "max": 1
+                },
+                "value": {
+                    "max": 1
+                },
+                "image": {
+                    "max": 1
+                },
+                "describe": {
+                    "max": 1
+                }
+            }
+        ]
     },
     "options": {
         "visual": [ {
@@ -98,6 +154,18 @@
                     "defaultValue": 4
                 },
                 {
+                    "name": "timeLinePointSize",
+                    "type": "Integer",
+                    "displayName": "节点大小",
+                    "defaultValue": 20
+                },
+                {
+                    "name": "timeLinePointBorder",
+                    "type": "Integer",
+                    "displayName": "节点边框线",
+                    "defaultValue": 4
+                },
+                {
                     "name": "timeLinePointBg",
                     "type": "Color",
                     "displayName": "节点背景色",
@@ -128,7 +196,7 @@
                     "defaultValue": "content"
                 },
                 {
-                    "name": "labelAlign",
+                    "name": "labelTitleAlign",
                     "type": "Enum",
                     "displayName": "标题对齐",
                     "items": [
@@ -144,7 +212,7 @@
                             "displayNameKey": "居右"
                         }
                     ],
-                    "defaultValue": "center"
+                    "defaultValue": "left"
                 },
                
                 {
@@ -156,10 +224,19 @@
                 {
                     "name": "labelTextStyle",
                     "type": "TextStyle",
-                        "displayName": "字体设置",
+                        "displayName": "标题设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "14px",
+                            "fontSize": "2.0X",
+                            "color": "#000"
+                        }
+                }, {
+                    "name": "labelDescribeStyle",
+                    "type": "TextStyle",
+                        "displayName": "内容设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "2.0X",
                             "color": "#000"
                         }
                 }
