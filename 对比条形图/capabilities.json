@@ -150,6 +150,17 @@
                 ]
             },
             {
+                "displayName": "数据排名",
+                "properties": [
+                    {
+                        "name": "showRanking",
+                        "type": "Boolean",
+                        "displayName": "显示排名",
+                        "defaultValue": true
+                    }
+                ]
+            },
+            {
                 "type": "interaction"
             },
             {

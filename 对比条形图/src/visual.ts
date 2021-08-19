@@ -13,6 +13,7 @@ export default class Visual {
   private host: any;
   private selection: any;
   private selectionManager: any;
+  private rankingNumber: any;
   private isTooltipModelShown: boolean;
   static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
     , [58, 46, 47, 49, 59, 17, 25, 83, 34]
@@ -31,6 +32,7 @@ export default class Visual {
     this.isTooltipModelShown = false;
     this.selection = [];
     this.selectionManager = host.selectionService.createSelectionManager();
+    this.rankingNumber = [];
   }
   private showTooltip = _.debounce((params) => {
     this.isTooltipModelShown = true;
@@ -188,6 +190,9 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
+      arr[0].forEach((element,index) => {
+        this.rankingNumber.push({name:element,index:index+1})
+      });
     }
     return;
   }
@@ -200,11 +205,11 @@ export default class Visual {
       this.selectionSort(items, options.sorttype);
     }
     this.container.style.opacity = this.isMock ? '0.3' : '1';
-    let fontWeight: string;
+    let _fontWeight: string;
     if (options.textStyle.fontWeight == "Light") {
-      fontWeight = options.textStyle.fontWeight + "er"
+      _fontWeight = options.textStyle.fontWeight + "er"
     } else {
-      fontWeight = options.textStyle.fontWeight
+      _fontWeight = options.textStyle.fontWeight
     }
     let labelfontWeight: string;
     if (options.labelTextStyle.fontWeight == "Light") {
@@ -212,9 +217,7 @@ export default class Visual {
     } else {
       labelfontWeight = options.labelTextStyle.fontWeight
     }
-    let opt = {
-      index: 0
-    }
+
     let option = {
       tooltip: {
         show: true,
@@ -247,32 +250,36 @@ export default class Visual {
           width: 70,
           color: options.textStyle.color,
           fontSize: options.textStyle.fontSize.substr(0, 2),
-          fontWeight: fontWeight,
+          fontWeight: _fontWeight,
           fontFamily: options.textStyle.fontFamily,
           fontStyle: options.textStyle.fontStyle,
-          formatter: function (value, index) {
-            if (opt.index === 0 && index < 3) {
-              return '{idx' + index + '|' + (1 + index) + '} {title|' + value + '}'
-            } else if (opt.index !== 0 && (index + opt.index) < 9) {
-                return '{idx|0' + (1 + index + opt.index) + '} {title|' + value + '}'
-            } else {
-                return '{idx|' + (1 + index + opt.index) + '} {title|' + value + '}'
+          formatter: (value, index) => {
+            if(options.showRanking && !this.isMock){
+              this.selectionSort(this.items, 'desc');
+              const _target  = this.rankingNumber&&this.rankingNumber.filter(element => value === element.name)[0];
+              if (_target.index <= 3) {  
+                return '{idx' + _target.index + '|' + ( _target.index) + '} {title|' + value + '}'
+              }  else {
+                return '{idx|' +  _target.index + '} {title|' + value + '}'
+              }
+            }else{
+              return value
             }
           },
           rich: {
-            idx0: {
+            idx1: {
                 color: '#FB375E',
                 backgroundColor: '#FFE8EC',
                 borderRadius: 100,
                 padding: [2, 4]
             },
-            idx1: {
+            idx2: {
                 color: '#FF9023',
                 backgroundColor: '#FFEACF',
                 borderRadius: 100,
                 padding: [2, 4]
             },
-            idx2: {
+            idx3: {
                 color: '#01B599',
                 backgroundColor: '#E1F7F3',
                 borderRadius: 100,
