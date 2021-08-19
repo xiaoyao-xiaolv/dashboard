@@ -96,26 +96,36 @@ export default class Visual {
     this.items = [[], [], [], [], [], []];
     if (dataView) {
       const plainData = dataView.plain;
-      let dimension = plainData.profile.dimension.values[0].display;
-      let ActualValue = plainData.profile.ActualValue.values[0].display;
-      let ContrastValue = plainData.profile.ContrastValue.values[0].display;
+      let ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
+      let ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
+      let dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display:'';
       let data = plainData.data;
-      this.items[0] = plainData.sort[dimension].order;
-      this.items[4] = [ActualValue, ContrastValue];
+
       this.actualFormat = plainData.profile.ActualValue.options.valueFormat;
       this.contrastFormat = plainData.profile.ContrastValue.options.valueFormat;
+      
       for (let index = 0; index < data.length; index++) {
         data.forEach((item) => {
-          if (item[dimension] == this.items[0][index]) {
-            this.items[1].push(item[ActualValue]);
-            this.items[2].push(item[ContrastValue]);
-            this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
-            const getSelectionId = (item) => {
-              const selectionId = this.host.selectionService.createSelectionId();
-              selectionId.withDimension(plainData.profile.dimension.values[0], item);
-              return selectionId;
+          if(ActualValue&&!ContrastValue&&!dimension){
+            this.items[0].push(ActualValue);
+            this.items[3].push(item[ActualValue]);
+          }else if((ActualValue&&ContrastValue&&!dimension) || (ActualValue&&!ContrastValue&&dimension)){
+            this.items[0].push(ActualValue,ContrastValue);
+            this.items[3].push(item[ActualValue],item[ContrastValue]);
+          }else if(ActualValue&&ContrastValue&&dimension){
+            this.items[0] = plainData.sort[dimension]?plainData.sort[dimension].order:'';
+            if (item[dimension] == this.items[0][index]) {
+              this.items[4] = [ActualValue, ContrastValue];        
+              this.items[1].push(item[ActualValue]);
+              this.items[2].push(item[ContrastValue]);
+              this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
+              const getSelectionId = (item) => {
+                const selectionId = this.host.selectionService.createSelectionId();
+                selectionId.withDimension(plainData.profile.dimension.values[0], item);
+                return selectionId;
+              }
+              this.items[5].push(getSelectionId(item));
             }
-            this.items[5].push(getSelectionId(item));
           }
         })
       }
@@ -202,6 +212,9 @@ export default class Visual {
     } else {
       labelfontWeight = options.labelTextStyle.fontWeight
     }
+    let opt = {
+      index: 0
+    }
     let option = {
       tooltip: {
         show: true,
@@ -216,7 +229,7 @@ export default class Visual {
       },
       grid: {
         top: '0',
-        left: '0',
+        left: '15',
         right: '4.75%',
         bottom: '0',
         containLabel: true
@@ -231,11 +244,51 @@ export default class Visual {
         axisLabel: {
           show: options.showLabel,
           margin: 20,
+          width: 70,
           color: options.textStyle.color,
           fontSize: options.textStyle.fontSize.substr(0, 2),
           fontWeight: fontWeight,
           fontFamily: options.textStyle.fontFamily,
           fontStyle: options.textStyle.fontStyle,
+          formatter: function (value, index) {
+            if (opt.index === 0 && index < 3) {
+              return '{idx' + index + '|' + (1 + index) + '} {title|' + value + '}'
+            } else if (opt.index !== 0 && (index + opt.index) < 9) {
+                return '{idx|0' + (1 + index + opt.index) + '} {title|' + value + '}'
+            } else {
+                return '{idx|' + (1 + index + opt.index) + '} {title|' + value + '}'
+            }
+          },
+          rich: {
+            idx0: {
+                color: '#FB375E',
+                backgroundColor: '#FFE8EC',
+                borderRadius: 100,
+                padding: [2, 4]
+            },
+            idx1: {
+                color: '#FF9023',
+                backgroundColor: '#FFEACF',
+                borderRadius: 100,
+                padding: [2, 4]
+            },
+            idx2: {
+                color: '#01B599',
+                backgroundColor: '#E1F7F3',
+                borderRadius: 100,
+                padding: [2, 4]
+            },
+            idx: {
+                color: 'white',
+                borderRadius: 100,
+                // padding: [2, 2]
+            },
+            title: {
+                // backgroundColor:'blue',
+                // padding: [2, 2],
+
+            }
+          },
         },
         axisLine: {
           show: false

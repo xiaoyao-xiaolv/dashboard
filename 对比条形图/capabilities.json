@@ -40,10 +40,10 @@
                                 "min": 1
                             },
                             "ContrastValue": {
-                                "min": 1
+                                "min": 0
                             },
                             "dimension": {
-                                "min": 1
+                                "min": 0
                             }
                         }
                     ]
