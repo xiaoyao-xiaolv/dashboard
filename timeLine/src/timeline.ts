@@ -71,7 +71,6 @@ const timeline = (collection, options?: any) => {
 
   // Helper function to wrap an element in another HTML element
   function itemWrap(el, wrapper, classes) {
-    console.log(el, classes)
     wrapper.classList.add(classes);
     el.parentNode.insertBefore(wrapper, el);
     wrapper.appendChild(el);
@@ -248,7 +247,7 @@ const timeline = (collection, options?: any) => {
       let evenIndexTallest = 0;
       tl.items.forEach((item, i) => {
         item.style.height = 'auto';
-        item.style.margin = '0 1%';
+        // item.style.marginRight = '1%';
         const height = item.offsetHeight;
         if (i % 2 === 0) {
           evenIndexTallest = height > evenIndexTallest ? height : evenIndexTallest;
