@@ -48,7 +48,6 @@ export default class Visual extends WynVisual {
 
     const options = updateOptions;
     const dataView = options.dataViews[0];
-
     this.isMock = !(dataView && dataView.plain.profile.name.values.length);
     const plainData: any = this.isMock ? {} : dataView.plain;
     if (!this.isMock) {
@@ -98,8 +97,22 @@ export default class Visual extends WynVisual {
       fontSize: _options.labelTextStyle.fontSize,
       textAlign:  _options.labelTitleAlign,
     }
+
+    const pointColor = [{
+      bgColor: _options.timeLinePointColor,
+      borderColor: _options.timeLinePointBg,
+    }, {
+      bgColor: _options.timeLinePointNormalColor,
+      borderColor: _options.timeLinePointNormalBg,
+    }, {
+      bgColor: _options.timeLinePointErrorColor,
+      borderColor: _options.timeLinePointErrorBg,
+      },{
+        bgColor: _options.timeLinePointErrorColor,
+        borderColor: _options.timeLinePointErrorBg,
+        }];
     timeLineData.map((_element, index) => {
-      const _timeline__item = $('<div class="timeline__item">').appendTo(_timeline__items);
+      const _timeline__item = $(`<div class="timeline__item timeline__item__${index}">`).appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">').appendTo(_timeline__item);
       const _timeline__content_text = $('<div>')
       $(_timeline__content).append(_timeline__content_text);
@@ -123,6 +136,13 @@ export default class Visual extends WynVisual {
       _timeline__content.css(timeline__content__fontStyle);
       _timeline__title.css(_timeline__title__style);
       _timeline__describe.css(_options.labelDescribeStyle);
+      
+      const _pointColorIndex = _element[this.value] ? (_element[this.value] <= 2 ? _element[this.value]: 2 ): 0;
+      $(`<style>.timeline__item__${index}::after {
+        background-color: ${pointColor[_pointColorIndex].bgColor}; 
+        border: ${_options.timeLinePointBorder}px solid ${pointColor[_pointColorIndex].borderColor}; 
+        </style>`)
+        .appendTo(document.head);
     });
     
     // horizontal timeline content
@@ -149,7 +169,11 @@ export default class Visual extends WynVisual {
     // custom horizontal line color
     $('.timeline-divider').css('backgroundColor', `${_options.timeLineBg}`);
     // custom time line point color
-    $(`<style>.timeline__item::after {background-color: ${_options.timeLinePointColor}; border: ${_options.timeLinePointBorder}px solid ${_options.timeLinePointBg}; width: ${_options.timeLinePointSize}px; height: ${_options.timeLinePointSize}px;}</style>`).appendTo(document.head);
+    $(`<style>.timeline__item::after {
+      width: ${_options.timeLinePointSize}px; 
+      height: ${_options.timeLinePointSize}px;}
+      </style>`)
+      .appendTo(document.head);
   };
 
   public render() {
