@@ -89,7 +89,6 @@
     border-radius: 10px;
     color: #333;
 	display: block;
-	padding: 20px;
     position: relative;
     &::before,
     &::after {
@@ -117,13 +116,23 @@
     h2 {
         font-size: 20px;
         font-weight: 700;
-        margin: 0 0 10px;
+        margin: 0 0 0px;
     }
     p {
         font-size: 15px;
         line-height: 1.5;
         margin-bottom: 10px;
     }
+}
+
+.timeline__content_text {
+    max-height: 160px;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.timeline__content_text_title {
+    padding: 20px;
 }
 
 .timeline--horizontal {

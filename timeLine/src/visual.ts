@@ -101,20 +101,23 @@ export default class Visual extends WynVisual {
     timeLineData.map((_element, index) => {
       const _timeline__item = $('<div class="timeline__item">').appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">').appendTo(_timeline__item);
+      const _timeline__content_text = $('<div>')
+      $(_timeline__content).append(_timeline__content_text);
       const _timeline__title = $('<h2 class="timeline__title">')
       const _timeline__describe = $('<p class="timeline__describe">')
       //  show label
       if (_options.showLabel === 'none') {
         _timeline__content.css(hiddenLabel);
-      } else if (_options.showLabel === 'title') {
-        $(_timeline__content).append(_timeline__title);
+      } else if (_options.showLabel === 'content' && this.isDescribe) {
+        $(_timeline__content_text).addClass('timeline__content_text')
+        $(_timeline__content_text).append(_timeline__title, _timeline__describe);
         _timeline__title.text(this.items[index][this.name]);
+        _timeline__describe.text(this.items[index][this.describe]);
+        
       } else {
-        if (this.describe) {
-          $(_timeline__content).append(_timeline__title, _timeline__describe);
-          _timeline__title.text(this.items[index][this.name]);
-          _timeline__describe.text(this.items[index][this.describe]);
-        }
+        $(_timeline__content_text).addClass('timeline__content_text_title')
+        $(_timeline__content_text).append(_timeline__title);
+        _timeline__title.text(this.items[index][this.name]);
       }
       // custom label
       _timeline__content.css(timeline__content__fontStyle);
@@ -138,7 +141,7 @@ export default class Visual extends WynVisual {
       visibleItems: _options.visibleItems === 'default' ? timeLineData.length : _options.customVisibleItems,
       horizontalAllPosition: _options.horizontalItemsLayout,
       verticalAllPosition: _options.verticalItemsLayout,
-      // verticalTrigger: `${_options.verticalTrigger}`,
+      verticalTrigger: `${0}%`,
     });
 
     // custom vertical line color
@@ -183,7 +186,7 @@ export default class Visual extends WynVisual {
     if (ua.indexOf("Firefox") != -1) {
       this.root.css({ 'transform': `scale(${zoom})`, 'transformOrigin': 'top left' });
     } else {
-      this.root.css({ "zoom": zoom });
+      this.root.css({ "zoom": 1 });
     }
 
   };

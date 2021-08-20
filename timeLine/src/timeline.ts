@@ -247,7 +247,6 @@ const timeline = (collection, options?: any) => {
       let evenIndexTallest = 0;
       tl.items.forEach((item, i) => {
         item.style.height = 'auto';
-        // item.style.marginRight = '1%';
         const height = item.offsetHeight;
         if (i % 2 === 0) {
           evenIndexTallest = height > evenIndexTallest ? height : evenIndexTallest;
