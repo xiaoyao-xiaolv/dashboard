@@ -157,6 +157,106 @@
                         "type": "Boolean",
                         "displayName": "显示排名",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "rotationDegree",
+                        "type": "Integer",
+                        "displayName": "旋转度数",
+                        "defaultValue": 0,
+                        "min": -90,
+                        "max": 90
+                    },
+                    {
+                        "displayNameKey": "显示位置",
+                        "name": "RankingPosition",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "上方"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "下方"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "inside",
+                                "displayNameKey": "内部"
+                            },
+                            {
+                                "value": "insideLeft",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "topLeft",
+                                "displayNameKey": "左上方"
+                            },
+                            {
+                                "value": "topRight",
+                                "displayNameKey": "右上方"
+                            },
+                            {
+                                "value": "bottomLeft",
+                                "displayNameKey": "左下方"
+                            },
+                            {
+                                "value": "bottomRight",
+                                "displayNameKey": "右下方"
+                            }
+                            
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "displayNameKey": "Top3显示形状",
+                        "name": "rankingShape",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "circular",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "square",
+                                "displayNameKey": "正方形"
+                            }
+                            
+                        ],
+                        "defaultValue": "circular"
+                    },
+                    {
+                        "displayNameKey": "Top3显示类型",
+                        "name": "rankingType",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "number",
+                                "displayNameKey": "1/2/3"
+                            },
+                            {
+                                "value": "champion",
+                                "displayNameKey": "冠/亚/季"
+                            },
+                            {
+                                "value": "excellent",
+                                "displayNameKey": "优/良/中"
+                            }
+                            
+                        ],
+                        "defaultValue": "number"
+                    },
+                    {
+                        "name": "rankingColor",
+                        "type": "Palette",
+                        "displayName": "Top3字体颜色"
                     }
                 ]
             },
