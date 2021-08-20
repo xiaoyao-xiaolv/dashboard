@@ -172,30 +172,6 @@
                         "type": "Enum",
                         "items": [
                             {
-                                "value": "top",
-                                "displayNameKey": "上方"
-                            },
-                            {
-                                "value": "bottom",
-                                "displayNameKey": "下方"
-                            },
-                            {
-                                "value": "left",
-                                "displayNameKey": "左侧"
-                            },
-                            {
-                                "value": "right",
-                                "displayNameKey": "右侧"
-                            },
-                            {
-                                "value": "inside",
-                                "displayNameKey": "内部"
-                            },
-                            {
-                                "value": "insideLeft",
-                                "displayNameKey": "左侧"
-                            },
-                            {
                                 "value": "topLeft",
                                 "displayNameKey": "左上方"
                             },
@@ -210,8 +186,29 @@
                             {
                                 "value": "bottomRight",
                                 "displayNameKey": "右下方"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "inside",
+                                "displayNameKey": "内部"
+                            },
+                            {
+                                "value": "top",
+                                "displayNameKey": "上方"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "下方"
                             }
                             
+                           
                         ],
                         "defaultValue": "left"
                     },

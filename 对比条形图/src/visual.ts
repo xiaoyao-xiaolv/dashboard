@@ -111,9 +111,17 @@ export default class Visual {
           if(ActualValue&&!ContrastValue&&!dimension){
             this.items[0].push(ActualValue);
             this.items[3].push(item[ActualValue]);
-          }else if((ActualValue&&ContrastValue&&!dimension) || (ActualValue&&!ContrastValue&&dimension)){
+          }else if(ActualValue&&ContrastValue&&!dimension){
             this.items[0].push(ActualValue,ContrastValue);
             this.items[3].push(item[ActualValue],item[ContrastValue]);
+          }else if(ActualValue&&!ContrastValue&&dimension){
+            this.items[0].push(ActualValue,dimension);
+            this.items[3].push({value:item[ActualValue],name:item[dimension]});
+            var obj = {};
+            this.items[3] = this.items[3].reduce(function(a, b) {
+              obj[b.name] ? '' : obj[b.name] = true && a.push(b);
+              return a;
+            }, [])
           }else if(ActualValue&&ContrastValue&&dimension){
             this.items[0] = plainData.sort[dimension]?plainData.sort[dimension].order:'';
             if (item[dimension] == this.items[0][index]) {
@@ -201,11 +209,11 @@ export default class Visual {
     if (positionType === 'topLeft') {
       return [0,-20]
     }else if(positionType === 'topRight'){
-      return [350,-20]
+      return [535,-20]
     }else if(positionType === 'bottomLeft'){
       return [0,20]
     }else if(positionType === 'bottomRight'){
-      return [350,20]
+      return [535,20]
     }else {
       return positionType
     }
@@ -285,8 +293,8 @@ export default class Visual {
         }
       },
       grid: {
-        top: '0',
-        left: options.RankingPosition === 'left'? '65':'10',
+        top: '10',
+        left: options.RankingPosition === 'left'? '75':'10',
         right: '4.75%',
         bottom: '0',
         containLabel: true
@@ -341,11 +349,14 @@ export default class Visual {
           margin: 1,
           position: this.setPosition(options.RankingPosition) ,
           rotate : options.rotationDegree,
-          
+          width:65,
+          // backgroundColor:'red',
           formatter: (value) => {
             if(options.showRanking && !this.isMock){
+              this.rankingNumber = [];
               this.selectionSort(this.items, 'desc');
               const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
+
               const _target = JSON.parse(JSON.stringify(_targetCopy))
               _target.index = this.setRankingType(options.rankingType, _target.index)
               const targetCopyIndex = _targetCopy.index
@@ -366,7 +377,7 @@ export default class Visual {
                 padding: [4, 4],
                 width:10,
                 height:10,
-                align: 'center',
+                align: 'left',
             },
             idx2: {
                 color: options.rankingColor[1],
@@ -375,7 +386,7 @@ export default class Visual {
                 padding: [4, 4],
                 width:10,
                 height:10,
-                align: 'center',
+                align: 'left',
             },
             idx3: {
                 color: options.rankingColor[2],
@@ -384,14 +395,14 @@ export default class Visual {
                 padding: [4, 4],
                 width:10,
                 height:10,
-                align: 'center',
+                align: 'left',
             },
             idx: {
                 color: 'white',
                 borderRadius: 100,
                 width:10,
                 height:10,
-                align: 'center',
+                align: 'left',
                 padding: [2, 4]
             },
             title: {
