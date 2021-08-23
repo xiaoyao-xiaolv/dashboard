@@ -12,6 +12,7 @@ export default class Visual {
   private contrastFormat: any;
   private host: any;
   private selection: any;
+  private allShow: any;
   private selectionManager: any;
   private rankingNumber: any;
   private isTooltipModelShown: boolean;
@@ -26,6 +27,7 @@ export default class Visual {
     this.chart = echarts.init(dom);
     this.items = [];
     this.isMock = true;
+    this.allShow = true;
     this.host = host;
     this.properties = {};
     this.bindEvents();
@@ -109,13 +111,16 @@ export default class Visual {
       for (let index = 0; index < data.length; index++) {
         data.forEach((item) => {
           if(ActualValue&&!ContrastValue&&!dimension){
+            this.allShow = true;
             this.items[0].push(ActualValue);
             this.items[3].push(item[ActualValue]);
           }else if(ActualValue&&ContrastValue&&!dimension){
+            this.allShow = true;
             this.items[0].push(ActualValue,ContrastValue);
             this.items[3].push(item[ActualValue],item[ContrastValue]);
           }else if(ActualValue&&!ContrastValue&&dimension){
-            this.items[0].push(ActualValue,dimension);
+            this.allShow = false;
+            this.items[0].push(item[dimension]);
             this.items[3].push({value:item[ActualValue],name:item[dimension]});
             var obj = {};
             this.items[3] = this.items[3].reduce(function(a, b) {
@@ -123,6 +128,7 @@ export default class Visual {
               return a;
             }, [])
           }else if(ActualValue&&ContrastValue&&dimension){
+            this.allShow = true;
             this.items[0] = plainData.sort[dimension]?plainData.sort[dimension].order:'';
             if (item[dimension] == this.items[0][index]) {
               this.items[4] = [ActualValue, ContrastValue];        
@@ -205,15 +211,21 @@ export default class Visual {
     return;
   }
 
-  private setPosition(positionType: any) {
+  private setPosition(positionType: any,num:Number) {
     if (positionType === 'topLeft') {
-      return [0,-20]
+      return num === 1?[25,-15]:[0,-20]
     }else if(positionType === 'topRight'){
-      return [535,-20]
+      return num === 1?[400,-15]:[380,-20]
     }else if(positionType === 'bottomLeft'){
-      return [0,20]
+      return num === 1?[25,20]:[0,15]
     }else if(positionType === 'bottomRight'){
-      return [535,20]
+      return num === 1?[400,20]:[380,15]
+    }else if(positionType === 'left'){
+      return num === 1?[-40,3]:[-60,0]
+    }else if(positionType === 'right'){
+      return num === 1?[400,-15]:[380,-20]
+    }else if(positionType === 'inside'){
+      return ['50%','30%']
     }else {
       return positionType
     }
@@ -294,7 +306,7 @@ export default class Visual {
       },
       grid: {
         top: '10',
-        left: options.RankingPosition === 'left'? '75':'10',
+        left: (options.firstBarPosition === 'left'|| options.secondBarPosition === 'left')?'75':'20',
         right: '4.75%',
         bottom: '0',
         containLabel: true
@@ -309,13 +321,17 @@ export default class Visual {
         position: 'right',
         axisLabel: {
           show: options.showBarLabel,
-          formatter: (params) => {
+          formatter: (params,formatterIndex) => {
             let dataRatio = ''
-            this.items[0].map((element,index) => {
-              if(params === element){
-                dataRatio = `${this.items[3][index].toFixed(1)}%`
-              }
-            })
+            if(this.allShow){
+              this.items[0].map((element,index) => {
+                if(params === element){
+                  dataRatio = `${options.showSecondBarPercent?this.items[3][index].toFixed(1)+'%':''}${options.showSecondBarActual?'/'+this.items[1][index]:''}${options.showSecondBarContrast?'/'+this.items[2][index]:''}`
+                }
+              })
+            }else if(formatterIndex < this.items[3].length){
+              dataRatio = this.items[3][formatterIndex].value
+            }
             return dataRatio
           },
           color: options.labelTextStyle.color,
@@ -347,64 +363,14 @@ export default class Visual {
         label: {
           show: options.showLabel,
           margin: 1,
-          position: this.setPosition(options.RankingPosition) ,
+          position: this.setPosition(options.firstBarPosition,1),
           rotate : options.rotationDegree,
           width:65,
           // backgroundColor:'red',
           formatter: (value) => {
-            if(options.showRanking && !this.isMock){
-              this.rankingNumber = [];
-              this.selectionSort(this.items, 'desc');
-              const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
-
-              const _target = JSON.parse(JSON.stringify(_targetCopy))
-              _target.index = this.setRankingType(options.rankingType, _target.index)
-              const targetCopyIndex = _targetCopy.index
-              if (targetCopyIndex <= 3) { 
-                return '{idx' + targetCopyIndex + '|' +  _target.index + '} {title|' + value.name + '}'
-              }  else {
-                return '{idx|' +  _target.index + '} {title|' + value.name + '}'
-              }
-            }else{
-              return `{title|${value.name}}`
-            }
+            return `{title|${options.showFirstBarCategory?value.name:''}${options.showFirstBarPercent?'/'+this.items[3][value.dataIndex]+'%':''}${options.showFirstBarActual?'/'+this.items[1][value.dataIndex]:''}${options.showFirstBarContrast?'/'+this.items[2][value.dataIndex]:''}}`
           },
           rich: {
-            idx1: {
-                color: options.rankingColor[0],
-                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[0],0.2)),
-                borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: [4, 4],
-                width:10,
-                height:10,
-                align: 'left',
-            },
-            idx2: {
-                color: options.rankingColor[1],
-                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[1],0.2)),
-                borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: [4, 4],
-                width:10,
-                height:10,
-                align: 'left',
-            },
-            idx3: {
-                color: options.rankingColor[2],
-                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[2],0.2)),
-                borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: [4, 4],
-                width:10,
-                height:10,
-                align: 'left',
-            },
-            idx: {
-                color: 'white',
-                borderRadius: 100,
-                width:10,
-                height:10,
-                align: 'left',
-                padding: [2, 4]
-            },
             title: {
               color: options.textStyle.color,
               fontSize: options.textStyle.fontSize.substr(0, 2),
@@ -436,6 +402,69 @@ export default class Visual {
           color: options.barBackgroundColor,
           barBorderRadius: 14
         },
+        label: {
+          show: options.showLabel,
+          margin: 1,
+          position: this.setPosition(options.secondBarPosition,2) ,
+          rotate : options.rotationDegree,
+          width:65,
+          // backgroundColor:'red',
+          formatter: (value) => {
+            if(options.showRanking && !this.isMock){
+              this.rankingNumber = [];
+              this.selectionSort(this.items, 'desc');
+              const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
+
+              const _target = JSON.parse(JSON.stringify(_targetCopy))
+              _target.index = this.setRankingType(options.rankingType, _target.index)
+              const targetCopyIndex = _targetCopy.index
+              if (targetCopyIndex <= 3) { 
+                return '{idx' + targetCopyIndex + '|' +  _target.index + '}'
+              }  else {
+                return '{idx|' +  _target.index + '}'
+              }
+            }else{
+              return `{title|${value.name}}`
+            }
+          },
+          rich: {
+            idx1: {
+                color: options.rankingColor[0],
+                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[0],0.2)),
+                borderRadius: options.rankingShape === 'circular' ? 100 : '',
+                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                width:options.rankingType === 'number'?null:10,
+                height:options.rankingType === 'number'?null:10,
+                align: 'left',
+            },
+            idx2: {
+                color: options.rankingColor[1],
+                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[1],0.2)),
+                borderRadius: options.rankingShape === 'circular' ? 100 : '',
+                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                width:options.rankingType === 'number'?null:10,
+                height:options.rankingType === 'number'?null:10,
+                align: 'left',
+            },
+            idx3: {
+                color: options.rankingColor[2],
+                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[2],0.2)),
+                borderRadius: options.rankingShape === 'circular' ? 100 : '',
+                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                width:options.rankingType === 'number'?null:10,
+                height:options.rankingType === 'number'?null:10,
+                align: 'left',
+            },
+            idx: {
+                color: 'white',
+                borderRadius: 100,
+                width:10,
+                height:10,
+                align: 'left',
+                padding: [2, 4]
+            }
+          },
+        },
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -456,7 +485,11 @@ export default class Visual {
   }
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
-    return null;
+    let hiddenOptions: Array<string> = [''];
+    if (!updateOptions.properties.showRanking) {
+      hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'showSecondBarPercent', 'showSecondBarActual', 'showSecondBarContrast', 'rotationDegree', 'rankingShape', 'rankingType', 'rankingColor'])
+    }
+    return hiddenOptions;
   }
 
   // 功能按钮可见性
@@ -470,15 +503,3 @@ export default class Visual {
 }
 
 
-// {
-//   "name": "RankingDeviationX",
-//   "type": "Integer",
-//   "displayName": "左右偏移",
-//   "defaultValue": -50
-// },
-// {
-//   "name": "RankingDeviationY",
-//   "type": "Integer",
-//   "displayName": "上下偏移",
-//   "defaultValue": 0
-// },
