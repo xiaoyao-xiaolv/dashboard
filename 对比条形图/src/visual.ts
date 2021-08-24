@@ -153,6 +153,8 @@ export default class Visual {
           }
         })
       }
+    } else {
+      this.isMock = true
     }
     this.properties = options.properties;
     this.render();
@@ -479,11 +481,15 @@ export default class Visual {
           width:65,
           // backgroundColor:'red',
           formatter: (value) => {
-            let name = options.showFirstBarCategory?value.name:''
+            if (this.isMock) {
+                return `${value.data}%`
+            } else {
+              let name = options.showFirstBarCategory?value.name:''
             let percent = options.showFirstBarPercent?'/'+this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate)+'%':''
             let actual = options.showFirstBarActual && !this.isMock?'/'+this.formatData(this.items[1][value.dataIndex],options.showFirstBarActualUnit,this.actualFormate):''
             let contrast = options.showFirstBarContrast && !this.isMock?'/'+this.formatData(this.items[2][value.dataIndex],options.showFirstBarContrastUnit,this.contrastFormate):''
             return `{title|${name}${percent}${actual}${contrast}}`
+            }
           },
           rich: {
             title: {
@@ -524,21 +530,23 @@ export default class Visual {
           position: this.setPosition(options.secondBarPosition,2,options.axisYWidth) ,
           width:65,
           formatter: (value) => {
-            if(options.showRanking && !this.isMock && options.sortAccording !== 'noOrder'){
-              this.rankingNumber = [];
-              this.selectionSort(this.items, 'desc', options.sortAccording);
-              const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
-
-              const _target = JSON.parse(JSON.stringify(_targetCopy))
-              _target.index = this.setRankingType(options.rankingType, _target.index)
-              const targetCopyIndex = _targetCopy.index
-              if (targetCopyIndex <= 3) { 
-                return '{idx' + targetCopyIndex + '|' +  _target.index + '}'
-              }  else {
-                return '{idx|' +  _target.index + '}'
+            if (this.isMock) {
+              return  '{idx|' +  value.name+ '}'
+            } else {
+              if(options.showRanking && !this.isMock && options.sortAccording !== 'noOrder'){
+                this.rankingNumber = [];
+                this.selectionSort(this.items, 'desc', options.sortAccording);
+                const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
+  
+                const _target = JSON.parse(JSON.stringify(_targetCopy))
+                _target.index = this.setRankingType(options.rankingType, _target.index)
+                const targetCopyIndex = _targetCopy.index
+                if (targetCopyIndex <= 3) { 
+                  return '{idx' + targetCopyIndex + '|' +  _target.index + '}'
+                }  else {
+                  return '{idx|' +  _target.index + '}'
+                }
               }
-            }else{
-              return ''
             }
           },
           rich: {
