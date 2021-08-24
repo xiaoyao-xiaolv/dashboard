@@ -13,6 +13,8 @@ export default class Visual {
   private host: any;
   private selection: any;
   private allShow: any;
+  private actualFormate: any;
+  private contrastFormate: any;
   private selectionManager: any;
   private rankingNumber: any;
   private isTooltipModelShown: boolean;
@@ -100,6 +102,9 @@ export default class Visual {
     this.items = [[], [], [], [], [], []];
     if (dataView) {
       const plainData = dataView.plain;
+      console.log(plainData, '105=====105');
+      
+
       let ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
       let ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
       let dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display:'';
@@ -128,6 +133,9 @@ export default class Visual {
               return a;
             }, [])
           }else if(ActualValue&&ContrastValue&&dimension){
+            this.actualFormate = plainData.profile.ActualValue.values[0].format
+            this.contrastFormate = plainData.profile.ContrastValue.values[0].format
+      
             this.allShow = true;
             this.items[0] = plainData.sort[dimension]?plainData.sort[dimension].order:'';
             if (item[dimension] == this.items[0][index]) {
@@ -150,13 +158,13 @@ export default class Visual {
     this.render();
   }
 
-  private selectionSort(arr: any, sorttype: any) {
-    if (sorttype == "default") {
+  private selectionSort(arr: any, sorttype: any, according: any) {
+    if (according == "noOrder") {
       return;
     }
     var len = arr[3].length;
     var index, temp;
-    if (sorttype == "asc") {
+    if (sorttype == "asc" && according === 'accordingPercent') {
       for (var i = 0; i < len - 1; i++) {
         index = i;
         for (var j = i + 1; j < len; j++) {
@@ -180,7 +188,7 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
-    } else {
+    } else if(sorttype == "desc" && according === 'accordingPercent'){
       for (var i = 0; i < len - 1; i++) {
         index = i;
         for (var j = i + 1; j < len; j++) {
@@ -207,11 +215,62 @@ export default class Visual {
       arr[0].forEach((element,index) => {
         this.rankingNumber.push({name:element,index:index+1})
       });
+    }else if(sorttype == "asc" && according === 'accordingActual'){
+      for (var i = 0; i < len - 1; i++) {
+        index = i;
+        for (var j = i + 1; j < len; j++) {
+          if (arr[1][j] < arr[1][index]) {
+            index = j;
+          }
+        }
+        temp = arr[1][i];
+        arr[1][i] = arr[1][index];
+        arr[1][index] = temp;
+        temp = arr[0][i];
+        arr[0][i] = arr[0][index];
+        arr[0][index] = temp;
+        temp = arr[3][i];
+        arr[3][i] = arr[3][index];
+        arr[3][index] = temp;
+        temp = arr[2][i];
+        arr[2][i] = arr[2][index];
+        arr[2][index] = temp;
+        temp = arr[5][i];
+        arr[5][i] = arr[5][index];
+        arr[5][index] = temp;
+      }
+    }else if(sorttype == "desc" && according === 'accordingActual'){
+      for (var i = 0; i < len - 1; i++) {
+        index = i;
+        for (var j = i + 1; j < len; j++) {
+          if (arr[1][j] > arr[1][index]) {
+            index = j;
+          }
+        }
+        temp = arr[1][i];
+        arr[1][i] = arr[1][index];
+        arr[1][index] = temp;
+        temp = arr[0][i];
+        arr[0][i] = arr[0][index];
+        arr[0][index] = temp;
+        temp = arr[3][i];
+        arr[3][i] = arr[3][index];
+        arr[3][index] = temp;
+        temp = arr[2][i];
+        arr[2][i] = arr[2][index];
+        arr[2][index] = temp;
+        temp = arr[5][i];
+        arr[5][i] = arr[5][index];
+        arr[5][index] = temp;
+      }
+      arr[0].forEach((element,index) => {
+        this.rankingNumber.push({name:element,index:index+1})
+      });
     }
     return;
   }
 
-  private setPosition(positionType: any,num:Number) {
+  private setPosition(positionType: any,num:Number,axisYWidth: Number) {
     if (positionType === 'topLeft') {
       return num === 1?[25,-15]:[0,-20]
     }else if(positionType === 'topRight'){
@@ -221,7 +280,7 @@ export default class Visual {
     }else if(positionType === 'bottomRight'){
       return num === 1?[400,20]:[380,15]
     }else if(positionType === 'left'){
-      return num === 1?[-40,3]:[-60,0]
+      return num === 1?[-axisYWidth+20,3]:[-axisYWidth,0]
     }else if(positionType === 'right'){
       return num === 1?[400,-15]:[380,-20]
     }else if(positionType === 'inside'){
@@ -249,12 +308,59 @@ export default class Visual {
     }
   }
 
+  public formatData = (number, dataUnit, formate) => {
+    let format = number
+    if(dataUnit === 'auto'){
+      const formatService = this.host.formatService;
+      let realDisplayUnit = dataUnit;
+      if (formatService.isAutoDisplayUnit(dataUnit)) {
+          realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+      }
+      return format = formatService.format(formate, number, realDisplayUnit);
+    } else {
+      const units = [{
+        value: 1,
+        unit: ''
+      },{
+        value: 100,
+        unit: '百'
+      }, {
+        value: 1000,
+        unit: '千'
+      }, {
+        value: 10000,
+        unit: '万'
+      }, {
+        value: 100000,
+        unit: '十万'
+      }, {
+        value: 1000000,
+        unit: '百万'
+      }, {
+        value: 10000000,
+        unit: '千万'
+      }, {
+        value: 100000000,
+        unit: '亿'
+      }, {
+        value: 1000000000,
+        unit: '十亿'
+      }, {
+        value: 100000000000,
+        unit: '万亿'
+      }]
+      let formatUnit = units.find((item) => item.value === Number(dataUnit))
+      return format + formatUnit.unit
+    }
+  }
+
+
   private render() {
     this.chart.clear();
     const options = this.properties;
     const items = this.isMock ? Visual.mockItems : this.items;
     if (!this.isMock) {
-      this.selectionSort(items, options.sorttype);
+      this.selectionSort(items, options.sorttype, options.sortAccording);
     }
     this.container.style.opacity = this.isMock ? '0.3' : '1';
     let _fontWeight: string;
@@ -306,7 +412,7 @@ export default class Visual {
       },
       grid: {
         top: '10',
-        left: (options.firstBarPosition === 'left'|| options.secondBarPosition === 'left')?'75':'20',
+        left: options.axisYWidth,
         right: '4.75%',
         bottom: '0',
         containLabel: true
@@ -320,17 +426,22 @@ export default class Visual {
         },
         position: 'right',
         axisLabel: {
-          show: options.showBarLabel,
+          show: options.showLabel,
           formatter: (params,formatterIndex) => {
             let dataRatio = ''
             if(this.allShow){
               this.items[0].map((element,index) => {
                 if(params === element){
-                  dataRatio = `${options.showSecondBarPercent?this.items[3][index].toFixed(1)+'%':''}${options.showSecondBarActual?'/'+this.items[1][index]:''}${options.showSecondBarContrast?'/'+this.items[2][index]:''}`
+                  let percent = options.showSecondBarPercent?this.items[3][index].toFixed(options.showSecondPercentFormate)+'%':''
+                  let actual = options.showSecondBarActual && !this.isMock ?'/'+ this.formatData(this.items[1][index],options.showSecondBarActualUnit,this.actualFormate):''
+                  let contrast = options.showSecondBarContrast && !this.isMock?'/'+this.formatData(this.items[2][index],options.showSecondBarContrastUnit,this.contrastFormate):''
+                  dataRatio = `${percent}${actual}${contrast}`
                 }
               })
             }else if(formatterIndex < this.items[3].length){
               dataRatio = this.items[3][formatterIndex].value
+            }else if(this.isMock){
+              
             }
             return dataRatio
           },
@@ -361,14 +472,18 @@ export default class Visual {
         barWidth: options.barWidth,
         data: items[3],
         label: {
-          show: options.showLabel,
+          show: options.showBarLabel,
           margin: 1,
-          position: this.setPosition(options.firstBarPosition,1),
+          position: this.setPosition(options.firstBarPosition,1,options.axisYWidth),
           rotate : options.rotationDegree,
           width:65,
           // backgroundColor:'red',
           formatter: (value) => {
-            return `{title|${options.showFirstBarCategory?value.name:''}${options.showFirstBarPercent?'/'+this.items[3][value.dataIndex]+'%':''}${options.showFirstBarActual?'/'+this.items[1][value.dataIndex]:''}${options.showFirstBarContrast?'/'+this.items[2][value.dataIndex]:''}}`
+            let name = options.showFirstBarCategory?value.name:''
+            let percent = options.showFirstBarPercent?'/'+this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate)+'%':''
+            let actual = options.showFirstBarActual && !this.isMock?'/'+this.formatData(this.items[1][value.dataIndex],options.showFirstBarActualUnit,this.actualFormate):''
+            let contrast = options.showFirstBarContrast && !this.isMock?'/'+this.formatData(this.items[2][value.dataIndex],options.showFirstBarContrastUnit,this.contrastFormate):''
+            return `{title|${name}${percent}${actual}${contrast}}`
           },
           rich: {
             title: {
@@ -377,6 +492,7 @@ export default class Visual {
               fontWeight: _fontWeight,
               fontFamily: options.textStyle.fontFamily,
               fontStyle: options.textStyle.fontStyle,
+
             }
           },
         },
@@ -403,16 +519,14 @@ export default class Visual {
           barBorderRadius: 14
         },
         label: {
-          show: options.showLabel,
+          show: options.showRanking,
           margin: 1,
-          position: this.setPosition(options.secondBarPosition,2) ,
-          rotate : options.rotationDegree,
+          position: this.setPosition(options.secondBarPosition,2,options.axisYWidth) ,
           width:65,
-          // backgroundColor:'red',
           formatter: (value) => {
-            if(options.showRanking && !this.isMock){
+            if(options.showRanking && !this.isMock && options.sortAccording !== 'noOrder'){
               this.rankingNumber = [];
-              this.selectionSort(this.items, 'desc');
+              this.selectionSort(this.items, 'desc', options.sortAccording);
               const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
 
               const _target = JSON.parse(JSON.stringify(_targetCopy))
@@ -424,7 +538,7 @@ export default class Visual {
                 return '{idx|' +  _target.index + '}'
               }
             }else{
-              return `{title|${value.name}}`
+              return ''
             }
           },
           rich: {
@@ -487,7 +601,25 @@ export default class Visual {
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
     if (!updateOptions.properties.showRanking) {
-      hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'showSecondBarPercent', 'showSecondBarActual', 'showSecondBarContrast', 'rotationDegree', 'rankingShape', 'rankingType', 'rankingColor'])
+      hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'rankingShape', 'rankingType', 'rankingColor'])
+    }
+    if (!updateOptions.properties.showFirstBarPercent) {
+      hiddenOptions = hiddenOptions.concat(['showFirstPercentFormate'])
+    }
+    if (!updateOptions.properties.showFirstBarActual) {
+      hiddenOptions = hiddenOptions.concat(['showFirstBarActualUnit'])
+    }
+    if (!updateOptions.properties.showFirstBarContrast) {
+      hiddenOptions = hiddenOptions.concat(['showFirstBarContrastUnit'])
+    }
+    if (!updateOptions.properties.showSecondBarPercent) {
+      hiddenOptions = hiddenOptions.concat(['showSecondPercentFormate'])
+    }
+    if (!updateOptions.properties.showSecondBarActual) {
+      hiddenOptions = hiddenOptions.concat(['showSecondBarActualUnit'])
+    }
+    if (!updateOptions.properties.showSecondBarContrast) {
+      hiddenOptions = hiddenOptions.concat(['showSecondBarContrastUnit'])
     }
     return hiddenOptions;
   }

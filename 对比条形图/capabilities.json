@@ -92,6 +92,42 @@
                         "type": "Color",
                         "displayName": "终止颜色",
                         "defaultValue": "#2563f9"
+                    },
+                    {
+                        "displayNameKey": "排序依据",
+                        "name": "sortAccording",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "accordingPercent",
+                                "displayNameKey": "百分比"
+                            },
+                            {
+                                "value": "accordingActual",
+                                "displayNameKey": "实际值"
+                            },
+                            {
+                                "value": "noOrder",
+                                "displayNameKey": "默认顺序"
+                            }
+                        ],
+                        "defaultValue": "noOrder"
+                    },
+                    {
+                        "displayNameKey": "排序方式",
+                        "name": "sorttype",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "asc",
+                                "displayNameKey": "升序"
+                            },
+                            {
+                                "value": "desc",
+                                "displayNameKey": "降序"
+                            }
+                        ],
+                        "defaultValue": "desc"
                     }
                 ]
             },
@@ -109,6 +145,127 @@
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "name": "showSecondBarPercent",
+                        "type": "Boolean",
+                        "displayName": "显示百分比",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showSecondPercentFormate",
+                        "type": "Integer",
+                        "displayName": "百分比格式",
+                        "defaultValue": 2,
+                        "min": 0
+                    },
+                    {
+                        "name": "showSecondBarActual",
+                        "type": "Boolean",
+                        "displayName": "显示实际值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showSecondBarActualUnit",
+                        "type": "Enum",
+                        "displayName": "实际值单位",
+                        "items": [
+                            {
+                                "value": "auto",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "auto"
+                    },
+                    {
+                        "name": "showSecondBarContrast",
+                        "type": "Boolean",
+                        "displayName": "显示对比值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showSecondBarContrastUnit",
+                        "type": "Enum",
+                        "displayName": "对比值单位",
+                        "items": [
+                            {
+                                "value": "auto",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "auto"
                     }
                 ]
             },
@@ -166,30 +323,18 @@
                         "defaultValue": "left"
                     },
                     {
+                        "name": "rotationDegree",
+                        "type": "Integer",
+                        "displayName": "旋转度数",
+                        "defaultValue": 0,
+                        "min": -90,
+                        "max": 90
+                    },
+                    {
                         "name": "labelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle"
-                    },
-                    {
-                        "displayNameKey": "排序方式",
-                        "name": "sorttype",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "asc",
-                                "displayNameKey": "升序"
-                            },
-                            {
-                                "value": "desc",
-                                "displayNameKey": "降序"
-                            },
-                            {
-                                "value": "default",
-                                "displayNameKey": "默认"
-                            }
-                        ],
-                        "defaultValue": "desc"
                     },
                     {
                         "name": "showFirstBarCategory",
@@ -204,16 +349,119 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "showFirstPercentFormate",
+                        "type": "Integer",
+                        "displayName": "百分比格式",
+                        "defaultValue": 2,
+                        "min": 0
+                    },
+                    {
                         "name": "showFirstBarActual",
                         "type": "Boolean",
                         "displayName": "显示实际值",
-                        "defaultValue": true
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showFirstBarActualUnit",
+                        "type": "Enum",
+                        "displayName": "实际值单位",
+                        "items": [
+                            {
+                                "value": "auto",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "auto"
                     },
                     {
                         "name": "showFirstBarContrast",
                         "type": "Boolean",
                         "displayName": "显示对比值",
-                        "defaultValue": true
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showFirstBarContrastUnit",
+                        "type": "Enum",
+                        "displayName": "对比值单位",
+                        "items": [
+                            {
+                                "value": "auto",
+                                "displayNameKey": "自动"
+                            },
+                            {
+                                "value": "1",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "100",
+                                "displayNameKey": "百"
+                            },
+                            {
+                                "value": "1000",
+                                "displayNameKey": "千"
+                            },
+                            {
+                                "value": "10000",
+                                "displayNameKey": "万"
+                            },
+                            {
+                                "value": "100000",
+                                "displayNameKey": "十万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "百万"
+                            },
+                            {
+                                "value": "1000000",
+                                "displayNameKey": "千万"
+                            },
+                            {
+                                "value": "10000000",
+                                "displayNameKey": "亿"
+                            },
+                            {
+                                "value": "100000000000",
+                                "displayNameKey": "十亿"
+                            }
+                        ],
+                        "defaultValue": "auto"
                     }
                 ]
             },
@@ -269,32 +517,6 @@
                         "defaultValue": "left"
                     },
                     {
-                        "name": "showSecondBarPercent",
-                        "type": "Boolean",
-                        "displayName": "显示百分比",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "showSecondBarActual",
-                        "type": "Boolean",
-                        "displayName": "显示实际值",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "showSecondBarContrast",
-                        "type": "Boolean",
-                        "displayName": "显示对比值",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "rotationDegree",
-                        "type": "Integer",
-                        "displayName": "旋转度数",
-                        "defaultValue": 0,
-                        "min": -90,
-                        "max": 90
-                    },
-                    {
                         "displayNameKey": "Top3显示形状",
                         "name": "rankingShape",
                         "type": "Enum",
@@ -336,6 +558,13 @@
                         "name": "rankingColor",
                         "type": "Palette",
                         "displayName": "Top3字体颜色"
+                    },
+                    {
+                        "name": "axisYWidth",
+                        "type": "Integer",
+                        "displayName": "轴宽度",
+                        "defaultValue": 100,
+                        "min": 0
                     }
                 ]
             },
