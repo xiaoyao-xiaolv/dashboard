@@ -111,11 +111,14 @@ export default class Visual {
       let dimension = plainData.profile.dimension.values.length ? plainData.profile.dimension.values[0].display : '';
       
      this.isActualValue = !!plainData.profile.ActualValue.values.length;
-     this.isDimension = !!plainData.profile.ActualValue.values.length;
-     this.isContrastValue = !!plainData.profile.ActualValue.values.length;
+     this.isDimension = !!plainData.profile.dimension.values.length;
+     this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
       let datas = plainData.data;
 
       datas.map((data: any) => {
+
+        this.actualFormate = ActualValue && plainData.profile.ActualValue.values[0].format;
+        this.contrastFormate = ContrastValue && plainData.profile.ContrastValue.values[0].format;
         ActualValue && this.items[1].push(data[ActualValue]);
         ContrastValue && this.items[2].push(data[ContrastValue]);
         if (ActualValue && ContrastValue) {
@@ -137,8 +140,6 @@ export default class Visual {
       if (ActualValue && ContrastValue && dimension) {
         this.allShow = true;
         this.items[4] = [ActualValue, ContrastValue];
-        this.actualFormate = plainData.profile.ActualValue.values[0].format;
-        this.contrastFormate = plainData.profile.ContrastValue.values[0].format;
         this.items[0] = plainData.sort[dimension] ? plainData.sort[dimension].order : '';
 
       }
@@ -410,7 +411,7 @@ export default class Visual {
       },
       yAxis: [{
         type: 'category',
-        data:  this.isMock ? items[0]: (this.isDimension ? items[0]: items[1]),
+        data:  this.isMock ? items[3]: (this.isDimension ? items[0]: items[1]),
         inverse: true,
         axisTick: {
           show: false
@@ -418,23 +419,24 @@ export default class Visual {
         position: 'right',
         axisLabel: {
           show: options.showLabel,
-          formatter: (params,formatterIndex) => {
+          formatter: (params, formatterIndex) => {
             let dataRatio = ''
-            if(this.allShow){
-              this.items[0].map((element,index) => {
-                if(params === element){
-                  let percent = options.showSecondBarPercent?this.items[3][index].toFixed(options.showSecondPercentFormate)+'%':''
-                  let actual = options.showSecondBarActual && !this.isMock ?'/'+ this.formatData(this.items[1][index],options.showSecondBarActualUnit,this.actualFormate):''
-                  let contrast = options.showSecondBarContrast && !this.isMock?'/'+this.formatData(this.items[2][index],options.showSecondBarContrastUnit,this.contrastFormate):''
-                  dataRatio = `${percent}${actual}${contrast}`
-                }
-              })
-            }else if(formatterIndex < this.items[3].length){
-              dataRatio = this.items[3][formatterIndex].value
-            }else if(this.isMock){
-              
+            if (this.isMock) {
+              dataRatio = params + '%';
+            } else {
+              if (this.isDimension) {
+                let percent = options.showSecondBarPercent && this.isActualValue ? this.items[3][formatterIndex].toFixed(options.showSecondPercentFormate) + '%' : '';
+                console
+                let actual = options.showSecondBarActual && this.isActualValue ? `${this.formatData(this.items[1][formatterIndex], options.showSecondBarActualUnit, this.actualFormate)}` : '';
+                
+                let contrast = options.showSecondBarContrast && this.isContrastValue ? this.formatData(this.items[2][formatterIndex], options.showSecondBarContrastUnit, this.contrastFormate) : '';
+                const _target = [percent, actual, contrast];
+                dataRatio = _target.filter((_text) => _text).join('/');
+              } else {
+                dataRatio = items[1];
+              }
             }
-            return dataRatio
+            return dataRatio 
           },
           color: options.textStyle.color,
           fontSize: options.textStyle.fontSize.substr(0, 2),
@@ -467,28 +469,32 @@ export default class Visual {
           margin: 1,
           position: options.firstBarAboutPosition==='inside'?options.firstBarInsidePosition:options.firstBarOutsidePosition,
           rotate : options.rotationDegree,
-          width:65,
+          width: 65,
+          color: options.labelTextStyle.color,
+          fontSize: options.labelTextStyle.fontSize.substr(0, 2),
+          fontWeight: _fontWeight,
+          fontFamily: options.labelTextStyle.fontFamily,
+          fontStyle: options.labelTextStyle.fontStyle,
           // backgroundColor:'red',
           formatter: (value) => {
+            let dataRatio = ''
             if (this.isMock) {
-                return `${value.data}%`
+              `${value.data}%`
             } else {
-             let name = options.showFirstBarCategory?value.name:''
-            let percent = options.showFirstBarPercent?'/'+this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate)+'%':''
-            let actual = options.showFirstBarActual && !this.isMock?'/'+this.formatData(this.items[1][value.dataIndex],options.showFirstBarActualUnit,this.actualFormate):''
-            let contrast = options.showFirstBarContrast && !this.isMock?'/'+this.formatData(this.items[2][value.dataIndex],options.showFirstBarContrastUnit,this.contrastFormate):''
-            return `{title|${name}${percent}${actual}${contrast}}`
+              if (this.isDimension) {
+                let name = options.showFirstBarCategory && this.isDimension ? value.name:''
+                let percent = options.showFirstBarPercent && this.isActualValue ? this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate) + '%' : '';
+                console
+                let actual = options.showFirstBarActual && this.isActualValue ? `${this.formatData(this.items[1][value.dataIndex], options.showFirstBarActualUnit, this.actualFormate)}` : '';
+                
+                let contrast = options.showFirstBarContrast && this.isContrastValue ? this.formatData(this.items[2][value.dataIndex], options.showFirstBarContrastUnit, this.contrastFormate) : '';
+                const _target = [name, percent, actual, contrast];
+                dataRatio = _target.filter((_text) => _text).join('/');
+              } else {
+                dataRatio = items[1];
+              }
             }
-          },
-          rich: {
-            title: {
-              color: options.labelTextStyle.color,
-              fontSize: options.labelTextStyle.fontSize.substr(0, 2),
-              fontWeight: _fontWeight,
-              fontFamily: options.labelTextStyle.fontFamily,
-              fontStyle: options.labelTextStyle.fontStyle,
-
-            }
+            return dataRatio 
           },
         },
         itemStyle: {
@@ -506,7 +512,7 @@ export default class Visual {
         barWidth: options.barWidth,
         xAxisIndex: 0,
         barGap: "-100%",
-        data: items[3].map(function (item) {
+        data: items[this.isMock ? 0 : 3].map(function (item) {
           return 100
         }),
         itemStyle: {
@@ -519,9 +525,9 @@ export default class Visual {
           position: [options.secondBarPositionX, options.secondBarPositionY] ,
           width:65,
           lineHeight:options.barWidth,
-          formatter: (value) => {
+          formatter: (value, index) => {
             if (this.isMock) {
-              return  '{idx|' +  value.name+ '}'
+              return  '{idx|' +  items[0][value.dataIndex]+ '}'
             } else if(options.showRanking && !this.isMock && options.sortAccording !== 'noOrder'){
                 this.rankingNumber = [];
                 this.selectionSort(this.items, 'desc', options.sortAccording);
