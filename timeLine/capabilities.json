@@ -187,30 +187,6 @@
                     "defaultValue": "#fff"
                 },
                 {
-                    "name": "timeLinePointNormalBg",
-                    "type": "Color",
-                    "displayName": "正常节点背景色",
-                    "defaultValue": "#DDD"
-                },
-                {
-                    "name": "timeLinePointNormalColor",
-                    "type": "Color",
-                    "displayName": "正常节点中心色",
-                    "defaultValue": "rgba(104, 188, 0, 0.78)"
-                },
-                {
-                    "name": "timeLinePointErrorBg",
-                    "type": "Color",
-                    "displayName": "异常节点背景色",
-                    "defaultValue": "#DDD"
-                },
-                {
-                    "name": "timeLinePointErrorColor",
-                    "type": "Color",
-                    "displayName": "异常节点中心色",
-                    "defaultValue": "rgba(188, 25, 0, 0.78)"
-                },
-                {
                     "name": "showLabel",
                     "type": "Enum",
                     "displayName": "显示方式",
@@ -274,6 +250,18 @@
                             "fontSize": "2.0X",
                             "color": "#000"
                         }
+                },
+                {
+                    "name": "useToPoint",
+                    "type": "Boolean",
+                    "displayName": "作用到节点",
+                    "defaultValue": false
+                },
+                {
+                    "name": "useToLabel",
+                    "type": "Boolean",
+                    "displayName": "作用到标签",
+                    "defaultValue": false
                 },
                 {
                     "name": "timeLineCollection",
