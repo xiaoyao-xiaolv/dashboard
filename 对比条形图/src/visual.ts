@@ -348,6 +348,25 @@ export default class Visual {
     }
   }
 
+  public setTopColor(array: any, index:Number, type: string){
+    const options = this.properties;
+    if(!options.showBackgroundColor) return '';
+
+    const _target = array.find((_item) => Number(_item.rankingConditionValue) === index);
+    if(type === 'bg') {
+      if(_target) {
+        console.log(_target.rankingConditionImage && { image: _target.rankingConditionImage} || _target.rankingConditionColor || ' ', '000')
+        return _target.rankingConditionImage && { image: _target.rankingConditionImage} || _target.rankingConditionColor || ' '
+      }else {
+         return ''
+      }
+    }else if (type === 'font') {
+      if(_target) {
+        return _target.rankingFontColor || ''
+      }
+     
+    }
+  }
 
   private render() {
     this.chart.clear();
@@ -369,28 +388,6 @@ export default class Visual {
     } else {
       labelfontWeight = options.textStyle.fontWeight
     }
-
-    const hexToRgba = (hex, opacity) => {
-      return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
-              + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
-    }
-
-    const rgbaToHex = (color) => {
-      var values = color
-        .replace(/rgba?\(/, '')
-        .replace(/\)/, '')
-        .replace(/[\s+]/g, '')
-        .split(',');
-      var a = parseFloat(values[3] || 1),
-          r = Math.floor(a * parseInt(values[0]) + (1 - a) * 255),
-          g = Math.floor(a * parseInt(values[1]) + (1 - a) * 255),
-          b = Math.floor(a * parseInt(values[2]) + (1 - a) * 255);
-      return "#" +
-        ("0" + r.toString(16)).slice(-2) +
-        ("0" + g.toString(16)).slice(-2) +
-        ("0" + b.toString(16)).slice(-2);
-    }
-    
 
     let option = {
       tooltip: {
@@ -548,36 +545,43 @@ export default class Visual {
           },
           rich: {
             idx1: {
-                color: options.rankingColor[0],
-                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[0],0.2)),
+                color: this.setTopColor(options.rankingConditionCollection, 1, 'font') || options.rankingTextStyle.color,
+                backgroundColor: this.setTopColor(options.rankingConditionCollection,1, 'bg') || options.rankingBackgroundColor,
                 borderRadius: options.rankingShape === 'circular' ? 100 : '',
                 padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
                 width:options.rankingType === 'number'?null:options.rankingSize+4,
                 height:options.rankingType === 'number'?null:options.rankingSize+4,
                 align: 'left',
-                // color: options.labelTextStyle.color,
                 fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
                 fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
                 fontFamily: options.rankingTextStyle.fontFamily,
                 fontStyle: options.rankingTextStyle.fontStyle,
             },
             idx2: {
-                color: options.rankingColor[1],
-                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[1],0.2)),
+                color: this.setTopColor(options.rankingConditionCollection, 2, 'font') || options.rankingTextStyle.color,
+                backgroundColor: this.setTopColor(options.rankingConditionCollection,2, 'bg') || options.rankingBackgroundColor,
                 borderRadius: options.rankingShape === 'circular' ? 100 : '',
                 padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
                 width:options.rankingType === 'number'?null:10,
                 height:options.rankingType === 'number'?null:10,
                 align: 'left',
+                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
+                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
+                fontFamily: options.rankingTextStyle.fontFamily,
+                fontStyle: options.rankingTextStyle.fontStyle,
             },
             idx3: {
-                color: options.rankingColor[2],
-                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[2],0.2)),
+                color: this.setTopColor(options.rankingConditionCollection, 3, 'font') || options.rankingTextStyle.color,
+                backgroundColor: this.setTopColor(options.rankingConditionCollection,3, 'bg') || options.rankingBackgroundColor,
                 borderRadius: options.rankingShape === 'circular' ? 100 : '',
                 padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
                 width:options.rankingType === 'number'?null:10,
                 height:options.rankingType === 'number'?null:10,
                 align: 'left',
+                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
+                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
+                fontFamily: options.rankingTextStyle.fontFamily,
+                fontStyle: options.rankingTextStyle.fontStyle,
             },
             idx: {
                 color: options.rankingTextStyle.color,
@@ -616,7 +620,7 @@ export default class Visual {
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
     if (!updateOptions.properties.showRanking) {
-      hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'rankingShape', 'rankingType', 'rankingColor'])
+      hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'rankingShape', 'rankingType', 'showRankingColor'])
     }
     if (!updateOptions.properties.showFirstBarPercent) {
       hiddenOptions = hiddenOptions.concat(['showFirstPercentFormate'])
@@ -641,6 +645,12 @@ export default class Visual {
     }
     if (updateOptions.properties.firstBarAboutPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['firstBarInsidePosition'])
+    }
+    if (!updateOptions.properties.showRankingColor) {
+      hiddenOptions = hiddenOptions.concat(['rankingFontCollection'])
+    }
+    if (!updateOptions.properties.showBackgroundColor) {
+      hiddenOptions = hiddenOptions.concat(['rankingConditionCollection'])
     }
 
     return hiddenOptions;

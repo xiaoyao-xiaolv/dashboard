@@ -597,10 +597,39 @@
                         "defaultValue": "number"
                     },
                     {
-                        "name": "rankingColor",
-                        "type": "Palette",
-                        "displayName": "Top3字体颜色"
+                        "name": "showBackgroundColor",
+                        "type": "Boolean",
+                        "displayName": "特定排名",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "rankingConditionCollection",
+                        "displayName": "特定排名样式",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "rankingConditionValue",
+                                "displayName": "条件排名序列号",
+                                "type": "Text"
+                            },
+                            {
+                                "name": "rankingFontColor",
+                                "displayName": "条件排名序列号颜色",
+                                "type": "Color"
+                            },
+                            {
+                                "name": "rankingConditionColor",
+                                "displayName": "条件颜色",
+                                "type": "Color"
+                            }, {
+                                "name": "rankingConditionImage",
+                                "displayName": "条件图片",
+                                "type": "Image"
+                            }
+                        ],
+                        "defaultValue": []
                     }
+                    
                     
                 ]
             },
