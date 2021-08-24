@@ -264,7 +264,8 @@
                             "fontSize": "2.0X",
                             "color": "#000"
                         }
-                }, {
+                },
+                {
                     "name": "labelDescribeStyle",
                     "type": "TextStyle",
                         "displayName": "内容设置",
@@ -273,7 +274,31 @@
                             "fontSize": "2.0X",
                             "color": "#000"
                         }
+                },
+                {
+                    "name": "timeLineCollection",
+                    "displayName": "时间条件列表",
+                    "type": "Collection",
+                    "itemShape": [
+                        {
+                            "name": "formatValue",
+                            "displayName": "条件数值",
+                            "type": "Text"
+                        },
+                        {
+                            "name": "formatColor",
+                            "displayName": "条件颜色",
+                            "type": "Color"
+                        }, {
+                            "name": "formatImage",
+                            "displayName": "条件图片",
+                            "type": "Image"
+                        }
+                    ],
+                    "defaultValue": []
                 }
+
+
             ]
         }]
     }, 

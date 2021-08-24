@@ -1,0 +1,16 @@
+{
+  "id": "2763494",
+  "name": "wyn",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13727092",
+      "name": "approve01",
+      "font_class": "approve",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    }
+  ]
+}

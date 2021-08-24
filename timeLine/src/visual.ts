@@ -41,6 +41,20 @@ export default class Visual extends WynVisual {
     this.isMock = true;
     this.visualHost = host;
     this.isFirstRender = true;
+
+     //  custom font famliy
+    var newStyle = document.createElement('style');
+    newStyle.id = 'ada'
+    newStyle.appendChild(document.createTextNode("\
+    @font-face {\
+      font-family: 'iconfont';\
+      src: url('/fonts/iconfont.woff?t=1629710238949') format('woff'),\
+      url('/fonts/iconfont.woff2?t=1629710238949') format('woff2'),\
+      url('/fonts/iconfont.ttf?t=1629710238949') format('truetype')\
+      }\
+      "));
+ 
+     document.head.appendChild(newStyle);
   }
 
 
@@ -112,7 +126,7 @@ export default class Visual extends WynVisual {
         borderColor: _options.timeLinePointErrorBg,
         }];
     timeLineData.map((_element, index) => {
-      const _timeline__item = $(`<div class="timeline__item timeline__item__${index}">`).appendTo(_timeline__items);
+      const _timeline__item = $(`<div class="timeline__item timeline__item__${index} iconfont icon-approve">`).appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">').appendTo(_timeline__item);
       const _timeline__content_text = $('<div>')
       $(_timeline__content).append(_timeline__content_text);
@@ -139,6 +153,7 @@ export default class Visual extends WynVisual {
       
       const _pointColorIndex = _element[this.value] ? (_element[this.value] <= 2 ? _element[this.value]: 2 ): 0;
       $(`<style>.timeline__item__${index}::after {
+        content: '';
         background-color: ${pointColor[_pointColorIndex].bgColor}; 
         border: ${_options.timeLinePointBorder}px solid ${pointColor[_pointColorIndex].borderColor}; 
         </style>`)
