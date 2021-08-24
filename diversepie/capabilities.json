@@ -183,12 +183,6 @@
                         "defaultValue": false
                     },
                     {
-                        "name": "showLegendTitle",
-                        "type": "Boolean",
-                        "displayName": "显示图例标题",
-                        "defaultValue": false
-                    },
-                    {
                         "name": "openLegendPage",
                         "type": "Boolean",
                         "displayName": "开启图例分页",
@@ -422,7 +416,7 @@
                         "name": "showLabelValue",
                         "type": "Boolean",
                         "displayName": "显示数值",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "labelDataType",

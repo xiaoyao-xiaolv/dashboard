@@ -1,5 +1,70 @@
 {
     "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "name",
+                "displayNameKey": "节点名称",
+                "kind": "grouping"
+            },
+            {
+                "name": "value",
+                "displayNameKey": "节点状态",
+                "kind": "value"
+            },
+            {
+                "name": "image",
+                "displayNameKey": "节点图片",
+                "kind": "grouping"
+            },
+            {
+                "name": "describe",
+                "displayNameKey": "节点详情",
+                "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "name": {
+                                "min": 1
+                            },
+                            "value": {
+                                "min": 0
+                            },
+                            "image": {
+                                "min": 0
+                            },
+                            "describe": {
+                                "min": 0
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "name": {
+                    "max": 1
+                },
+                "value": {
+                    "max": 1
+                },
+                "image": {
+                    "max": 1
+                },
+                "describe": {
+                    "max": 1
+                }
+            }
+        ]
     },
     "options": {
         "visual": [ {
@@ -23,90 +88,6 @@
                         }
                     ],
                     "defaultValue": "horizontal"
-                },
-                
-                {
-                    "name": "visibleItems",
-                    "type": "Enum",
-                    "displayName": "节点个数",
-                    "items": [
-                        {
-                            "value": "default",
-                            "displayNameKey": "默认"
-                        },
-                        {
-                            "value": "custom",
-                            "displayNameKey": "自定义"
-                        }
-                    ],
-                    "defaultValue": "default"
-                },
-                {
-                    "name": "customVisibleItems",
-                    "type": "Integer",
-                    "displayName": "调节个数",
-                    "defaultValue": 1,
-                    "min": 1
-                },
-                {
-                    "name": "timeLineBg",
-                    "type": "Color",
-                    "displayName": "时间轴颜色",
-                    "defaultValue": "#fff"
-                },
-                {
-                    "name": "timeLinePointBg",
-                    "type": "Color",
-                    "displayName": "节点背景色",
-                    "defaultValue": "#DDD"
-                },
-                {
-                    "name": "timeLinePointColor",
-                    "type": "Color",
-                    "displayName": "节点中心色",
-                    "defaultValue": "#fff"
-                }
-            ]
-        },{
-            "displayName": "数据标签",
-            "properties": [
-                {
-                    "name": "showLabel",
-                    "type": "Enum",
-                    "displayName": "显示方式",
-                    "items": [
-                        {
-                            "value": "none",
-                            "displayNameKey": "无"
-                        },
-                        {
-                            "value": "title",
-                            "displayNameKey": "显示标题"
-                        },{
-                            "value": "content",
-                            "displayNameKey": "显示标题和内容"
-                        }
-                    ],
-                    "defaultValue": "title"
-                },
-                {
-                    "name": "labelAlign",
-                    "type": "Enum",
-                    "displayName": "标题对齐",
-                    "items": [
-                        {
-                            "value": "left",
-                            "displayNameKey": "居左"
-                        },
-                        {
-                            "value": "center",
-                            "displayNameKey": "居中"
-                        },{
-                            "value": "right",
-                            "displayNameKey": "居右"
-                        }
-                    ],
-                    "defaultValue": "center"
                 },
                 {
                     "name": "horizontalItemsLayout",
@@ -147,6 +128,128 @@
                     "defaultValue": "auto"
                 },
                 {
+                    "name": "visibleItems",
+                    "type": "Enum",
+                    "displayName": "节点个数",
+                    "items": [
+                        {
+                            "value": "default",
+                            "displayNameKey": "默认"
+                        },
+                        {
+                            "value": "custom",
+                            "displayNameKey": "自定义"
+                        }
+                    ],
+                    "defaultValue": "default"
+                },
+                {
+                    "name": "customVisibleItems",
+                    "type": "Integer",
+                    "displayName": "调节个数",
+                    "defaultValue": 1,
+                    "min": 1
+                },
+                {
+                    "name": "timeLineBg",
+                    "type": "Color",
+                    "displayName": "连接线颜色",
+                    "defaultValue": "#fff"
+                },
+                {
+                    "name": "timeLineSize",
+                    "type": "Integer",
+                    "displayName": "连接线粗细",
+                    "defaultValue": 4
+                },
+                {
+                    "name": "timeLinePointSize",
+                    "type": "Integer",
+                    "displayName": "节点大小",
+                    "defaultValue": 20
+                },
+                {
+                    "name": "timeLinePointBorder",
+                    "type": "Integer",
+                    "displayName": "节点边框线",
+                    "defaultValue": 4
+                },
+                {
+                    "name": "timeLinePointBg",
+                    "type": "Color",
+                    "displayName": "节点背景色",
+                    "defaultValue": "#DDD"
+                },
+                {
+                    "name": "timeLinePointColor",
+                    "type": "Color",
+                    "displayName": "节点中心色",
+                    "defaultValue": "#fff"
+                },
+                {
+                    "name": "timeLinePointNormalBg",
+                    "type": "Color",
+                    "displayName": "正常节点背景色",
+                    "defaultValue": "#DDD"
+                },
+                {
+                    "name": "timeLinePointNormalColor",
+                    "type": "Color",
+                    "displayName": "正常节点中心色",
+                    "defaultValue": "rgba(104, 188, 0, 0.78)"
+                },
+                {
+                    "name": "timeLinePointErrorBg",
+                    "type": "Color",
+                    "displayName": "异常节点背景色",
+                    "defaultValue": "#DDD"
+                },
+                {
+                    "name": "timeLinePointErrorColor",
+                    "type": "Color",
+                    "displayName": "异常节点中心色",
+                    "defaultValue": "rgba(188, 25, 0, 0.78)"
+                },
+                {
+                    "name": "showLabel",
+                    "type": "Enum",
+                    "displayName": "显示方式",
+                    "items": [
+                        {
+                            "value": "none",
+                            "displayNameKey": "无"
+                        },
+                        {
+                            "value": "title",
+                            "displayNameKey": "显示标题"
+                        },{
+                            "value": "content",
+                            "displayNameKey": "显示标题和内容"
+                        }
+                    ],
+                    "defaultValue": "content"
+                },
+                {
+                    "name": "labelTitleAlign",
+                    "type": "Enum",
+                    "displayName": "标题对齐",
+                    "items": [
+                        {
+                            "value": "left",
+                            "displayNameKey": "居左"
+                        },
+                        {
+                            "value": "center",
+                            "displayNameKey": "居中"
+                        },{
+                            "value": "right",
+                            "displayNameKey": "居右"
+                        }
+                    ],
+                    "defaultValue": "center"
+                },
+               
+                {
                     "name": "labelBg",
                     "type": "Color",
                     "displayName": "标签背景",
@@ -155,13 +258,47 @@
                 {
                     "name": "labelTextStyle",
                     "type": "TextStyle",
-                        "displayName": "字体设置",
+                        "displayName": "标题设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "14px",
+                            "fontSize": "2.0X",
                             "color": "#000"
                         }
+                },
+                {
+                    "name": "labelDescribeStyle",
+                    "type": "TextStyle",
+                        "displayName": "内容设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "2.0X",
+                            "color": "#000"
+                        }
+                },
+                {
+                    "name": "timeLineCollection",
+                    "displayName": "时间条件列表",
+                    "type": "Collection",
+                    "itemShape": [
+                        {
+                            "name": "formatValue",
+                            "displayName": "条件数值",
+                            "type": "Text"
+                        },
+                        {
+                            "name": "formatColor",
+                            "displayName": "条件颜色",
+                            "type": "Color"
+                        }, {
+                            "name": "formatImage",
+                            "displayName": "条件图片",
+                            "type": "Image"
+                        }
+                    ],
+                    "defaultValue": []
                 }
+
+
             ]
         }]
     }, 

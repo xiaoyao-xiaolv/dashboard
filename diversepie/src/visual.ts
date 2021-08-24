@@ -10,6 +10,8 @@ echarts.use(
 );
 
 let isTooltipModelShown = false;
+let dataIndex = ''
+
 const clickLeftMouse = 0;
 const clickRightMouse = 2;
 export default class Visual extends WynVisual {
@@ -39,6 +41,8 @@ export default class Visual extends WynVisual {
   private timeInterval : any;
   private preview : boolean;
   private payWay: any;
+  private allItems: any;
+
   
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -51,7 +55,7 @@ export default class Visual extends WynVisual {
     this.selectionManager = host.selectionService.createSelectionManager();
     this.properties = {};
     this.format = {};
-    this.preview = false
+    this.preview = false;
   }
 
   // toolTip
@@ -77,7 +81,7 @@ export default class Visual extends WynVisual {
 
   public timer = () => {
     let index = -1
-    let dataLength = this.properties.pieColor.length 
+    let dataLength = this.items[2].length 
     this.timeInterval =  setInterval(() => {
       const autoStopInfo = {
         seriesIndex: 0,
@@ -118,7 +122,7 @@ export default class Visual extends WynVisual {
     })
 
     this.container.addEventListener('mouseleave', (e: any) => {
-      if (this.properties.automaticRotation && this.preview) this.timer()
+      if (this.properties.automaticRotation && this.preview && !dataIndex) this.timer()
       if (isTooltipModelShown) return;
       this.hideTooltip();
     })
@@ -140,7 +144,7 @@ export default class Visual extends WynVisual {
       this.dispatch('downplay',selectInfo)
     })
 
-    this.chart.on('mousedown', (params) => {
+    this.chart.on('mouseup', (params) => {
       const clickMouse = params.event.event.button;
       if (params.componentType !== 'series') return;
       params.event.event.seriesClick = true;
@@ -154,8 +158,8 @@ export default class Visual extends WynVisual {
       }
       this.dispatch('highlight', selectInfo);
       this.selection.push(selectInfo);
-
       if (clickMouse === clickLeftMouse) {
+        dataIndex = (params.dataIndex === dataIndex)?'':params.dataIndex
         // show data jump
         if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
           return
@@ -203,7 +207,9 @@ export default class Visual extends WynVisual {
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
       this.value = plainData.profile.value.values[0].display;
-      this.payWay = plainData.profile.tooltipFields.values.length?plainData.profile.tooltipFields.values[0].display:''
+      this.payWay = plainData.profile.tooltipFields.values.length?plainData.profile.tooltipFields.values.map((value,index) => {
+        return value.display
+      }):''
       let items = plainData.data;
       // const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
       // data sort 
@@ -212,9 +218,9 @@ export default class Visual extends WynVisual {
           return newItems = items.find((item) => item[this.dimension] === flags && item)
         })
         items = newItems.filter((item) => item)
-
+      this.allItems = items;
       this.items[0] = items.map((item) => item[this.dimension]);
-      this.items[1] = items.map((item) => { return { name: item[this.dimension], value: item[this.value], way: item[this.payWay]}});
+      this.items[1] = items.map((item) => {return { name: item[this.dimension], value: item[this.value]}});
       
       // get data
       const getSelectionId = (item) => {
@@ -341,7 +347,7 @@ export default class Visual extends WynVisual {
       } else {
         backgroundColor = pieColor[Math.floor((Math.random() * pieColor.length))].colorStops
           ? pieColor[Math.floor((Math.random() * pieColor.length))].colorStops[position]
-          : pieColor[Math.floor((Math.random() * pieColor.length))]
+          : pieColor[index%(pieColor.length)]
       }
       return backgroundColor
     }
@@ -370,6 +376,7 @@ export default class Visual extends WynVisual {
                   }
                   ],
                   global: false
+
                 },
                 borderRadius: options.borderRadius,
                 borderColor: options.breakPointColor,
@@ -384,6 +391,8 @@ export default class Visual extends WynVisual {
           return {
             name: '',
             type: 'pie',
+            selectedMode: true,
+            selectedOffset:20,
             radius: options.labelPosition === 'inside' ? [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outer}%`] : [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outerOutside}%`],
             center: [`${options.centerX}%`, `${options.centerY}%`],
             data: data, 
@@ -442,8 +451,6 @@ export default class Visual extends WynVisual {
               },
               scale: true,
               scaleSize: options.autoScaleSize,
-              focus: 'global',
-              blurScope: 'coordinateSystem'
             },
             labelLine: {
               show: options.showLabelLine,
@@ -458,7 +465,7 @@ export default class Visual extends WynVisual {
             itemStyle: {
               normal: {
                 color: (params) => {
-                  return {
+                  return options.showGradient?{
                     type: 'linear',
                     x: 0,
                     y: 0,
@@ -474,7 +481,7 @@ export default class Visual extends WynVisual {
                     }
                     ],
                     global: false
-                  }
+                  }:getColors(params.dataIndex, 1)
                 },
                 borderRadius: options.borderRadius,
                 borderColor: options.breakPointColor,
@@ -496,36 +503,18 @@ export default class Visual extends WynVisual {
     const option = {
       tooltip: {
         trigger: 'item',
-        position:(point,params,dom,rect,size)=>{
-          let x = 0;
-          let y = 0;
-          let pointX = point[0];
-          let pointY = point[1];
-          var boxWidth = size.contentSize[0];
-          var boxHeight = size.contentSize[1];
-          if (boxWidth > pointX) {
-            x = 0; 
-            y -= 5; 
-        } else { 
-            x = pointX - boxWidth - 5;
-        }
-        
-        if (boxHeight + 10 > pointY) {
-            y = pointY + 5;
-        } else if (boxHeight > pointY) {
-            y = 0;
-        } else { 
-            y += pointY - boxHeight;
-        }
-        return [x, y];
-        },
         formatter: (params) => {
-          let eachSector = this.items[1].find((ele)=> ele.name === params.name)
+          let eachSector = this.allItems.find((ele)=> ele[this.dimension] === params.name)
+          let toolTips = ''
           let lineWrap = '<br/>'
+          this.payWay && this.payWay.forEach((element,index) => {
+            toolTips += `${lineWrap}${element}${': '}${eachSector[this.payWay[index]]}`
+          });
+          
           return `${this.isMock ? '访问量' : this.dimension} ${lineWrap}${params.name}
            :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)}
             (${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%)
-            ${this.payWay?(lineWrap+this.payWay+':'+eachSector.way):''}`
+            ${toolTips}`
         }
       },
       legend: {
@@ -589,7 +578,7 @@ export default class Visual extends WynVisual {
             _title += `{c|占比}`
           }
           _title += '\n'
-          return _firstLegendText ? `${options.showLegendTitle ?_title : ''}${_legendText}`: _legendText;
+          return _firstLegendText ? `${_legendText}`: _legendText;
         },
         
       },
@@ -631,7 +620,7 @@ export default class Visual extends WynVisual {
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'
-      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'showLegendTitle', 'openLegendPage'])
+      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'openLegendPage'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])

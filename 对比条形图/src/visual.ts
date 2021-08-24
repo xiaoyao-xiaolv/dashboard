@@ -12,7 +12,9 @@ export default class Visual {
   private contrastFormat: any;
   private host: any;
   private selection: any;
+  private allShow: any;
   private selectionManager: any;
+  private rankingNumber: any;
   private isTooltipModelShown: boolean;
   static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
     , [58, 46, 47, 49, 59, 17, 25, 83, 34]
@@ -25,12 +27,14 @@ export default class Visual {
     this.chart = echarts.init(dom);
     this.items = [];
     this.isMock = true;
+    this.allShow = true;
     this.host = host;
     this.properties = {};
     this.bindEvents();
     this.isTooltipModelShown = false;
     this.selection = [];
     this.selectionManager = host.selectionService.createSelectionManager();
+    this.rankingNumber = [];
   }
   private showTooltip = _.debounce((params) => {
     this.isTooltipModelShown = true;
@@ -96,26 +100,48 @@ export default class Visual {
     this.items = [[], [], [], [], [], []];
     if (dataView) {
       const plainData = dataView.plain;
-      let dimension = plainData.profile.dimension.values[0].display;
-      let ActualValue = plainData.profile.ActualValue.values[0].display;
-      let ContrastValue = plainData.profile.ContrastValue.values[0].display;
+      let ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
+      let ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
+      let dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display:'';
       let data = plainData.data;
-      this.items[0] = plainData.sort[dimension].order;
-      this.items[4] = [ActualValue, ContrastValue];
+
       this.actualFormat = plainData.profile.ActualValue.options.valueFormat;
       this.contrastFormat = plainData.profile.ContrastValue.options.valueFormat;
+      
       for (let index = 0; index < data.length; index++) {
         data.forEach((item) => {
-          if (item[dimension] == this.items[0][index]) {
-            this.items[1].push(item[ActualValue]);
-            this.items[2].push(item[ContrastValue]);
-            this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
-            const getSelectionId = (item) => {
-              const selectionId = this.host.selectionService.createSelectionId();
-              selectionId.withDimension(plainData.profile.dimension.values[0], item);
-              return selectionId;
+          if(ActualValue&&!ContrastValue&&!dimension){
+            this.allShow = true;
+            this.items[0].push(ActualValue);
+            this.items[3].push(item[ActualValue]);
+          }else if(ActualValue&&ContrastValue&&!dimension){
+            this.allShow = true;
+            this.items[0].push(ActualValue,ContrastValue);
+            this.items[3].push(item[ActualValue],item[ContrastValue]);
+          }else if(ActualValue&&!ContrastValue&&dimension){
+            this.allShow = false;
+            this.items[0].push(item[dimension]);
+            this.items[3].push({value:item[ActualValue],name:item[dimension]});
+            var obj = {};
+            this.items[3] = this.items[3].reduce(function(a, b) {
+              obj[b.name] ? '' : obj[b.name] = true && a.push(b);
+              return a;
+            }, [])
+          }else if(ActualValue&&ContrastValue&&dimension){
+            this.allShow = true;
+            this.items[0] = plainData.sort[dimension]?plainData.sort[dimension].order:'';
+            if (item[dimension] == this.items[0][index]) {
+              this.items[4] = [ActualValue, ContrastValue];        
+              this.items[1].push(item[ActualValue]);
+              this.items[2].push(item[ContrastValue]);
+              this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
+              const getSelectionId = (item) => {
+                const selectionId = this.host.selectionService.createSelectionId();
+                selectionId.withDimension(plainData.profile.dimension.values[0], item);
+                return selectionId;
+              }
+              this.items[5].push(getSelectionId(item));
             }
-            this.items[5].push(getSelectionId(item));
           }
         })
       }
@@ -178,8 +204,49 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
+      arr[0].forEach((element,index) => {
+        this.rankingNumber.push({name:element,index:index+1})
+      });
     }
     return;
+  }
+
+  private setPosition(positionType: any,num:Number) {
+    if (positionType === 'topLeft') {
+      return num === 1?[25,-15]:[0,-20]
+    }else if(positionType === 'topRight'){
+      return num === 1?[400,-15]:[380,-20]
+    }else if(positionType === 'bottomLeft'){
+      return num === 1?[25,20]:[0,15]
+    }else if(positionType === 'bottomRight'){
+      return num === 1?[400,20]:[380,15]
+    }else if(positionType === 'left'){
+      return num === 1?[-40,3]:[-60,0]
+    }else if(positionType === 'right'){
+      return num === 1?[400,-15]:[380,-20]
+    }else if(positionType === 'inside'){
+      return ['50%','30%']
+    }else {
+      return positionType
+    }
+  }
+
+  private setRankingType(rankingType: any, targetIndex: any ) {
+    if(targetIndex <= 3){
+      let championList = ['冠','亚','季']
+      let excellentList = ['优','良','中']
+      if(rankingType === 'champion'){
+        let champion
+        return champion = championList.filter((ele,index) => (index+1) === targetIndex)
+      } else if(rankingType === 'excellent'){
+        let excellent
+        return excellent = excellentList.filter((ele,index) => (index+1) === targetIndex)
+      } else {
+        return targetIndex
+      } 
+    }else{
+      return targetIndex
+    }
   }
 
   private render() {
@@ -190,11 +257,11 @@ export default class Visual {
       this.selectionSort(items, options.sorttype);
     }
     this.container.style.opacity = this.isMock ? '0.3' : '1';
-    let fontWeight: string;
+    let _fontWeight: string;
     if (options.textStyle.fontWeight == "Light") {
-      fontWeight = options.textStyle.fontWeight + "er"
+      _fontWeight = options.textStyle.fontWeight + "er"
     } else {
-      fontWeight = options.textStyle.fontWeight
+      _fontWeight = options.textStyle.fontWeight
     }
     let labelfontWeight: string;
     if (options.labelTextStyle.fontWeight == "Light") {
@@ -202,6 +269,29 @@ export default class Visual {
     } else {
       labelfontWeight = options.labelTextStyle.fontWeight
     }
+
+    const hexToRgba = (hex, opacity) => {
+      return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
+              + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
+    }
+
+    const rgbaToHex = (color) => {
+      var values = color
+        .replace(/rgba?\(/, '')
+        .replace(/\)/, '')
+        .replace(/[\s+]/g, '')
+        .split(',');
+      var a = parseFloat(values[3] || 1),
+          r = Math.floor(a * parseInt(values[0]) + (1 - a) * 255),
+          g = Math.floor(a * parseInt(values[1]) + (1 - a) * 255),
+          b = Math.floor(a * parseInt(values[2]) + (1 - a) * 255);
+      return "#" +
+        ("0" + r.toString(16)).slice(-2) +
+        ("0" + g.toString(16)).slice(-2) +
+        ("0" + b.toString(16)).slice(-2);
+    }
+    
+
     let option = {
       tooltip: {
         show: true,
@@ -215,8 +305,8 @@ export default class Visual {
         }
       },
       grid: {
-        top: '0',
-        left: '0',
+        top: '10',
+        left: (options.firstBarPosition === 'left'|| options.secondBarPosition === 'left')?'75':'20',
         right: '4.75%',
         bottom: '0',
         containLabel: true
@@ -228,14 +318,27 @@ export default class Visual {
         axisTick: {
           show: false
         },
+        position: 'right',
         axisLabel: {
-          show: options.showLabel,
-          margin: 20,
-          color: options.textStyle.color,
-          fontSize: options.textStyle.fontSize.substr(0, 2),
-          fontWeight: fontWeight,
-          fontFamily: options.textStyle.fontFamily,
-          fontStyle: options.textStyle.fontStyle,
+          show: options.showBarLabel,
+          formatter: (params,formatterIndex) => {
+            let dataRatio = ''
+            if(this.allShow){
+              this.items[0].map((element,index) => {
+                if(params === element){
+                  dataRatio = `${options.showSecondBarPercent?this.items[3][index].toFixed(1)+'%':''}${options.showSecondBarActual?'/'+this.items[1][index]:''}${options.showSecondBarContrast?'/'+this.items[2][index]:''}`
+                }
+              })
+            }else if(formatterIndex < this.items[3].length){
+              dataRatio = this.items[3][formatterIndex].value
+            }
+            return dataRatio
+          },
+          color: options.labelTextStyle.color,
+          fontSize: options.labelTextStyle.fontSize.substr(0, 2),
+          fontWeight: labelfontWeight,
+          fontFamily: options.labelTextStyle.fontFamily,
+          fontStyle: options.labelTextStyle.fontStyle,
         },
         axisLine: {
           show: false
@@ -258,16 +361,24 @@ export default class Visual {
         barWidth: options.barWidth,
         data: items[3],
         label: {
-          show: options.showBarLabel,
-          position: 'right',
-          formatter: (params) => {
-            return params.value.toFixed(1) + "%";
+          show: options.showLabel,
+          margin: 1,
+          position: this.setPosition(options.firstBarPosition,1),
+          rotate : options.rotationDegree,
+          width:65,
+          // backgroundColor:'red',
+          formatter: (value) => {
+            return `{title|${options.showFirstBarCategory?value.name:''}${options.showFirstBarPercent?'/'+this.items[3][value.dataIndex]+'%':''}${options.showFirstBarActual?'/'+this.items[1][value.dataIndex]:''}${options.showFirstBarContrast?'/'+this.items[2][value.dataIndex]:''}}`
           },
-          color: options.labelTextStyle.color,
-          fontSize: options.labelTextStyle.fontSize.substr(0, 2),
-          fontWeight: labelfontWeight,
-          fontFamily: options.labelTextStyle.fontFamily,
-          fontStyle: options.labelTextStyle.fontStyle,
+          rich: {
+            title: {
+              color: options.textStyle.color,
+              fontSize: options.textStyle.fontSize.substr(0, 2),
+              fontWeight: _fontWeight,
+              fontFamily: options.textStyle.fontFamily,
+              fontStyle: options.textStyle.fontStyle,
+            }
+          },
         },
         itemStyle: {
           color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
@@ -291,6 +402,69 @@ export default class Visual {
           color: options.barBackgroundColor,
           barBorderRadius: 14
         },
+        label: {
+          show: options.showLabel,
+          margin: 1,
+          position: this.setPosition(options.secondBarPosition,2) ,
+          rotate : options.rotationDegree,
+          width:65,
+          // backgroundColor:'red',
+          formatter: (value) => {
+            if(options.showRanking && !this.isMock){
+              this.rankingNumber = [];
+              this.selectionSort(this.items, 'desc');
+              const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
+
+              const _target = JSON.parse(JSON.stringify(_targetCopy))
+              _target.index = this.setRankingType(options.rankingType, _target.index)
+              const targetCopyIndex = _targetCopy.index
+              if (targetCopyIndex <= 3) { 
+                return '{idx' + targetCopyIndex + '|' +  _target.index + '}'
+              }  else {
+                return '{idx|' +  _target.index + '}'
+              }
+            }else{
+              return `{title|${value.name}}`
+            }
+          },
+          rich: {
+            idx1: {
+                color: options.rankingColor[0],
+                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[0],0.2)),
+                borderRadius: options.rankingShape === 'circular' ? 100 : '',
+                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                width:options.rankingType === 'number'?null:10,
+                height:options.rankingType === 'number'?null:10,
+                align: 'left',
+            },
+            idx2: {
+                color: options.rankingColor[1],
+                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[1],0.2)),
+                borderRadius: options.rankingShape === 'circular' ? 100 : '',
+                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                width:options.rankingType === 'number'?null:10,
+                height:options.rankingType === 'number'?null:10,
+                align: 'left',
+            },
+            idx3: {
+                color: options.rankingColor[2],
+                backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[2],0.2)),
+                borderRadius: options.rankingShape === 'circular' ? 100 : '',
+                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                width:options.rankingType === 'number'?null:10,
+                height:options.rankingType === 'number'?null:10,
+                align: 'left',
+            },
+            idx: {
+                color: 'white',
+                borderRadius: 100,
+                width:10,
+                height:10,
+                align: 'left',
+                padding: [2, 4]
+            }
+          },
+        },
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -311,7 +485,11 @@ export default class Visual {
   }
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
-    return null;
+    let hiddenOptions: Array<string> = [''];
+    if (!updateOptions.properties.showRanking) {
+      hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'showSecondBarPercent', 'showSecondBarActual', 'showSecondBarContrast', 'rotationDegree', 'rankingShape', 'rankingType', 'rankingColor'])
+    }
+    return hiddenOptions;
   }
 
   // 功能按钮可见性
@@ -323,3 +501,5 @@ export default class Visual {
     console.log(name);
   }
 }
+
+

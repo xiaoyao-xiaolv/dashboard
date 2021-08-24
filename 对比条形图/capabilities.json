@@ -40,10 +40,10 @@
                                 "min": 1
                             },
                             "ContrastValue": {
-                                "min": 1
+                                "min": 0
                             },
                             "dimension": {
-                                "min": 1
+                                "min": 0
                             }
                         }
                     ]
@@ -122,6 +122,50 @@
                         "defaultValue": true
                     },
                     {
+                        "displayNameKey": "显示位置",
+                        "name": "firstBarPosition",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "topLeft",
+                                "displayNameKey": "左上方"
+                            },
+                            {
+                                "value": "topRight",
+                                "displayNameKey": "右上方"
+                            },
+                            {
+                                "value": "bottomLeft",
+                                "displayNameKey": "左下方"
+                            },
+                            {
+                                "value": "bottomRight",
+                                "displayNameKey": "右下方"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "inside",
+                                "displayNameKey": "内部"
+                            },
+                            {
+                                "value": "top",
+                                "displayNameKey": "上方"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "下方"
+                            }
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
                         "name": "labelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -146,6 +190,152 @@
                             }
                         ],
                         "defaultValue": "desc"
+                    },
+                    {
+                        "name": "showFirstBarCategory",
+                        "type": "Boolean",
+                        "displayName": "显示分类名",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showFirstBarPercent",
+                        "type": "Boolean",
+                        "displayName": "显示百分比",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showFirstBarActual",
+                        "type": "Boolean",
+                        "displayName": "显示实际值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showFirstBarContrast",
+                        "type": "Boolean",
+                        "displayName": "显示对比值",
+                        "defaultValue": true
+                    }
+                ]
+            },
+            {
+                "displayName": "数据排名",
+                "properties": [
+                    {
+                        "name": "showRanking",
+                        "type": "Boolean",
+                        "displayName": "显示排名",
+                        "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "显示位置",
+                        "name": "secondBarPosition",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "topLeft",
+                                "displayNameKey": "左上方"
+                            },
+                            {
+                                "value": "topRight",
+                                "displayNameKey": "右上方"
+                            },
+                            {
+                                "value": "bottomLeft",
+                                "displayNameKey": "左下方"
+                            },
+                            {
+                                "value": "bottomRight",
+                                "displayNameKey": "右下方"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "top",
+                                "displayNameKey": "上方"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "下方"
+                            }
+                            
+                           
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "showSecondBarPercent",
+                        "type": "Boolean",
+                        "displayName": "显示百分比",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showSecondBarActual",
+                        "type": "Boolean",
+                        "displayName": "显示实际值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showSecondBarContrast",
+                        "type": "Boolean",
+                        "displayName": "显示对比值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "rotationDegree",
+                        "type": "Integer",
+                        "displayName": "旋转度数",
+                        "defaultValue": 0,
+                        "min": -90,
+                        "max": 90
+                    },
+                    {
+                        "displayNameKey": "Top3显示形状",
+                        "name": "rankingShape",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "circular",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "square",
+                                "displayNameKey": "正方形"
+                            }
+                            
+                        ],
+                        "defaultValue": "circular"
+                    },
+                    {
+                        "displayNameKey": "Top3显示类型",
+                        "name": "rankingType",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "number",
+                                "displayNameKey": "1/2/3"
+                            },
+                            {
+                                "value": "champion",
+                                "displayNameKey": "冠/亚/季"
+                            },
+                            {
+                                "value": "excellent",
+                                "displayNameKey": "优/良/中"
+                            }
+                            
+                        ],
+                        "defaultValue": "number"
+                    },
+                    {
+                        "name": "rankingColor",
+                        "type": "Palette",
+                        "displayName": "Top3字体颜色"
                     }
                 ]
             },
