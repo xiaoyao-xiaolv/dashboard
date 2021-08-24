@@ -17,6 +17,9 @@ export default class Visual {
   private contrastFormate: any;
   private selectionManager: any;
   private rankingNumber: any;
+  private isActualValue: boolean;
+  private isDimension: boolean;
+  private isContrastValue: boolean;
   private isTooltipModelShown: boolean;
   static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
     , [58, 46, 47, 49, 59, 17, 25, 83, 34]
@@ -98,61 +101,50 @@ export default class Visual {
 
   public update(options: any) {
     const dataView = options.dataViews[0];
-    this.isMock = !dataView;
     this.items = [[], [], [], [], [], []];
-    if (dataView) {
-      const plainData = dataView.plain;
-      console.log(plainData, '105=====105');
-      
 
+    if (dataView && dataView.plain.profile.ActualValue.values.length) {
+      this.isMock = false;
+      const plainData = dataView.plain;
       let ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
       let ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
-      let dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display:'';
-      let data = plainData.data;
+      let dimension = plainData.profile.dimension.values.length ? plainData.profile.dimension.values[0].display : '';
+      
+     this.isActualValue = !!plainData.profile.ActualValue.values.length;
+     this.isDimension = !!plainData.profile.ActualValue.values.length;
+     this.isContrastValue = !!plainData.profile.ActualValue.values.length;
+      let datas = plainData.data;
 
+      datas.map((data: any) => {
+        ActualValue && this.items[1].push(data[ActualValue]);
+        ContrastValue && this.items[2].push(data[ContrastValue]);
+        if (ActualValue && ContrastValue) {
+          this.items[3].push(Number((data[ActualValue] / data[ContrastValue] * 100).toFixed(2)));
+        } else if (ActualValue) {
+          this.items[3].push(Number((data[ActualValue] / 100 * 100).toFixed(2)));
+        }
+        
+        dimension && this.items[0].push(data[dimension]);
+
+        const getSelectionId = (_item) => {
+          const selectionId = this.host.selectionService.createSelectionId();
+          selectionId.withDimension(plainData.profile.dimension.values[0], _item);
+          return selectionId;
+        }
+        dimension && this.items[5].push(getSelectionId(data));
+      })
+
+      if (ActualValue && ContrastValue && dimension) {
+        this.allShow = true;
+        this.items[4] = [ActualValue, ContrastValue];
+        this.actualFormate = plainData.profile.ActualValue.values[0].format;
+        this.contrastFormate = plainData.profile.ContrastValue.values[0].format;
+        this.items[0] = plainData.sort[dimension] ? plainData.sort[dimension].order : '';
+
+      }
       this.actualFormat = plainData.profile.ActualValue.options.valueFormat;
       this.contrastFormat = plainData.profile.ContrastValue.options.valueFormat;
-      
-      for (let index = 0; index < data.length; index++) {
-        data.forEach((item) => {
-          if(ActualValue&&!ContrastValue&&!dimension){
-            this.allShow = true;
-            this.items[0].push(ActualValue);
-            this.items[3].push(item[ActualValue]);
-          }else if(ActualValue&&ContrastValue&&!dimension){
-            this.allShow = true;
-            this.items[0].push(ActualValue,ContrastValue);
-            this.items[3].push(item[ActualValue],item[ContrastValue]);
-          }else if(ActualValue&&!ContrastValue&&dimension){
-            this.allShow = false;
-            this.items[0].push(item[dimension]);
-            this.items[3].push({value:item[ActualValue],name:item[dimension]});
-            var obj = {};
-            this.items[3] = this.items[3].reduce(function(a, b) {
-              obj[b.name] ? '' : obj[b.name] = true && a.push(b);
-              return a;
-            }, [])
-          }else if(ActualValue&&ContrastValue&&dimension){
-            this.actualFormate = plainData.profile.ActualValue.values[0].format
-            this.contrastFormate = plainData.profile.ContrastValue.values[0].format
-      
-            this.allShow = true;
-            this.items[0] = plainData.sort[dimension]?plainData.sort[dimension].order:'';
-            if (item[dimension] == this.items[0][index]) {
-              this.items[4] = [ActualValue, ContrastValue];        
-              this.items[1].push(item[ActualValue]);
-              this.items[2].push(item[ContrastValue]);
-              this.items[3].push(parseFloat((item[ActualValue] / item[ContrastValue] * 100).toFixed(2)));
-              const getSelectionId = (item) => {
-                const selectionId = this.host.selectionService.createSelectionId();
-                selectionId.withDimension(plainData.profile.dimension.values[0], item);
-                return selectionId;
-              }
-              this.items[5].push(getSelectionId(item));
-            }
-          }
-        })
-      }
+    
     } else {
       this.isMock = true
     }
@@ -421,7 +413,7 @@ export default class Visual {
       },
       yAxis: [{
         type: 'category',
-        data: items[0],
+        data:  this.isMock ? items[0]: (this.isDimension ? items[0]: items[1]),
         inverse: true,
         axisTick: {
           show: false
@@ -472,7 +464,7 @@ export default class Visual {
       series: [{
         type: 'bar',
         barWidth: options.barWidth,
-        data: items[3],
+        data: this.isMock ?  items[3] : (this.isContrastValue ? items[3]: items[1]),
         label: {
           show: options.showBarLabel,
           margin: 1,
@@ -484,7 +476,7 @@ export default class Visual {
             if (this.isMock) {
                 return `${value.data}%`
             } else {
-              let name = options.showFirstBarCategory?value.name:''
+             let name = options.showFirstBarCategory?value.name:''
             let percent = options.showFirstBarPercent?'/'+this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate)+'%':''
             let actual = options.showFirstBarActual && !this.isMock?'/'+this.formatData(this.items[1][value.dataIndex],options.showFirstBarActualUnit,this.actualFormate):''
             let contrast = options.showFirstBarContrast && !this.isMock?'/'+this.formatData(this.items[2][value.dataIndex],options.showFirstBarContrastUnit,this.contrastFormate):''
