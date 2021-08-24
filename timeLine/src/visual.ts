@@ -1,5 +1,6 @@
 import '../style/visual.less';
 import '../style/timeline.less';
+import '../fonts/iconfont.css';
 const {timeline} = require('./timeline');
 import $ from 'jquery';
 
@@ -13,7 +14,6 @@ export default class Visual extends WynVisual {
     { name: "入仓", value: 0, image:'../assets/icon.png' , describe: '这个可能是一段文本'},
     { name: "完成", value: 0, image:'../assets/icon.png' , describe: '这个可能是一段文本'}
   ];
-  // private static mockItems = ['下达', '确认', '出厂', '预约', '到厂' , '入仓' ,'完成']
   private root: JQuery<HTMLElement>;
   private items = [];
 
@@ -41,20 +41,6 @@ export default class Visual extends WynVisual {
     this.isMock = true;
     this.visualHost = host;
     this.isFirstRender = true;
-
-     //  custom font famliy
-    var newStyle = document.createElement('style');
-    newStyle.id = 'ada'
-    newStyle.appendChild(document.createTextNode("\
-    @font-face {\
-      font-family: 'iconfont';\
-      src: url('/fonts/iconfont.woff?t=1629710238949') format('woff'),\
-      url('/fonts/iconfont.woff2?t=1629710238949') format('woff2'),\
-      url('/fonts/iconfont.ttf?t=1629710238949') format('truetype')\
-      }\
-      "));
- 
-     document.head.appendChild(newStyle);
   }
 
 
@@ -97,9 +83,19 @@ export default class Visual extends WynVisual {
     
 
     // custom label text
+    const { useToPoint, timeLinePointColor: pointBg, useToLabel, labelBg, timeLineCollection } = _options;
+    const _isFormatList = timeLineCollection.length;
+    const _formatList = timeLineCollection[0];
+    const _useToLabel = useToLabel && _isFormatList;
+    const _labelBorderColor = _useToLabel ? (_formatList.formatImage ? 'transparent' : _formatList.formatColor) : labelBg;
+    const _useToPoint = useToPoint && _isFormatList;
+    _formatList.formatColor = _formatList.formatColor || '#FFF';
+    const _useToPointValue = _isFormatList ? _formatList.formatValue : '';
+    const _usePointBg = _useToPoint ? (_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat`: _formatList.formatColor): pointBg;
+   
     const timeline__content__fontStyle = {
-      backgroundColor: _options.labelBg,
-      border: `1px solid ${_options.labelBg}`
+      border: `1px solid ${_labelBorderColor}`,
+      background: _useToLabel ? `${_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat`: _formatList.formatColor } ` : labelBg,
     };
 
     const hiddenLabel = {
@@ -112,63 +108,106 @@ export default class Visual extends WynVisual {
       textAlign:  _options.labelTitleAlign,
     }
 
-    const pointColor = [{
-      bgColor: _options.timeLinePointColor,
-      borderColor: _options.timeLinePointBg,
-    }, {
-      bgColor: _options.timeLinePointNormalColor,
-      borderColor: _options.timeLinePointNormalBg,
-    }, {
-      bgColor: _options.timeLinePointErrorColor,
-      borderColor: _options.timeLinePointErrorBg,
-      },{
-        bgColor: _options.timeLinePointErrorColor,
-        borderColor: _options.timeLinePointErrorBg,
-        }];
     timeLineData.map((_element, index) => {
-      const _timeline__item = $(`<div class="timeline__item timeline__item__${index} iconfont icon-approve">`).appendTo(_timeline__items);
-      const _timeline__content = $('<div class="timeline__content">').appendTo(_timeline__item);
-      const _timeline__content_text = $('<div>')
-      $(_timeline__content).append(_timeline__content_text);
-      const _timeline__title = $('<h2 class="timeline__title">')
-      const _timeline__describe = $('<p class="timeline__describe">')
-      //  show label
-      if (_options.showLabel === 'none') {
-        _timeline__content.css(hiddenLabel);
-      } else if (_options.showLabel === 'content' && this.isDescribe) {
-        $(_timeline__content_text).addClass('timeline__content_text')
-        $(_timeline__content_text).append(_timeline__title, _timeline__describe);
-        _timeline__title.text(this.items[index][this.name]);
-        _timeline__describe.text(this.items[index][this.describe]);
+        const _timeline__item = $(`<div class="timeline__item timeline__item__${index} iconfont icon-approve">`)
+          .appendTo(_timeline__items);
+        const _timeline__content = $('<div class="timeline__content">')
+          .appendTo(_timeline__item);
+        const _timeline__content_text = $('<div>')
+        $(_timeline__content)
+          .append(_timeline__content_text);
+        const _timeline__title = $('<h2 class="timeline__title">')
+        const _timeline__describe = $('<p class="timeline__describe">')
+        //  show label
+        if (_options.showLabel === 'none') {
+          _timeline__content.css(hiddenLabel);
+        } else if (_options.showLabel === 'content' && this.isDescribe) {
+          $(_timeline__content_text).addClass('timeline__content_text')
+          $(_timeline__content_text).append(_timeline__title, _timeline__describe);
+          _timeline__title.text(this.items[index][this.name]);
+          _timeline__describe.text(this.items[index][this.describe]);
+          
+        } else {
+          $(_timeline__content_text).addClass('timeline__content_text_title')
+          $(_timeline__content_text).append(_timeline__title);
+          _timeline__title.text(this.items[index][this.name]);
+        }
+        // custom label
+        _timeline__content.css(timeline__content__fontStyle);
+        _timeline__title.css(_timeline__title__style);
+        _timeline__describe.css(_options.labelDescribeStyle);
         
-      } else {
-        $(_timeline__content_text).addClass('timeline__content_text_title')
-        $(_timeline__content_text).append(_timeline__title);
-        _timeline__title.text(this.items[index][this.name]);
-      }
-      // custom label
-      _timeline__content.css(timeline__content__fontStyle);
-      _timeline__title.css(_timeline__title__style);
-      _timeline__describe.css(_options.labelDescribeStyle);
-      
-      const _pointColorIndex = _element[this.value] ? (_element[this.value] <= 2 ? _element[this.value]: 2 ): 0;
-      $(`<style>.timeline__item__${index}::after {
-        content: '';
-        background-color: ${pointColor[_pointColorIndex].bgColor}; 
-        border: ${_options.timeLinePointBorder}px solid ${pointColor[_pointColorIndex].borderColor}; 
-        </style>`)
+        const _pointColorIndex = _element[this.value] ? (_element[this.value] <= 2 ? _element[this.value] : 2) : 0;
+        let _formatPoint =_useToPoint && _element[this.name] === _formatList.formatValue;
+        // custom point
+        $(`<style>.timeline__item__${index}::after {
+          content: '';
+          border: ${_formatPoint ? 0: _options.timeLinePointBorder}px solid ${_formatPoint ? '' :_options.timeLinePointBg};
+          background:  ${_formatPoint ? _usePointBg : pointBg};
+          </style>`)
         .appendTo(document.head);
+      
     });
     
     // horizontal timeline content
-    $(`<style>.timeline--horizontal .timeline__item .timeline__content::before{border-top: 12px solid ${_options.labelBg};}</style>`).appendTo(document.head)
-    $(`<style>.timeline--horizontal .timeline__item .timeline__content::after{border-top: 10px solid ${_options.labelBg};}</style>`).appendTo(document.head)
+    $(`<style>
+        .timeline--horizontal
+        .timeline__item
+        .timeline__content::before{
+          border-top: 12px solid ${ _labelBorderColor}}
+
+        .timeline--horizontal
+        .timeline__item
+        .timeline__content::after{
+          border-top: 10px solid ${_labelBorderColor };}
+      </style>`)
+      .appendTo(document.head)
+
     // horizontal timeline bottom content
-    $(`<style>.timeline--horizontal .timeline__item--bottom .timeline__content::before{border-bottom: 12px solid ${_options.labelBg};border-top: none; }</style>`).appendTo(document.head)
-    $(`<style>.timeline--horizontal .timeline__item--bottom .timeline__content::after{border-bottom: 10px solid ${_options.labelBg};border-top: none;}</style>`).appendTo(document.head)
+    $(`<style>
+        .timeline--horizontal
+        .timeline__item--bottom
+        .timeline__content::before{
+          border-bottom: 12px solid ${_labelBorderColor};
+          border-top: none; }
+          
+        .timeline--horizontal
+        .timeline__item--bottom
+        .timeline__content::after{
+          border-bottom: 10px solid ${_labelBorderColor};
+          border-top: none;}
+      </style>`)
+      .appendTo(document.head)
+
     // mobile timeline content
-    $(`<style>.timeline--mobile .timeline__item .timeline__content::before {border-right: 12px solid ${_options.labelBg};}</style>`).appendTo(document.head)
-    $(`<style>.timeline--mobile .timeline__item .timeline__content::after  {border-right: 10px solid ${_options.labelBg};}</style>`).appendTo(document.head)
+    $(`<style>
+      .timeline--mobile
+      .timeline__item
+      .timeline__content::before {
+        border-right: 12px solid ${_labelBorderColor};}
+
+      .timeline--mobile
+      .timeline__item
+      .timeline__content::after {
+        border-right: 10px solid ${_labelBorderColor};}
+      </style>`)
+      .appendTo(document.head)
+
+     // left and right content
+    $(`<style>
+      .timeline__content::before {
+        border-left: 12px solid ${_labelBorderColor};}
+      .timeline__content::after {
+        border-left: 11px solid ${_labelBorderColor};}
+
+      .timeline__item--right
+      .timeline__content::before {
+        border-right: 12px solid ${_labelBorderColor};}
+      .timeline__item--right
+      .timeline__content::after {
+        border-right: 11px solid ${_labelBorderColor};}
+      </style>`)
+      .appendTo(document.head);
         
     timeline(document.querySelectorAll('.timeline'), {
       forceVerticalMode: _options.timeLineDirection === 'auto' ? 'auto' : (_options.timeLineDirection === 'horizontal'? 10: 600),
@@ -183,6 +222,7 @@ export default class Visual extends WynVisual {
     $(`<style>.timeline:not(.timeline--horizontal)::before{background-color: ${_options.timeLineBg};}</style>`).appendTo(document.head)
     // custom horizontal line color
     $('.timeline-divider').css('backgroundColor', `${_options.timeLineBg}`);
+    
     // custom time line point color
     $(`<style>.timeline__item::after {
       width: ${_options.timeLinePointSize}px; 
@@ -242,7 +282,19 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['verticalItemsLayout'])
     } else if(options.properties.timeLineDirection === 'vertical') {
       hiddenOptions = hiddenOptions.concat(['horizontalItemsLayout'])
-    } 
+    }
+    
+    // fonts setting 
+    if (options.properties.showLabel === 'none') {
+      hiddenOptions = hiddenOptions.concat(['labelTextStyle', 'labelDescribeStyle'])
+    } else if (options.properties.showLabel === 'title') {
+      hiddenOptions = hiddenOptions.concat(['labelDescribeStyle'])
+    }
+
+    // format list
+    // if (options.properties.useToPoint && options.properties.useToPoint) {
+    //   hiddenOptions = hiddenOptions.concat(['timeLineCollection'])
+    // }
     return hiddenOptions;
   }
 

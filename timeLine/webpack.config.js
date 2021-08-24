@@ -23,7 +23,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(ts)$/,
+        test: /\.(ts|js)$/,
         exclude: /node_modules/,
         use: ['babel-loader', 'awesome-typescript-loader?silent=true'],
       },
@@ -32,13 +32,13 @@ const config = {
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
       },
       {
-        test: /\.(png|jpg|gif)$/i,
+        test: /\.(png|jpg|gif|eot|svg|ttf|woff|woff2)$/i,
         use: [
           {
             loader: 'url-loader'
           },
         ],
-      },
+      }
     ],
     unknownContextCritical: false,
   },
