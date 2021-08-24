@@ -62,6 +62,16 @@
                         "displayName": "图例文字颜色",
                         "defaultValue": "#fff"
                     },{
+                        "name": "pieColor",
+                        "type": "Palette",
+                        "displayName": "饼图配色",
+                        "defaultValue":"['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']"
+                    },{
+                        "name": "ringColor",
+                        "type": "Palette",
+                        "displayName": "圆环配色",
+                        "defaultValue":"['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']"
+                    },{
                         "name": "legendPosition",
                         "type": "Boolean",
                         "displayName": "图例分离展示",
@@ -69,23 +79,33 @@
                     },{
                         "name": "legendRichColor",
                         "type": "Color",
-                        "displayName": "圆环图例背景色",
+                        "displayName": "圆环标签背景色",
                         "defaultValue": "#F6F8FC"
                     },{
                         "name": "legendRichBorderColor",
                         "type": "Color",
-                        "displayName": "圆环图例边框色",
+                        "displayName": "圆环标签边框色",
                         "defaultValue": "#8C8D8E"
                     },{
                         "name": "legendRichBorderWidth",
                         "type": "Integer",
-                        "displayName": "圆环图例边框宽度",
+                        "displayName": "圆环标签边框宽度",
                         "defaultValue": 1
                     },{
                         "name": "legendRichBorderRadius",
                         "type": "Integer",
-                        "displayName": "圆环图例圆角值",
+                        "displayName": "圆环标签圆角值",
                         "defaultValue": 4
+                    },{
+                        "name": "innerLegendRichFormat",
+                        "type": "LongText",
+                        "displayName": "饼图标签格式",
+                        "defaultValue": "{a|{a}}"
+                    },{
+                        "name": "innerLegendRichStyle",
+                        "type": "LongText",
+                        "displayName": "饼图标签样式",
+                        "defaultValue": "{\"a\":{\"align\":\"center\"}}"
                     }
 
                     ,{
