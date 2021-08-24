@@ -108,7 +108,7 @@
                             },
                             {
                                 "value": "noOrder",
-                                "displayNameKey": "默认顺序"
+                                "displayNameKey": "无"
                             }
                         ],
                         "defaultValue": "noOrder"
@@ -139,6 +139,13 @@
                         "type": "Boolean",
                         "displayName": "显示标签",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "axisYWidth",
+                        "type": "Percentage",
+                        "displayName": "轴宽度",
+                        "defaultValue": 45,
+                        "min": 0
                     },
                     {
                         "name": "textStyle",
@@ -279,26 +286,70 @@
                         "defaultValue": true
                     },
                     {
-                        "displayNameKey": "显示位置",
-                        "name": "firstBarPosition",
+                        "displayNameKey": "内外侧位置",
+                        "name": "firstBarAboutPosition",
                         "type": "Enum",
                         "items": [
                             {
-                                "value": "topLeft",
+                                "value": "inside",
+                                "displayNameKey": "内测"
+                            },
+                            {
+                                "value": "outside",
+                                "displayNameKey": "外侧"
+                            }
+                        ],
+                        "defaultValue": "inside"
+                    },
+                    {
+                        "displayNameKey": "显示位置",
+                        "name": "firstBarInsidePosition",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "insideTopLeft",
                                 "displayNameKey": "左上方"
                             },
                             {
-                                "value": "topRight",
+                                "value": "insideTopRight",
                                 "displayNameKey": "右上方"
                             },
                             {
-                                "value": "bottomLeft",
+                                "value": "insideBottomLeft",
                                 "displayNameKey": "左下方"
                             },
                             {
-                                "value": "bottomRight",
+                                "value": "insideBottomRight",
                                 "displayNameKey": "右下方"
                             },
+                            {
+                                "value": "insideLeft",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "insideRight",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "inside",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "insideTop",
+                                "displayNameKey": "上方"
+                            },
+                            {
+                                "value": "insideBottom",
+                                "displayNameKey": "下方"
+                            }
+                        ],
+                        "defaultValue": "insideLeft"
+                    },
+                    {
+                        "displayNameKey": "显示位置",
+                        "name": "firstBarOutsidePosition",
+                        "type": "Enum",
+                        "items": [
                             {
                                 "value": "left",
                                 "displayNameKey": "左侧"
@@ -306,10 +357,6 @@
                             {
                                 "value": "right",
                                 "displayNameKey": "右侧"
-                            },
-                            {
-                                "value": "inside",
-                                "displayNameKey": "内部"
                             },
                             {
                                 "value": "top",
@@ -475,49 +522,19 @@
                         "defaultValue": true
                     },
                     {
-                        "displayNameKey": "显示位置",
-                        "name": "secondBarPosition",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "topLeft",
-                                "displayNameKey": "左上方"
-                            },
-                            {
-                                "value": "topRight",
-                                "displayNameKey": "右上方"
-                            },
-                            {
-                                "value": "bottomLeft",
-                                "displayNameKey": "左下方"
-                            },
-                            {
-                                "value": "bottomRight",
-                                "displayNameKey": "右下方"
-                            },
-                            {
-                                "value": "left",
-                                "displayNameKey": "左侧"
-                            },
-                            {
-                                "value": "right",
-                                "displayNameKey": "右侧"
-                            },
-                            {
-                                "value": "top",
-                                "displayNameKey": "上方"
-                            },
-                            {
-                                "value": "bottom",
-                                "displayNameKey": "下方"
-                            }
-                            
-                           
-                        ],
-                        "defaultValue": "left"
+                        "name": "secondBarPositionX",
+                        "type": "Integer",
+                        "displayName": "排名位置X",
+                        "defaultValue": -45
                     },
                     {
-                        "displayNameKey": "Top3显示形状",
+                        "name": "secondBarPositionY",
+                        "type": "Integer",
+                        "displayName": "排名位置Y",
+                        "defaultValue": 0
+                    },
+                    {
+                        "displayNameKey": "背景形状",
                         "name": "rankingShape",
                         "type": "Enum",
                         "items": [
@@ -528,10 +545,35 @@
                             {
                                 "value": "square",
                                 "displayNameKey": "正方形"
+                            },
+                            {
+                                "value": "custom",
+                                "displayNameKey": "自定义形状"
+                            },
+                            {
+                                "value": "none",
+                                "displayNameKey": "无"
                             }
-                            
                         ],
                         "defaultValue": "circular"
+                    },
+                    {
+                        "name": "rankingBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "#444a58"
+                    },
+                    {
+                        "name": "rankingSize",
+                        "type": "Integer",
+                        "displayName": "背景大小",
+                        "defaultValue": 4
+                    },
+                    {
+                        "name": "rankingTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     },
                     {
                         "displayNameKey": "Top3显示类型",
@@ -558,14 +600,8 @@
                         "name": "rankingColor",
                         "type": "Palette",
                         "displayName": "Top3字体颜色"
-                    },
-                    {
-                        "name": "axisYWidth",
-                        "type": "Integer",
-                        "displayName": "轴宽度",
-                        "defaultValue": 100,
-                        "min": 0
                     }
+                    
                 ]
             },
             {

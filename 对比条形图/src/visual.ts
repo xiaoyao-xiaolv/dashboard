@@ -358,16 +358,16 @@ export default class Visual {
     }
     this.container.style.opacity = this.isMock ? '0.3' : '1';
     let _fontWeight: string;
-    if (options.textStyle.fontWeight == "Light") {
-      _fontWeight = options.textStyle.fontWeight + "er"
+    if (options.labelTextStyle.fontWeight == "Light") {
+      _fontWeight = options.labelTextStyle.fontWeight + "er"
     } else {
-      _fontWeight = options.textStyle.fontWeight
+      _fontWeight = options.labelTextStyle.fontWeight
     }
     let labelfontWeight: string;
-    if (options.labelTextStyle.fontWeight == "Light") {
-      labelfontWeight = options.labelTextStyle.fontWeight + "er"
+    if (options.textStyle.fontWeight == "Light") {
+      labelfontWeight = options.textStyle.fontWeight + "er"
     } else {
-      labelfontWeight = options.labelTextStyle.fontWeight
+      labelfontWeight = options.textStyle.fontWeight
     }
 
     const hexToRgba = (hex, opacity) => {
@@ -439,11 +439,11 @@ export default class Visual {
             }
             return dataRatio
           },
-          color: options.labelTextStyle.color,
-          fontSize: options.labelTextStyle.fontSize.substr(0, 2),
+          color: options.textStyle.color,
+          fontSize: options.textStyle.fontSize.substr(0, 2),
           fontWeight: labelfontWeight,
-          fontFamily: options.labelTextStyle.fontFamily,
-          fontStyle: options.labelTextStyle.fontStyle,
+          fontFamily: options.textStyle.fontFamily,
+          fontStyle: options.textStyle.fontStyle,
         },
         axisLine: {
           show: false
@@ -468,7 +468,7 @@ export default class Visual {
         label: {
           show: options.showBarLabel,
           margin: 1,
-          position: this.setPosition(options.firstBarPosition,1,options.axisYWidth),
+          position: options.firstBarAboutPosition==='inside'?options.firstBarInsidePosition:options.firstBarOutsidePosition,
           rotate : options.rotationDegree,
           width:65,
           // backgroundColor:'red',
@@ -485,11 +485,11 @@ export default class Visual {
           },
           rich: {
             title: {
-              color: options.textStyle.color,
-              fontSize: options.textStyle.fontSize.substr(0, 2),
+              color: options.labelTextStyle.color,
+              fontSize: options.labelTextStyle.fontSize.substr(0, 2),
               fontWeight: _fontWeight,
-              fontFamily: options.textStyle.fontFamily,
-              fontStyle: options.textStyle.fontStyle,
+              fontFamily: options.labelTextStyle.fontFamily,
+              fontStyle: options.labelTextStyle.fontStyle,
 
             }
           },
@@ -519,17 +519,16 @@ export default class Visual {
         label: {
           show: options.showRanking,
           margin: 1,
-          position: this.setPosition(options.secondBarPosition,2,options.axisYWidth) ,
+          position: [options.secondBarPositionX, options.secondBarPositionY] ,
           width:65,
+          lineHeight:options.barWidth,
           formatter: (value) => {
             if (this.isMock) {
               return  '{idx|' +  value.name+ '}'
-            } else {
-              if(options.showRanking && !this.isMock && options.sortAccording !== 'noOrder'){
+            } else if(options.showRanking && !this.isMock && options.sortAccording !== 'noOrder'){
                 this.rankingNumber = [];
                 this.selectionSort(this.items, 'desc', options.sortAccording);
                 const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
-  
                 const _target = JSON.parse(JSON.stringify(_targetCopy))
                 _target.index = this.setRankingType(options.rankingType, _target.index)
                 const targetCopyIndex = _targetCopy.index
@@ -538,24 +537,35 @@ export default class Visual {
                 }  else {
                   return '{idx|' +  _target.index + '}'
                 }
+            } else if (options.showRanking && !this.isMock && options.sortAccording == 'noOrder'){
+              if ((value.dataIndex + 1) <= 3) { 
+                return '{idx' + (value.dataIndex + 1) + '|' + (value.dataIndex + 1) + '}'
+              }  else {
+                return '{idx|' +  (value.dataIndex + 1) + '}'
               }
             }
+            
           },
           rich: {
             idx1: {
                 color: options.rankingColor[0],
                 backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[0],0.2)),
                 borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
-                width:options.rankingType === 'number'?null:10,
-                height:options.rankingType === 'number'?null:10,
+                padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
+                width:options.rankingType === 'number'?null:options.rankingSize+4,
+                height:options.rankingType === 'number'?null:options.rankingSize+4,
                 align: 'left',
+                // color: options.labelTextStyle.color,
+                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
+                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
+                fontFamily: options.rankingTextStyle.fontFamily,
+                fontStyle: options.rankingTextStyle.fontStyle,
             },
             idx2: {
                 color: options.rankingColor[1],
                 backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[1],0.2)),
                 borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
                 width:options.rankingType === 'number'?null:10,
                 height:options.rankingType === 'number'?null:10,
                 align: 'left',
@@ -564,18 +574,23 @@ export default class Visual {
                 color: options.rankingColor[2],
                 backgroundColor: rgbaToHex(hexToRgba(options.rankingColor[2],0.2)),
                 borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: options.rankingType === 'number'?[4, 6]:[4.5, 4.5],
+                padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
                 width:options.rankingType === 'number'?null:10,
                 height:options.rankingType === 'number'?null:10,
                 align: 'left',
             },
             idx: {
-                color: 'white',
-                borderRadius: 100,
+                color: options.rankingTextStyle.color,
+                borderRadius: options.rankingShape === 'circular' ? 100 : '',
                 width:10,
                 height:10,
                 align: 'left',
-                padding: [2, 4]
+                padding: [options.rankingSize, options.rankingSize],
+                backgroundColor:options.rankingBackgroundColor,
+                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
+                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
+                fontFamily: options.rankingTextStyle.fontFamily,
+                fontStyle: options.rankingTextStyle.fontStyle,
             }
           },
         },
@@ -621,6 +636,13 @@ export default class Visual {
     if (!updateOptions.properties.showSecondBarContrast) {
       hiddenOptions = hiddenOptions.concat(['showSecondBarContrastUnit'])
     }
+    if (updateOptions.properties.firstBarAboutPosition === 'inside') {
+      hiddenOptions = hiddenOptions.concat(['firstBarOutsidePosition'])
+    }
+    if (updateOptions.properties.firstBarAboutPosition === 'outside') {
+      hiddenOptions = hiddenOptions.concat(['firstBarInsidePosition'])
+    }
+
     return hiddenOptions;
   }
 
