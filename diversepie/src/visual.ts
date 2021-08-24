@@ -144,7 +144,7 @@ export default class Visual extends WynVisual {
       this.dispatch('downplay',selectInfo)
     })
 
-    this.chart.on('mousedown', (params) => {
+    this.chart.on('mouseup', (params) => {
       const clickMouse = params.event.event.button;
       if (params.componentType !== 'series') return;
       params.event.event.seriesClick = true;
