@@ -158,7 +158,6 @@ export default class Visual extends WynVisual {
       }
       return backgroundColor
     }
-debugger;
     const option = {
       tooltip: {
         trigger: 'item',
@@ -180,10 +179,13 @@ debugger;
           label: {
             position: 'inner',
             fontSize: 14,
+            formatter: isMock ? "{a|{a}}" : options.innerLegendRichFormat,
+            rich: JSON.parse(options.innerLegendRichStyle)
           },
           labelLine: {
             show: false
           },
+          color: options.pieColor,
           data: isMock ? Visual.mockItemsIn : this.items[1]
         },
         {
@@ -194,6 +196,7 @@ debugger;
             show : (isMock ? "{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  " : options.legendRichFormat).length>0,
             length: 30,
           },
+          color:options.ringColor,
           label: {
             position : options.legendPosition?'outside':'inner',
             formatter: isMock ? "{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  " : options.legendRichFormat,
@@ -226,6 +229,7 @@ debugger;
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     return null;
+
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
