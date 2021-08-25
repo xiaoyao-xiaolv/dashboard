@@ -73,7 +73,7 @@
                         "name": "barWidth",
                         "type": "Integer",
                         "displayName": "柱子宽度",
-                        "defaultValue": 14
+                        "defaultValue": 20
                     },
                     {
                         "name": "barBackgroundColor",
@@ -144,7 +144,7 @@
                         "name": "axisYWidth",
                         "type": "Percentage",
                         "displayName": "轴宽度",
-                        "defaultValue": 45,
+                        "defaultValue": 6,
                         "min": 0
                     },
                     {
@@ -285,89 +285,18 @@
                         "displayName": "显示数据标注",
                         "defaultValue": true
                     },
+                    
                     {
-                        "displayNameKey": "内外侧位置",
-                        "name": "firstBarAboutPosition",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "inside",
-                                "displayNameKey": "内测"
-                            },
-                            {
-                                "value": "outside",
-                                "displayNameKey": "外侧"
-                            }
-                        ],
-                        "defaultValue": "inside"
+                        "name": "firstBarPositionX",
+                        "type": "Integer",
+                        "displayName": "排名位置X",
+                        "defaultValue": 1
                     },
                     {
-                        "displayNameKey": "显示位置",
-                        "name": "firstBarInsidePosition",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "insideTopLeft",
-                                "displayNameKey": "左上方"
-                            },
-                            {
-                                "value": "insideTopRight",
-                                "displayNameKey": "右上方"
-                            },
-                            {
-                                "value": "insideBottomLeft",
-                                "displayNameKey": "左下方"
-                            },
-                            {
-                                "value": "insideBottomRight",
-                                "displayNameKey": "右下方"
-                            },
-                            {
-                                "value": "insideLeft",
-                                "displayNameKey": "左侧"
-                            },
-                            {
-                                "value": "insideRight",
-                                "displayNameKey": "右侧"
-                            },
-                            {
-                                "value": "inside",
-                                "displayNameKey": "居中"
-                            },
-                            {
-                                "value": "insideTop",
-                                "displayNameKey": "上方"
-                            },
-                            {
-                                "value": "insideBottom",
-                                "displayNameKey": "下方"
-                            }
-                        ],
-                        "defaultValue": "insideLeft"
-                    },
-                    {
-                        "displayNameKey": "显示位置",
-                        "name": "firstBarOutsidePosition",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "left",
-                                "displayNameKey": "左侧"
-                            },
-                            {
-                                "value": "right",
-                                "displayNameKey": "右侧"
-                            },
-                            {
-                                "value": "top",
-                                "displayNameKey": "上方"
-                            },
-                            {
-                                "value": "bottom",
-                                "displayNameKey": "下方"
-                            }
-                        ],
-                        "defaultValue": "left"
+                        "name": "firstBarPositionY",
+                        "type": "Integer",
+                        "displayName": "排名位置Y",
+                        "defaultValue": -13
                     },
                     {
                         "name": "rotationDegree",
@@ -525,13 +454,13 @@
                         "name": "secondBarPositionX",
                         "type": "Integer",
                         "displayName": "排名位置X",
-                        "defaultValue": -45
+                        "defaultValue": -40
                     },
                     {
                         "name": "secondBarPositionY",
                         "type": "Integer",
                         "displayName": "排名位置Y",
-                        "defaultValue": 0
+                        "defaultValue": 12
                     },
                     {
                         "displayNameKey": "背景形状",
@@ -548,14 +477,14 @@
                             },
                             {
                                 "value": "custom",
-                                "displayNameKey": "自定义形状"
+                                "displayNameKey": "自定义图片"
                             },
                             {
                                 "value": "none",
                                 "displayNameKey": "无"
                             }
                         ],
-                        "defaultValue": "circular"
+                        "defaultValue": "none"
                     },
                     {
                         "name": "rankingBackgroundColor",
@@ -564,10 +493,15 @@
                         "defaultValue": "#444a58"
                     },
                     {
+                        "name": "rankingBackgroundImage",
+                        "type": "Image",
+                        "displayName": "背景图片"
+                    },
+                    {
                         "name": "rankingSize",
                         "type": "Integer",
                         "displayName": "背景大小",
-                        "defaultValue": 4
+                        "defaultValue": 12
                     },
                     {
                         "name": "rankingTextStyle",
@@ -576,31 +510,10 @@
                         "inheritFrom": "dashboard.textStyle"
                     },
                     {
-                        "displayNameKey": "Top3显示类型",
-                        "name": "rankingType",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "number",
-                                "displayNameKey": "1/2/3"
-                            },
-                            {
-                                "value": "champion",
-                                "displayNameKey": "冠/亚/季"
-                            },
-                            {
-                                "value": "excellent",
-                                "displayNameKey": "优/良/中"
-                            }
-                            
-                        ],
-                        "defaultValue": "number"
-                    },
-                    {
                         "name": "showBackgroundColor",
                         "type": "Boolean",
                         "displayName": "特定排名",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "rankingConditionCollection",
@@ -610,6 +523,11 @@
                             {
                                 "name": "rankingConditionValue",
                                 "displayName": "条件排名序列号",
+                                "type": "Text"
+                            },
+                            {
+                                "name": "rankingReplaceValue",
+                                "displayName": "替换排名序列号",
                                 "type": "Text"
                             },
                             {

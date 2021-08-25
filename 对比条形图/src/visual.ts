@@ -39,7 +39,6 @@ export default class Visual {
     this.isTooltipModelShown = false;
     this.selection = [];
     this.selectionManager = host.selectionService.createSelectionManager();
-    this.rankingNumber = [];
   }
   private showTooltip = _.debounce((params) => {
     this.isTooltipModelShown = true;
@@ -183,7 +182,7 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
-    } else if(sorttype == "desc" && according === 'accordingPercent'){
+    }else if(sorttype == "desc" && according === 'accordingPercent'){
       for (var i = 0; i < len - 1; i++) {
         index = i;
         for (var j = i + 1; j < len; j++) {
@@ -207,9 +206,6 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
-      arr[0].forEach((element,index) => {
-        this.rankingNumber.push({name:element,index:index+1})
-      });
     }else if(sorttype == "asc" && according === 'accordingActual'){
       for (var i = 0; i < len - 1; i++) {
         index = i;
@@ -258,48 +254,49 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
-      arr[0].forEach((element,index) => {
-        this.rankingNumber.push({name:element,index:index+1})
-      });
     }
     return;
   }
 
-  private setPosition(positionType: any,num:Number,axisYWidth: Number) {
-    if (positionType === 'topLeft') {
-      return num === 1?[25,-15]:[0,-20]
-    }else if(positionType === 'topRight'){
-      return num === 1?[400,-15]:[380,-20]
-    }else if(positionType === 'bottomLeft'){
-      return num === 1?[25,20]:[0,15]
-    }else if(positionType === 'bottomRight'){
-      return num === 1?[400,20]:[380,15]
-    }else if(positionType === 'left'){
-      return num === 1?[-axisYWidth+20,3]:[-axisYWidth,0]
-    }else if(positionType === 'right'){
-      return num === 1?[400,-15]:[380,-20]
-    }else if(positionType === 'inside'){
-      return ['50%','30%']
-    }else {
-      return positionType
-    }
-  }
+  private _getRichList(_options,allData:any) {
+    const {rankingConditionCollection: rankingArr, rankingTextStyle: textStyle,rankingShape: bgShape, rankingSize: widthSize,  rankingBackgroundImage: bgImage, rankingBackgroundColor: bgColor ,showBackgroundColor} = _options;
+    let arr = allData[this.isMock ? 0 : 3].map(function (item) {
+      return 100
+    })
+   const _basicTextStyle = {
+    fontSize: textStyle.fontSize.substr(0, 2),
+    fontWeight: textStyle.fontWeight == "Light"?textStyle.fontWeight + "er":textStyle.fontWeight,
+    fontFamily: textStyle.fontFamily,
+    fontStyle: textStyle.fontStyle,
+    borderRadius: bgShape === 'circular' ? 100 : '',
+    width:10,
+    height:10,
+    align: 'left',
+    padding: [widthSize, widthSize],
+   }
 
-  private setRankingType(rankingType: any, targetIndex: any ) {
-    if(targetIndex <= 3){
-      let championList = ['冠','亚','季']
-      let excellentList = ['优','良','中']
-      if(rankingType === 'champion'){
-        let champion
-        return champion = championList.filter((ele,index) => (index+1) === targetIndex)
-      } else if(rankingType === 'excellent'){
-        let excellent
-        return excellent = excellentList.filter((ele,index) => (index+1) === targetIndex)
-      } else {
-        return targetIndex
-      } 
+    if(rankingArr.length && showBackgroundColor){
+      let styleList = {}
+      arr.map((element,index) => {
+        const _target = rankingArr.find((_item) => Number(_item.rankingConditionValue) === (index+1));
+        let fontColor = _target && _target.rankingFontColor?_target.rankingFontColor: textStyle.color;
+        let bgColorOrImage = _target && _target.rankingConditionImage && { image: _target.rankingConditionImage} || !!_target && _target.rankingConditionColor || this.setBackgroundImage(bgImage,bgColor)
+        let orderName = `idx${index+1}`
+        styleList[orderName] = {
+                color: fontColor,
+                backgroundColor: bgColorOrImage,
+                ..._basicTextStyle    
+        }
+      });
+      return styleList
     }else{
-      return targetIndex
+      return {
+        idx: {
+          color: textStyle.color,
+          backgroundColor:bgShape === 'none' ? 'transparent' : this.setBackgroundImage(bgImage,bgColor),
+          ..._basicTextStyle    
+        }
+      }
     }
   }
 
@@ -350,13 +347,11 @@ export default class Visual {
   }
 
   public setTopColor(array: any, index:Number, type: string){
-    const options = this.properties;
-    if(!options.showBackgroundColor) return '';
+   
 
     const _target = array.find((_item) => Number(_item.rankingConditionValue) === index);
     if(type === 'bg') {
       if(_target) {
-        console.log(_target.rankingConditionImage && { image: _target.rankingConditionImage} || _target.rankingConditionColor || ' ', '000')
         return _target.rankingConditionImage && { image: _target.rankingConditionImage} || _target.rankingConditionColor || ' '
       }else {
          return ''
@@ -366,6 +361,16 @@ export default class Visual {
         return _target.rankingFontColor || ''
       }
      
+    }
+  }
+
+  public setBackgroundImage(newSrc: any,newColor: any){
+    if(newSrc){
+      const newImage = new Image();
+      newImage.src = newSrc
+      return {image:newImage}
+    }else{
+      return newColor
     }
   }
 
@@ -404,7 +409,7 @@ export default class Visual {
       },
       grid: {
         top: '10',
-        left: options.axisYWidth,
+        left: `${options.axisYWidth}%`,
         right: '4.75%',
         bottom: '0',
         containLabel: true
@@ -426,7 +431,6 @@ export default class Visual {
             } else {
               if (this.isDimension) {
                 let percent = options.showSecondBarPercent && this.isActualValue ? this.items[3][formatterIndex].toFixed(options.showSecondPercentFormate) + '%' : '';
-                console
                 let actual = options.showSecondBarActual && this.isActualValue ? `${this.formatData(this.items[1][formatterIndex], options.showSecondBarActualUnit, this.actualFormate)}` : '';
                 
                 let contrast = options.showSecondBarContrast && this.isContrastValue ? this.formatData(this.items[2][formatterIndex], options.showSecondBarContrastUnit, this.contrastFormate) : '';
@@ -467,7 +471,7 @@ export default class Visual {
         label: {
           show: options.showBarLabel,
           margin: 1,
-          position: options.firstBarAboutPosition==='inside'?options.firstBarInsidePosition:options.firstBarOutsidePosition,
+          position: [options.firstBarPositionX,options.firstBarPositionY],
           rotate : options.rotationDegree,
           width: 65,
           color: options.labelTextStyle.color,
@@ -525,84 +529,21 @@ export default class Visual {
           position: [options.secondBarPositionX, options.secondBarPositionY] ,
           width:65,
           lineHeight:options.barWidth,
-          formatter: (value, index) => {
+          formatter: (value) => {
             if (this.isMock) {
               return  '{idx|' +  items[0][value.dataIndex]+ '}'
-            } else if(options.showRanking && !this.isMock && options.sortAccording !== 'noOrder'){
-                this.rankingNumber = [];
-                this.selectionSort(this.items, 'desc', options.sortAccording);
-                const _targetCopy  = this.rankingNumber&&this.rankingNumber.filter(element => value.name === element.name)[0];
-                const _target = JSON.parse(JSON.stringify(_targetCopy))
-                _target.index = this.setRankingType(options.rankingType, _target.index)
-                const targetCopyIndex = _targetCopy.index
-                if (targetCopyIndex <= 3) { 
-                  return '{idx' + targetCopyIndex + '|' +  _target.index + '}'
-                }  else {
-                  return '{idx|' +  _target.index + '}'
+            } else if(options.showRanking && !this.isMock){
+                const _target = options.rankingConditionCollection.find((_item) => Number(_item.rankingConditionValue) === (value.dataIndex+1));
+                let replcaeOrder = !!_target&&_target.rankingReplaceValue || (value.dataIndex+1)
+                if(options.showBackgroundColor && options.rankingConditionCollection)  {
+                  return '{idx'+ (value.dataIndex+1) +'|'+ replcaeOrder + '}'
+                }else {
+                  return '{idx|'+ replcaeOrder + '}'
                 }
-            } else if (options.showRanking && !this.isMock && options.sortAccording == 'noOrder'){
-              if ((value.dataIndex + 1) <= 3) { 
-                return '{idx' + (value.dataIndex + 1) + '|' + (value.dataIndex + 1) + '}'
-              }  else {
-                return '{idx|' +  (value.dataIndex + 1) + '}'
-              }
-            }
+            } 
             
           },
-          rich: {
-            idx1: {
-                color: this.setTopColor(options.rankingConditionCollection, 1, 'font') || options.rankingTextStyle.color,
-                backgroundColor: this.setTopColor(options.rankingConditionCollection,1, 'bg') || options.rankingBackgroundColor,
-                borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
-                width:options.rankingType === 'number'?null:options.rankingSize+4,
-                height:options.rankingType === 'number'?null:options.rankingSize+4,
-                align: 'left',
-                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
-                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
-                fontFamily: options.rankingTextStyle.fontFamily,
-                fontStyle: options.rankingTextStyle.fontStyle,
-            },
-            idx2: {
-                color: this.setTopColor(options.rankingConditionCollection, 2, 'font') || options.rankingTextStyle.color,
-                backgroundColor: this.setTopColor(options.rankingConditionCollection,2, 'bg') || options.rankingBackgroundColor,
-                borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
-                width:options.rankingType === 'number'?null:10,
-                height:options.rankingType === 'number'?null:10,
-                align: 'left',
-                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
-                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
-                fontFamily: options.rankingTextStyle.fontFamily,
-                fontStyle: options.rankingTextStyle.fontStyle,
-            },
-            idx3: {
-                color: this.setTopColor(options.rankingConditionCollection, 3, 'font') || options.rankingTextStyle.color,
-                backgroundColor: this.setTopColor(options.rankingConditionCollection,3, 'bg') || options.rankingBackgroundColor,
-                borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                padding: options.rankingType === 'number'?[options.rankingSize, options.rankingSize+2]:[options.rankingSize, options.rankingSize],
-                width:options.rankingType === 'number'?null:10,
-                height:options.rankingType === 'number'?null:10,
-                align: 'left',
-                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
-                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
-                fontFamily: options.rankingTextStyle.fontFamily,
-                fontStyle: options.rankingTextStyle.fontStyle,
-            },
-            idx: {
-                color: options.rankingTextStyle.color,
-                borderRadius: options.rankingShape === 'circular' ? 100 : '',
-                width:10,
-                height:10,
-                align: 'left',
-                padding: [options.rankingSize, options.rankingSize],
-                backgroundColor:options.rankingBackgroundColor,
-                fontSize: options.rankingTextStyle.fontSize.substr(0, 2),
-                fontWeight: options.rankingTextStyle.fontWeight == "Light"?options.rankingTextStyle.fontWeight + "er":options.rankingTextStyle.fontWeight,
-                fontFamily: options.rankingTextStyle.fontFamily,
-                fontStyle: options.rankingTextStyle.fontStyle,
-            }
-          },
+          rich:this._getRichList(options ,items),
         },
         emphasis: {
           itemStyle: {
@@ -625,8 +566,9 @@ export default class Visual {
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
+    // ranking
     if (!updateOptions.properties.showRanking) {
-      hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'rankingShape', 'rankingType', 'showRankingColor'])
+      hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY','rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle','showBackgroundColor', 'rankingConditionCollection' ])
     }
     if (!updateOptions.properties.showFirstBarPercent) {
       hiddenOptions = hiddenOptions.concat(['showFirstPercentFormate'])
@@ -652,9 +594,6 @@ export default class Visual {
     if (updateOptions.properties.firstBarAboutPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['firstBarInsidePosition'])
     }
-    if (!updateOptions.properties.showRankingColor) {
-      hiddenOptions = hiddenOptions.concat(['rankingFontCollection'])
-    }
     if (!updateOptions.properties.showBackgroundColor) {
       hiddenOptions = hiddenOptions.concat(['rankingConditionCollection'])
     }
@@ -671,5 +610,3 @@ export default class Visual {
     console.log(name);
   }
 }
-
-
