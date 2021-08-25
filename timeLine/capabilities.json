@@ -229,7 +229,7 @@
                         "displayName": "标题设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "2.0X",
+                            "fontSize": "1.2X",
                             "color": "#000"
                         }
                 },
@@ -239,7 +239,7 @@
                         "displayName": "内容设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "2.0X",
+                            "fontSize": "1.0X",
                             "color": "#000"
                         }
                 },
