@@ -20,11 +20,6 @@
                 "name": "describe",
                 "displayNameKey": "节点详情",
                 "kind": "grouping"
-            },
-            {
-                "name": "tooltipFields",
-                "displayNameKey": "工具提示",
-                "kind": "attributeOrValue"
             }
         ],
         "dataViewMappings": [
@@ -58,9 +53,6 @@
                     "max": 1
                 },
                 "image": {
-                    "max": 1
-                },
-                "describe": {
                     "max": 1
                 }
             }
