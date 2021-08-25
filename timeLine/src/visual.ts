@@ -136,7 +136,7 @@ export default class Visual extends WynVisual {
         border-right: 11px solid ${labelBg};}
         </style>`)
       .appendTo(document.head);
-    
+       // custom time line point color
       $(`<style>.timeline__item::after {
         content: '';
         border: ${_options.timeLinePointBorder}px solid ${ _options.timeLinePointBg};
@@ -157,7 +157,7 @@ export default class Visual extends WynVisual {
     const _isFormatList = timeLineCollection.length;
     let _formatList = timeLineCollection[0];
     const _useToLabel = useToLabel && _isFormatList;
-    const _labelBorderColor = _useToLabel ? (_formatList.formatImage ? 'transparent' : _formatList.formatColor) : labelBg;
+    const _labelBorderColor = _useToLabel ? 'transparent' : labelBg;
     this._setStyleToAfterAndBefore(_labelBorderColor, _options);
     const _useToPoint = useToPoint && _isFormatList;
     const _useToPointValue = _isFormatList ? _formatList.formatValue : '';
@@ -173,8 +173,8 @@ export default class Visual extends WynVisual {
     }
 
     timeLineData.map((_element, index) => {
-      _formatList = timeLineCollection.find((_item: any) => _item.formatValue === _element[this.name]) || false;
-      const _timeline__item = $(`<div class="timeline__item timeline__item__${index} iconfont icon-approve">`)
+      _formatList = timeLineCollection.find((_item: any) => _item.formatValue.toString() == _element[this.name].toString()) || false;
+      const _timeline__item = $(`<div class="timeline__item timeline__item__${index}">`)
         .appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">')
         .appendTo(_timeline__item);
@@ -199,7 +199,7 @@ export default class Visual extends WynVisual {
         } 
       }
       // custom label
-      let _formatLabel = _useToLabel && _element[this.name] === _formatList.formatValue;
+      let _formatLabel = _useToLabel && _formatList;
       const timeline__content__fontStyle = {
         border: `1px solid ${_formatLabel ? _labelBorderColor : pointBg}`,
         background: _formatLabel ? `${_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat` : _formatList.formatColor} ` : labelBg,
@@ -208,7 +208,7 @@ export default class Visual extends WynVisual {
       _timeline__title.css(_timeline__title__style);
       _timeline__describe.css(_options.labelDescribeStyle);
 
-      let _formatPoint = _useToPoint && _element[this.name] === _formatList.formatValue;
+      let _formatPoint = _useToPoint && _formatList;
       const _usePointBg = _useToPoint ? (_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat` : _formatList.formatColor) : pointBg;
       // custom point
       if (_formatPoint) {
@@ -230,17 +230,16 @@ export default class Visual extends WynVisual {
     });
 
     // custom vertical line color
-    $(`<style>.timeline:not(.timeline--horizontal)::before{background-color: ${_options.timeLineBg};}</style>`).appendTo(document.head)
+    $(`<style>.timeline__wrap::before{background-color: ${_options.timeLineBg};}</style>`).appendTo(document.head)
     // custom horizontal line color
     $('.timeline-divider').css('backgroundColor', `${_options.timeLineBg}`);
-
-    // custom time line point color
   
   };
 
   public render() {
-    this.root.html('').css({ 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center' });
     const options = this.options;
+    this.root.html('').css({ 'display': 'flex', 'alignItems': `${options.timeLineDirection === 'horizontal' ? 'center':'start'}`, 'justifyContent': 'center' });
+
     let _data = this.isMock ? Visual.mockItems : this.items;
     this.resize();
     this._initHtml(options, _data);

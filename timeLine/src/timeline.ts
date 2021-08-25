@@ -300,8 +300,8 @@ const timeline = (collection, options?: any) => {
       const topPosition = tl.items[0].offsetHeight;
       prevArrow.className = 'timeline-nav-button timeline-nav-button--prev';
       nextArrow.className = 'timeline-nav-button timeline-nav-button--next';
-      prevArrow.textContent = 'Previous';
-      nextArrow.textContent = 'Next';
+      prevArrow.textContent = '';
+      nextArrow.textContent = '';
       prevArrow.style.top = `${topPosition}px`;
       nextArrow.style.top = `${topPosition}px`;
       if (currentIndex === 0) {
@@ -383,7 +383,7 @@ const timeline = (collection, options?: any) => {
     tl.items.forEach((item, i) => {
       item.classList.remove('animated', 'fadeIn');
       if (!isElementInViewport(item, tl.settings.verticalTrigger) && i > 0) {
-        item.classList.add('animated');
+        // item.classList.add('animated');
       } else {
         lastVisibleIndex = i;
       }

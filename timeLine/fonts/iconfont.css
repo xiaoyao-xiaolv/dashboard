@@ -15,7 +15,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-approve:after {
+.icon-approve::before {
   content: "\e626";
 }
-
