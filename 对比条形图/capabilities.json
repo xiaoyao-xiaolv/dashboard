@@ -128,6 +128,46 @@
                             }
                         ],
                         "defaultValue": "desc"
+                    },
+                    {
+                        "displayNameKey": "柱子圆角",
+                        "name": "barBorderRadius",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "default",
+                                "displayNameKey": "默认"
+                            },
+                            {
+                                "value": "custom",
+                                "displayNameKey": "自定义"
+                            }
+                        ],
+                        "defaultValue": "default"
+                    },
+                    {
+                        "name": "radiusLeftTop",
+                        "type": "Integer",
+                        "displayName": "圆角左上",
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "radiusRightTop",
+                        "type": "Integer",
+                        "displayName": "圆角右上",
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "radiusLeftDown",
+                        "type": "Integer",
+                        "displayName": "圆角左下",
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "radiusRightDown",
+                        "type": "Integer",
+                        "displayName": "圆角右下",
+                        "defaultValue": 14
                     }
                 ]
             },

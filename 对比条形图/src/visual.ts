@@ -505,7 +505,7 @@ export default class Visual {
             offset: 1,
             color: options.barEndcolor // 100% 处的颜色
           }], false),
-          barBorderRadius: 14
+          barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         }
       }, {
         type: "bar",
@@ -517,7 +517,7 @@ export default class Visual {
         }),
         itemStyle: {
           color: options.barBackgroundColor,
-          barBorderRadius: 14
+          barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         },
         label: {
           show: options.showRanking,
@@ -625,6 +625,10 @@ export default class Visual {
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
+    if (updateOptions.properties.barBorderRadius === 'default') {
+      hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
+    }
+
     if (!updateOptions.properties.showRanking) {
       hiddenOptions = hiddenOptions.concat(['secondBarPosition', 'rankingShape', 'rankingType', 'showRankingColor'])
     }
