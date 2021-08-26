@@ -499,7 +499,7 @@ export default class Visual {
         symbolMargin: options.barSymbolMargin,
         symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? `image://${options.barSymbolImage}` : options.barSymbolType),
         symbolClip: true,
-        symbolSize: [`${options.barSymbolSize}%`, `${options.barSymbolSize}%`],
+        symbolSize: [`${options.barSymbolSizeX}`, `${options.barSymbolSizeY}`],
         symbolPosition: "start",
         symbolOffset: [0, 0],
         // with: 12,
@@ -543,7 +543,7 @@ export default class Visual {
             offset: 1,
             color: options.barEndcolor // 100% 处的颜色
           }], false),
-          barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
+          barBorderRadius: [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         }
       }, {
         type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
@@ -557,13 +557,13 @@ export default class Visual {
         symbolMargin: options.barSymbolMargin,
         symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? (options.barSymbolImage?`image://${options.barSymbolImage}`:'default') : options.barSymbolType),
         symbolClip: true,
-        symbolSize: [`${options.barSymbolSize}%`, `${options.barSymbolSize}%`],
+        symbolSize: [`${options.barSymbolSizeX}`, `${options.barSymbolSizeY}`],
         symbolPosition: "start",
         symbolOffset: [0, 0],
         itemStyle: {
           color: options.barBackgroundColor,
           opacity: options.barSymbolType === 'custom' ? 0.5 : 1,
-          barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
+          barBorderRadius: [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         },
         label: {
           show: options.showRanking,
@@ -611,17 +611,13 @@ export default class Visual {
 
     // fill shape
     if (updateOptions.properties.barSymbolType === 'default') {
-      hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSize', 'barSymbolMargin'])
+      hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSizeX', 'barSymbolSizeY','barSymbolMargin'])
     } else {
-      hiddenOptions = hiddenOptions.concat(['barBorderRadius'])
+      hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
     }
     
     if (updateOptions.properties.barSymbolType !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
-    }
-
-    if (updateOptions.properties.barBorderRadius === 'default') {
-      hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
     }
 
     if (updateOptions.properties.rankingShape !== 'custom') {

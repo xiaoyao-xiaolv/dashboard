@@ -137,7 +137,7 @@
                         "items": [
                             {
                                 "value": "default",
-                                "displayNameKey": "默认"
+                                "displayNameKey": "条形"
                             },
                             {
                                 "value": "circle",
@@ -145,7 +145,7 @@
                             },
                             {
                                 "value": "rect",
-                                "displayNameKey": "方形"
+                                "displayNameKey": "矩形"
                             },{
                                 "value": "roundRect",
                                 "displayNameKey": "圆角方形"
@@ -172,44 +172,28 @@
                         "defaultValue": "default"
                     },
                     {
-                        "displayNameKey": "柱子圆角",
-                        "name": "barBorderRadius",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "default",
-                                "displayNameKey": "默认"
-                            },
-                            {
-                                "value": "custom",
-                                "displayNameKey": "自定义"
-                            }
-                        ],
-                        "defaultValue": "default"
-                    },
-                    {
                         "name": "radiusLeftTop",
                         "type": "Integer",
                         "displayName": "圆角左上",
-                        "defaultValue": 14
+                        "defaultValue": 10
                     },
                     {
                         "name": "radiusRightTop",
                         "type": "Integer",
                         "displayName": "圆角右上",
-                        "defaultValue": 14
+                        "defaultValue": 10
                     },
                     {
                         "name": "radiusLeftDown",
                         "type": "Integer",
                         "displayName": "圆角左下",
-                        "defaultValue": 14
+                        "defaultValue": 10
                     },
                     {
                         "name": "radiusRightDown",
                         "type": "Integer",
                         "displayName": "圆角右下",
-                        "defaultValue": 14
+                        "defaultValue": 10
                     },
                     {
                         "name": "barSymbolImage",
@@ -217,15 +201,22 @@
                         "displayName": "填充图片"
                     },
                     {
-                        "name": "barSymbolSize",
-                        "type": "Percentage",
-                        "displayName": "填充图形大小",
-                        "defaultValue": 100,
+                        "name": "barSymbolSizeX",
+                        "type": "Integer",
+                        "displayName": "图形宽度",
+                        "defaultValue": 18,
+                        "min" : 0
+                    },
+                    {
+                        "name": "barSymbolSizeY",
+                        "type": "Integer",
+                        "displayName": "图形高度",
+                        "defaultValue": 18,
                         "min" : 0
                     },
                     {
                         "name": "barSymbolMargin",
-                        "type": "Percentage",
+                        "type": "Integer",
                         "displayName": "填充间隔",
                         "defaultValue": 15,
                         "min" : 0
