@@ -70,46 +70,15 @@ export default class Visual {
         return;
       }
     })
-
-    // this.chart.on('click', (params) => {
-    //   if (params.componentType !== 'series') return;
-    //   params.event.event.seriesClick = true;
-
-    //   let dataIndex = params.dataIndex;
-    //   let sid = this.items[5][dataIndex];
-    //   let selectedInfo = {
-    //     seriesIndex: 1,
-    //     dataIndex: dataIndex,
-    //   };
-
-    //   if (this.selectionManager.contains(sid)) {
-    //     this.dispatch('downplay', selectedInfo);
-    //     this.selectionManager.clear(sid);
-    //     return;
-    //   }
-
-    //   this.showTooltip(params);
-    //   this.selectionManager.select(sid, true);
-    //   this.dispatch('highlight', selectedInfo);
-    //   this.selection.push(selectedInfo);
-    // })
     this.chart.on('click', (params) => {
       const clickMouse = params.event.event.button;
-      console.log(params, '====params')
       if (params.componentType !== 'series') return;
       params.event.event.seriesClick = true;
       let dataIndex = params.dataIndex;
-      let sid = this.items[5][dataIndex];
-      
       let selectedInfo = {
         seriesIndex: params.seriesIndex,
         dataIndex: dataIndex,
       };
-      // if (this.selectionManager.contains(sid)) {
-      //   this.dispatch('downplay', selectedInfo);
-      //   this.selectionManager.clear(sid);
-      //   return;
-      // }
       if (this.items[5][params.dataIndex]) {
         const sid = this.items[5][params.dataIndex];
         this.selectionManager.select(sid, true);
@@ -120,15 +89,12 @@ export default class Visual {
       if (clickMouse === clickLeftMouse) {
         // dataIndex = (params.dataIndex === dataIndex)?'':params.dataIndex
         // show data jump
-      
         if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
           return
         } else {
-          // if (this.isTooltipModelShown) return;
-          // this.hideTooltip();
-          console.log('鼠标左击')
+          if (this.isTooltipModelShown) return;
+          this.hideTooltip();
           const selectionIds = this.selectionManager.getSelectionIds();
-          console.log(selectionIds, '===', this.properties.clickLeftMouse)
           this.host.commandService.execute([{
             name: this.properties.clickLeftMouse,
             payload: {
@@ -141,7 +107,6 @@ export default class Visual {
           }])
         }
       } else if (clickMouse === clickRightMouse) {
-        console.log('鼠标右击击')
         params.event.event.preventDefault();
         this.showTooltip(params, true);
       }
@@ -183,7 +148,6 @@ export default class Visual {
         const getSelectionId = (_item) => {
           const selectionId = this.host.selectionService.createSelectionId();
           selectionId.withDimension(plainData.profile.dimension.values[0], _item);
-          console.log(selectionId, '====selectionId init')
           return selectionId;
         }
         dimension && this.items[5].push(getSelectionId(data));
@@ -191,7 +155,7 @@ export default class Visual {
 
       if (ActualValue && ContrastValue && dimension) {
         this.allShow = true;
-        this.items[4] = [ActualValue, ContrastValue];
+        this.items[4] = [ActualValue, ContrastValue, dimension];
         this.items[0] = plainData.sort[dimension] ? plainData.sort[dimension].order : '';
 
       }
@@ -456,14 +420,17 @@ export default class Visual {
       tooltip: {
         show: true,
         formatter: (params) => {
-          // for (var i = 0; i < items[0].length; i++) {
-          //   if (items[0][i] === params.name) {
-          //     let integer = this.actualFormat && this.host.formatService.format(this.actualFormat, items[1][i])
-          //     let _integer = this.contrastFormat && this.host.formatService.format(this.contrastFormat, items[2][i])
-          //     // return items[4][0] + ":" + items[1][i] + "<br/>" + items[4][1] + ":" + items[2][i];
-          //     return items[4][0] + ": " + integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,') + "<br/>" + items[4][1] + ": " + _integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
-          //   }
-          // }
+          if (this.isMock) {
+            return this.items[4][0]
+          } else {
+            if (this.isActualValue) {
+              if (this.isDimension) {
+                return `${this.items[4][0]} : ${this.items[1][params.dataIndex]} \n ${this.items[4][1]} : ${this.items[2][params.dataIndex]}`
+              } else {
+                return `${this.items[4][2]} : ${params.name}`
+              }
+            }
+          }
         }
       },
       grid: {
@@ -555,7 +522,6 @@ export default class Visual {
               if (this.isDimension) {
                 let name = options.showFirstBarCategory && this.isDimension ? value.name:''
                 let percent = options.showFirstBarPercent && this.isActualValue ? this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate) + '%' : '';
-                console
                 let actual = options.showFirstBarActual && this.isActualValue ? `${this.formatData(this.items[1][value.dataIndex], options.showFirstBarActualUnit, this.actualFormate)}` : '';
                 
                 let contrast = options.showFirstBarContrast && this.isContrastValue ? this.formatData(this.items[2][value.dataIndex], options.showFirstBarContrastUnit, this.contrastFormate) : '';
