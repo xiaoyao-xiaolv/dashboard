@@ -23,6 +23,9 @@ export default class Visual {
   private isDimension: boolean;
   private isContrastValue: boolean;
   private isTooltipModelShown: boolean;
+  private ActualValue: string;
+  private Dimension: string;
+  private ContrastValue: string;
   static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
     , [58, 46, 47, 49, 59, 17, 25, 83, 34]
     , [74, 64, 78, 65, 79, 21, 28, 91, 38]
@@ -122,9 +125,9 @@ export default class Visual {
     if (dataView && dataView.plain.profile.ActualValue.values.length) {
       this.isMock = false;
       const plainData = dataView.plain;
-      let ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
-      let ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
-      let dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display : '';
+      this.ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
+      this.ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
+      this.Dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display : '';
       
      this.isActualValue = !!plainData.profile.ActualValue.values.length;
      this.isDimension = !!plainData.profile.dimension.values.length;
@@ -132,31 +135,30 @@ export default class Visual {
       let datas = plainData.data;
 
       datas.map((data: any) => {
-
-        this.actualFormate = ActualValue && plainData.profile.ActualValue.values[0].format;
-        this.contrastFormate = ContrastValue && plainData.profile.ContrastValue.values[0].format;
-        ActualValue && this.items[1].push(data[ActualValue]);
-        ContrastValue && this.items[2].push(data[ContrastValue]);
-        if (ActualValue && ContrastValue) {
-          this.items[3].push(Number((data[ActualValue] / data[ContrastValue] * 100).toFixed(2)));
-        } else if (ActualValue) {
-          this.items[3].push(Number((data[ActualValue] / 100 * 100).toFixed(2)));
+        this.actualFormate =  this.ActualValue && plainData.profile.ActualValue.values[0].format;
+        this.contrastFormate =  this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
+        this.ActualValue && this.items[1].push(data[this.ActualValue]);
+        this.ContrastValue && this.items[2].push(data[ this.ContrastValue]);
+        if ( this.ActualValue &&  this.ContrastValue) {
+          this.items[3].push(Number((data[this.ActualValue] / data[this.ContrastValue] * 100).toFixed(2)));
+        } else if ( this.ActualValue) {
+          this.items[3].push(Number((data[this.ActualValue] / 100 * 100).toFixed(2)));
         }
         
-        dimension && this.items[0].push(data[dimension]);
+        this.Dimension && this.items[0].push(data[this.Dimension]);
 
         const getSelectionId = (_item) => {
           const selectionId = this.host.selectionService.createSelectionId();
           selectionId.withDimension(plainData.profile.dimension.values[0], _item);
           return selectionId;
         }
-        dimension && this.items[5].push(getSelectionId(data));
+        this.Dimension && this.items[5].push(getSelectionId(data));
       })
 
-      if (ActualValue && ContrastValue && dimension) {
+      if (this.ActualValue && this.ContrastValue && this.Dimension) {
         this.allShow = true;
-        this.items[4] = [ActualValue, ContrastValue, dimension];
-        this.items[0] = plainData.sort[dimension] ? plainData.sort[dimension].order : '';
+        this.items[4] = [this.ActualValue, this.ContrastValue, this.Dimension];
+        this.items[0] = plainData.sort[this.Dimension] ? plainData.sort[this.Dimension].order : '';
 
       }
       this.actualFormat = plainData.profile.ActualValue.options.valueFormat;
@@ -423,13 +425,12 @@ export default class Visual {
           if (this.isMock) {
             return this.items[4][0]
           } else {
-            if (this.isActualValue) {
-              if (this.isDimension) {
-                return `${this.items[4][0]} : ${this.items[1][params.dataIndex]} \n ${this.items[4][1]} : ${this.items[2][params.dataIndex]}`
-              } else {
-                return `${this.items[4][2]} : ${params.name}`
-              }
-            }
+            let _toolTipText = ''
+            _toolTipText += this.isDimension ? `${this.Dimension}:${items[0][params.dataIndex]} <br>` : ''
+            _toolTipText += this.isActualValue ? `${this.ActualValue}:${items[1][params.dataIndex]}<br>` : '';
+            _toolTipText += this.isContrastValue ? `${this.ContrastValue}:${items[2][params.dataIndex]}<br>` : '';
+            ;
+            return _toolTipText;
           }
         }
       },
@@ -607,9 +608,22 @@ export default class Visual {
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
+
+    // fill shape
+    if (updateOptions.properties.barSymbolType === 'default') {
+      hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSize', 'barSymbolMargin'])
+    } else {
+      hiddenOptions = hiddenOptions.concat(['barBorderRadius'])
+    }
+    
+    if (updateOptions.properties.barSymbolType !== 'custom') {
+      hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
+    }
+
     if (updateOptions.properties.barBorderRadius === 'default') {
       hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
     }
+
     if (updateOptions.properties.rankingShape !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
     }
