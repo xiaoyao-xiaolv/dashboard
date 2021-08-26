@@ -465,9 +465,17 @@ export default class Visual {
         }
       }],
       series: [{
-        type: 'bar',
+        type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
         barWidth: options.barWidth,
         data: this.isMock ?  items[3] : (this.isContrastValue ? items[3]: items[1]),
+        symbolRepeat: "fixed",
+        symbolMargin: options.barSymbolMargin,
+        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? `image://${options.barSymbolImage}` : options.barSymbolType),
+        symbolClip: true,
+        symbolSize: [`${options.barSymbolSize}%`, `${options.barSymbolSize}%`],
+        symbolPosition: "start",
+        symbolOffset: [0, 0],
+        // with: 12,
         label: {
           show: options.showBarLabel,
           margin: 1,
@@ -512,15 +520,23 @@ export default class Visual {
           barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         }
       }, {
-        type: "bar",
+        type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
         barWidth: options.barWidth,
         xAxisIndex: 0,
         barGap: "-100%",
         data: items[this.isMock ? 0 : 3].map(function (item) {
           return 100
         }),
+        symbolRepeat: "fixed",
+        symbolMargin: options.barSymbolMargin,
+        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? `image://${options.barSymbolImage}` : options.barSymbolType),
+        symbolClip: true,
+        symbolSize: [`${options.barSymbolSize}%`, `${options.barSymbolSize}%`],
+        symbolPosition: "start",
+        symbolOffset: [0, 0],
         itemStyle: {
           color: options.barBackgroundColor,
+          opacity: options.barSymbolType === 'custom' ? 0.5 : 1,
           barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         },
         label: {
