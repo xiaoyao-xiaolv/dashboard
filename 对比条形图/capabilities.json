@@ -242,9 +242,9 @@
                     },
                     {
                         "name": "axisYWidth",
-                        "type": "Percentage",
+                        "type": "Integer",
                         "displayName": "轴宽度",
-                        "defaultValue": 10,
+                        "defaultValue": 50,
                         "min": 0
                     },
                     {
@@ -584,7 +584,7 @@
                                 "displayNameKey": "无"
                             }
                         ],
-                        "defaultValue": "none"
+                        "defaultValue": "circular"
                     },
                     {
                         "name": "rankingBackgroundImage",
@@ -622,26 +622,26 @@
                         "itemShape": [
                             {
                                 "name": "rankingConditionValue",
-                                "displayName": "条件排名序列号",
+                                "displayName": "排名序号",
                                 "type": "Text"
                             },
                             {
                                 "name": "rankingReplaceValue",
-                                "displayName": "替换排名序列号",
+                                "displayName": "显示名称",
                                 "type": "Text"
                             },
                             {
                                 "name": "rankingFontColor",
-                                "displayName": "条件排名序列号颜色",
+                                "displayName": "字体颜色",
                                 "type": "Color"
                             },
                             {
                                 "name": "rankingConditionColor",
-                                "displayName": "条件颜色",
+                                "displayName": "背景颜色",
                                 "type": "Color"
                             }, {
                                 "name": "rankingConditionImage",
-                                "displayName": "条件图片",
+                                "displayName": "背景图片",
                                 "type": "Image"
                             }
                         ],

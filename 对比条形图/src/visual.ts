@@ -435,7 +435,7 @@ export default class Visual {
       },
       grid: {
         top: '10',
-        left: `${options.axisYWidth}%`,
+        left: options.axisYWidth,
         right: '4.75%',
         bottom: '0',
         containLabel: true
