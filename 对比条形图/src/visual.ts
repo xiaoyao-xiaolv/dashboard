@@ -264,7 +264,7 @@ export default class Visual {
       return 100
     })
    const _basicTextStyle = {
-    fontSize: textStyle.fontSize.substr(0, 2),
+    fontSize: this.setFontSize(textStyle.fontSize),
     fontWeight: textStyle.fontWeight == "Light"?textStyle.fontWeight + "er":textStyle.fontWeight,
     fontFamily: textStyle.fontFamily,
     fontStyle: textStyle.fontStyle,
@@ -347,8 +347,6 @@ export default class Visual {
   }
 
   public setTopColor(array: any, index:Number, type: string){
-   
-
     const _target = array.find((_item) => Number(_item.rankingConditionValue) === index);
     if(type === 'bg') {
       if(_target) {
@@ -365,8 +363,9 @@ export default class Visual {
   }
 
   public setFontSize(fontSizeValue: any){
-    return fontSizeValue.substr(0, 2)
-    // options.labelTextStyle.fontSize.substr(0, 2)
+    let fontUnit  = fontSizeValue.substring(0,fontSizeValue.length-2)
+    let fontLastTwo = fontSizeValue.substring(fontSizeValue.length-2,fontSizeValue.length)
+    return fontLastTwo === 'px'?  fontUnit : fontUnit*(96/72)  // windows, no apple
   }
 
   public setBackgroundImage(newSrc: any,newColor: any){
@@ -450,7 +449,7 @@ export default class Visual {
             return dataRatio 
           },
           color: options.textStyle.color,
-          fontSize: options.textStyle.fontSize.substr(0, 2),
+          fontSize: this.setFontSize(options.textStyle.fontSize),
           fontWeight: labelfontWeight,
           fontFamily: options.textStyle.fontFamily,
           fontStyle: options.textStyle.fontStyle,
@@ -482,7 +481,7 @@ export default class Visual {
           rotate : options.rotationDegree,
           width: 65,
           color: options.labelTextStyle.color,
-          fontSize:options.labelTextStyle.fontSize.substr(0, 2),
+          fontSize:this.setFontSize(options.labelTextStyle.fontSize),
           fontWeight: _fontWeight,
           fontFamily: options.labelTextStyle.fontFamily,
           fontStyle: options.labelTextStyle.fontStyle,
@@ -578,6 +577,18 @@ export default class Visual {
     }
     if (updateOptions.properties.rankingShape !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
+    }
+    if (updateOptions.properties.rankingShape === 'none') {
+      hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize'])
+    }
+
+    // dataLabel
+    if (!updateOptions.properties.showBarLabel) {
+      hiddenOptions = hiddenOptions.concat(['firstBarPositionX', 'firstBarPositionY','rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast','labelTextStyle'])
+    }
+    // Classification axis
+    if (!updateOptions.properties.showLabel) {
+      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'showSecondBarPercent','showSecondPercentFormate','showSecondBarActual', 'showSecondBarContrast', 'textStyle'])
     }
 
     if (!updateOptions.properties.showRanking) {
