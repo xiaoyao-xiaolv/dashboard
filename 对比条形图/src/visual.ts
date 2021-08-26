@@ -608,9 +608,22 @@ export default class Visual {
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
+
+    // fill shape
+    if (updateOptions.properties.barSymbolType === 'default') {
+      hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSize', 'barSymbolMargin'])
+    } else {
+      hiddenOptions = hiddenOptions.concat(['barBorderRadius'])
+    }
+    
+    if (updateOptions.properties.barSymbolType !== 'custom') {
+      hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
+    }
+
     if (updateOptions.properties.barBorderRadius === 'default') {
       hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
     }
+
     if (updateOptions.properties.rankingShape !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
     }
