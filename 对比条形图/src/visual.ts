@@ -509,7 +509,7 @@ export default class Visual {
             offset: 1,
             color: options.barEndcolor // 100% 处的颜色
           }], false),
-          barBorderRadius: 14
+          barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         }
       }, {
         type: "bar",
@@ -521,7 +521,7 @@ export default class Visual {
         }),
         itemStyle: {
           color: options.barBackgroundColor,
-          barBorderRadius: 14
+          barBorderRadius: options.barBorderRadius === 'default' ? 14 : [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
         },
         label: {
           show: options.showRanking,
@@ -534,11 +534,11 @@ export default class Visual {
               return  '{idx|' +  items[0][value.dataIndex]+ '}'
             } else if(options.showRanking && !this.isMock){
                 const _target = options.rankingConditionCollection.find((_item) => Number(_item.rankingConditionValue) === (value.dataIndex+1));
-                let replcaeOrder = !!_target&&_target.rankingReplaceValue || (value.dataIndex+1)
+                let replaceOrder = !!_target&&_target.rankingReplaceValue || (value.dataIndex+1)
                 if(options.showBackgroundColor && options.rankingConditionCollection)  {
-                  return '{idx'+ (value.dataIndex+1) +'|'+ replcaeOrder + '}'
+                  return '{idx'+ (value.dataIndex+1) +'|'+ replaceOrder + '}'
                 }else {
-                  return '{idx|'+ replcaeOrder + '}'
+                  return '{idx|'+ replaceOrder + '}'
                 }
             } 
             
@@ -566,7 +566,10 @@ export default class Visual {
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
-    // ranking
+    if (updateOptions.properties.barBorderRadius === 'default') {
+      hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
+    }
+
     if (!updateOptions.properties.showRanking) {
       hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY','rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle','showBackgroundColor', 'rankingConditionCollection' ])
     }
