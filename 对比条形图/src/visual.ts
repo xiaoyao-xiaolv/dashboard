@@ -312,7 +312,7 @@ export default class Visual {
       return {
         idx: {
           color: textStyle.color,
-          backgroundColor:bgShape === 'none' ? 'transparent' : this.setBackgroundImage(bgImage,bgColor),
+          backgroundColor:bgShape === 'none' || this.isMock ? 'transparent' : this.setBackgroundImage(bgImage,bgColor),
           ..._basicTextStyle    
         }
       }
