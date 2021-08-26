@@ -79,7 +79,7 @@
                         "name": "barBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",
-                        "defaultValue": "#444a58"
+                        "defaultValue": "#8e929a"
                     },
                     {
                         "name": "barStartColor",
@@ -111,7 +111,7 @@
                                 "displayNameKey": "无"
                             }
                         ],
-                        "defaultValue": "noOrder"
+                        "defaultValue": "accordingPercent"
                     },
                     {
                         "displayNameKey": "排序方式",
@@ -184,14 +184,8 @@
                         "name": "axisYWidth",
                         "type": "Percentage",
                         "displayName": "轴宽度",
-                        "defaultValue": 6,
+                        "defaultValue": 10,
                         "min": 0
-                    },
-                    {
-                        "name": "textStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
                     },
                     {
                         "name": "showSecondBarPercent",
@@ -210,7 +204,7 @@
                         "name": "showSecondBarActual",
                         "type": "Boolean",
                         "displayName": "显示实际值",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "showSecondBarActualUnit",
@@ -264,7 +258,7 @@
                         "name": "showSecondBarContrast",
                         "type": "Boolean",
                         "displayName": "显示对比值",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "showSecondBarContrastUnit",
@@ -313,6 +307,12 @@
                             }
                         ],
                         "defaultValue": "auto"
+                    },
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     }
                 ]
             },
@@ -329,13 +329,13 @@
                     {
                         "name": "firstBarPositionX",
                         "type": "Integer",
-                        "displayName": "排名位置X",
+                        "displayName": "标注位置X",
                         "defaultValue": 1
                     },
                     {
                         "name": "firstBarPositionY",
                         "type": "Integer",
-                        "displayName": "排名位置Y",
+                        "displayName": "标注位置Y",
                         "defaultValue": -13
                     },
                     {
@@ -347,12 +347,6 @@
                         "max": 90
                     },
                     {
-                        "name": "labelTextStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
-                    },
-                    {
                         "name": "showFirstBarCategory",
                         "type": "Boolean",
                         "displayName": "显示分类名",
@@ -362,7 +356,7 @@
                         "name": "showFirstBarPercent",
                         "type": "Boolean",
                         "displayName": "显示百分比",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "showFirstPercentFormate",
@@ -478,6 +472,12 @@
                             }
                         ],
                         "defaultValue": "auto"
+                    },
+                    {
+                        "name": "labelTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle"
                     }
                 ]
             },
@@ -494,13 +494,13 @@
                         "name": "secondBarPositionX",
                         "type": "Integer",
                         "displayName": "排名位置X",
-                        "defaultValue": -40
+                        "defaultValue": -50
                     },
                     {
                         "name": "secondBarPositionY",
                         "type": "Integer",
                         "displayName": "排名位置Y",
-                        "defaultValue": 12
+                        "defaultValue": 0
                     },
                     {
                         "displayNameKey": "背景形状",
@@ -527,21 +527,21 @@
                         "defaultValue": "none"
                     },
                     {
+                        "name": "rankingBackgroundImage",
+                        "type": "Image",
+                        "displayName": "背景图片"
+                    },
+                    {
                         "name": "rankingBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",
                         "defaultValue": "#444a58"
                     },
                     {
-                        "name": "rankingBackgroundImage",
-                        "type": "Image",
-                        "displayName": "背景图片"
-                    },
-                    {
                         "name": "rankingSize",
                         "type": "Integer",
                         "displayName": "背景大小",
-                        "defaultValue": 12
+                        "defaultValue": 8
                     },
                     {
                         "name": "rankingTextStyle",

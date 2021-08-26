@@ -364,6 +364,11 @@ export default class Visual {
     }
   }
 
+  public setFontSize(fontSizeValue: any){
+    return fontSizeValue.substr(0, 2)
+    // options.labelTextStyle.fontSize.substr(0, 2)
+  }
+
   public setBackgroundImage(newSrc: any,newColor: any){
     if(newSrc){
       const newImage = new Image();
@@ -401,8 +406,10 @@ export default class Visual {
         formatter: (params) => {
           for (var i = 0; i < items[0].length; i++) {
             if (items[0][i] === params.name) {
+              let integer = this.host.formatService.format(this.actualFormat, items[1][i])
+              let _integer = this.host.formatService.format(this.contrastFormat, items[2][i])
               // return items[4][0] + ":" + items[1][i] + "<br/>" + items[4][1] + ":" + items[2][i];
-              return items[4][0] + ":" + this.host.formatService.format(this.actualFormat, items[1][i]).toLocaleString() + "<br/>" + items[4][1] + ":" + this.host.formatService.format(this.contrastFormat, items[2][i]).toLocaleString();
+              return items[4][0] + ": " + integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,') + "<br/>" + items[4][1] + ": " + _integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
             }
           }
         }
@@ -475,7 +482,7 @@ export default class Visual {
           rotate : options.rotationDegree,
           width: 65,
           color: options.labelTextStyle.color,
-          fontSize: options.labelTextStyle.fontSize.substr(0, 2),
+          fontSize:options.labelTextStyle.fontSize.substr(0, 2),
           fontWeight: _fontWeight,
           fontFamily: options.labelTextStyle.fontFamily,
           fontStyle: options.labelTextStyle.fontStyle,
@@ -568,6 +575,9 @@ export default class Visual {
     let hiddenOptions: Array<string> = [''];
     if (updateOptions.properties.barBorderRadius === 'default') {
       hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
+    }
+    if (updateOptions.properties.rankingShape !== 'custom') {
+      hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
     }
 
     if (!updateOptions.properties.showRanking) {
