@@ -554,7 +554,7 @@ export default class Visual {
         }),
         symbolRepeat: "fixed",
         symbolMargin: options.barSymbolMargin,
-        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? `image://${options.barSymbolImage}` : options.barSymbolType),
+        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? (options.barSymbolImage?`image://${options.barSymbolImage}`:'default') : options.barSymbolType),
         symbolClip: true,
         symbolSize: [`${options.barSymbolSize}%`, `${options.barSymbolSize}%`],
         symbolPosition: "start",
@@ -615,6 +615,9 @@ export default class Visual {
     }
     if (updateOptions.properties.rankingShape === 'none') {
       hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize'])
+    }
+    if (updateOptions.properties.barSymbolType !== 'custom') {
+      hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
     }
 
     // dataLabel
