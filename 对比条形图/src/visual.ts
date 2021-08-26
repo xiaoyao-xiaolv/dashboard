@@ -427,8 +427,8 @@ export default class Visual {
           } else {
             let _toolTipText = ''
             _toolTipText += this.isDimension ? `${this.Dimension}:${items[0][params.dataIndex]} <br>` : ''
-            _toolTipText += this.isActualValue ? `${this.ActualValue}:${items[1][params.dataIndex]}<br>` : '';
-            _toolTipText += this.isContrastValue ? `${this.ContrastValue}:${items[2][params.dataIndex]}<br>` : '';
+            _toolTipText += this.isActualValue ? `${this.ActualValue}:${items[1][params.dataIndex].toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}<br>` : '';
+            _toolTipText += this.isContrastValue ? `${this.ContrastValue}:${items[2][params.dataIndex].toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}<br>` : '';
             ;
             return _toolTipText;
           }

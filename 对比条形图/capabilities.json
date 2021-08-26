@@ -73,7 +73,7 @@
                         "name": "barWidth",
                         "type": "Integer",
                         "displayName": "柱子宽度",
-                        "defaultValue": 20
+                        "defaultValue": 18
                     },
                     {
                         "name": "barBackgroundColor",
@@ -145,7 +145,7 @@
                             },
                             {
                                 "value": "rect",
-                                "displayNameKey": "方形"
+                                "displayNameKey": "矩形"
                             },{
                                 "value": "roundRect",
                                 "displayNameKey": "圆角方形"
