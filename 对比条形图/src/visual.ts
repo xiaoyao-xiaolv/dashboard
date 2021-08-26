@@ -647,11 +647,11 @@ export default class Visual {
 
     // dataLabel
     if (!updateOptions.properties.showBarLabel) {
-      hiddenOptions = hiddenOptions.concat(['firstBarPositionX', 'firstBarPositionY','rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast','labelTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'firstBarPositionX', 'firstBarPositionY','rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast','labelTextStyle'])
     }
     // Classification axis
     if (!updateOptions.properties.showLabel) {
-      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'showSecondBarPercent','showSecondPercentFormate','showSecondBarActual', 'showSecondBarContrast', 'textStyle'])
+      hiddenOptions = hiddenOptions.concat([ 'showSecondBarPercent','showSecondPercentFormate','showSecondBarActual', 'showSecondBarContrast', 'textStyle'])
     }
 
     if (!updateOptions.properties.showRanking) {
