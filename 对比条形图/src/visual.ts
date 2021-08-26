@@ -2,6 +2,8 @@ import '../style/visual.less';
 import _ = require('lodash');
 const echarts = require('echarts');
 
+const clickLeftMouse = 0;
+const clickRightMouse = 2;
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
@@ -43,19 +45,16 @@ export default class Visual {
   private showTooltip = _.debounce((params) => {
     this.isTooltipModelShown = true;
     const fields = [{ label: params.name, value: `${params.data}%` }]
-    this.host.toolTipService.show({
+    this.host.contextMenuService.show({
       position: {
-        x: params.event.event.x,
-        y: params.event.event.y,
+      x: params.event.event.x,
+      y: params.event.event.y,
       },
-      fields,
-      selected: this.selectionManager.getSelectionIds(),
-      menu: true,
-    }, 10);
+    })
   });
 
   private hideTooltip = () => {
-    this.host.toolTipService.hide();
+    this.host.contextMenuService.hide();
     this.isTooltipModelShown = false;
   }
 
@@ -72,27 +71,80 @@ export default class Visual {
       }
     })
 
+    // this.chart.on('click', (params) => {
+    //   if (params.componentType !== 'series') return;
+    //   params.event.event.seriesClick = true;
+
+    //   let dataIndex = params.dataIndex;
+    //   let sid = this.items[5][dataIndex];
+    //   let selectedInfo = {
+    //     seriesIndex: 1,
+    //     dataIndex: dataIndex,
+    //   };
+
+    //   if (this.selectionManager.contains(sid)) {
+    //     this.dispatch('downplay', selectedInfo);
+    //     this.selectionManager.clear(sid);
+    //     return;
+    //   }
+
+    //   this.showTooltip(params);
+    //   this.selectionManager.select(sid, true);
+    //   this.dispatch('highlight', selectedInfo);
+    //   this.selection.push(selectedInfo);
+    // })
     this.chart.on('click', (params) => {
+      const clickMouse = params.event.event.button;
+      console.log(params, '====params')
       if (params.componentType !== 'series') return;
       params.event.event.seriesClick = true;
-
       let dataIndex = params.dataIndex;
       let sid = this.items[5][dataIndex];
+      
       let selectedInfo = {
-        seriesIndex: 1,
+        seriesIndex: params.seriesIndex,
         dataIndex: dataIndex,
       };
-
-      if (this.selectionManager.contains(sid)) {
-        this.dispatch('downplay', selectedInfo);
-        this.selectionManager.clear(sid);
-        return;
+      // if (this.selectionManager.contains(sid)) {
+      //   this.dispatch('downplay', selectedInfo);
+      //   this.selectionManager.clear(sid);
+      //   return;
+      // }
+      if (this.items[5][params.dataIndex]) {
+        const sid = this.items[5][params.dataIndex];
+        this.selectionManager.select(sid, true);
       }
-
-      this.showTooltip(params);
-      this.selectionManager.select(sid, true);
+      // this.selectionManager.select(sid, true);
       this.dispatch('highlight', selectedInfo);
       this.selection.push(selectedInfo);
+      if (clickMouse === clickLeftMouse) {
+        // dataIndex = (params.dataIndex === dataIndex)?'':params.dataIndex
+        // show data jump
+      
+        if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
+          return
+        } else {
+          // if (this.isTooltipModelShown) return;
+          // this.hideTooltip();
+          console.log('鼠标左击')
+          const selectionIds = this.selectionManager.getSelectionIds();
+          console.log(selectionIds, '===', this.properties.clickLeftMouse)
+          this.host.commandService.execute([{
+            name: this.properties.clickLeftMouse,
+            payload: {
+              selectionIds: selectionIds,
+              position: {
+                x: params.event.event.x,
+                y: params.event.event.y,
+                },
+            }
+          }])
+        }
+      } else if (clickMouse === clickRightMouse) {
+        console.log('鼠标右击击')
+        params.event.event.preventDefault();
+        this.showTooltip(params, true);
+      }
     })
   }
 
@@ -107,7 +159,7 @@ export default class Visual {
       const plainData = dataView.plain;
       let ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
       let ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
-      let dimension = plainData.profile.dimension.values.length ? plainData.profile.dimension.values[0].display : '';
+      let dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display : '';
       
      this.isActualValue = !!plainData.profile.ActualValue.values.length;
      this.isDimension = !!plainData.profile.dimension.values.length;
@@ -131,6 +183,7 @@ export default class Visual {
         const getSelectionId = (_item) => {
           const selectionId = this.host.selectionService.createSelectionId();
           selectionId.withDimension(plainData.profile.dimension.values[0], _item);
+          console.log(selectionId, '====selectionId init')
           return selectionId;
         }
         dimension && this.items[5].push(getSelectionId(data));
@@ -404,14 +457,14 @@ export default class Visual {
       tooltip: {
         show: true,
         formatter: (params) => {
-          for (var i = 0; i < items[0].length; i++) {
-            if (items[0][i] === params.name) {
-              let integer = this.host.formatService.format(this.actualFormat, items[1][i])
-              let _integer = this.host.formatService.format(this.contrastFormat, items[2][i])
-              // return items[4][0] + ":" + items[1][i] + "<br/>" + items[4][1] + ":" + items[2][i];
-              return items[4][0] + ": " + integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,') + "<br/>" + items[4][1] + ": " + _integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
-            }
-          }
+          // for (var i = 0; i < items[0].length; i++) {
+          //   if (items[0][i] === params.name) {
+          //     let integer = this.actualFormat && this.host.formatService.format(this.actualFormat, items[1][i])
+          //     let _integer = this.contrastFormat && this.host.formatService.format(this.contrastFormat, items[2][i])
+          //     // return items[4][0] + ":" + items[1][i] + "<br/>" + items[4][1] + ":" + items[2][i];
+          //     return items[4][0] + ": " + integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,') + "<br/>" + items[4][1] + ": " + _integer.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
+          //   }
+          // }
         }
       },
       grid: {
