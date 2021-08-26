@@ -293,7 +293,6 @@ export default class Visual {
     align: 'left',
     padding: [widthSize, widthSize],
    }
-
     if(rankingArr.length && showBackgroundColor){
       let styleList = {}
       arr.map((element,index) => {
@@ -421,14 +420,23 @@ export default class Visual {
     let option = {
       tooltip: {
         show: true,
+        trigger: 'item',
+        backgroundColor:'rgba(253,245,230,1)',
+        padding: [10, 15],
+        textStyle:{
+          color:'#363636'
+        },
         formatter: (params) => {
           if (this.isMock) {
             return this.items[4][0]
           } else {
             let _toolTipText = ''
-            _toolTipText += this.isDimension ? `${this.Dimension}:${items[0][params.dataIndex]} <br>` : ''
-            _toolTipText += this.isActualValue ? `${this.ActualValue}:${items[1][params.dataIndex].toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}<br>` : '';
-            _toolTipText += this.isContrastValue ? `${this.ContrastValue}:${items[2][params.dataIndex].toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}<br>` : '';
+            // .toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,') 
+            let actualTip = items[1][params.dataIndex]
+            let contrast = items[2][params.dataIndex]
+            _toolTipText += this.isDimension ? `${this.Dimension}: ${items[0][params.dataIndex]} <br>` : ''
+            _toolTipText += this.isActualValue ? `${this.ActualValue}: ${this.formatData(actualTip, options.showSecondBarActualUnit, this.actualFormate)}<br>` : '';
+            _toolTipText += this.isContrastValue ? `${this.ContrastValue}: ${this.formatData(contrast, options.showSecondBarContrastUnit, this.contrastFormate)}<br>` : '';
             ;
             return _toolTipText;
           }
@@ -459,7 +467,6 @@ export default class Visual {
               if (this.isDimension) {
                 let percent = options.showSecondBarPercent && this.isActualValue ? this.items[3][formatterIndex].toFixed(options.showSecondPercentFormate) + '%' : '';
                 let actual = options.showSecondBarActual && this.isActualValue ? `${this.formatData(this.items[1][formatterIndex], options.showSecondBarActualUnit, this.actualFormate)}` : '';
-                
                 let contrast = options.showSecondBarContrast && this.isContrastValue ? this.formatData(this.items[2][formatterIndex], options.showSecondBarContrastUnit, this.contrastFormate) : '';
                 const _target = [percent, actual, contrast];
                 dataRatio = _target.filter((_text) => _text).join('/');
