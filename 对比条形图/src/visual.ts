@@ -286,9 +286,6 @@ export default class Visual {
 
   private _getRichList(_options,allData:any) {
     const {rankingConditionCollection: rankingArr, rankingTextStyle: textStyle,rankingShape: bgShape, rankingSize: widthSize,  rankingBackgroundImage: bgImage, rankingBackgroundColor: bgColor ,showBackgroundColor} = _options;
-    let arr = allData[this.isMock ? 0 : 3].map(function (item) {
-      return 100
-    })
    const _basicTextStyle = {
     fontSize: this.setFontSize(textStyle.fontSize),
     fontWeight: textStyle.fontWeight == "Light"?textStyle.fontWeight + "er":textStyle.fontWeight,
@@ -299,31 +296,24 @@ export default class Visual {
     height:10,
     align: 'left',
     padding: [widthSize, widthSize],
-   }
-
-    if(rankingArr.length && showBackgroundColor){
-      let styleList = {}
-      arr.map((element,index) => {
-        const _target = rankingArr.find((_item) => Number(_item.rankingConditionValue) === (index+1));
-        let fontColor = _target && _target.rankingFontColor?_target.rankingFontColor: textStyle.color;
-        let bgColorOrImage = _target && _target.rankingConditionImage && { image: _target.rankingConditionImage} || !!_target && _target.rankingConditionColor || this.setBackgroundImage(bgImage,bgColor)
-        let orderName = `idx${index+1}`
-        styleList[orderName] = {
-                color: fontColor,
-                backgroundColor: bgColorOrImage,
-                ..._basicTextStyle    
-        }
-      });
-      return styleList
-    }else{
-      return {
-        idx: {
-          color: textStyle.color,
-          backgroundColor:bgShape === 'none' || this.isMock ? 'transparent' : this.setBackgroundImage(bgImage,bgColor),
-          ..._basicTextStyle    
-        }
+    }
+    let styleList = {
+      idx: {
+        color: textStyle.color,
+        backgroundColor:bgShape === 'none' || this.isMock ? 'transparent' : this.setBackgroundImage(bgImage,bgColor),
+        ..._basicTextStyle    
       }
     }
+     rankingArr.map((_item) => {
+      if (_item.rankingConditionValue) {
+        styleList[`idx${_item.rankingConditionValue}`] = {
+          color: _item.rankingFontColor || textStyle.color,
+          backgroundColor: this.setBackgroundImage(_item.rankingConditionImage,_item.rankingConditionColor) || this.setBackgroundImage(bgImage,bgColor),
+          ..._basicTextStyle    
+        }
+     }
+    })
+    return styleList;
   }
 
   public formatData = (number, dataUnit, formate) => {
@@ -584,11 +574,21 @@ export default class Visual {
             } else if(options.showRanking && !this.isMock){
                 const _target = options.rankingConditionCollection.find((_item) => Number(_item.rankingConditionValue) === (value.dataIndex+1));
                 let replaceOrder = !!_target&&_target.rankingReplaceValue || (value.dataIndex+1)
-                if(options.showBackgroundColor && options.rankingConditionCollection)  {
+              
+              if (options.showBackgroundColor) {
+                if (_target) {
                   return '{idx'+ (value.dataIndex+1) +'|'+ replaceOrder + '}'
-                }else {
+                } else {
                   return '{idx|'+ replaceOrder + '}'
                 }
+              } else {
+                return '{idx|'+ replaceOrder + '}'
+              }
+              // if (options.showBackgroundColor && options.rankingConditionCollection) {
+              //     return '{idx'+ (value.dataIndex+1) +'|'+ replaceOrder + '}'
+              //   }else {
+              //     return '{idx|'+ replaceOrder + '}'
+              //   }
             } 
             
           },
