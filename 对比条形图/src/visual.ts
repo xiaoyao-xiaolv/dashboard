@@ -52,7 +52,7 @@ export default class Visual {
       position: {
       x: params.event.event.x,
       y: params.event.event.y,
-      },
+      }
     })
   });
 
@@ -109,11 +109,18 @@ export default class Visual {
             }
           }])
         }
-      } else if (clickMouse === clickRightMouse) {
-        params.event.event.preventDefault();
-        this.showTooltip(params, true);
       }
     })
+
+    this.chart.on('mouseup', (params) => {
+      const clickMouse = params.event.event.button;
+      if (clickMouse === clickRightMouse) {
+          this.showTooltip(params, true);
+      }
+      this.container.addEventListener('contextmenu', (e: any) => {
+        e.preventDefault();
+      })
+      })
   }
 
 
