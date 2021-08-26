@@ -168,6 +168,66 @@
                         "type": "Integer",
                         "displayName": "圆角右下",
                         "defaultValue": 14
+                    },
+                    {
+                        "displayNameKey": "填充方式",
+                        "name": "barSymbolType",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "default",
+                                "displayNameKey": "默认"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "rect",
+                                "displayNameKey": "方形"
+                            },{
+                                "value": "roundRect",
+                                "displayNameKey": "圆角方形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },{
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            },
+                            {
+                                "value": "pin",
+                                "displayNameKey": "气泡"
+                            },{
+                                "value": "arrow",
+                                "displayNameKey": "箭头"
+                            },
+                            {
+                                "value": "custom",
+                                "displayNameKey": "自定义图片"
+                            }
+                        ],
+                        "defaultValue": "default"
+                    },
+                    {
+                        "name": "barSymbolImage",
+                        "type": "Image",
+                        "displayName": "填充图片"
+                    },
+                    {
+                        "name": "barSymbolSize",
+                        "type": "Percentage",
+                        "displayName": "填充图形大小",
+                        "defaultValue": 100,
+                        "min" : 0
+                    },
+                    {
+                        "name": "barSymbolMargin",
+                        "type": "Percentage",
+                        "displayName": "填充间隔",
+                        "defaultValue": 15,
+                        "min" : 0
                     }
                 ]
             },
