@@ -61,13 +61,13 @@ export default class Visual extends WynVisual {
       this.name = 'name';
       this.value = 'value'
       this.image = 'image'
-      this.describe = 'describes'
+      this.describe = ['describes']
       this.items = Visual.mockItems
     } else {
       this.name = !this.isMock && plainData.profile.name.values[0].display || '';
       this.value = this.isValue && plainData.profile.value.values[0].display || '';
       this.image = this.isImage && plainData.profile.image.values[0].display || '';
-      this.describe = this.isDescribe && plainData.profile.describe.values[0].display || '';
+      this.describe = this.isDescribe && plainData.profile.describe.values.map((_value: any) =>_value.display ) || []
       this.items = plainData.data;
       // this.valueFormat = plainData.profile.values.options.valueFormat;
     }
@@ -187,8 +187,12 @@ export default class Visual extends WynVisual {
      if (_options.showLabel === 'content' && this.isDescribe) {
         $(_timeline__content_text).addClass('timeline__content_text')
         $(_timeline__content_text).append(_timeline__title, _timeline__describe);
-        _timeline__title.text(this.items[index][this.name]);
-        _timeline__describe.text(this.items[index][this.describe]);
+       _timeline__title.text(this.items[index][this.name]);
+       let _contentText = ''
+       this.describe.map((_item: any) => {
+        _contentText += this.items[index][_item]
+       })
+       _timeline__describe.text(_contentText);
 
       } else {
         $(_timeline__content_text).addClass('timeline__content_text_title')

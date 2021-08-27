@@ -134,7 +134,7 @@
                         },
                         {
                             "value": "Fixed",
-                            "displayNameKey": "固定个数"
+                            "displayNameKey": "固定"
                         }
                     ],
                     "defaultValue": "default"
