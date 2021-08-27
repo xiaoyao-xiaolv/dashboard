@@ -435,7 +435,6 @@ export default class Visual {
             _toolTipText += this.isDimension ? `${this.Dimension}: ${items[0][params.dataIndex]} <br>` : ''
             _toolTipText += this.isActualValue ? `${this.ActualValue}: ${this.formatData(actualTip, options.showSecondBarActualUnit, this.actualFormate)}<br>` : '';
             _toolTipText += this.isContrastValue ? `${this.ContrastValue}: ${this.formatData(contrast, options.showSecondBarContrastUnit, this.contrastFormate)}<br>` : '';
-            ;
             return _toolTipText;
           }
         }
