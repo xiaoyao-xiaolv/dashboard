@@ -179,7 +179,7 @@
                 {
                     "name": "timeLinePointColor",
                     "type": "Color",
-                    "displayName": "节点中心色",
+                    "displayName": "节点填充色",
                     "defaultValue": "#fff"
                 },
                 {
@@ -310,7 +310,13 @@
                             "name": "formatColor",
                             "displayName": "条件颜色",
                             "type": "Color"
-                        }, {
+                        }, 
+                        {
+                            "name": "formatBorderColor",
+                            "displayName": "条件边框颜色",
+                            "type": "Color"
+                        }, 
+                        {
                             "name": "formatImage",
                             "displayName": "条件图片",
                             "type": "Image"

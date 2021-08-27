@@ -214,10 +214,11 @@ export default class Visual extends WynVisual {
 
       let _formatPoint = _useToPoint && _formatList;
       const _usePointBg = _useToPoint ? (_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat` : _formatList.formatColor) : pointBg;
+      const _usePointBorder = _formatPoint ? (_formatList.formatBorderColor || _options.timeLinePointBg) : _options.timeLinePointBg
       // custom point
       if (_formatPoint) {
         $(`<style>.timeline__item__${index}::after {
-          border: ${_formatPoint ? 0 : _options.timeLinePointBorder}px solid ${_formatPoint ? '' : _options.timeLinePointBg};
+          border: ${_options.timeLinePointBorder}px solid ${_usePointBorder};
           background:  ${_formatPoint ? _usePointBg : pointBg};
           </style>`)
         .appendTo(document.head);
