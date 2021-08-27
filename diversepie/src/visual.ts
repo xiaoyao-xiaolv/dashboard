@@ -620,7 +620,7 @@ export default class Visual extends WynVisual {
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'
-      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'openLegendPage'])
+      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'openLegendPage', 'legendSeriesWidth', 'legendPercentWidth', 'legendValueWidth'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
