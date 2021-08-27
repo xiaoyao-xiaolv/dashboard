@@ -1,3 +1,7 @@
+::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+
 .timeline {
     box-sizing: border-box;
     position: relative;
@@ -6,6 +10,8 @@
     *::after {
         box-sizing: inherit;
     }
+    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
     &:not(.timeline--horizontal)::before {
         // background-color: #DDD;
         // bottom: 0;
@@ -111,7 +117,6 @@
 }
 
 .timeline__content {
-    text-align: center;
     background-color: #FFF;
     border: 1px solid #CCC;
     border-radius: 10px;

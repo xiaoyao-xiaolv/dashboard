@@ -216,7 +216,44 @@
                     ],
                     "defaultValue": "center"
                 },
-               
+                {
+                    "name": "labelTitleContentAlign",
+                    "type": "Enum",
+                    "displayName": "标题对齐",
+                    "items": [
+                        {
+                            "value": "left",
+                            "displayNameKey": "居左"
+                        },
+                        {
+                            "value": "center",
+                            "displayNameKey": "居中"
+                        },{
+                            "value": "right",
+                            "displayNameKey": "居右"
+                        }
+                    ],
+                    "defaultValue": "left"
+                },
+                {
+                    "name": "labelContentAlign",
+                    "type": "Enum",
+                    "displayName": "内容对齐",
+                    "items": [
+                        {
+                            "value": "left",
+                            "displayNameKey": "居左"
+                        },
+                        {
+                            "value": "center",
+                            "displayNameKey": "居中"
+                        },{
+                            "value": "right",
+                            "displayNameKey": "居右"
+                        }
+                    ],
+                    "defaultValue": "left"
+                },
                 {
                     "name": "labelBg",
                     "type": "Color",

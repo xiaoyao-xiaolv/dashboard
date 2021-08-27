@@ -169,9 +169,9 @@ export default class Visual extends WynVisual {
     const _timeline__title__style = {
       ..._options.labelTextStyle,
       fontSize: _options.labelTextStyle.fontSize,
-      textAlign: _options.labelTitleAlign,
+      textAlign: _options.showLabel === 'title' ? _options.labelTitleAlign : _options.labelTitleContentAlign,
+      whiteSpace: 'nowrap',
     }
-
     timeLineData.map((_element, index) => {
       _formatList = timeLineCollection.find((_item: any) => _item.formatValue.toString() == _element[this.name].toString()) || false;
       const _timeline__item = $(`<div class="timeline__item timeline__item__${index}">`)
@@ -233,7 +233,8 @@ export default class Visual extends WynVisual {
     $(`<style>.timeline__wrap::before{background-color: ${_options.timeLineBg};}</style>`).appendTo(document.head)
     // custom horizontal line color
     $('.timeline-divider').css('backgroundColor', `${_options.timeLineBg}`);
-  
+    // Content align
+    $('.timeline__content').css({'textAlign': _options.labelContentAlign})
   };
 
   public render() {
@@ -292,9 +293,14 @@ export default class Visual extends WynVisual {
 
     // fonts setting 
     if (options.properties.showLabel === 'none') {
-      hiddenOptions = hiddenOptions.concat(['labelTextStyle', 'labelDescribeStyle'])
-    } else if (options.properties.showLabel === 'title') {
-      hiddenOptions = hiddenOptions.concat(['labelDescribeStyle'])
+      hiddenOptions = hiddenOptions.concat(['labelTextStyle', 'labelDescribeStyle', 'labelTitleAlign', 'labelTitleContentAlign', 'labelContentAlign', 'labelBg', 'useToLabel', 'horizontalItemsLayout', 'verticalItemsLayout'])
+    }
+    if (options.properties.showLabel === 'title') {
+      hiddenOptions = hiddenOptions.concat(['labelDescribeStyle', 'labelTitleContentAlign', 'labelContentAlign'])
+    }
+
+    if (options.properties.showLabel === 'content') {
+      hiddenOptions = hiddenOptions.concat(['labelTitleAlign',])
     }
 
     // format list
