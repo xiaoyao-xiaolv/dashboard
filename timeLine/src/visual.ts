@@ -219,11 +219,22 @@ export default class Visual extends WynVisual {
         .appendTo(document.head);
       }
     });
-
+    const visibleItems = () => {
+      if (_options.visibleItems === 'default') {
+        return timeLineData.length
+      }
+      if (_options.visibleItems === 'custom') {
+        return _options.customVisibleItems
+      }
+      if (_options.visibleItems === 'Fixed') {
+        return 3
+      }
+    };
+    
     timeline(document.querySelectorAll('.timeline'), {
       forceVerticalMode: _options.timeLineDirection === 'auto' ? 'auto' : (_options.timeLineDirection === 'horizontal' ? 10 : 600),
       mode: _options.timeLineDirection === 'auto' ? 'horizontal' : _options.timeLineDirection,
-      visibleItems: _options.visibleItems === 'default' ? timeLineData.length : _options.customVisibleItems,
+      visibleItems: visibleItems(),
       horizontalAllPosition: _options.horizontalItemsLayout,
       verticalAllPosition: _options.verticalItemsLayout,
       verticalTrigger: `${0}%`,

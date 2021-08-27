@@ -131,6 +131,10 @@
                         {
                             "value": "custom",
                             "displayNameKey": "自定义"
+                        },
+                        {
+                            "value": "Fixed",
+                            "displayNameKey": "固定个数"
                         }
                     ],
                     "defaultValue": "default"
