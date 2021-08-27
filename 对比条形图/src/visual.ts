@@ -529,10 +529,19 @@ export default class Visual {
                 let name = options.showFirstBarCategory && this.isDimension ? value.name:''
                 let percent = options.showFirstBarPercent && this.isActualValue ? this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate) + '%' : '';
                 let actual = options.showFirstBarActual && this.isActualValue ? `${this.formatData(this.items[1][value.dataIndex], options.showFirstBarActualUnit, this.actualFormate)}` : '';
-                
                 let contrast = options.showFirstBarContrast && this.isContrastValue ? this.formatData(this.items[2][value.dataIndex], options.showFirstBarContrastUnit, this.contrastFormate) : '';
-                const _target = [name, percent, actual, contrast];
-                dataRatio = _target.filter((_text) => _text).join('/');
+                let _target = [name, percent, actual, contrast];
+                if(options.displayPolicy === 'lineFeed'){
+                  _target.splice(1,0,'\n')
+                  dataRatio = _target.splice(0,2).join('') + _target.filter((_text) => _text).join('/');
+                }else if(options.displayPolicy === 'ellipsis'){
+                  let _targetArr = _target.filter((_text) => _text)[0] && [_target.filter((_text) => _text)[0],'...']
+                  _target.length = 0
+                  _target = _target.concat(_targetArr)
+                  dataRatio = _target.join('')
+                }else{
+                  dataRatio = _target.filter((_text) => _text).join('/');
+                }
               } else {
                 dataRatio = items[1];
               }
@@ -647,7 +656,7 @@ export default class Visual {
 
     // dataLabel
     if (!updateOptions.properties.showBarLabel) {
-      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'firstBarPositionX', 'firstBarPositionY','rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast','labelTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'firstBarPositionX', 'firstBarPositionY','rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast','labelTextStyle', 'displayPolicy'])
     }
     // Classification axis
     if (!updateOptions.properties.showLabel) {
