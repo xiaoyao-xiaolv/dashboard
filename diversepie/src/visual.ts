@@ -533,22 +533,22 @@ export default class Visual extends WynVisual {
               align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width:20,
-              padding: [0, 0, 10, 0]
+              width:options.legendSeriesWidth,
+              padding: [0, 15, 0, 0]
             },
             b: {
-              align: 'center',
+              align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width:5,
-              padding: [0, 0, 10, 0]
+              width:options.showLegendPercent,
+              padding: [0, 15, 0, 0]
             },
             c: {
-              align: 'right',
+              align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width:5,
-              padding: [0, 0, 10, 0]
+              width:options.legendValueWidth,
+              padding: [0, 15, 0, 0]
             }
           }
         },
@@ -566,15 +566,15 @@ export default class Visual extends WynVisual {
           let _legendText = '';
           let _title = '';
           if (options.showLegendSeries) {
-            _legendText += `${_target.name}`;
+            _legendText += `{a|${_target.name}}`;
             _title += `{a|${this.dimension}}`
           }
           if (options.showLegendValue) {
-            _legendText += ` ${this.formatData(_target.value, options.labelDataUnit, options.labelDataType)}`;
+            _legendText += `{b|${this.formatData(_target.value, options.labelDataUnit, options.labelDataType)}}`;
             _title += `{b|数值}`
           }
           if (options.showLegendPercent) {
-            _legendText += ` ${Number((_target.value / this._total * 100).toFixed(options.LabelPercentDecimalPlaces))}%`;
+            _legendText += `{c|${Number((_target.value / this._total * 100).toFixed(options.LabelPercentDecimalPlaces))}%}`;
             _title += `{c|占比}`
           }
           _title += '\n'
@@ -630,6 +630,16 @@ export default class Visual extends WynVisual {
     if (updateOptions.properties.legendArea === 'auto') {
       hiddenOptions = hiddenOptions.concat(['legendWidth', 'legendHeight'])
     }
+    if (!updateOptions.properties.showLegendSeries) {
+      hiddenOptions = hiddenOptions.concat(['legendSeriesWidth'])
+    }
+    if (!updateOptions.properties.showLegendPercent) {
+      hiddenOptions = hiddenOptions.concat(['legendPercentWidth'])
+    }
+    if (!updateOptions.properties.showLegendValue) {
+      hiddenOptions = hiddenOptions.concat(['legendValueWidth'])
+    }
+
     // label
     if (!updateOptions.properties.showLabel) {
       hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle', 'showLabelTwoLine',
