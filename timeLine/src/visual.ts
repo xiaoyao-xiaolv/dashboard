@@ -262,10 +262,13 @@ export default class Visual extends WynVisual {
     if (_options.timeLineDirection === 'vertical') {
       const left = _options.verticalItemsLayout === 'left' && '3%' || _options.verticalItemsLayout === 'right' && '95%' || '50%';
       $(`<style>
+        .timeline {
+          flex: 1;
+        }
         .timeline__wrap::before{
           left: ${left};}
         </style>`)
-          .appendTo(document.head);
+        .appendTo(document.head);
     }
   };
 
@@ -287,8 +290,15 @@ export default class Visual extends WynVisual {
             _alignItemsValue = 'center';
             break;
         }
-      } if (options.timeLineDirection === 'vertical') {
-        _alignItemsValue = 'flex-start'
+      }
+      if (options.timeLineDirection === 'vertical') {
+        _alignItemsValue = 'flex-start';
+        $(`<style>.timeline {flex: 1;}</style>`).appendTo(document.head);
+      }
+
+      if (options.timeLineDirection === 'auto') {
+        if(_clientWidth < 600)
+        $(`<style>.timeline {flex: 1;}</style>`).appendTo(document.head);
       }
       return _alignItemsValue;
     }
