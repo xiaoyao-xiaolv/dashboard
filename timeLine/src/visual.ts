@@ -150,7 +150,7 @@ export default class Visual extends WynVisual {
     let _timeline = $('<div class="timeline">').appendTo(this.root),
       _timeline__wrap = $('<div class="timeline__wrap">').appendTo(_timeline),
       _timeline__items = $('<div class="timeline__items">').appendTo(_timeline__wrap);
-
+   
     // custom label text
     const { useToPoint, timeLinePointColor: pointBg, useToLabel, labelBg, timeLineCollection } = _options;
     // add point and label point
@@ -231,13 +231,16 @@ export default class Visual extends WynVisual {
       if (_options.visibleItems === 'custom') {
         return _options.customVisibleItems
       }
-      if (_options.visibleItems === 'Fixed') {
-        return 3
-      }
     };
-    
+    const _forceVerticalMode = () => {
+      if (_options.timeLineDirection === 'horizontal') {
+        return 10
+      } else {
+        return _options.verticalItemsLayout === 'auto' ? 600 : 10;
+      }
+    }
     timeline(document.querySelectorAll('.timeline'), {
-      forceVerticalMode: _options.timeLineDirection === 'auto' ? 'auto' : (_options.timeLineDirection === 'horizontal' ? 10 : 600),
+      forceVerticalMode: _options.timeLineDirection === 'auto' ? '600' : _forceVerticalMode(),
       mode: _options.timeLineDirection === 'auto' ? 'horizontal' : _options.timeLineDirection,
       visibleItems: visibleItems(),
       horizontalAllPosition: _options.horizontalItemsLayout,
@@ -246,16 +249,54 @@ export default class Visual extends WynVisual {
     });
 
     // custom vertical line color
-    $(`<style>.timeline__wrap::before{background-color: ${_options.timeLineBg};}</style>`).appendTo(document.head)
+    $(`<style>.timeline__wrap::before{
+      background-color: ${_options.timeLineBg};
+
+    }</style>`).appendTo(document.head)
     // custom horizontal line color
     $('.timeline-divider').css('backgroundColor', `${_options.timeLineBg}`);
     // Content align
-    $('.timeline__content').css({'textAlign': _options.labelContentAlign})
+    $('.timeline__content').css({ 'textAlign': _options.labelContentAlign });
+
+     // add vertical line position
+    if (_options.timeLineDirection === 'vertical') {
+      const left = _options.verticalItemsLayout === 'left' && '3%' || _options.verticalItemsLayout === 'right' && '95%' || '50%';
+      $(`<style>
+        .timeline__wrap::before{
+          left: ${left};}
+        </style>`)
+          .appendTo(document.head);
+    }
   };
 
   public render() {
     const options = this.options;
-    this.root.html('').css({ 'display': 'flex', 'alignItems': `${options.timeLineDirection === 'horizontal' ? 'center':'start'}`, 'justifyContent': 'center' });
+    const _alignItems = (_clientWidth) => {
+      // horizontal
+      let _alignItemsValue = _clientWidth > 600 ? 'center' : 'flex-start';
+      if (options.timeLineDirection === 'horizontal') {
+        console.log(options.timeLineDirection === 'horizontal', 2)
+        switch (options.horizontalItemsLayout) {
+          case 'top':
+            _alignItemsValue = 'flex-end';
+            break;
+          case 'bottom':
+            _alignItemsValue = 'flex-start';
+            break;
+          case 'auto':
+            _alignItemsValue = 'center';
+            break;
+        }
+      } if (options.timeLineDirection === 'vertical') {
+        _alignItemsValue = 'flex-start'
+      }
+      return _alignItemsValue;
+    }
+    this.root.html('').css({
+      'display': 'flex',
+      'alignItems': `${_alignItems(this.root.html('')[0].clientWidth)}`,
+      'justifyContent': 'center'
+    });
 
     let _data = this.isMock ? Visual.mockItems : this.items;
     this.resize();
@@ -305,7 +346,9 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['verticalItemsLayout'])
     } else if (options.properties.timeLineDirection === 'vertical') {
       hiddenOptions = hiddenOptions.concat(['horizontalItemsLayout'])
-    }
+    } else {
+      hiddenOptions = hiddenOptions.concat(['verticalItemsLayout','horizontalItemsLayout'])
+    } 
 
     // fonts setting 
     if (options.properties.showLabel === 'none') {

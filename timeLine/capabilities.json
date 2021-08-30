@@ -106,11 +106,11 @@
                     "displayName": "纵向标签方向",
                     "items": [
                         {
-                            "value": "left",
+                            "value": "right",
                             "displayNameKey": "居左"
                         },
                         {
-                            "value": "right",
+                            "value": "left",
                             "displayNameKey": "居右"
                         },{
                             "value": "auto",
@@ -131,10 +131,6 @@
                         {
                             "value": "custom",
                             "displayNameKey": "自定义"
-                        },
-                        {
-                            "value": "Fixed",
-                            "displayNameKey": "固定"
                         }
                     ],
                     "defaultValue": "default"

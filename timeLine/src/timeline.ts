@@ -388,9 +388,9 @@ const timeline = (collection, options?: any) => {
         lastVisibleIndex = i;
       }
       if (tl.settings.verticalAllPosition === 'left') {
-        item.classList.add('timeline__item--right');
+        item.classList.add('timeline__item--right', 'timeline__item--right__only');
       } else if(tl.settings.verticalAllPosition === 'right') {
-        item.classList.add('timeline__item--left');
+        item.classList.add('timeline__item--left', 'timeline__item--left_only');
       } else {
         const divider = tl.settings.verticalStartPosition === 'left' ? 1 : 0;
         if (i % 2 === divider && window.innerWidth > tl.settings.forceVerticalMode) {
