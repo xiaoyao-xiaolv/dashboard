@@ -188,11 +188,16 @@
                             "displayNameKey": "无"
                         },
                         {
+                            "value": "text",
+                            "displayNameKey": "标题"
+                        },
+                        {
                             "value": "title",
-                            "displayNameKey": "显示标题"
-                        },{
+                            "displayNameKey": "标题标签"
+                        },
+                        {
                             "value": "content",
-                            "displayNameKey": "显示标题和内容"
+                            "displayNameKey": "标题和内容标签"
                         }
                     ],
                     "defaultValue": "content"
@@ -267,7 +272,7 @@
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
                             "fontSize": "1.2X",
-                            "color": "#000"
+                            "color": "#CCC"
                         }
                 },
                 {
@@ -277,7 +282,7 @@
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
                             "fontSize": "1.0X",
-                            "color": "#000"
+                            "color": "#CCC"
                         }
                 },
                 {

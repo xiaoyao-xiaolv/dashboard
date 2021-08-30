@@ -152,12 +152,12 @@ export default class Visual extends WynVisual {
       _timeline__items = $('<div class="timeline__items">').appendTo(_timeline__wrap);
    
     // custom label text
-    const { useToPoint, timeLinePointColor: pointBg, useToLabel, labelBg, timeLineCollection } = _options;
+    const { useToPoint, timeLinePointColor: pointBg, useToLabel, labelBg, timeLineCollection, showLabel } = _options;
     // add point and label point
     const _isFormatList = timeLineCollection.length;
     let _formatList = timeLineCollection[0];
     const _useToLabel = useToLabel && _isFormatList;
-    const _labelBorderColor = _useToLabel ? 'transparent' : labelBg;
+    const _labelBorderColor = _useToLabel || showLabel === 'text' ? 'transparent' : labelBg;
     this._setStyleToAfterAndBefore(_labelBorderColor, _options);
     const _useToPoint = useToPoint && _isFormatList;
     const _useToPointValue = _isFormatList ? _formatList.formatValue : '';
@@ -172,13 +172,15 @@ export default class Visual extends WynVisual {
       textAlign: _options.showLabel === 'title' ? _options.labelTitleAlign : _options.labelTitleContentAlign,
       whiteSpace: 'nowrap',
     }
+
     timeLineData.map((_element, index) => {
       _formatList = timeLineCollection.find((_item: any) => _item.formatValue.toString() == _element[this.name].toString()) || false;
       const _timeline__item = $(`<div class="timeline__item timeline__item__${index}">`)
         .appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">')
         .appendTo(_timeline__item);
-      const _timeline__content_text = $('<div>')
+      const _timeline__content_text = $('<div>');
+
       $(_timeline__content)
         .append(_timeline__content_text);
       const _timeline__title = $('<h2 class="timeline__title">')
@@ -205,10 +207,21 @@ export default class Visual extends WynVisual {
       // custom label
       let _formatLabel = _useToLabel && _formatList;
       const timeline__content__fontStyle = {
-        border: `1px solid ${_formatLabel ? _labelBorderColor : pointBg}`,
+        border: `1px solid ${_formatLabel ? _labelBorderColor : labelBg}`,
         background: _formatLabel ? `${_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat` : _formatList.formatColor} ` : labelBg,
       };
-      _timeline__content.css(timeline__content__fontStyle);
+      const timeline__content_only_text = {
+        border: `1px solid transparent`,
+        background: 'transparent',
+      }
+      if (showLabel === 'text') {
+        _timeline__content.css(timeline__content_only_text);
+        _timeline__item.addClass('timeline__item_only_text');
+      } else {
+        _timeline__content.css(timeline__content__fontStyle);
+        _timeline__item.removeClass('timeline__item_only_text');
+      }
+     
       _timeline__title.css(_timeline__title__style);
       _timeline__describe.css(_options.labelDescribeStyle);
 
@@ -223,6 +236,7 @@ export default class Visual extends WynVisual {
           </style>`)
         .appendTo(document.head);
       }
+     
     });
     const visibleItems = () => {
       if (_options.visibleItems === 'default') {
@@ -371,7 +385,9 @@ export default class Visual extends WynVisual {
     if (options.properties.showLabel === 'content') {
       hiddenOptions = hiddenOptions.concat(['labelTitleAlign',])
     }
-
+    if (options.properties.showLabel === 'text') {
+      hiddenOptions = hiddenOptions.concat(['labelDescribeStyle',  'labelTitleContentAlign', 'labelContentAlign', 'labelBg', 'useToLabel', ])
+    }
     // format list
     // if (options.properties.useToPoint && options.properties.useToPoint) {
     //   hiddenOptions = hiddenOptions.concat(['timeLineCollection'])
