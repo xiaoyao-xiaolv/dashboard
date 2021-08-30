@@ -18,9 +18,9 @@
             },
             {
                 "name": "describe",
-                "displayNameKey": "节点详情",
-                "kind": "grouping"
-            }
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
+            }      
         ],
         "dataViewMappings": [
             {
