@@ -146,7 +146,7 @@ export default class Visual extends WynVisual {
         </style>`)
         .appendTo(document.head);
   }
-  public _initHtml = (_options: any, timeLineData: any) => {
+  public _initHtml = (_options: any, timeLineData: any, clientWidth:number) => {
     let _timeline = $('<div class="timeline">').appendTo(this.root),
       _timeline__wrap = $('<div class="timeline__wrap">').appendTo(_timeline),
       _timeline__items = $('<div class="timeline__items">').appendTo(_timeline__wrap);
@@ -284,47 +284,59 @@ export default class Visual extends WynVisual {
         </style>`)
         .appendTo(document.head);
     }
+    // control position 
+    const _timeLinePosition = (_clientWidth) => {
+      // horizontal
+      let _basicPosition = {
+        position: 'fixed',
+        top: '0%',
+        bottom: '0%',
+        transform: 'translateY(-50%)',
+      }
+      
+      if (_options.timeLineDirection === 'horizontal') {
+        switch (_options.horizontalItemsLayout) {
+          case 'top':
+            delete _basicPosition.bottom;
+            delete _basicPosition.transform;
+            return _basicPosition;
+          case 'bottom':
+            delete _basicPosition.top;
+            delete _basicPosition.transform;
+            return _basicPosition;
+          case 'auto':
+            delete _basicPosition.bottom;
+            _basicPosition.top = '50%';
+            return _basicPosition;
+        }
+      } else {
+        if (_options.timeLineDirection === 'auto') {
+          if (_clientWidth < 600) {
+            return {}
+          } else {
+            delete _basicPosition.bottom;
+            _basicPosition.top = '50%';
+            return _basicPosition;
+          }
+        } else {
+          return {}
+        }
+      }
+    }
+
+    _timeline.css(_timeLinePosition(clientWidth))
   };
 
   public render() {
     const options = this.options;
-    const _alignItems = (_clientWidth) => {
-      // horizontal
-      let _alignItemsValue = _clientWidth > 600 ? 'center' : 'flex-start';
-      if (options.timeLineDirection === 'horizontal') {
-        console.log(options.timeLineDirection === 'horizontal', 2)
-        switch (options.horizontalItemsLayout) {
-          case 'top':
-            _alignItemsValue = 'flex-end';
-            break;
-          case 'bottom':
-            _alignItemsValue = 'flex-start';
-            break;
-          case 'auto':
-            _alignItemsValue = 'center';
-            break;
-        }
-      }
-      if (options.timeLineDirection === 'vertical') {
-        _alignItemsValue = 'flex-start';
-        $(`<style>.timeline {flex: 1;}</style>`).appendTo(document.head);
-      }
-
-      if (options.timeLineDirection === 'auto') {
-        if(_clientWidth < 600)
-        $(`<style>.timeline {flex: 1;}</style>`).appendTo(document.head);
-      }
-      return _alignItemsValue;
-    }
+    
     this.root.html('').css({
-      'display': 'flex',
-      'alignItems': `${_alignItems(this.root.html('')[0].clientWidth)}`,
-      'justifyContent': 'center'
+      'position': 'relative',
     });
 
     let _data = this.isMock ? Visual.mockItems : this.items;
     this.resize();
-    this._initHtml(options, _data);
+    this._initHtml(options, _data, this.root.html('')[0].clientWidth);
   }
 
 
@@ -368,9 +380,11 @@ export default class Visual extends WynVisual {
     // time line layout 
     if (options.properties.timeLineDirection === 'horizontal') {
       hiddenOptions = hiddenOptions.concat(['verticalItemsLayout'])
-    } else if (options.properties.timeLineDirection === 'vertical') {
+    } 
+    if (options.properties.timeLineDirection === 'vertical') {
       hiddenOptions = hiddenOptions.concat(['horizontalItemsLayout'])
-    } else {
+    }
+    if (options.properties.timeLineDirection === 'auto') {
       hiddenOptions = hiddenOptions.concat(['verticalItemsLayout','horizontalItemsLayout'])
     } 
 
