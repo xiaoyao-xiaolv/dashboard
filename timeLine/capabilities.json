@@ -119,65 +119,7 @@
                     ],
                     "defaultValue": "auto"
                 },
-                {
-                    "name": "visibleItems",
-                    "type": "Enum",
-                    "displayName": "节点个数",
-                    "items": [
-                        {
-                            "value": "default",
-                            "displayNameKey": "默认"
-                        },
-                        {
-                            "value": "custom",
-                            "displayNameKey": "自定义"
-                        }
-                    ],
-                    "defaultValue": "default"
-                },
-                {
-                    "name": "customVisibleItems",
-                    "type": "Integer",
-                    "displayName": "调节个数",
-                    "defaultValue": 1,
-                    "min": 1
-                },
-                {
-                    "name": "timeLineBg",
-                    "type": "Color",
-                    "displayName": "连接线颜色",
-                    "defaultValue": "#fff"
-                },
-                {
-                    "name": "timeLineSize",
-                    "type": "Integer",
-                    "displayName": "连接线粗细",
-                    "defaultValue": 4
-                },
-                {
-                    "name": "timeLinePointSize",
-                    "type": "Integer",
-                    "displayName": "节点大小",
-                    "defaultValue": 20
-                },
-                {
-                    "name": "timeLinePointBorder",
-                    "type": "Integer",
-                    "displayName": "节点边框线",
-                    "defaultValue": 4
-                },
-                {
-                    "name": "timeLinePointBg",
-                    "type": "Color",
-                    "displayName": "节点背景色",
-                    "defaultValue": "#DDD"
-                },
-                {
-                    "name": "timeLinePointColor",
-                    "type": "Color",
-                    "displayName": "节点填充色",
-                    "defaultValue": "#fff"
-                },
+                
                 {
                     "name": "showLabel",
                     "type": "Enum",
@@ -284,18 +226,87 @@
                             "fontSize": "1.0X",
                             "color": "#CCC"
                         }
+                }
+            ]
+        }, 
+        {
+            "displayName": "连接线节点样式",
+            "properties": [
+                {
+                    "name": "timeLineBg",
+                    "type": "Color",
+                    "displayName": "连接线颜色",
+                    "defaultValue": "#fff"
                 },
+                {
+                    "name": "timeLineSize",
+                    "type": "Integer",
+                    "displayName": "连接线粗细",
+                    "defaultValue": 4
+                },
+                {
+                    "name": "visibleItems",
+                    "type": "Enum",
+                    "displayName": "节点个数",
+                    "items": [
+                        {
+                            "value": "default",
+                            "displayNameKey": "均匀分布"
+                        },
+                        {
+                            "value": "custom",
+                            "displayNameKey": "自定义"
+                        }
+                    ],
+                    "defaultValue": "default"
+                },
+                {
+                    "name": "customVisibleItems",
+                    "type": "Integer",
+                    "displayName": "调节个数",
+                    "defaultValue": 1,
+                    "min": 1
+                },
+                {
+                    "name": "timeLinePointSize",
+                    "type": "Integer",
+                    "displayName": "节点大小",
+                    "defaultValue": 20
+                },
+                {
+                    "name": "timeLinePointBorder",
+                    "type": "Integer",
+                    "displayName": "节点边框线",
+                    "defaultValue": 4
+                },
+                {
+                    "name": "timeLinePointColor",
+                    "type": "Color",
+                    "displayName": "节点颜色",
+                    "defaultValue": "#fff"
+                },
+                {
+                    "name": "timeLinePointBg",
+                    "type": "Color",
+                    "displayName": "节点边框色",
+                    "defaultValue": "#DDD"
+                }
+            ]
+        },
+        {
+            "displayName": "条件样式",
+            "properties": [
                 {
                     "name": "useToPoint",
                     "type": "Boolean",
                     "displayName": "作用到节点",
-                    "defaultValue": false
+                    "defaultValue": true
                 },
                 {
                     "name": "useToLabel",
                     "type": "Boolean",
                     "displayName": "作用到标签",
-                    "defaultValue": false
+                    "defaultValue": true
                 },
                 {
                     "name": "timeLineCollection",
@@ -325,10 +336,9 @@
                     ],
                     "defaultValue": []
                 }
-
-
             ]
-        }]
+        }
+    ]
     }, 
     "actions": [],
     "analysis": []

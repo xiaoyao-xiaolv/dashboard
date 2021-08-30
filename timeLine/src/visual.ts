@@ -169,7 +169,7 @@ export default class Visual extends WynVisual {
     const _timeline__title__style = {
       ..._options.labelTextStyle,
       fontSize: _options.labelTextStyle.fontSize,
-      textAlign: _options.showLabel === 'title' ? _options.labelTitleAlign : _options.labelTitleContentAlign,
+      textAlign: _options.showLabel === 'title' || _options.showLabel === 'text' ? _options.labelTitleAlign : _options.labelTitleContentAlign,
       whiteSpace: 'nowrap',
     }
 
