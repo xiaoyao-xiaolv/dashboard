@@ -223,7 +223,6 @@
                     }
                 ]
             },
-            
             {
                 "displayName": "分类轴",
                 "properties": [
@@ -386,6 +385,26 @@
                             }
                         ],
                         "defaultValue": "auto"
+                    },
+                    {
+                        "displayNameKey": "显示方式",
+                        "name": "displayPolicy",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "lineFeed",
+                                "displayNameKey": "折行"
+                            },
+                            {
+                                "value": "ellipsis",
+                                "displayNameKey": "省略号"
+                            },
+                            {
+                                "value": "none",
+                                "displayNameKey": "无"
+                            }
+                        ],
+                        "defaultValue": "none"
                     },
                     {
                         "name": "labelTextStyle",
