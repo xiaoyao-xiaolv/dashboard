@@ -18,7 +18,7 @@
             },
             {
                 "name": "describe",
-                "displayNameKey": "工具提示",
+                "displayNameKey": "详情信息",
                 "kind": "attributeOrValue"
             }      
         ],
@@ -31,7 +31,7 @@
                                 "min": 1
                             },
                             "value": {
-                                "min": 0
+                                "min": 1
                             },
                             "image": {
                                 "min": 0
@@ -242,7 +242,7 @@
                     "name": "timeLineSize",
                     "type": "Integer",
                     "displayName": "连接线粗细",
-                    "defaultValue": 4
+                    "defaultValue": 5
                 },
                 {
                     "name": "visibleItems",
@@ -271,13 +271,13 @@
                     "name": "timeLinePointSize",
                     "type": "Integer",
                     "displayName": "节点大小",
-                    "defaultValue": 20
+                    "defaultValue": 25
                 },
                 {
                     "name": "timeLinePointBorder",
                     "type": "Integer",
                     "displayName": "节点边框线",
-                    "defaultValue": 4
+                    "defaultValue": 3
                 },
                 {
                     "name": "timeLinePointColor",

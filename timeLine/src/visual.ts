@@ -71,7 +71,7 @@ export default class Visual extends WynVisual {
       this.items = plainData.data;
       // this.valueFormat = plainData.profile.values.options.valueFormat;
     }
-
+    
     this.options = options.properties;
     this.render();
   }
@@ -174,7 +174,8 @@ export default class Visual extends WynVisual {
     }
 
     timeLineData.map((_element, index) => {
-      _formatList = timeLineCollection.find((_item: any) => _item.formatValue.toString() == _element[this.name].toString()) || false;
+      // format value
+      _formatList = timeLineCollection.find((_item: any) => _item.formatValue.toString() == _element[this.value].toString()) || false;
       const _timeline__item = $(`<div class="timeline__item timeline__item__${index}">`)
         .appendTo(_timeline__items);
       const _timeline__content = $('<div class="timeline__content">')
@@ -184,17 +185,25 @@ export default class Visual extends WynVisual {
       $(_timeline__content)
         .append(_timeline__content_text);
       const _timeline__title = $('<h2 class="timeline__title">')
-      const _timeline__describe = $('<p class="timeline__describe">')
+      
       //  show label
      if (_options.showLabel === 'content' && this.isDescribe) {
         $(_timeline__content_text).addClass('timeline__content_text')
-        $(_timeline__content_text).append(_timeline__title, _timeline__describe);
+        $(_timeline__content_text).append(_timeline__title);
        _timeline__title.text(this.items[index][this.name]);
        let _contentText = ''
-       this.describe.map((_item: any) => {
-        _contentText += this.items[index][_item]
+       this.describe.map((_item: any, _itemIndex: number) => {
+        const _timeline__describe = $('<p class="timeline__describe">')
+         if (this.describe.length <= 1) {
+          //  only one data
+          _contentText = this.items[index][_item]
+         } else {
+          _contentText = `${_item}: ${this.items[index][_item]}`
+         }
+         _timeline__describe.text(_contentText);
+         $(_timeline__content_text).append(_timeline__describe);
        })
-       _timeline__describe.text(_contentText);
+       
 
       } else {
         $(_timeline__content_text).addClass('timeline__content_text_title')
@@ -223,8 +232,16 @@ export default class Visual extends WynVisual {
       }
      
       _timeline__title.css(_timeline__title__style);
-      _timeline__describe.css(_options.labelDescribeStyle);
-
+      $('.timeline__describe').css(_options.labelDescribeStyle);
+      // _timeline__describe.css(_options.labelDescribeStyle);
+      // point add data image 
+      if (!this.isMock && this.isImage) {
+        $(`<style>.timeline__item__${index}::after {
+          border: ${_options.timeLinePointBorder}px solid ${_options.timeLinePointBg};
+          background:  ${_element[this.image] ? `url(${_element[this.image]}) center center /cover no-repeat` : pointBg};
+          </style>`)
+        .appendTo(document.head);
+      }
       let _formatPoint = _useToPoint && _formatList;
       const _usePointBg = _useToPoint ? (_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat` : _formatList.formatColor) : pointBg;
       const _usePointBorder = _formatPoint ? (_formatList.formatBorderColor || _options.timeLinePointBg) : _options.timeLinePointBg
@@ -276,9 +293,6 @@ export default class Visual extends WynVisual {
     if (_options.timeLineDirection === 'vertical') {
       const left = _options.verticalItemsLayout === 'left' && '3%' || _options.verticalItemsLayout === 'right' && '95%' || '50%';
       $(`<style>
-        .timeline {
-          flex: 1;
-        }
         .timeline__wrap::before{
           left: ${left};}
         </style>`)
