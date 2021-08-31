@@ -9,17 +9,27 @@
             {
                 "name": "value",
                 "displayNameKey": "节点状态",
-                "kind": "value"
+                "kind": "grouping"
             },
             {
                 "name": "image",
                 "displayNameKey": "节点图片",
-                "kind": "grouping"
+                "kind": "grouping",
+                "itemOptions": [{
+                    "name": "itemRenderSetting",
+                    "type": "renderSetting",
+                    "displayName": "渲染设置"
+                   }]
             },
             {
                 "name": "describe",
                 "displayNameKey": "详情信息",
-                "kind": "attributeOrValue"
+                "kind": "attributeOrValue",
+                "itemOptions": [{
+                    "name":  "itemFormat",
+                    "type": "format",
+                    "displayName": "数据格式"
+                   }]
             }      
         ],
         "dataViewMappings": [

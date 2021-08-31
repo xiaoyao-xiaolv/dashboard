@@ -69,7 +69,15 @@ export default class Visual extends WynVisual {
       this.image = this.isImage && plainData.profile.image.values[0].display || '';
       this.describe = this.isDescribe && plainData.profile.describe.values.map((_value: any) =>_value.display ) || []
       this.items = plainData.data;
-      // this.valueFormat = plainData.profile.values.options.valueFormat;
+      if (this.isDescribe) {
+        const format = options.dataViews[0].plain.profile.describe.values.map((_item: any) => _item.options.itemFormat);
+        const formatService = this.visualHost.formatService;
+        this.items.map((_item: any) => {
+          this.describe.map((_value: any, _index: number) => {
+            _item[_value] = formatService.format(format[_index], _item[_value]) || _item[_value];
+          })
+        })
+      }
     }
     
     this.options = options.properties;
