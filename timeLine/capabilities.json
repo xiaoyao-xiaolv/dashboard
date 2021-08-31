@@ -340,6 +340,19 @@
         }
     ]
     }, 
-    "actions": [],
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "edit"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
     "analysis": []
 }
