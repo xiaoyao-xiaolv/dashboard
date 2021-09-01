@@ -139,7 +139,7 @@ export default class Visual {
      this.isActualValue = !!plainData.profile.ActualValue.values.length;
      this.isDimension = !!plainData.profile.dimension.values.length;
      this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
-      let datas = plainData.data;
+     let datas = plainData.data;
 
       datas.map((data: any) => {
         this.actualFormate =  this.ActualValue && plainData.profile.ActualValue.values[0].format;
@@ -165,12 +165,11 @@ export default class Visual {
       if (this.ActualValue && this.ContrastValue && this.Dimension) {
         this.allShow = true;
         this.items[4] = [this.ActualValue, this.ContrastValue, this.Dimension];
-        this.items[0] = plainData.sort[this.Dimension] ? plainData.sort[this.Dimension].order : '';
+        // this.items[0] = plainData.sort[this.Dimension] ? plainData.sort[this.Dimension].order : '';
 
       }
       this.actualFormat = plainData.profile.ActualValue.options.valueFormat;
       this.contrastFormat = plainData.profile.ContrastValue.options.valueFormat;
-    
     } else {
       this.isMock = true
     }
@@ -530,8 +529,16 @@ export default class Visual {
                 let actual = options.showFirstBarActual && this.isActualValue ? `${this.formatData(this.items[1][value.dataIndex], options.showFirstBarActualUnit, this.actualFormate)}` : '';
                 let contrast = options.showFirstBarContrast && this.isContrastValue ? this.formatData(this.items[2][value.dataIndex], options.showFirstBarContrastUnit, this.contrastFormate) : '';
                 let _target = [name, percent, actual, contrast];
-                if(options.displayPolicy === 'lineFeed'){
-                  _target.splice(1,0,'\n')
+                 
+                const getTextWidth = (_string) => {
+                  const _canvas = document.createElement('canvas')
+                  const context = _canvas.getContext('2d');
+                  const {width} = context.measureText(_string);
+                  return width;
+                }
+              
+                if (options.displayPolicy === 'lineFeed') {
+                  _target.splice(1, 0, '\n')
                   dataRatio = _target.splice(0,2).join('') + _target.filter((_text) => _text).join('/');
                 }else if(options.displayPolicy === 'ellipsis'){
                   let _targetArr = _target.filter((_text) => _text)[0] && [_target.filter((_text) => _text)[0],'...']
