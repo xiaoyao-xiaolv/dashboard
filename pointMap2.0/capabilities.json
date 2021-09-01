@@ -92,9 +92,29 @@
                             {
                                 "value": "water",
                                 "displayNameKey": "水滴型"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆柱"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "直方柱"
                             }
                         ],
                         "defaultValue": "water"
+                    },
+                    {
+                        "name": "mapBarColor",
+                        "type": "Color",
+                        "displayName": "柱子颜色",
+                        "defaultValue": "#16FFFF"
+                    },
+                    {
+                        "name": "mapBarBottomCircle",
+                        "type": "Boolean",
+                        "displayName": "底部光环",
+                        "defaultValue": true
                     },
                     {
                         "displayNameKey": "地图缩放级别",

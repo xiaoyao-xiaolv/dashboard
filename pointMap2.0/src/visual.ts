@@ -160,6 +160,312 @@ export default class Visual extends WynVisual {
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
+
+    const lineMaxHeight = () => {
+      const maxValue = Math.max(...data.map(item => item.datas))
+      return 10/maxValue
+    }
+
+    const hexToRgba = (hex, opacity) => {
+      return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
+              + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
+    }
+    const lineData = () => {
+      return data.map((item) => {
+        return {
+          coords: [item.value, [item.value[0], item.value[1] + item.datas * lineMaxHeight()]]
+        }
+      })
+    }
+
+    const scatterData = () => {
+      return data.map((item) => {
+        return [item.value[0], item.value[1] + item.datas * lineMaxHeight()]
+      })
+    }
+    // 柱状体的底部
+    const scatterData2 = () => {
+        return data.map((item) => {
+          return {
+            name: item.name,
+            value: item.value
+          }
+        })
+    }
+    
+    const setBarData = [{// 柱状体的主干
+      type: 'lines',
+      zlevel: 5,
+      effect: {
+        show: false,
+        symbolSize: 5 // 图标大小
+      },
+      lineStyle: {
+        width: 10, // 尾迹线条宽度
+        // color: 'rgb(22,255,255, .6)',
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 1,
+          y2: 0,
+          colorStops: [
+            {
+              offset: 0,
+              // color: 'rgb(22,255,255, .6)' // 0% 处的颜色
+              color: hexToRgba(options.mapBarColor, 0.6)
+            },
+            {
+              offset: 0.5,
+              // color: 'rgb(22,255,255, .6)' // 0% 处的颜色
+              color: hexToRgba(options.mapBarColor, 0.6)
+            },
+            {
+              offset: 0.5,
+              // color: 'rgb(22,255,255, 0.8)' // 0% 处的颜色
+              color: hexToRgba(options.mapBarColor,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
+            },
+            {
+              offset: 1,
+              // color: 'rgb(22,255,255, 0.8)' // 0% 处的颜色
+              color: hexToRgba(options.mapBarColor,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
+            },
+            {
+              offset: 1,
+              // color: 'rgb(22,255,255, .6)' // 100% 处的颜色
+              color: hexToRgba(options.mapBarColor, 0.6)
+            }
+          ],
+          global: false // 缺省为 false
+        },
+        opacity: 1, // 尾迹线条透明度
+        curveness: 0 // 尾迹线条曲直度
+      },
+      label: {
+        show: 0,
+        position: 'end',
+        formatter: '245'
+      },
+      silent: true,
+      data: lineData()
+    },
+    // 柱状体的顶部
+    {
+      type: 'scatter',
+      coordinateSystem: 'geo',
+      geoIndex: 0,
+      zlevel: 5,
+      label: {
+        show: false,
+        formatter: function () {
+          return `顶部label`
+        },
+        position: "top"
+      },
+      symbol: options.symbolStyle,
+      symbolSize: [10, 5],
+      itemStyle: {
+        // color: 'rgb(22,255,255, 1)',
+        color: options.mapBarColor,
+        opacity: 1
+      },
+      silent: true,
+      data: scatterData()
+    },
+    // 柱状体的底部
+    {
+      type: 'scatter',
+      coordinateSystem: 'geo',
+      geoIndex: 0,
+      zlevel: 4,
+      label: {
+        // 这儿是处理的
+        formatter: '{b}',
+        position: 'bottom',
+        color: '#fff',
+        fontSize: 12,
+        distance: 10,
+        show: true
+      },
+      symbol: options.symbolStyle,
+      symbolSize: [10, 5],
+      itemStyle: {
+        // color: '#F7AF21',
+        // color: 'rgb(22,255,255, 1)',
+        color: options.mapBarColor,
+        opacity: 1
+      },
+      silent: true,
+      data: scatterData2()
+    },
+    // 底部外框
+    {
+      type: 'effectScatter',
+      coordinateSystem: 'geo',
+      geoIndex: 0,
+      zlevel: 4,
+      label: {
+        show: false
+      },
+      symbol: 'circle',
+      symbolSize: [20, 10],
+      itemStyle: {
+        color: {
+          type: 'radial',
+          x: 0.5,
+          y: 0.5,
+          r: 0.5,
+          colorStops: [
+            {
+              offset: 0, color: hexToRgba(options.mapBarColor, 0) // 0% 处的颜色
+            },
+            {
+              offset: .75, color: hexToRgba(options.mapBarColor, 0) // 100% 处的颜色
+            },
+            {
+              offset: .751, color: hexToRgba(options.mapBarColor, 1)// 100% 处的颜色
+            },
+            {
+              offset: 1, color: hexToRgba(options.mapBarColor, 1) // 100% 处的颜色
+            }
+          ],
+          global: false // 缺省为 false
+        },
+
+        opacity: 1
+      },
+      silent: true,
+      data: options.mapBarBottomCircle ? scatterData2(): []
+    }];
+    
+    const setSymbolData = [{
+      tooltip: {
+        show: false,
+      },
+      type: 'effectScatter',
+      coordinateSystem: 'geo',
+      rippleEffect: {
+        scale: 10,
+        brushType: 'stroke',
+      },
+      showEffectOn: 'render',
+      itemStyle: {
+        normal: {
+          shadowColor: '#0ff',
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowOffsetY: 0,
+          color: function (params) {
+            let colorList = [
+              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                {
+                  offset: 0,
+                  color: '#64fbc5',
+                },
+                {
+                  offset: 1,
+                  color: '#018ace',
+                },
+              ]),
+              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                {
+                  offset: 0,
+                  color: '#64fbc5',
+                },
+                {
+                  offset: 1,
+                  color: '#018ace',
+                },
+              ]),
+              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                {
+                  offset: 0,
+                  color: '#168e6d',
+                },
+                {
+                  offset: 1,
+                  color: '#c78d7b',
+                },
+              ]),
+              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                {
+                  offset: 0,
+                  color: '#61c0f1',
+                },
+                {
+                  offset: 1,
+                  color: '#6f2eb6',
+                },
+              ]),
+              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                {
+                  offset: 0,
+                  color: '#168e6d',
+                },
+                {
+                  offset: 1,
+                  color: '#c78d7b',
+                },
+              ]),
+              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                {
+                  offset: 0,
+                  color: '#61c0f1',
+                },
+                {
+                  offset: 1,
+                  color: '#6f2eb6',
+                },
+              ]),
+            ];
+            return colorList[params.dataIndex];
+          },
+        },
+      },
+      label: {
+        normal: {
+          color: '#fff',
+        },
+      },
+      symbol: 'circle',
+      symbolSize: [10, 5],
+      data: data,
+      zlevel: 1,
+    },
+    {
+      type: 'scatter',
+      coordinateSystem: 'geo',
+      itemStyle: {
+        color: '#f00',
+      },
+      symbol: function (value, params) {
+        if(options.symbolStyle === 'pyramid') {
+          return image.pyramid;
+        } else {
+          return params.data.img;
+        }
+      },
+      symbolSize: [25, 30],
+      symbolOffset: [0, -20],
+      z: 99,
+      data: data,
+    }];
+    
+    const getSeries = () => {
+      switch (options.symbolStyle) {
+        case 'circle':
+          return setBarData;
+        case 'diamond':
+         return setBarData;
+        case 'pyramid':
+          return setSymbolData;
+        case 'water':
+          return setSymbolData;
+        default:
+          break;
+      }
+    }
+
     let mapOption = {
       grid: {
         top: 0,
@@ -209,118 +515,6 @@ export default class Visual extends WynVisual {
           map: options.mapName
         },
         {
-          tooltip: {
-            show: false,
-          },
-          type: 'effectScatter',
-          coordinateSystem: 'geo',
-          rippleEffect: {
-            scale: 10,
-            brushType: 'stroke',
-          },
-          showEffectOn: 'render',
-          itemStyle: {
-            normal: {
-              shadowColor: '#0ff',
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowOffsetY: 0,
-              color: function (params) {
-                let colorList = [
-                  new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                    {
-                      offset: 0,
-                      color: '#64fbc5',
-                    },
-                    {
-                      offset: 1,
-                      color: '#018ace',
-                    },
-                  ]),
-                  new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                    {
-                      offset: 0,
-                      color: '#64fbc5',
-                    },
-                    {
-                      offset: 1,
-                      color: '#018ace',
-                    },
-                  ]),
-                  new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                    {
-                      offset: 0,
-                      color: '#168e6d',
-                    },
-                    {
-                      offset: 1,
-                      color: '#c78d7b',
-                    },
-                  ]),
-                  new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                    {
-                      offset: 0,
-                      color: '#61c0f1',
-                    },
-                    {
-                      offset: 1,
-                      color: '#6f2eb6',
-                    },
-                  ]),
-                  new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                    {
-                      offset: 0,
-                      color: '#168e6d',
-                    },
-                    {
-                      offset: 1,
-                      color: '#c78d7b',
-                    },
-                  ]),
-                  new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                    {
-                      offset: 0,
-                      color: '#61c0f1',
-                    },
-                    {
-                      offset: 1,
-                      color: '#6f2eb6',
-                    },
-                  ]),
-                ];
-                return colorList[params.dataIndex];
-              },
-            },
-          },
-          label: {
-            normal: {
-              color: '#fff',
-            },
-          },
-          symbol: 'circle',
-          symbolSize: [10, 5],
-          data: data,
-          zlevel: 1,
-        },
-        {
-          type: 'scatter',
-          coordinateSystem: 'geo',
-          itemStyle: {
-            color: '#f00',
-          },
-          symbol: function (value, params) {
-            if(options.symbolStyle === 'pyramid') {
-              return image.pyramid;
-            } else {
-              return params.data.img;
-            }
-          },
-          symbolSize: [25, 30],
-          symbolOffset: [0, -20],
-          z: 99,
-          data: data,
-        },
-        {
           type: 'scatter',
           coordinateSystem: 'geo',
           label: {
@@ -359,6 +553,7 @@ export default class Visual extends WynVisual {
           z: 999,
           data: data,
         },
+        ...getSeries(),
       ],
     };
     myChart.setOption(mapOption);
@@ -380,10 +575,15 @@ export default class Visual extends WynVisual {
     if(!properties.showTooltip) {
       [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle'])
     }
+
+    if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
+      hiddenStates = hiddenStates.concat(['mapBarColor', 'mapBarBottomCircle'])
+    }
     return hiddenStates;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+
     return null;
   }
 }
