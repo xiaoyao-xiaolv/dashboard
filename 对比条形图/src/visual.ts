@@ -50,8 +50,8 @@ export default class Visual {
     const fields = [{ label: params.name, value: `${params.data}%` }]
     this.host.contextMenuService.show({
       position: {
-      x: params.event.event.x,
-      y: params.event.event.y,
+        x: params.event.event.x,
+        y: params.event.event.y,
       }
     })
   });
@@ -105,7 +105,7 @@ export default class Visual {
               position: {
                 x: params.event.event.x,
                 y: params.event.event.y,
-                },
+              },
             }
           }])
         }
@@ -115,12 +115,12 @@ export default class Visual {
     this.chart.on('mouseup', (params) => {
       const clickMouse = params.event.event.button;
       if (clickMouse === clickRightMouse) {
-          this.showTooltip(params, true);
+        this.showTooltip(params, true);
       }
       this.container.addEventListener('contextmenu', (e: any) => {
         e.preventDefault();
       })
-      })
+    })
   }
 
 
@@ -132,26 +132,26 @@ export default class Visual {
     if (dataView && dataView.plain.profile.ActualValue.values.length) {
       this.isMock = false;
       const plainData = dataView.plain;
-      this.ActualValue = plainData.profile.ActualValue.values.length?plainData.profile.ActualValue.values[0].display:'';
-      this.ContrastValue = plainData.profile.ContrastValue.values.length?plainData.profile.ContrastValue.values[0].display:'';
-      this.Dimension = plainData.profile.dimension.values.length?plainData.profile.dimension.values[0].display : '';
-      
-     this.isActualValue = !!plainData.profile.ActualValue.values.length;
-     this.isDimension = !!plainData.profile.dimension.values.length;
-     this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
-     let datas = plainData.data;
+      this.ActualValue = plainData.profile.ActualValue.values.length ? plainData.profile.ActualValue.values[0].display : '';
+      this.ContrastValue = plainData.profile.ContrastValue.values.length ? plainData.profile.ContrastValue.values[0].display : '';
+      this.Dimension = plainData.profile.dimension.values.length ? plainData.profile.dimension.values[0].display : '';
+
+      this.isActualValue = !!plainData.profile.ActualValue.values.length;
+      this.isDimension = !!plainData.profile.dimension.values.length;
+      this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
+      let datas = plainData.data;
 
       datas.map((data: any) => {
-        this.actualFormate =  this.ActualValue && plainData.profile.ActualValue.values[0].format;
-        this.contrastFormate =  this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
+        this.actualFormate = this.ActualValue && plainData.profile.ActualValue.values[0].format;
+        this.contrastFormate = this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
         this.ActualValue && this.items[1].push(data[this.ActualValue]);
-        this.ContrastValue && this.items[2].push(data[ this.ContrastValue]);
-        if ( this.ActualValue &&  this.ContrastValue) {
+        this.ContrastValue && this.items[2].push(data[this.ContrastValue]);
+        if (this.ActualValue && this.ContrastValue) {
           this.items[3].push(Number((data[this.ActualValue] / data[this.ContrastValue] * 100).toFixed(2)));
-        } else if ( this.ActualValue) {
+        } else if (this.ActualValue) {
           this.items[3].push(Number((data[this.ActualValue] / 100 * 100).toFixed(2)));
         }
-        
+
         this.Dimension && this.items[0].push(data[this.Dimension]);
 
         const getSelectionId = (_item) => {
@@ -207,7 +207,7 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
-    }else if(sorttype == "desc" && according === 'accordingPercent'){
+    } else if (sorttype == "desc" && according === 'accordingPercent') {
       for (var i = 0; i < len - 1; i++) {
         index = i;
         for (var j = i + 1; j < len; j++) {
@@ -231,7 +231,7 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
-    }else if(sorttype == "asc" && according === 'accordingActual'){
+    } else if (sorttype == "asc" && according === 'accordingActual') {
       for (var i = 0; i < len - 1; i++) {
         index = i;
         for (var j = i + 1; j < len; j++) {
@@ -255,7 +255,7 @@ export default class Visual {
         arr[5][i] = arr[5][index];
         arr[5][index] = temp;
       }
-    }else if(sorttype == "desc" && according === 'accordingActual'){
+    } else if (sorttype == "desc" && according === 'accordingActual') {
       for (var i = 0; i < len - 1; i++) {
         index = i;
         for (var j = i + 1; j < len; j++) {
@@ -283,52 +283,52 @@ export default class Visual {
     return;
   }
 
-  private _getRichList(_options,allData:any) {
-    const {rankingConditionCollection: rankingArr, rankingTextStyle: textStyle,rankingShape: bgShape, rankingSize: widthSize,  rankingBackgroundImage: bgImage, rankingBackgroundColor: bgColor ,showBackgroundColor} = _options;
-   const _basicTextStyle = {
-    fontSize: this.setFontSize(textStyle.fontSize),
-    fontWeight: textStyle.fontWeight == "Light"?textStyle.fontWeight + "er":textStyle.fontWeight,
-    fontFamily: textStyle.fontFamily,
-    fontStyle: textStyle.fontStyle,
-    borderRadius: bgShape === 'circular' ? 100 : '',
-    width:10,
-    height:10,
-    align: 'left',
-    padding: [widthSize, widthSize],
+  private _getRichList(_options, allData: any) {
+    const { rankingConditionCollection: rankingArr, rankingTextStyle: textStyle, rankingShape: bgShape, rankingSize: widthSize, rankingBackgroundImage: bgImage, rankingBackgroundColor: bgColor, showBackgroundColor } = _options;
+    const _basicTextStyle = {
+      fontSize: this.setFontSize(textStyle.fontSize),
+      fontWeight: textStyle.fontWeight == "Light" ? textStyle.fontWeight + "er" : textStyle.fontWeight,
+      fontFamily: textStyle.fontFamily,
+      fontStyle: textStyle.fontStyle,
+      borderRadius: bgShape === 'circular' ? 100 : '',
+      width: 10,
+      height: 10,
+      align: 'left',
+      padding: [widthSize, widthSize],
     }
     let styleList = {
       idx: {
         color: textStyle.color,
-        backgroundColor:bgShape === 'none' || this.isMock ? 'transparent' : this.setBackgroundImage(bgImage,bgColor),
-        ..._basicTextStyle    
+        backgroundColor: bgShape === 'none' || this.isMock ? 'transparent' : this.setBackgroundImage(bgImage, bgColor),
+        ..._basicTextStyle
       }
     }
-     rankingArr.map((_item) => {
+    rankingArr.map((_item) => {
       if (_item.rankingConditionValue) {
         styleList[`idx${_item.rankingConditionValue}`] = {
           color: _item.rankingFontColor || textStyle.color,
-          backgroundColor: this.setBackgroundImage(_item.rankingConditionImage,_item.rankingConditionColor) || this.setBackgroundImage(bgImage,bgColor),
-          ..._basicTextStyle    
+          backgroundColor: this.setBackgroundImage(_item.rankingConditionImage, _item.rankingConditionColor) || this.setBackgroundImage(bgImage, bgColor),
+          ..._basicTextStyle
         }
-     }
+      }
     })
     return styleList;
   }
 
   public formatData = (number, dataUnit, formate) => {
     let format = number
-    if(dataUnit === 'auto'){
-      const formatService = this.host.formatService;
+    if (dataUnit === 'auto') {
+      const formatService = this.host.formatService;
       let realDisplayUnit = dataUnit;
-      if (formatService.isAutoDisplayUnit(dataUnit)) {
-          realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+      if (formatService.isAutoDisplayUnit(dataUnit)) {
+        realDisplayUnit = formatService.getAutoDisplayUnit([number]);
       }
       return format = formatService.format(formate, number, realDisplayUnit);
     } else {
       const units = [{
         value: 1,
         unit: ''
-      },{
+      }, {
         value: 100,
         unit: '百'
       }, {
@@ -361,38 +361,37 @@ export default class Visual {
     }
   }
 
-  public setTopColor(array: any, index:Number, type: string){
+  public setTopColor(array: any, index: Number, type: string) {
     const _target = array.find((_item) => Number(_item.rankingConditionValue) === index);
-    if(type === 'bg') {
-      if(_target) {
-        return _target.rankingConditionImage && { image: _target.rankingConditionImage} || _target.rankingConditionColor || ' '
-      }else {
-         return ''
+    if (type === 'bg') {
+      if (_target) {
+        return _target.rankingConditionImage && { image: _target.rankingConditionImage } || _target.rankingConditionColor || ' '
+      } else {
+        return ''
       }
-    }else if (type === 'font') {
-      if(_target) {
+    } else if (type === 'font') {
+      if (_target) {
         return _target.rankingFontColor || ''
       }
-     
+
     }
   }
 
-  public setFontSize(fontSizeValue: any){
-    let fontUnit  = fontSizeValue.substring(0,fontSizeValue.length-2)
-    let fontLastTwo = fontSizeValue.substring(fontSizeValue.length-2,fontSizeValue.length)
-    return fontLastTwo === 'px'?  fontUnit : fontUnit*(96/72)  // windows, no apple
+  public setFontSize(fontSizeValue: any) {
+    let fontUnit = fontSizeValue.substring(0, fontSizeValue.length - 2)
+    let fontLastTwo = fontSizeValue.substring(fontSizeValue.length - 2, fontSizeValue.length)
+    return fontLastTwo === 'px' ? fontUnit : fontUnit * (96 / 72)  // windows, no apple
   }
 
-  public setBackgroundImage(newSrc: any,newColor: any){
-    if(newSrc){
+  public setBackgroundImage(newSrc: any, newColor: any) {
+    if (newSrc) {
       const newImage = new Image();
       newImage.src = newSrc
-      return {image:newImage}
-    }else{
+      return { image: newImage }
+    } else {
       return newColor
     }
   }
-
   private render() {
     this.chart.clear();
     const options = this.properties;
@@ -418,10 +417,10 @@ export default class Visual {
       tooltip: {
         show: true,
         trigger: 'item',
-        backgroundColor:'rgba(253,245,230,1)',
+        backgroundColor: 'rgba(253,245,230,1)',
         padding: [10, 15],
-        textStyle:{
-          color:'#363636'
+        textStyle: {
+          color: '#363636'
         },
         formatter: (params) => {
           if (this.isMock) {
@@ -447,7 +446,7 @@ export default class Visual {
       },
       yAxis: [{
         type: 'category',
-        data:  this.isMock ? items[3]: (this.isDimension ? items[0]: items[1]),
+        data: this.isMock ? items[3] : (this.isDimension ? items[0] : items[1]),
         inverse: true,
         axisTick: {
           show: false
@@ -470,7 +469,7 @@ export default class Visual {
                 dataRatio = items[1];
               }
             }
-            return dataRatio 
+            return dataRatio
           },
           color: options.textStyle.color,
           fontSize: this.setFontSize(options.textStyle.fontSize),
@@ -497,7 +496,7 @@ export default class Visual {
       series: [{
         type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
         barWidth: options.barWidth,
-        data: this.isMock ?  items[3] : (this.isContrastValue ? items[3]: items[1]),
+        data: this.isMock ? items[3] : (this.isContrastValue ? items[3] : items[1]),
         symbolRepeat: "fixed",
         symbolMargin: options.barSymbolMargin,
         symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? `image://${options.barSymbolImage}` : options.barSymbolType),
@@ -509,11 +508,11 @@ export default class Visual {
         label: {
           show: options.showBarLabel,
           margin: 1,
-          position: [options.firstBarPositionX,options.firstBarPositionY],
-          rotate : options.rotationDegree,
+          position: [options.firstBarPositionX, options.firstBarPositionY],
+          rotate: options.rotationDegree,
           width: 65,
           color: options.labelTextStyle.color,
-          fontSize:this.setFontSize(options.labelTextStyle.fontSize),
+          fontSize: this.setFontSize(options.labelTextStyle.fontSize),
           fontWeight: _fontWeight,
           fontFamily: options.labelTextStyle.fontFamily,
           fontStyle: options.labelTextStyle.fontStyle,
@@ -524,35 +523,42 @@ export default class Visual {
               `${value.data}%`
             } else {
               if (this.isDimension) {
-                let name = options.showFirstBarCategory && this.isDimension ? value.name:''
+                var strs = value.name.split(''); //字符串数组
+                var str = ''
+                var len = options.categoryLen;
+                for (var i = 0, s; s = strs[i++];) { //遍历字符串数组
+                  str += s;
+                  if (!(i % len)) str += '\n'; //按需要求余
+                }
+                let name = options.showFirstBarCategory && this.isDimension ? str : ''
                 let percent = options.showFirstBarPercent && this.isActualValue ? this.items[3][value.dataIndex].toFixed(options.showFirstPercentFormate) + '%' : '';
                 let actual = options.showFirstBarActual && this.isActualValue ? `${this.formatData(this.items[1][value.dataIndex], options.showFirstBarActualUnit, this.actualFormate)}` : '';
                 let contrast = options.showFirstBarContrast && this.isContrastValue ? this.formatData(this.items[2][value.dataIndex], options.showFirstBarContrastUnit, this.contrastFormate) : '';
                 let _target = [name, percent, actual, contrast];
-                 
+
                 const getTextWidth = (_string) => {
                   const _canvas = document.createElement('canvas')
                   const context = _canvas.getContext('2d');
-                  const {width} = context.measureText(_string);
+                  const { width } = context.measureText(_string);
                   return width;
                 }
-              
+
                 if (options.displayPolicy === 'lineFeed') {
                   _target.splice(1, 0, '\n')
-                  dataRatio = _target.splice(0,2).join('') + _target.filter((_text) => _text).join('/');
-                }else if(options.displayPolicy === 'ellipsis'){
-                  let _targetArr = _target.filter((_text) => _text)[0] && [_target.filter((_text) => _text)[0],'...']
+                  dataRatio = _target.splice(0, 2).join('') + _target.filter((_text) => _text).join('/');
+                } else if (options.displayPolicy === 'ellipsis') {
+                  let _targetArr = _target.filter((_text) => _text)[0] && [_target.filter((_text) => _text)[0], '...']
                   _target.length = 0
                   _target = _target.concat(_targetArr)
                   dataRatio = _target.join('')
-                }else{
+                } else {
                   dataRatio = _target.filter((_text) => _text).join('/');
                 }
               } else {
                 dataRatio = items[1];
               }
             }
-            return dataRatio 
+            return dataRatio
           },
         },
         itemStyle: {
@@ -563,7 +569,7 @@ export default class Visual {
             offset: 1,
             color: options.barEndcolor // 100% 处的颜色
           }], false),
-          barBorderRadius: [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
+          barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusLeftDown, options.radiusRightDown]
         }
       }, {
         type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
@@ -575,7 +581,7 @@ export default class Visual {
         }),
         symbolRepeat: "fixed",
         symbolMargin: options.barSymbolMargin,
-        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? (options.barSymbolImage?`image://${options.barSymbolImage}`:'default') : options.barSymbolType),
+        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? (options.barSymbolImage ? `image://${options.barSymbolImage}` : 'default') : options.barSymbolType),
         symbolClip: true,
         symbolSize: [`${options.barSymbolSizeX}`, `${options.barSymbolSizeY}`],
         symbolPosition: "start",
@@ -583,39 +589,39 @@ export default class Visual {
         itemStyle: {
           color: options.barBackgroundColor,
           opacity: options.barSymbolType === 'custom' ? 0.5 : 1,
-          barBorderRadius: [options.radiusLeftTop,options.radiusRightTop,options.radiusLeftDown,options.radiusRightDown]
+          barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusLeftDown, options.radiusRightDown]
         },
         label: {
           show: options.showRanking,
           margin: 1,
-          position: [options.secondBarPositionX, options.secondBarPositionY] ,
-          width:65,
-          lineHeight:options.barWidth,
+          position: [options.secondBarPositionX, options.secondBarPositionY],
+          width: 65,
+          lineHeight: options.barWidth,
           formatter: (value) => {
             if (this.isMock) {
-              return  '{idx|' +  items[0][value.dataIndex]+ '}'
-            } else if(options.showRanking && !this.isMock){
-                const _target = options.rankingConditionCollection.find((_item) => Number(_item.rankingConditionValue) === (value.dataIndex+1));
-                let replaceOrder = !!_target&&_target.rankingReplaceValue || (value.dataIndex+1)
-              
+              return '{idx|' + items[0][value.dataIndex] + '}'
+            } else if (options.showRanking && !this.isMock) {
+              const _target = options.rankingConditionCollection.find((_item) => Number(_item.rankingConditionValue) === (value.dataIndex + 1));
+              let replaceOrder = !!_target && _target.rankingReplaceValue || (value.dataIndex + 1)
+
               if (options.showBackgroundColor) {
                 if (_target) {
-                  return '{idx'+ (value.dataIndex+1) +'|'+ replaceOrder + '}'
+                  return '{idx' + (value.dataIndex + 1) + '|' + replaceOrder + '}'
                 } else {
-                  return '{idx|'+ replaceOrder + '}'
+                  return '{idx|' + replaceOrder + '}'
                 }
               } else {
-                return '{idx|'+ replaceOrder + '}'
+                return '{idx|' + replaceOrder + '}'
               }
               // if (options.showBackgroundColor && options.rankingConditionCollection) {
               //     return '{idx'+ (value.dataIndex+1) +'|'+ replaceOrder + '}'
               //   }else {
               //     return '{idx|'+ replaceOrder + '}'
               //   }
-            } 
-            
+            }
+
           },
-          rich:this._getRichList(options ,items),
+          rich: this._getRichList(options, items),
         },
         emphasis: {
           itemStyle: {
@@ -641,11 +647,11 @@ export default class Visual {
 
     // fill shape
     if (updateOptions.properties.barSymbolType === 'default') {
-      hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSizeX', 'barSymbolSizeY','barSymbolMargin'])
+      hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSizeX', 'barSymbolSizeY', 'barSymbolMargin'])
     } else {
       hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
     }
-    
+
     if (updateOptions.properties.barSymbolType !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
     }
@@ -662,15 +668,18 @@ export default class Visual {
 
     // dataLabel
     if (!updateOptions.properties.showBarLabel) {
-      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'firstBarPositionX', 'firstBarPositionY','rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast','labelTextStyle', 'displayPolicy'])
+      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'firstBarPositionX', 'firstBarPositionY', 'rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast', 'labelTextStyle', 'displayPolicy'])
     }
     // Classification axis
     if (!updateOptions.properties.showLabel) {
-      hiddenOptions = hiddenOptions.concat([ 'showSecondBarPercent','showSecondPercentFormate','showSecondBarActual', 'showSecondBarContrast', 'textStyle'])
+      hiddenOptions = hiddenOptions.concat(['showSecondBarPercent', 'showSecondPercentFormate', 'showSecondBarActual', 'showSecondBarContrast', 'textStyle'])
     }
 
     if (!updateOptions.properties.showRanking) {
-      hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY','rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle','showBackgroundColor', 'rankingConditionCollection' ])
+      hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY', 'rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle', 'showBackgroundColor', 'rankingConditionCollection'])
+    }
+    if (!updateOptions.properties.showFirstBarCategory) {
+      hiddenOptions = hiddenOptions.concat(['categoryLen'])
     }
     if (!updateOptions.properties.showFirstBarPercent) {
       hiddenOptions = hiddenOptions.concat(['showFirstPercentFormate'])
