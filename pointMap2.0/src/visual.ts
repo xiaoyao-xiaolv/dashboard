@@ -430,7 +430,8 @@ export default class Visual extends WynVisual {
       symbol: 'circle',
       symbolSize: [10, 5],
       data: data,
-      zlevel: 1,
+      z: 4,
+      zlevel: 4,
     },
     {
       type: 'scatter',
@@ -448,6 +449,7 @@ export default class Visual extends WynVisual {
       symbolSize: [25, 30],
       symbolOffset: [0, -20],
       z: 99,
+      zlevel: 5,
       data: data,
     }];
     
@@ -465,7 +467,7 @@ export default class Visual extends WynVisual {
           break;
       }
     }
-
+    
     let mapOption = {
       grid: {
         top: 0,
@@ -473,17 +475,38 @@ export default class Visual extends WynVisual {
         left: 0,
         right: 0
       },
-      geo: {
+      geo: [{
+          map: options.mapName,
+          zoom: options.zoom,
+          roam: false,
+          zlevel: 2,
+          layoutSize: '95%',
+          layoutCenter: [`${50}%`,`${50}%`],
+          itemStyle: {
+            normal: {
+                areaColor:options.mapColor,
+                borderColor: options.mapBorderColor,
+                borderWidth: 1,
+                shadowColor: options.mapBorderShadowColor,
+                shadowBlur: 10,
+            },
+            emphasis: {
+                areaColor: options.emphasisColor,
+            }
+          }
+        }, {
         map: options.mapName,
         zoom: options.zoom,
         roam: false,
+        zlevel: 1,
+        layoutSize: '95%',
+        layoutCenter: [`${options.mapShadowX}%`,`${options.mapShadowY}%`],
         // aspectScale: 1.3,
+        silent: true,
         itemStyle: {
           normal: {
+            areaColor: options.mapShadowColor,
             borderWidth: 0,
-            shadowColor: options.mapShadowColor,
-            shadowOffsetX: 5,
-            shadowOffsetY: 13
           }
         },
         regions: [{
@@ -492,31 +515,16 @@ export default class Visual extends WynVisual {
             opacity: 0,
           },
         }]
-      },
-      series: [
-        {
-          type: 'map',
-          roam: false,
-          itemStyle: {
-            normal: {
-              areaColor:options.mapColor,
-              borderColor: options.mapBorderColor,
-              borderWidth: 1,
-              shadowColor: options.mapBorderShadowColor,
-              shadowBlur: 10,
-              shadowOffsetX: -3,
-              shadowOffsetY: 3,
-            },
-            emphasis: {
-              areaColor: options.emphasisColor,
-            }
-          },
-          zoom: options.zoom,
-          map: options.mapName
-        },
-        {
+       
+      }],
+      series: [{
           type: 'scatter',
           coordinateSystem: 'geo',
+          itemStyle: {
+            normal: {
+              color: 'transparent',
+            }
+          },
           label: {
             normal: {
               show: options.showTooltip,
@@ -550,7 +558,8 @@ export default class Visual extends WynVisual {
               color: options.tooltipTextStyle.color
             }
           },
-          z: 999,
+          z: 9,
+          zlevel: 9,
           data: data,
         },
         ...getSeries(),

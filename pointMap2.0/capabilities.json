@@ -126,7 +126,19 @@
                         "name": "mapShadowColor",
                         "type": "Color",
                         "displayName": "地图阴影颜色",
-                        "defaultValue": "rgba(0, 56, 149, 0.8)"
+                        "defaultValue": "rgba(255,255,255, 0.8)"
+                    },
+                    {
+                        "name": "mapShadowX",
+                        "type": "Integer",
+                        "displayName": "地图阴影X偏移量",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "mapShadowY",
+                        "type": "Integer",
+                        "displayName": "地图阴影Y偏移量",
+                        "defaultValue": 53
                     },
                     {
                         "name": "mapBorderColor",
