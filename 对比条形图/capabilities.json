@@ -266,6 +266,12 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "categoryLen",
+                        "type": "Integer",
+                        "displayName": "分类换行字符",
+                        "defaultValue": 5
+                    },
+                    {
                         "name": "showFirstBarPercent",
                         "type": "Boolean",
                         "displayName": "显示百分比",
