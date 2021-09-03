@@ -69,7 +69,8 @@ export default class Visual extends WynVisual {
     this.host = host;
     this.isMock = true;
     this.bindCoords = false;
-    myChart = echarts.init(dom);
+    myChart = echarts.init(dom, null ,{ renderer: 'canvas'});
+    // myChart = echarts.init(dom, null ,{ renderer: 'svg'});
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
     this.container.style.transform = 'rotate3d(-70, -1, 0, -45deg)';
@@ -159,8 +160,10 @@ export default class Visual extends WynVisual {
     myChart.clear();
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
-    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
-
+    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; `;
+    //  background: url(${options.mapShadowImage})
+    // this.container.style.background = `url(${options.mapShadowImage}) center center no-repeat`;
+    // this.container.style.backgroundSize = '100% 100%'
     const lineMaxHeight = () => {
       const maxValue = Math.max(...data.map(item => item.datas))
       return 10/maxValue
@@ -467,7 +470,7 @@ export default class Visual extends WynVisual {
           break;
       }
     }
-    
+
     let mapOption = {
       grid: {
         top: 0,
@@ -485,6 +488,7 @@ export default class Visual extends WynVisual {
           itemStyle: {
             normal: {
                 areaColor:options.mapColor,
+                // areaColor: 'transparent',
                 borderColor: options.mapBorderColor,
                 borderWidth: 1,
                 shadowColor: options.mapBorderShadowColor,
