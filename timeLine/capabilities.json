@@ -2,19 +2,19 @@
     "dataBinding": {
         "dataRoles": [
             {
-                "name": "name",
-                "displayNameKey": "节点名称",
-                "kind": "grouping"
-            },
-            {
                 "name": "value",
                 "displayNameKey": "节点状态",
-                "kind": "grouping"
+                "kind": "value"
+            },
+            {
+                "name": "name",
+                "displayNameKey": "节点名称",
+                "kind": "groupingOrValue"
             },
             {
                 "name": "image",
                 "displayNameKey": "节点图片",
-                "kind": "grouping",
+                "kind": "groupingOrValue",
                 "itemOptions": [{
                     "name": "itemRenderSetting",
                     "type": "renderSetting",
@@ -41,7 +41,7 @@
                                 "min": 1
                             },
                             "value": {
-                                "min": 1
+                                "min": 0
                             },
                             "image": {
                                 "min": 0
@@ -353,6 +353,18 @@
     "actions": [
         {
             "type": "focus"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        }, 
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
         },
         {
             "type": "edit"
