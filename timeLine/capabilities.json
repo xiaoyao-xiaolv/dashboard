@@ -347,6 +347,44 @@
                     "defaultValue": []
                 }
             ]
+        },
+        {
+            "type": "title"
+        },
+        {
+            "type": "interaction",
+            "properties": [{
+                "name": "clickLeftMouse",
+                "type": "Enum",
+                "displayName": "鼠标左键选项",
+                "items": [
+                    {
+                        "value": "none",
+                        "displayNameKey": "无"
+                    },
+                    {
+                        "value": "showToolTip",
+                        "displayNameKey": "显示工具提示"
+                    },
+                    {
+                        "value": "Keep",
+                        "displayNameKey": "保留"
+                    },
+                    {
+                        "value": "Exclude",
+                        "displayNameKey": "排除"
+                    },
+                    {
+                        "value": "Drill",
+                        "displayNameKey": "钻取"
+                    },
+                    {
+                        "value": "Jump",
+                        "displayNameKey": "跳转"
+                    }
+                ],
+                "defaultValue": "none"
+            }]
         }
     ]
     }, 
@@ -364,9 +402,6 @@
             "type": "rank"
         },
         {
-            "type": "convertVisual"
-        },
-        {
             "type": "edit"
         },
         {
@@ -375,6 +410,5 @@
         {
             "type": "annotation"
         }
-    ],
-    "analysis": []
+    ]
 }

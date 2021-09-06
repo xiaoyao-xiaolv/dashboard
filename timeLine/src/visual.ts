@@ -3,7 +3,11 @@ import '../style/timeline.less';
 import '../fonts/iconfont.css';
 const { timeline } = require('./timeline');
 import $ from 'jquery';
+import _ = require('lodash');
 
+let isTooltipModelShown = false;
+const clickLeftMouse = 0;
+const clickRightMouse = 2;
 export default class Visual extends WynVisual {
   private static mockItems = [
     { name: "下达", value: 1, image: '../assets/icon.png', describe: '这个可能是一段文本' },
@@ -14,8 +18,11 @@ export default class Visual extends WynVisual {
     { name: "入仓", value: 0, image: '../assets/icon.png', describe: '这个可能是一段文本' },
     { name: "完成", value: 0, image: '../assets/icon.png', describe: '这个可能是一段文本' }
   ];
+  
   private root: JQuery<HTMLElement>;
   private items = [];
+  private selectionManager: any;
+  private selection: any[] = [];
 
   private isMock = true;
   private isFirstRender: boolean;
@@ -40,7 +47,74 @@ export default class Visual extends WynVisual {
     this.root = $(dom);
     this.isMock = true;
     this.visualHost = host;
+    this.selectionManager = host.selectionService.createSelectionManager();
     this.isFirstRender = true;
+  }
+  
+  private hideTooltip = () => {
+    this.visualHost.contextMenuService.hide();
+    isTooltipModelShown = false;
+  }
+
+  private showTooltip = _.debounce((params, asModel = false) => {
+    if (asModel) isTooltipModelShown = true;
+    this.visualHost.contextMenuService.show({
+      position: {
+        x: params.clientX,
+        y: params.clientY,
+      },
+      menu: true
+    }, 10)
+  });
+  createSelectionId = (sid?) => this.visualHost.selectionService.createSelectionId(sid);
+ 
+  public getNodeSelectionId = (label: any) => {
+    const  {selectionId}  = this.items.find((_item: any) => _item[this.name] === label)
+    return selectionId
+  }
+  
+  public bindEvents = (node, _label) => {
+    const clickMouse = node.button;
+    this.root.on('mousedown', (e: any) => {
+      document.oncontextmenu = function () { return false; }; 
+      if (!e.seriesClick) {
+        // clear tooltip
+        this.hideTooltip();
+        // clear selection
+        this.selection = [];
+        this.selectionManager.clear();
+        return;
+      }
+    })
+
+    const selectionId = this.getNodeSelectionId(_label)
+    if (!this.selectionManager.contains(selectionId)) {
+      this.selectionManager.select(selectionId, true);
+    } else {
+      this.selectionManager.clear(selectionId);
+    }
+    if (clickMouse === clickLeftMouse) {
+      if (this.options.clickLeftMouse === 'none' || this.options.clickLeftMouse === 'showToolTip') {
+        return
+      } else {
+        if (isTooltipModelShown) return;
+        this.hideTooltip();
+        const selectionIds = this.selectionManager.getSelectionIds();
+        this.visualHost.commandService.execute([{
+          name: this.options.clickLeftMouse,
+          payload: {
+            selectionIds,
+            position: {
+              x: node.clientX,
+              y: node.clientY,
+              },
+          }
+        }])
+      }
+    } else if (clickMouse === clickRightMouse) {  
+      node.preventDefault();
+      this.showTooltip(node, true);
+    }
   }
 
 
@@ -78,7 +152,19 @@ export default class Visual extends WynVisual {
           })
         })
       }
-    }
+      // select id
+      const getSelectionId = (_item) => {
+        const selectionId = this.createSelectionId();
+        this.name && selectionId.withDimension(plainData.profile.name.values[0], _item);
+        return selectionId
+      }
+      this.items = this.items.map((_item) => {
+        return {
+          ..._item,
+          selectionId: getSelectionId(_item)
+        }
+      });
+    } 
     
     this.options = options.properties;
     this.render();
@@ -192,8 +278,11 @@ export default class Visual extends WynVisual {
 
       $(_timeline__content)
         .append(_timeline__content_text);
-      const _timeline__title = $('<h2 class="timeline__title">')
-      
+      const _timeline__title = $('<h2 class="timeline__title">');
+      // add click event 
+       $(_timeline__item).on('mouseup', (e:any) => {
+         this.bindEvents(e, _element[this.name])
+      })
       //  show label
      if (_options.showLabel === 'content' && this.isDescribe) {
         $(_timeline__content_text).addClass('timeline__content_text')
