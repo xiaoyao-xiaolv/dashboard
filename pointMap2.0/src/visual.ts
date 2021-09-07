@@ -195,7 +195,17 @@ export default class Visual extends WynVisual {
           }
         })
     }
-    
+    const _mapBarBottomAnimate = () => {
+      if (options.mapBarBottomAnimate === 'ripple') {
+        return { rippleEffect: {
+          scale: 5,
+          brushType: 'stroke',
+        },
+        showEffectOn: 'render'}
+      } else {
+        return {}
+      }
+    }
     const setBarData = [{// 柱状体的主干
       type: 'lines',
       zlevel: 5,
@@ -303,6 +313,9 @@ export default class Visual extends WynVisual {
     },
     // 底部外框
     {
+      tooltip: {
+        show: false,
+      },
       type: 'effectScatter',
       coordinateSystem: 'geo',
       geoIndex: 0,
@@ -312,6 +325,7 @@ export default class Visual extends WynVisual {
       },
       symbol: 'circle',
       symbolSize: [20, 10],
+      ..._mapBarBottomAnimate(),
       itemStyle: {
         color: {
           type: 'radial',
@@ -320,21 +334,20 @@ export default class Visual extends WynVisual {
           r: 0.5,
           colorStops: [
             {
-              offset: 0, color: hexToRgba(options.mapBarColor, 0) // 0% 处的颜色
+              offset: 0, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 0% 处的颜色
             },
             {
-              offset: .75, color: hexToRgba(options.mapBarColor, 0) // 100% 处的颜色
+              offset: .75, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 100% 处的颜色
             },
             {
-              offset: .751, color: hexToRgba(options.mapBarColor, 1)// 100% 处的颜色
+              offset: .751, color: hexToRgba(options.mapBarBottomAnimateColor, 1)// 100% 处的颜色
             },
             {
-              offset: 1, color: hexToRgba(options.mapBarColor, 1) // 100% 处的颜色
+              offset: 1, color: hexToRgba(options.mapBarBottomAnimateColor, 1) // 100% 处的颜色
             }
           ],
           global: false // 缺省为 false
         },
-
         opacity: 1
       },
       silent: true,
@@ -347,94 +360,44 @@ export default class Visual extends WynVisual {
       },
       type: 'effectScatter',
       coordinateSystem: 'geo',
-      rippleEffect: {
-        scale: 10,
-        brushType: 'stroke',
+      zlevel: 4,
+      label: {
+        show: false,
       },
-      showEffectOn: 'render',
+      symbol: 'circle',
+      symbolSize: [20, 10],
+      ..._mapBarBottomAnimate(),
       itemStyle: {
         normal: {
           shadowColor: '#0ff',
           shadowBlur: 10,
           shadowOffsetX: 0,
           shadowOffsetY: 0,
-          color: function (params) {
-            let colorList = [
-              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                {
-                  offset: 0,
-                  color: '#64fbc5',
-                },
-                {
-                  offset: 1,
-                  color: '#018ace',
-                },
-              ]),
-              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                {
-                  offset: 0,
-                  color: '#64fbc5',
-                },
-                {
-                  offset: 1,
-                  color: '#018ace',
-                },
-              ]),
-              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                {
-                  offset: 0,
-                  color: '#168e6d',
-                },
-                {
-                  offset: 1,
-                  color: '#c78d7b',
-                },
-              ]),
-              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                {
-                  offset: 0,
-                  color: '#61c0f1',
-                },
-                {
-                  offset: 1,
-                  color: '#6f2eb6',
-                },
-              ]),
-              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                {
-                  offset: 0,
-                  color: '#168e6d',
-                },
-                {
-                  offset: 1,
-                  color: '#c78d7b',
-                },
-              ]),
-              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                {
-                  offset: 0,
-                  color: '#61c0f1',
-                },
-                {
-                  offset: 1,
-                  color: '#6f2eb6',
-                },
-              ]),
-            ];
-            return colorList[params.dataIndex];
+          color: {
+            type: 'radial',
+            x: 0.5,
+            y: 0.5,
+            r: 0.5,
+            colorStops: [
+              {
+                offset: 0, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 0% 处的颜色
+              },
+              {
+                offset: .75, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 100% 处的颜色
+              },
+              {
+                offset: .751, color: hexToRgba(options.mapBarBottomAnimateColor, 1)// 100% 处的颜色
+              },
+              {
+                offset: 1, color: hexToRgba(options.mapBarBottomAnimateColor, 1) // 100% 处的颜色
+              }
+            ],
+            global: false // 缺省为 false
           },
         },
       },
-      label: {
-        normal: {
-          color: '#fff',
-        },
-      },
-      symbol: 'circle',
-      symbolSize: [10, 5],
-      data: data,
-      z: 4,
-      zlevel: 4,
+      silent: true,
+      data:  options.mapBarBottomCircle ? data : [],
     },
     {
       type: 'scatter',
@@ -590,7 +553,7 @@ export default class Visual extends WynVisual {
     }
 
     if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
-      hiddenStates = hiddenStates.concat(['mapBarColor', 'mapBarBottomCircle'])
+      hiddenStates = hiddenStates.concat(['mapBarColor'])
     }
     return hiddenStates;
   }

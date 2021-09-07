@@ -113,8 +113,30 @@
                     {
                         "name": "mapBarBottomCircle",
                         "type": "Boolean",
-                        "displayName": "底部光环",
+                        "displayName": "底部动画",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "mapBarBottomAnimate",
+                        "type": "Enum",
+                        "displayName": "动画方式",
+                        "items": [
+                            {
+                                "value": "ripple",
+                                "displayNameKey": "波纹"
+                            },
+                            {
+                                "value": "effect",
+                                "displayNameKey": "光环"
+                            }
+                        ],
+                        "defaultValue": "ripple"
+                    },
+                    {
+                        "name": "mapBarBottomAnimateColor",
+                        "type": "Color",
+                        "displayName": "动画颜色",
+                        "defaultValue": "#16FFFF"
                     },
                     {
                         "displayNameKey": "地图缩放级别",
