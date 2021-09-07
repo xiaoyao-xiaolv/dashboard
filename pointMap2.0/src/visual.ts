@@ -62,6 +62,9 @@ export default class Visual extends WynVisual {
   private resultData: any;
   private locationArr: any;
   private shadowDiv: any;
+  private format: any;
+  private displayUnit: any;
+
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     [].push.call(image.water, getImage(host, 'image1'), getImage(host, 'image2'), getImage(host, 'image3'));
@@ -150,6 +153,11 @@ export default class Visual extends WynVisual {
         this.latitudeName = profile.latitude.values[0].display;
       }
       this.resultData = this.prepareData(bindData);
+      // data format and display unit
+      this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
+      this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit;
+      console.log(this.format,  this.displayUnit)
+      
     }
     this.properties = options.properties;
     let renderData = this.isMock ? rawData : this.resultData;
@@ -161,6 +169,7 @@ export default class Visual extends WynVisual {
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; `;
+    // add map background
     //  background: url(${options.mapShadowImage})
     // this.container.style.background = `url(${options.mapShadowImage}) center center no-repeat`;
     // this.container.style.backgroundSize = '100% 100%'
@@ -176,6 +185,7 @@ export default class Visual extends WynVisual {
     const lineData = () => {
       return data.map((item) => {
         return {
+          ...item,
           coords: [item.value, [item.value[0], item.value[1] + item.datas * lineMaxHeight()]]
         }
       })
@@ -195,17 +205,7 @@ export default class Visual extends WynVisual {
           }
         })
     }
-    const _mapBarBottomAnimate = () => {
-      if (options.mapBarBottomAnimate === 'ripple') {
-        return { rippleEffect: {
-          scale: 5,
-          brushType: 'stroke',
-        },
-        showEffectOn: 'render'}
-      } else {
-        return {}
-      }
-    }
+    
     const setBarData = [{// 柱状体的主干
       type: 'lines',
       zlevel: 5,
@@ -324,8 +324,12 @@ export default class Visual extends WynVisual {
         show: false
       },
       symbol: 'circle',
-      symbolSize: [20, 10],
-      ..._mapBarBottomAnimate(),
+      symbolSize: [10, 5],
+      rippleEffect: {
+        scale: options.mapBarBottomAnimate === 'stroke' ? 7: 5,
+        brushType: options.mapBarBottomAnimate,
+      },
+      showEffectOn: 'render',
       itemStyle: {
         color: {
           type: 'radial',
@@ -366,7 +370,11 @@ export default class Visual extends WynVisual {
       },
       symbol: 'circle',
       symbolSize: [20, 10],
-      ..._mapBarBottomAnimate(),
+      rippleEffect: {
+        scale: options.mapBarBottomAnimate === 'stroke' ? 5: 3,
+        brushType: options.mapBarBottomAnimate,
+      },
+      showEffectOn: 'render',
       itemStyle: {
         normal: {
           shadowColor: '#0ff',
@@ -507,11 +515,29 @@ export default class Visual extends WynVisual {
               fontFamily: options.tooltipTextStyle.fontFamily,
               fontStyle: options.tooltipTextStyle.fontStyle,
               fontWeight: options.tooltipTextStyle.fontWeight,
-              backgroundColor: options.tooltipBackgroundColor,
-              formatter: function (params: any) {
-                let name = params.name;
-                let value = params.data.datas;
-                return `{name|${name}}\n${value}`;
+              backgroundColor: options.tooltipBackgroundType === 'color' ? options.tooltipBackgroundColor : { image: options.tooltipBackgroundImage},
+              formatter: (params: any) => {
+                let _text = [];
+                if (options.showLocation) {
+                  let name = params.name;
+                  _text.push(name)
+                }
+                if (options.showValue) {
+                  let value = params.data.datas;
+                  if (this.isMock) {
+                    value = value;
+                  } else {
+                    let realDisplayUnit = this.displayUnit;
+                    const formatService = this.host.formatService;
+                    if (formatService.isAutoDisplayUnit(this.displayUnit)) {
+                      realDisplayUnit = formatService.getAutoDisplayUnit(value);
+                    }
+                    value = formatService.format(this.format, value, realDisplayUnit)
+                  }
+                  _text.push(value)
+                }
+                const _result = _text.join('\n');
+                return `{name|${_result}}`;
               },
               textStyle: {
                 rich:{
@@ -555,6 +581,15 @@ export default class Visual extends WynVisual {
     if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
       hiddenStates = hiddenStates.concat(['mapBarColor'])
     }
+    if (!properties.mapBarBottomCircle) {
+      hiddenStates = hiddenStates.concat(['mapBarBottomAnimate', 'mapBarBottomAnimateColor'])
+    }
+    if (properties.tooltipBackgroundType == 'color') {
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundImage'])
+    } else {
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor'])
+    }
+
     return hiddenStates;
   }
 

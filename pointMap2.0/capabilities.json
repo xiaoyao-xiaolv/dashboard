@@ -4,7 +4,19 @@
             {
                 "name": "values",
                 "displayNameKey": "数值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                      }
+                  ]
             },
             {
                 "name": "location",
@@ -122,15 +134,15 @@
                         "displayName": "动画方式",
                         "items": [
                             {
-                                "value": "ripple",
+                                "value": "stroke",
                                 "displayNameKey": "波纹"
                             },
                             {
-                                "value": "effect",
+                                "value": "fill",
                                 "displayNameKey": "光环"
                             }
                         ],
-                        "defaultValue": "ripple"
+                        "defaultValue": "stroke"
                     },
                     {
                         "name": "mapBarBottomAnimateColor",
@@ -242,10 +254,43 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "showLocation",
+                        "type": "Boolean",
+                        "displayName": "显示位置",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "tooltipBackgroundType",
+                        "type": "Enum",
+                        "displayName": "背景填充",
+                        "items": [
+                            {
+                                "value": "color",
+                                "displayNameKey": "背景颜色"
+                            },
+                            {
+                                "value": "image",
+                                "displayNameKey": "背景图片"
+                            }
+                        ],
+                        "defaultValue": "color"
+                    },
+                    {
                         "name": "tooltipBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",
                         "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "name": "tooltipBackgroundImage",
+                        "type": "Image",
+                        "displayName": "背景图片"
                     },
                     {
                         "name": "tooltipDistance",
