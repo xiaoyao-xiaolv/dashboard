@@ -173,20 +173,74 @@ export default class Visual extends WynVisual {
     //  background: url(${options.mapShadowImage})
     // this.container.style.background = `url(${options.mapShadowImage}) center center no-repeat`;
     // this.container.style.backgroundSize = '100% 100%'
-    const lineMaxHeight = () => {
+    const labelOptions = () => {
+      return {
+        normal: {
+          show: options.showTooltip,
+          position: options.symbolStyle === 'water'  || options.symbolStyle === 'pyramid' ? [5, -options.tooltipDistance] : 'end',
+          borderWidth: 1,
+          align: 'center',
+          verticalAlign: 'middle',
+          borderType: 'solid',
+          borderColor: options.tooltipBorderColor,
+          borderRadius: options.tooltipBorderRadius,
+          padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+          fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2)),
+          fontFamily: options.tooltipTextStyle.fontFamily,
+          fontStyle: options.tooltipTextStyle.fontStyle,
+          fontWeight: options.tooltipTextStyle.fontWeight,
+          backgroundColor: options.tooltipBackgroundType === 'color' ? options.tooltipBackgroundColor : { image: options.tooltipBackgroundImage},
+          formatter: (params: any) => {
+            let _text = [];
+            if (options.showLocation) {
+              let name = params.name;
+              _text.push(name)
+            }
+            if (options.showValue) {
+              let value = params.data.datas;
+              if (this.isMock) {
+                value = value;
+              } else {
+                let realDisplayUnit = this.displayUnit;
+                const formatService = this.host.formatService;
+                if (formatService.isAutoDisplayUnit(this.displayUnit)) {
+                  realDisplayUnit = formatService.getAutoDisplayUnit(value);
+                }
+                value = formatService.format(this.format, value, realDisplayUnit)
+              }
+              _text.push(value)
+            }
+            const _result = _text.join('\n');
+            return `{name|${_result}}`;
+          },
+          textStyle: {
+            rich:{
+              name:{
+                padding: [5, 0],
+                color: options.tooltipTextStyle.color,
+                fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
+              }
+            }
+          },
+          color: options.tooltipTextStyle.color
+        }
+        }
+    }
+    
+    const lineMaxHeight = (type?: string) => {
       const maxValue = Math.max(...data.map(item => item.datas))
-      return 10/maxValue
+      return type ? 14/maxValue : 10/maxValue
     }
 
     const hexToRgba = (hex, opacity) => {
       return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
               + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
     }
-    const lineData = () => {
+    const lineData = (type?: string) => {
       return data.map((item) => {
         return {
           ...item,
-          coords: [item.value, [item.value[0], item.value[1] + item.datas * lineMaxHeight()]]
+          coords: [item.value, [item.value[0], item.value[1] + item.datas * lineMaxHeight(type)]]
         }
       })
     }
@@ -254,13 +308,21 @@ export default class Visual extends WynVisual {
         opacity: 1, // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
       },
-      label: {
-        show: 0,
-        position: 'end',
-        formatter: '245'
-      },
       silent: true,
       data: lineData()
+    },
+    {// 柱状体的主干Label
+        type: 'lines',
+        zlevel: 6,
+        effect: {
+          show: false,
+        },
+        lineStyle: {
+          opacity: 0, // 尾迹线条透明度
+        },
+        label: labelOptions(),
+        silent: true,
+        data: lineData('lable')
     },
     // 柱状体的顶部
     {
@@ -268,17 +330,9 @@ export default class Visual extends WynVisual {
       coordinateSystem: 'geo',
       geoIndex: 0,
       zlevel: 5,
-      label: {
-        show: false,
-        formatter: function () {
-          return `顶部label`
-        },
-        position: "top"
-      },
       symbol: options.symbolStyle,
       symbolSize: [10, 5],
       itemStyle: {
-        // color: 'rgb(22,255,255, 1)',
         color: options.mapBarColor,
         opacity: 1
       },
@@ -422,6 +476,7 @@ export default class Visual extends WynVisual {
       },
       symbolSize: [25, 30],
       symbolOffset: [0, -20],
+      label: labelOptions(),
       z: 99,
       zlevel: 5,
       data: data,
@@ -492,69 +547,7 @@ export default class Visual extends WynVisual {
         }]
        
       }],
-      series: [{
-          type: 'scatter',
-          coordinateSystem: 'geo',
-          itemStyle: {
-            normal: {
-              color: 'transparent',
-            }
-          },
-          label: {
-            normal: {
-              show: options.showTooltip,
-              position: [5, -options.tooltipDistance],
-              borderWidth: 1,
-              align: 'center',
-              verticalAlign: 'middle',
-              borderType: 'solid',
-              borderColor: options.tooltipBorderColor,
-              borderRadius: options.tooltipBorderRadius,
-              padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
-              fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2)),
-              fontFamily: options.tooltipTextStyle.fontFamily,
-              fontStyle: options.tooltipTextStyle.fontStyle,
-              fontWeight: options.tooltipTextStyle.fontWeight,
-              backgroundColor: options.tooltipBackgroundType === 'color' ? options.tooltipBackgroundColor : { image: options.tooltipBackgroundImage},
-              formatter: (params: any) => {
-                let _text = [];
-                if (options.showLocation) {
-                  let name = params.name;
-                  _text.push(name)
-                }
-                if (options.showValue) {
-                  let value = params.data.datas;
-                  if (this.isMock) {
-                    value = value;
-                  } else {
-                    let realDisplayUnit = this.displayUnit;
-                    const formatService = this.host.formatService;
-                    if (formatService.isAutoDisplayUnit(this.displayUnit)) {
-                      realDisplayUnit = formatService.getAutoDisplayUnit(value);
-                    }
-                    value = formatService.format(this.format, value, realDisplayUnit)
-                  }
-                  _text.push(value)
-                }
-                const _result = _text.join('\n');
-                return `{name|${_result}}`;
-              },
-              textStyle: {
-                rich:{
-                  name:{
-                    padding: [5, 0],
-                    color: options.tooltipTextStyle.color,
-                    fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
-                  }
-                }
-              },
-              color: options.tooltipTextStyle.color
-            }
-          },
-          z: 9,
-          zlevel: 9,
-          data: data,
-        },
+      series: [
         ...getSeries(),
       ],
     };
@@ -575,7 +568,7 @@ export default class Visual extends WynVisual {
     let properties = options.properties;
     let hiddenStates = [];
     if(!properties.showTooltip) {
-      [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle'])
+      [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle', 'showLocation', 'showValue', 'tooltipBackgroundType', 'tooltipBackgroundImage'])
     }
 
     if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {

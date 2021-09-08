@@ -245,7 +245,7 @@
                 ]
             },
             {
-                "displayName": "提示标签",
+                "displayName": "数据标签",
                 "properties": [
                     {
                         "name": "showTooltip",
