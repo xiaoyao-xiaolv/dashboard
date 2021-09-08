@@ -355,6 +355,29 @@
                 ]
             },
             {
+                "displayName": "条件格式化",
+                "properties": [
+                    {
+                        "name": "mapCollection",
+                        "displayName": "地图条件列表",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "formatValue",
+                                "displayName": "条件数值",
+                                "type": "Text"
+                            },
+                            {
+                                "name": "formatColor",
+                                "displayName": "条件颜色",
+                                "type": "Color"
+                            }
+                        ],
+                        "defaultValue": []
+                    }
+                ]
+            },
+            {
                 "type": "title"
             },
             {
