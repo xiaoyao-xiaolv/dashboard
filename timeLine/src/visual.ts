@@ -314,7 +314,7 @@ export default class Visual extends WynVisual {
       let _formatLabel = _useToLabel && _formatList;
       const timeline__content__fontStyle = {
         border: `1px solid ${_formatLabel ? _labelBorderColor : labelBg}`,
-        background: _formatLabel ? `${_formatList.formatImage ? `url(${_formatList.formatImage}) center center /cover no-repeat` : _formatList.formatColor} ` : labelBg,
+        background: _formatLabel ? _formatList.formatColor : labelBg,
       };
       const timeline__content_only_text = {
         border: `1px solid transparent`,
