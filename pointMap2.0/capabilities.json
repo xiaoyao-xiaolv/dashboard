@@ -363,9 +363,29 @@
                         "type": "Collection",
                         "itemShape": [
                             {
+                                "name": "formatRank",
+                                "displayName": "条件范围",
+                                "type": "Enum",
+                                "items": [
+                                    {
+                                        "value": ">",
+                                        "displayName": "大于"
+                                    },
+                                    {
+                                        "value": "<",
+                                        "displayName": "小于"
+                                    },
+                                    {
+                                        "value": "=",
+                                        "displayName": "等于"
+                                    }
+                                ],
+                                "defaultValue": ">"
+                            },
+                            {
                                 "name": "formatValue",
                                 "displayName": "条件数值",
-                                "type": "Text"
+                                "type": "number"
                             },
                             {
                                 "name": "formatColor",

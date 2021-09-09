@@ -48,7 +48,7 @@ const image = {
 }
 const getImage = (host, name) => {
   return `image://${host.assetsManager.getImage(name)}`
-}
+} 
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private host: any;
@@ -163,6 +163,7 @@ export default class Visual extends WynVisual {
     let renderData = this.isMock ? rawData : this.resultData;
     this.render(renderData);
   }
+
   private render(data) {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     myChart.clear();
@@ -174,7 +175,7 @@ export default class Visual extends WynVisual {
     // this.container.style.background = `url(${options.mapShadowImage}) center center no-repeat`;
     // this.container.style.backgroundSize = '100% 100%'
     
-    const formatList = options.mapCollection[0];
+    const formatList = options.mapCollection;
     
     const labelOptions = () => {
       return {
@@ -239,6 +240,7 @@ export default class Visual extends WynVisual {
       return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
               + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
     }
+
     const lineData = (type?: string) => {
       return data.map((item) => {
         return {
@@ -250,7 +252,7 @@ export default class Visual extends WynVisual {
 
     const scatterData = () => {
       return data.map((item) => {
-        return [item.value[0], item.value[1] + item.datas * lineMaxHeight()]
+        return [item.value[0], item.value[1] + item.datas * lineMaxHeight(), item.datas]
       })
     }
     // 柱状体的底部
@@ -263,6 +265,27 @@ export default class Visual extends WynVisual {
           }
         })
     }
+
+    const formatColor = (defaultColor, _value) => {
+      if (formatList.length > 0) {
+        // 
+        formatList.map((_item: any) => {
+          if (_item.formatValue && _item.formatColor) {
+            if (_item.formatRank === '>') {
+              defaultColor = (_value > _item.formatValue ? _item.formatColor : defaultColor)
+            }
+            if (_item.formatRank === '<') {
+              defaultColor = (_value < _item.formatValue ? _item.formatColor : defaultColor);
+            }
+            if (_item.formatRank === '=') {
+              defaultColor = (_value === _item.formatValue ? _item.formatColor : defaultColor);
+            }
+            
+          }
+        })
+      }
+      return defaultColor;
+    }
     
     const setBarData = [{// 柱状体的主干
       type: 'lines',
@@ -274,7 +297,9 @@ export default class Visual extends WynVisual {
       lineStyle: {
         width: 10, // 尾迹线条宽度
         color: (params: any) => {
-          const defaultColor = {
+          const _value = params.data.datas;
+          const _color = formatColor(options.mapBarColor, _value);
+          return {
             type: 'linear',
             x: 0,
             y: 0,
@@ -283,35 +308,27 @@ export default class Visual extends WynVisual {
             colorStops: [
               {
                 offset: 0,
-                // color: 'rgb(22,255,255, .6)' // 0% 处的颜色
-                color: hexToRgba(options.mapBarColor, 0.6)
+                color: hexToRgba(_color, 0.6)
               },
               {
                 offset: 0.5,
-                // color: 'rgb(22,255,255, .6)' // 0% 处的颜色
-                color: hexToRgba(options.mapBarColor, 0.6)
+                color: hexToRgba(_color, 0.6)
               },
               {
                 offset: 0.5,
-                // color: 'rgb(22,255,255, 0.8)' // 0% 处的颜色
-                color: hexToRgba(options.mapBarColor,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
+                color: hexToRgba(_color,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
               },
               {
                 offset: 1,
-                // color: 'rgb(22,255,255, 0.8)' // 0% 处的颜色
-                color: hexToRgba(options.mapBarColor,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
+                color: hexToRgba(_color,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
               },
               {
                 offset: 1,
-                // color: 'rgb(22,255,255, .6)' // 100% 处的颜色
-                color: hexToRgba(options.mapBarColor, 0.6)
+                color: hexToRgba(_color, 0.6)
               }
             ],
             global: false // 缺省为 false
           }
-          const _value = params.data.datas;
-          const _formatValue = formatList && formatList.formatValue || 0;
-          return _formatValue && _value > _formatValue ? formatList.formatColor : defaultColor
         },
         opacity: 1, // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
@@ -341,7 +358,11 @@ export default class Visual extends WynVisual {
       symbol: options.symbolStyle,
       symbolSize: [10, 5],
       itemStyle: {
-        color: options.mapBarColor,
+        color: (params: any) => {
+          const _value = params.data[2];
+          const _color = formatColor(options.mapBarColor, _value);
+          return _color;
+        },
         opacity: 1
       },
       silent: true,
@@ -365,9 +386,12 @@ export default class Visual extends WynVisual {
       symbol: options.symbolStyle,
       symbolSize: [10, 5],
       itemStyle: {
-        // color: '#F7AF21',
-        // color: 'rgb(22,255,255, 1)',
-        color: options.mapBarColor,
+        color: (params: any) => {
+          const _value = params.data.datas;
+          const _color = formatColor(options.mapBarColor, _value);
+          console.log(_color, '===')
+          return _color;
+        },
         opacity: 1
       },
       silent: true,
@@ -395,29 +419,28 @@ export default class Visual extends WynVisual {
       itemStyle: {
         color: (params: any) => {
           const _value = params.data.datas;
-          const defaultColor =  {
-              type: 'radial',
-              x: 0.5,
-              y: 0.5,
-              r: 0.5,
-              colorStops: [
-                {
-                  offset: 0, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 0% 处的颜色
-                },
-                {
-                  offset: .75, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 100% 处的颜色
-                },
-                {
-                  offset: .751, color: hexToRgba(options.mapBarBottomAnimateColor, 1)// 100% 处的颜色
-                },
-                {
-                  offset: 1, color: hexToRgba(options.mapBarBottomAnimateColor, 1) // 100% 处的颜色
-                }
-              ],
-              global: false // 缺省为 false
-            }
-          const _formatValue = formatList && formatList.formatValue || 0;
-          return _formatValue && _value > _formatValue ? formatList.formatColor : defaultColor
+          const _color = formatColor(options.mapBarBottomAnimateColor, _value);
+          return {
+            type: 'radial',
+            x: 0.5,
+            y: 0.5,
+            r: 0.5,
+            colorStops: [
+              {
+                offset: 0, color: hexToRgba(_color, 0) // 0% 处的颜色
+              },
+              {
+                offset: .75, color: hexToRgba(_color, 0) // 100% 处的颜色
+              },
+              {
+                offset: .751, color: hexToRgba(_color, 1)// 100% 处的颜色
+              },
+              {
+                offset: 1, color: hexToRgba(_color, 1) // 100% 处的颜色
+              }
+            ],
+            global: false // 缺省为 false
+          }
         },
         opacity: 1
       },
@@ -448,26 +471,30 @@ export default class Visual extends WynVisual {
           shadowBlur: 10,
           shadowOffsetX: 0,
           shadowOffsetY: 0,
-          color: {
-            type: 'radial',
-            x: 0.5,
-            y: 0.5,
-            r: 0.5,
-            colorStops: [
-              {
-                offset: 0, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 0% 处的颜色
-              },
-              {
-                offset: .75, color: hexToRgba(options.mapBarBottomAnimateColor, 0) // 100% 处的颜色
-              },
-              {
-                offset: .751, color: hexToRgba(options.mapBarBottomAnimateColor, 1)// 100% 处的颜色
-              },
-              {
-                offset: 1, color: hexToRgba(options.mapBarBottomAnimateColor, 1) // 100% 处的颜色
-              }
-            ],
-            global: false // 缺省为 false
+          color: (params: any) => {
+            const _value = params.data.datas;
+            const _color = formatColor(options.mapBarBottomAnimateColor, _value);
+            return {
+              type: 'radial',
+              x: 0.5,
+              y: 0.5,
+              r: 0.5,
+              colorStops: [
+                {
+                  offset: 0, color: hexToRgba(_color, 0) // 0% 处的颜色
+                },
+                {
+                  offset: .75, color: hexToRgba(_color, 0) // 100% 处的颜色
+                },
+                {
+                  offset: .751, color: hexToRgba(_color, 1)// 100% 处的颜色
+                },
+                {
+                  offset: 1, color: hexToRgba(_color, 1) // 100% 处的颜色
+                }
+              ],
+              global: false // 缺省为 false
+            }
           },
         },
       },
