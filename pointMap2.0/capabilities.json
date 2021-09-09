@@ -358,6 +358,18 @@
                 "displayName": "条件格式化",
                 "properties": [
                     {
+                        "name": "useToBar",
+                        "type": "Boolean",
+                        "displayName": "作用到柱子",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "useToLabel",
+                        "type": "Boolean",
+                        "displayName": "作用到标注",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "mapCollection",
                         "displayName": "地图条件列表",
                         "type": "Collection",

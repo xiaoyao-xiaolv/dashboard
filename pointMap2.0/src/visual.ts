@@ -155,9 +155,7 @@ export default class Visual extends WynVisual {
       this.resultData = this.prepareData(bindData);
       // data format and display unit
       this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
-      this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit;
-      console.log(this.format,  this.displayUnit)
-      
+      this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit; 
     }
     this.properties = options.properties;
     let renderData = this.isMock ? rawData : this.resultData;
@@ -176,7 +174,40 @@ export default class Visual extends WynVisual {
     // this.container.style.backgroundSize = '100% 100%'
     
     const formatList = options.mapCollection;
-    
+
+    const formatColor = (defaultColor, _value) => {
+      if (formatList.length > 0) {
+        // 
+        formatList.map((_item: any) => {
+          if (_item.formatValue && _item.formatColor) {
+            if (_item.formatRank === '>') {
+              defaultColor = (_value > _item.formatValue ? _item.formatColor : defaultColor)
+            }
+            if (_item.formatRank === '<') {
+              defaultColor = (_value < _item.formatValue ? _item.formatColor : defaultColor);
+            }
+            if (_item.formatRank === '=') {
+              defaultColor = (_value === _item.formatValue ? _item.formatColor : defaultColor);
+            }
+            
+          }
+        })
+      }
+      return defaultColor;
+    }
+
+    const formatLabelColor = () => {
+      const _richStyle = {};
+      formatList && formatList.map((_item, _index) => {
+        _richStyle[`name${_item.formatValue}`] = {
+          padding: [5, 0],
+          color: formatColor(options.tooltipTextStyle.color, _item.formatValue),
+          fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
+        }
+      })
+      console.log(_richStyle, '==_richStyle')
+      return _richStyle;
+    }
     const labelOptions = () => {
       return {
         normal: {
@@ -193,15 +224,32 @@ export default class Visual extends WynVisual {
           fontFamily: options.tooltipTextStyle.fontFamily,
           fontStyle: options.tooltipTextStyle.fontStyle,
           fontWeight: options.tooltipTextStyle.fontWeight,
-          backgroundColor: options.tooltipBackgroundType === 'color' ? options.tooltipBackgroundColor : { image: options.tooltipBackgroundImage},
+          backgroundColor: options.tooltipBackgroundType === 'color' ? options.tooltipBackgroundColor : { image: options.tooltipBackgroundImage },
+          color: options.tooltipTextStyle.color,
           formatter: (params: any) => {
             let _text = [];
+            let value = params.data.datas;
+            const _formatTarget = options.useToLabel
+              ? formatList.map((_item: any) => {
+                  if (_item.formatValue && _item.formatColor) {
+                  console.log(_item.formatRank)
+                  if (_item.formatRank === '>') {
+                    return value > _item.formatValue ? `name${_item.formatValue}`: 'name'
+                  }
+                  if (_item.formatRank === '<') {
+                    return value < _item.formatValue ? `name${_item.formatValue}`: 'name'
+                  }
+                  if (_item.formatRank === '=') {
+                    return value === _item.formatValue ? `name${_item.formatValue}`: 'name'
+                  }
+                }
+              })[0]
+            : 'name';
             if (options.showLocation) {
               let name = params.name;
               _text.push(name)
             }
             if (options.showValue) {
-              let value = params.data.datas;
               if (this.isMock) {
                 value = value;
               } else {
@@ -215,7 +263,8 @@ export default class Visual extends WynVisual {
               _text.push(value)
             }
             const _result = _text.join('\n');
-            return `{name|${_result}}`;
+            console.log(_formatTarget, '===_formatTarget')
+            return `{${_formatTarget}|${_result}}`;
           },
           textStyle: {
             rich:{
@@ -223,10 +272,10 @@ export default class Visual extends WynVisual {
                 padding: [5, 0],
                 color: options.tooltipTextStyle.color,
                 fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
-              }
+              },
+              ...formatLabelColor(),
             }
           },
-          color: options.tooltipTextStyle.color
         }
         }
     }
@@ -266,26 +315,7 @@ export default class Visual extends WynVisual {
         })
     }
 
-    const formatColor = (defaultColor, _value) => {
-      if (formatList.length > 0) {
-        // 
-        formatList.map((_item: any) => {
-          if (_item.formatValue && _item.formatColor) {
-            if (_item.formatRank === '>') {
-              defaultColor = (_value > _item.formatValue ? _item.formatColor : defaultColor)
-            }
-            if (_item.formatRank === '<') {
-              defaultColor = (_value < _item.formatValue ? _item.formatColor : defaultColor);
-            }
-            if (_item.formatRank === '=') {
-              defaultColor = (_value === _item.formatValue ? _item.formatColor : defaultColor);
-            }
-            
-          }
-        })
-      }
-      return defaultColor;
-    }
+   
     
     const setBarData = [{// 柱状体的主干
       type: 'lines',
@@ -298,7 +328,7 @@ export default class Visual extends WynVisual {
         width: 10, // 尾迹线条宽度
         color: (params: any) => {
           const _value = params.data.datas;
-          const _color = formatColor(options.mapBarColor, _value);
+          const _color =  options.useToBar? formatColor(options.mapBarColor, _value) : options.mapBarColor;
           return {
             type: 'linear',
             x: 0,
@@ -360,7 +390,7 @@ export default class Visual extends WynVisual {
       itemStyle: {
         color: (params: any) => {
           const _value = params.data[2];
-          const _color = formatColor(options.mapBarColor, _value);
+          const _color = options.useToBar? formatColor(options.mapBarColor, _value) : options.mapBarColor;
           return _color;
         },
         opacity: 1
@@ -387,9 +417,7 @@ export default class Visual extends WynVisual {
       symbolSize: [10, 5],
       itemStyle: {
         color: (params: any) => {
-          const _value = params.data.datas;
-          const _color = formatColor(options.mapBarColor, _value);
-          console.log(_color, '===')
+          const _color = options.useToBar? formatColor(options.mapBarColor, params.data.datas) :options.mapBarColor;
           return _color;
         },
         opacity: 1
@@ -419,7 +447,7 @@ export default class Visual extends WynVisual {
       itemStyle: {
         color: (params: any) => {
           const _value = params.data.datas;
-          const _color = formatColor(options.mapBarBottomAnimateColor, _value);
+          const _color = options.useToBar ?  formatColor(options.mapBarBottomAnimateColor, _value) : options.mapBarBottomAnimateColor;
           return {
             type: 'radial',
             x: 0.5,
@@ -473,7 +501,7 @@ export default class Visual extends WynVisual {
           shadowOffsetY: 0,
           color: (params: any) => {
             const _value = params.data.datas;
-            const _color = formatColor(options.mapBarBottomAnimateColor, _value);
+            const _color = options.useToBar ? formatColor(options.mapBarBottomAnimateColor, _value) : options.mapBarBottomAnimateColor;
             return {
               type: 'radial',
               x: 0.5,
@@ -553,8 +581,11 @@ export default class Visual extends WynVisual {
           layoutCenter: [`${50}%`,`${50}%`],
           itemStyle: {
             normal: {
-                areaColor:options.mapColor,
+                areaColor: options.mapColor,
                 // areaColor: 'transparent',
+                color: () => {
+                  return 'red'
+                },
                 borderColor: options.mapBorderColor,
                 borderWidth: 1,
                 shadowColor: options.mapBorderShadowColor,
