@@ -228,22 +228,20 @@ export default class Visual extends WynVisual {
           formatter: (params: any) => {
             let _text = [];
             let value = params.data.datas;
-            const _formatTarget = options.useToLabel
-              ? formatList.map((_item: any) => {
-                  if (_item.formatValue && _item.formatColor) {
-                 
-                  if (_item.formatRank === '>') {
-                    return value > _item.formatValue ? `name${_item.formatValue}`: 'name'
-                  }
-                  if (_item.formatRank === '<') {
-                    return value < _item.formatValue ? `name${_item.formatValue}`: 'name'
-                  }
-                  if (_item.formatRank === '=') {
-                    return value === _item.formatValue ? `name${_item.formatValue}`: 'name'
-                  }
+            const _formatRichName = formatList.map((_item: any) => {
+              if (_item.formatValue && _item.formatColor) {
+                if (value > Number(_item.formatValue) && _item.formatRank === '>') {
+                  return `name${_item.formatValue}`
+                } else if (value < Number(_item.formatValue) && _item.formatRank === '<') {
+                  return `name${_item.formatValue}`
+                } else if (value === Number(_item.formatValue) && _item.formatRank === '=') {
+                  return `name${_item.formatValue}`
+                } else {
+                  return ''
                 }
-              })[0]
-            : 'name';
+              }
+            }).filter((item: any) => item)[0] || 'name';
+            const _formatTarget = options.useToLabel ? _formatRichName: 'name';
             if (options.showLocation) {
               let name = params.name;
               _text.push(name)
