@@ -177,7 +177,7 @@ export default class Visual extends WynVisual {
     // this.container.style.backgroundSize = '100% 100%'
     
     const formatList = options.mapCollection;
-
+    const isSymBolChart = options.symbolStyle === 'pyramid' || options.symbolStyle === 'water';
     const formatColor = (defaultColor, _value) => {
       if (formatList.length > 0) {
         formatList.map((_item: any) => {
@@ -315,11 +315,17 @@ export default class Visual extends WynVisual {
       type: 'lines',
       zlevel: 5,
       effect: {
-        show: false,
-        symbolSize: 5 // 图标大小
+        show: !isSymBolChart ? options.mapBarAnimate : !isSymBolChart,
+        period: options.mapBarAnimateTime,
+        symbol: options.mapBarAnimateSymbol,
+        // symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
+        symbolSize: [options.mapBarAnimateSymbolWidth, options.mapBarAnimateSymbolHeight], // 图标大小
+        color: options.mapBarAnimateSymbolColor,
+        delay: 0,
+        trailLength: options.mapBarAnimateSymbolTrailLength / 100,
       },
       lineStyle: {
-        width: 10, // 尾迹线条宽度
+        width: options.mapBarWidth, // 尾迹线条宽度
         color: (params: any) => {
           const _value = params.data.datas;
           const _color =  options.useToBar? formatColor(options.mapBarColor, _value) : options.mapBarColor;
@@ -357,6 +363,7 @@ export default class Visual extends WynVisual {
         opacity: 1, // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
       },
+      animation:false,
       silent: true,
       data: lineData()
     },
@@ -364,7 +371,7 @@ export default class Visual extends WynVisual {
         type: 'lines',
         zlevel: 6,
         effect: {
-          show: false,
+          show: false
         },
         lineStyle: {
           opacity: 0, // 尾迹线条透明度
@@ -380,7 +387,7 @@ export default class Visual extends WynVisual {
       geoIndex: 0,
       zlevel: 5,
       symbol: options.symbolStyle,
-      symbolSize: [10, 5],
+      symbolSize: [options.mapBarWidth, options.mapBarWidth / 2],
       itemStyle: {
         color: (params: any) => {
           const _value = params.data[2];
@@ -408,7 +415,7 @@ export default class Visual extends WynVisual {
         show: true
       },
       symbol: options.symbolStyle,
-      symbolSize: [10, 5],
+      symbolSize: [options.mapBarWidth, options.mapBarWidth / 2],
       itemStyle: {
         color: (params: any) => {
           const _color = options.useToBar? formatColor(options.mapBarColor, params.data.datas) :options.mapBarColor;
@@ -434,8 +441,9 @@ export default class Visual extends WynVisual {
       symbol: 'circle',
       symbolSize: [10, 5],
       rippleEffect: {
-        scale: options.mapBarBottomAnimate === 'stroke' ? 7: 5,
+        scale: options.mapBarBottomAnimate === 'stroke' ?(options.mapBarBottomAnimateSize + 2): options.mapBarBottomAnimateSize,
         brushType: options.mapBarBottomAnimate,
+        period: options.mapBarBottomAnimateTime,
       },
       showEffectOn: 'render',
       itemStyle: {
@@ -483,8 +491,9 @@ export default class Visual extends WynVisual {
       symbol: 'circle',
       symbolSize: [20, 10],
       rippleEffect: {
-        scale: options.mapBarBottomAnimate === 'stroke' ? 5: 3,
+        scale: options.mapBarBottomAnimate === 'stroke' ? (options.mapBarBottomAnimateSize):  (options.mapBarBottomAnimateSize - 2),
         brushType: options.mapBarBottomAnimate,
+        period: options.mapBarBottomAnimateTime,
       },
       showEffectOn: 'render',
       itemStyle: {
@@ -637,10 +646,11 @@ export default class Visual extends WynVisual {
     }
 
     if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
-      hiddenStates = hiddenStates.concat(['mapBarColor'])
+      hiddenStates = hiddenStates.concat(['mapBarColor', 'mapBarWidth', 'mapBarAnimate', 'mapBarAnimateTime', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength'])
     }
+
     if (!properties.mapBarBottomCircle) {
-      hiddenStates = hiddenStates.concat(['mapBarBottomAnimate', 'mapBarBottomAnimateColor'])
+      hiddenStates = hiddenStates.concat(['mapBarBottomAnimate', 'mapBarBottomAnimateColor', 'mapBarBottomAnimateSize', 'mapBarBottomAnimateTime'])
     }
     if (properties.tooltipBackgroundType == 'color') {
       hiddenStates = hiddenStates.concat(['tooltipBackgroundImage'])

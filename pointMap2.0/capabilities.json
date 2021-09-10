@@ -90,7 +90,7 @@
     "options": {
         "visual": [
             {
-                "displayName": "地图设置",
+                "displayName": "图表样式",
                 "properties": [
                     {
                         "name": "symbolStyle",
@@ -123,33 +123,105 @@
                         "defaultValue": "#16FFFF"
                     },
                     {
-                        "name": "mapBarBottomCircle",
+                        "name": "mapBarWidth",
+                        "type": "Integer",
+                        "displayName": "柱子宽度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "mapBarAnimate",
                         "type": "Boolean",
-                        "displayName": "底部动画",
+                        "displayName": "柱内动画",
                         "defaultValue": true
                     },
                     {
-                        "name": "mapBarBottomAnimate",
-                        "type": "Enum",
-                        "displayName": "动画方式",
-                        "items": [
-                            {
-                                "value": "stroke",
-                                "displayNameKey": "波纹"
-                            },
-                            {
-                                "value": "fill",
-                                "displayNameKey": "光环"
-                            }
-                        ],
-                        "defaultValue": "stroke"
+                        "name": "mapBarAnimateTime",
+                        "type": "Integer",
+                        "displayName": "动画时间",
+                        "defaultValue": 4
                     },
                     {
-                        "name": "mapBarBottomAnimateColor",
-                        "type": "Color",
-                        "displayName": "动画颜色",
-                        "defaultValue": "#16FFFF"
+                        "name": "mapBarAnimateSymbol",
+                        "type": "Enum",
+                        "displayName": "动画图标",
+                        "items": [
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "rect",
+                                "displayNameKey": "方形"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "圆角方形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            },
+                            {
+                                "value": "pin",
+                                "displayNameKey": "水滴"
+                            },
+                            {
+                                "value": "arrow",
+                                "displayNameKey": "箭头"
+                            }
+                        ],
+                        "defaultValue": "circle"
                     },
+                    {
+                        "name": "mapBarAnimateSymbolColor",
+                        "type": "Color",
+                        "displayName": "图标颜色",
+                        "defaultValue": "red"
+                    },
+                    {
+                        "name": "mapBarAnimateSymbolWidth",
+                        "type": "Integer",
+                        "displayName": "图标宽度",
+                        "defaultValue": 8
+                    },
+                    {
+                        "name": "mapBarAnimateSymbolHeight",
+                        "type": "Integer",
+                        "displayName": "图标高度",
+                        "defaultValue": 8
+                    },
+                    {
+                        "name": "mapBarAnimateSymbolTrailLength",
+                        "type": "Percentage",
+                        "displayName": "特效尾迹",
+                        "defaultValue": 80
+                    },
+                    {
+                        "name": "borderShadowColor",
+                        "type": "Color",
+                        "displayName": "边框阴影颜色"
+                    },
+                    {
+                        "name": "borderShadowWidth",
+                        "type": "Integer",
+                        "displayName": "边框阴影宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "borderShadowBlurLevel",
+                        "type": "Integer",
+                        "displayName": "边框阴影模糊度",
+                        "defaultValue": 1
+                    }
+                ]
+            },
+            {
+                "displayName": "地图设置",
+                "properties": [
                     {
                         "displayNameKey": "地图缩放级别",
                         "name": "zoom",
@@ -333,24 +405,47 @@
                 ]
             },
             {
-                "displayName": "图表样式",
+                "displayName": "底部动画",
                 "properties": [
                     {
-                        "name": "borderShadowColor",
+                        "name": "mapBarBottomCircle",
+                        "type": "Boolean",
+                        "displayName": "底部动画",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "mapBarBottomAnimate",
+                        "type": "Enum",
+                        "displayName": "动画方式",
+                        "items": [
+                            {
+                                "value": "stroke",
+                                "displayNameKey": "波纹"
+                            },
+                            {
+                                "value": "fill",
+                                "displayNameKey": "光环"
+                            }
+                        ],
+                        "defaultValue": "stroke"
+                    },
+                    {
+                        "name": "mapBarBottomAnimateColor",
                         "type": "Color",
-                        "displayName": "边框阴影颜色"
+                        "displayName": "动画颜色",
+                        "defaultValue": "#16FFFF"
                     },
                     {
-                        "name": "borderShadowWidth",
+                        "name": "mapBarBottomAnimateSize",
                         "type": "Integer",
-                        "displayName": "边框阴影宽度",
-                        "defaultValue": 0
-                    },
+                        "displayName": "动画大小",
+                        "defaultValue": 5
+                    }, 
                     {
-                        "name": "borderShadowBlurLevel",
+                        "name": "mapBarBottomAnimateTime",
                         "type": "Integer",
-                        "displayName": "边框阴影模糊度",
-                        "defaultValue": 0
+                        "displayName": "动画时间",
+                        "defaultValue": 4
                     }
                 ]
             },
