@@ -64,7 +64,7 @@ export default class Visual extends WynVisual {
   private shadowDiv: any;
   private format: any;
   private displayUnit: any;
-
+  private totalValue: any;
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     [].push.call(image.water, getImage(host, 'image1'), getImage(host, 'image2'), getImage(host, 'image3'));
@@ -159,6 +159,9 @@ export default class Visual extends WynVisual {
     }
     this.properties = options.properties;
     let renderData = this.isMock ? rawData : this.resultData;
+    this.totalValue = renderData.map((_item: any) => _item.datas).reduce((prev, current) => {
+      return prev + current;
+    });
     this.render(renderData);
   }
 
@@ -177,7 +180,6 @@ export default class Visual extends WynVisual {
 
     const formatColor = (defaultColor, _value) => {
       if (formatList.length > 0) {
-        // 
         formatList.map((_item: any) => {
           if (_item.formatValue && _item.formatColor) {
             if (_item.formatRank === '>') {
@@ -189,7 +191,6 @@ export default class Visual extends WynVisual {
             if (_item.formatRank === '=') {
               defaultColor = (_value === _item.formatValue ? _item.formatColor : defaultColor);
             }
-            
           }
         })
       }
@@ -201,11 +202,10 @@ export default class Visual extends WynVisual {
       formatList && formatList.map((_item, _index) => {
         _richStyle[`name${_item.formatValue}`] = {
           padding: [5, 0],
-          color: formatColor(options.tooltipTextStyle.color, _item.formatValue),
+          color: _item.formatColor,
           fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
         }
       })
-      console.log(_richStyle, '==_richStyle')
       return _richStyle;
     }
     const labelOptions = () => {
@@ -225,14 +225,13 @@ export default class Visual extends WynVisual {
           fontStyle: options.tooltipTextStyle.fontStyle,
           fontWeight: options.tooltipTextStyle.fontWeight,
           backgroundColor: options.tooltipBackgroundType === 'color' ? options.tooltipBackgroundColor : { image: options.tooltipBackgroundImage },
-          color: options.tooltipTextStyle.color,
           formatter: (params: any) => {
             let _text = [];
             let value = params.data.datas;
             const _formatTarget = options.useToLabel
               ? formatList.map((_item: any) => {
                   if (_item.formatValue && _item.formatColor) {
-                  console.log(_item.formatRank)
+                 
                   if (_item.formatRank === '>') {
                     return value > _item.formatValue ? `name${_item.formatValue}`: 'name'
                   }
@@ -263,19 +262,16 @@ export default class Visual extends WynVisual {
               _text.push(value)
             }
             const _result = _text.join('\n');
-            console.log(_formatTarget, '===_formatTarget')
             return `{${_formatTarget}|${_result}}`;
           },
-          textStyle: {
-            rich:{
-              name:{
-                padding: [5, 0],
-                color: options.tooltipTextStyle.color,
-                fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
-              },
-              ...formatLabelColor(),
-            }
-          },
+          rich:{
+            name:{
+              padding: [5, 0],
+              color: options.tooltipTextStyle.color,
+              fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
+            },
+            ...formatLabelColor(),
+          }
         }
         }
     }
