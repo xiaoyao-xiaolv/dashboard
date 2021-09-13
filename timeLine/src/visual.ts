@@ -62,9 +62,8 @@ export default class Visual extends WynVisual {
       position: {
         x: params.clientX,
         y: params.clientY,
-      },
-      menu: true
-    }, 10)
+      }
+    })
   });
   createSelectionId = (sid?) => this.visualHost.selectionService.createSelectionId(sid);
  
@@ -152,6 +151,12 @@ export default class Visual extends WynVisual {
           })
         })
       }
+
+      const sortFlags = plainData.sort[this.name].order;
+        let newItems: any = sortFlags.map((flags) => {
+          return newItems = this.items.find((item) => item[this.name] === flags && item)
+        })
+        this.items = newItems.filter((item) => item)
       // select id
       const getSelectionId = (_item) => {
         const selectionId = this.createSelectionId();
