@@ -213,7 +213,7 @@ export default class Visual extends WynVisual {
       let items = plainData.data;
       // const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
       // data sort 
-        const sortFlags = plainData.sort[this.dimension].order;
+      const sortFlags = plainData.sort[this.dimension].order;
         let newItems: any = sortFlags.map((flags) => {
           return newItems = items.find((item) => item[this.dimension] === flags && item)
         })
@@ -221,7 +221,6 @@ export default class Visual extends WynVisual {
       this.allItems = items;
       this.items[0] = items.map((item) => item[this.dimension]);
       this.items[1] = items.map((item) => {return { name: item[this.dimension], value: item[this.value]}});
-      
       // get data
       const getSelectionId = (item) => {
         const selectionId = this.createSelectionId();
@@ -309,8 +308,9 @@ export default class Visual extends WynVisual {
     const legendTextStyle = { ...options.legendTextStyle };
 
     let data: any = this.isMock ? Visual.mockItems : this.items[1];
-    this._total = data.map((item) => item.value).reduce((prev, next) => prev + next);
-      let finalAngle = 360;
+    this._total = data.map((item) => item.value).reduce((prev, next) => prev + next, 0);
+    
+    let finalAngle = 360;
       let drawingStartAngle = options.startAngle%360
       let drawingEndAngle = options.endAngle%360
       if (drawingStartAngle && drawingEndAngle) {
@@ -518,7 +518,7 @@ export default class Visual extends WynVisual {
         }
       },
       legend: {
-        data: this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0],
+        data: this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0].map((_item) => `${_item}`),
         show: options.showLegend,
         type: options.openLegendPage ?  'scroll' : 'plain',
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
@@ -561,13 +561,13 @@ export default class Visual extends WynVisual {
             if (item.name === name && !index) {
               _firstLegendText = true;
             }
-            return item.name === name
+            return item.name.toString() === name.toString()
           })
           let _legendText = '';
           let _title = '';
           if (options.showLegendSeries) {
-            _legendText += `{a|${_target.name}}`;
-            _title += `{a|${this.dimension}}`
+            _legendText += `{a|${_target.name.toString()}}`;
+            _title += `{a|${this.dimension.toString()}}`
           }
           if (options.showLegendValue) {
             _legendText += `{b|${this.formatData(_target.value, options.labelDataUnit, options.labelDataType)}}`;
