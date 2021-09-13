@@ -114,7 +114,7 @@
                                 "displayNameKey": "直方柱"
                             }
                         ],
-                        "defaultValue": "water"
+                        "defaultValue": "diamond"
                     },
                     {
                         "name": "mapBarColor",
@@ -139,6 +139,22 @@
                         "type": "Integer",
                         "displayName": "动画时间",
                         "defaultValue": 4
+                    },
+                    {
+                        "name": "mapBarAnimateSymbolType",
+                        "type": "Enum",
+                        "displayName": "动画方式",
+                        "items": [
+                            {
+                                "value": "default",
+                                "displayNameKey": "默认图标"
+                            },
+                            {
+                                "value": "custom",
+                                "displayNameKey": "自定义图片"
+                            }
+                        ],
+                        "defaultValue": "default"
                     },
                     {
                         "name": "mapBarAnimateSymbol",
@@ -175,6 +191,11 @@
                             }
                         ],
                         "defaultValue": "circle"
+                    },
+                    {
+                        "name": "mapBarAnimateImage",
+                        "type": "Image",
+                        "displayName": "动画图片"
                     },
                     {
                         "name": "mapBarAnimateSymbolColor",

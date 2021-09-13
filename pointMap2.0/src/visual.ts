@@ -162,12 +162,15 @@ export default class Visual extends WynVisual {
     this.totalValue = renderData.map((_item: any) => _item.datas).reduce((prev, current) => {
       return prev + current;
     });
+
+    console.log(renderData, '====renderData')
     this.render(renderData);
   }
 
   private render(data) {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
-    myChart.clear();
+    // myChart.clear();
+    console.log(myChart, '===myChart')
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; `;
@@ -280,8 +283,15 @@ export default class Visual extends WynVisual {
     }
 
     const hexToRgba = (hex, opacity) => {
-      return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
+      const isHex = hex.slice(0, 1) === '#';
+
+      if (isHex) {
+        return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
               + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
+      } else {
+        // fixed rgba ro rgba
+       return hex
+      }
     }
 
     const lineData = (type?: string) => {
@@ -308,22 +318,21 @@ export default class Visual extends WynVisual {
           }
         })
     }
-
-   
     
+    const effectOptions = !isSymBolChart && {
+      show: !isSymBolChart ? options.mapBarAnimate : !isSymBolChart,
+      period: options.mapBarAnimateTime,
+      symbol: options.mapBarAnimateSymbolType === 'default' ? options.mapBarAnimateSymbol : options.mapBarAnimateImage,
+      // symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
+      symbolSize: [options.mapBarAnimateSymbolWidth, options.mapBarAnimateSymbolHeight], // 图标大小
+      color: options.mapBarAnimateSymbolColor,
+      delay: 0,
+      trailLength: options.mapBarAnimateSymbolTrailLength / 100,
+    }
     const setBarData = [{// 柱状体的主干
       type: 'lines',
       zlevel: 5,
-      effect: {
-        show: !isSymBolChart ? options.mapBarAnimate : !isSymBolChart,
-        period: options.mapBarAnimateTime,
-        symbol: options.mapBarAnimateSymbol,
-        // symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
-        symbolSize: [options.mapBarAnimateSymbolWidth, options.mapBarAnimateSymbolHeight], // 图标大小
-        color: options.mapBarAnimateSymbolColor,
-        delay: 0,
-        trailLength: options.mapBarAnimateSymbolTrailLength / 100,
-      },
+      effect: effectOptions,
       lineStyle: {
         width: options.mapBarWidth, // 尾迹线条宽度
         color: (params: any) => {
