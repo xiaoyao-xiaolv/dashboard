@@ -138,7 +138,7 @@
                     {
                         "name": "detailBgColor",
                         "type": "Color",
-                        "displayName": "背景演示"
+                        "displayName": "背景颜色"
                     },
                     {
                         "name": "textStyle",
