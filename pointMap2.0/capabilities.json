@@ -117,16 +117,34 @@
                         "defaultValue": "diamond"
                     },
                     {
+                        "name": "mapSymbolWidth",
+                        "type": "Integer",
+                        "displayName": "数据点宽度",
+                        "defaultValue": 25
+                    },
+                    {
+                        "name": "mapSymbolHeight",
+                        "type": "Integer",
+                        "displayName": "数据点高度",
+                        "defaultValue": 30
+                    },
+                    {
                         "name": "mapBarColor",
                         "type": "Color",
                         "displayName": "柱子颜色",
                         "defaultValue": "#16FFFF"
-                    },
+                    },                
                     {
                         "name": "mapBarWidth",
                         "type": "Integer",
                         "displayName": "柱子宽度",
                         "defaultValue": 10
+                    },
+                    {
+                        "name": "mapBarClose",
+                        "type": "Boolean",
+                        "displayName": "隐藏柱子",
+                        "defaultValue": false
                     },
                     {
                         "name": "mapBarAnimate",
@@ -396,6 +414,12 @@
                         "type": "Color",
                         "displayName": "边框颜色",
                         "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "name": "tooltipBgBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "transparent"
                     },
                     {
                         "name": "tooltipBorderRadius",

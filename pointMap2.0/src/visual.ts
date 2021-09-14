@@ -162,15 +162,12 @@ export default class Visual extends WynVisual {
     this.totalValue = renderData.map((_item: any) => _item.datas).reduce((prev, current) => {
       return prev + current;
     });
-
-    console.log(renderData, '====renderData')
     this.render(renderData);
   }
 
   private render(data) {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
-    // myChart.clear();
-    console.log(myChart, '===myChart')
+    myChart.clear(); 
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; `;
@@ -220,7 +217,7 @@ export default class Visual extends WynVisual {
           align: 'center',
           verticalAlign: 'middle',
           borderType: 'solid',
-          borderColor: options.tooltipBorderColor,
+          borderColor: options.tooltipBackgroundType === 'color' ? options.tooltipBorderColor : options.tooltipBgBorderColor,
           borderRadius: options.tooltipBorderRadius,
           padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
           fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2)),
@@ -282,15 +279,20 @@ export default class Visual extends WynVisual {
       return type ? 14/maxValue : 10/maxValue
     }
 
-    const hexToRgba = (hex, opacity) => {
+    const hexToRgba = (hex, opacity, isLine?: boolean) => {
       const isHex = hex.slice(0, 1) === '#';
-
+      const _opacity = isLine ? (opacity + 0.2) : opacity;
       if (isHex) {
         return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
-              + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
+              + parseInt('0x' + hex.slice(5, 7)) + ',' + _opacity + ')';
       } else {
-        // fixed rgba ro rgba
-       return hex
+        // fixed rgba to rgba
+        var rgb = hex.split(',');
+        var r = parseInt(rgb[0].split('(')[1]);
+        var g = parseInt(rgb[1]);
+        var b = parseInt(rgb[2].split(')')[0]);
+        var a = isLine ? (Number(rgb[3].split(')')[0]) + 0.2) : Number(rgb[3].split(')')[0])
+        return `rgba(${r}, ${g}, ${b}, ${a})`
       }
     }
 
@@ -322,7 +324,7 @@ export default class Visual extends WynVisual {
     const effectOptions = !isSymBolChart && {
       show: !isSymBolChart ? options.mapBarAnimate : !isSymBolChart,
       period: options.mapBarAnimateTime,
-      symbol: options.mapBarAnimateSymbolType === 'default' ? options.mapBarAnimateSymbol : options.mapBarAnimateImage,
+      symbol: options.mapBarAnimateSymbolType === 'default' ? options.mapBarAnimateSymbol : `image://${options.mapBarAnimateImage}`,
       // symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
       symbolSize: [options.mapBarAnimateSymbolWidth, options.mapBarAnimateSymbolHeight], // 图标大小
       color: options.mapBarAnimateSymbolColor,
@@ -347,7 +349,7 @@ export default class Visual extends WynVisual {
             colorStops: [
               {
                 offset: 0,
-                color: hexToRgba(_color, 0.6)
+                color: hexToRgba(_color, 0.6),
               },
               {
                 offset: 0.5,
@@ -355,21 +357,21 @@ export default class Visual extends WynVisual {
               },
               {
                 offset: 0.5,
-                color: hexToRgba(_color,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
+                color: hexToRgba(_color,  0.6, options.symbolStyle === 'diamond'),
               },
               {
                 offset: 1,
-                color: hexToRgba(_color,  options.symbolStyle === 'diamond' ? 0.8 : 0.6)
+                color: hexToRgba(_color, 0.6,  options.symbolStyle === 'diamond'),
               },
               {
                 offset: 1,
-                color: hexToRgba(_color, 0.6)
+                color:  hexToRgba(_color, 0.6),
               }
             ],
             global: false // 缺省为 false
           }
         },
-        opacity: 1, // 尾迹线条透明度
+        opacity: options.mapBarClose ? 0 : 0.1, // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
       },
       animation:false,
@@ -382,7 +384,8 @@ export default class Visual extends WynVisual {
         effect: {
           show: false
         },
-        lineStyle: {
+      lineStyle: {
+          with: 0,
           opacity: 0, // 尾迹线条透明度
         },
         label: labelOptions(),
@@ -403,7 +406,7 @@ export default class Visual extends WynVisual {
           const _color = options.useToBar? formatColor(options.mapBarColor, _value) : options.mapBarColor;
           return _color;
         },
-        opacity: 1
+        opacity: options.mapBarClose ? 0 : 1
       },
       silent: true,
       data: scatterData()
@@ -430,7 +433,7 @@ export default class Visual extends WynVisual {
           const _color = options.useToBar? formatColor(options.mapBarColor, params.data.datas) :options.mapBarColor;
           return _color;
         },
-        opacity: 1
+        opacity: options.mapBarClose ? 0 : 0.1
       },
       silent: true,
       data: scatterData2()
@@ -545,7 +548,7 @@ export default class Visual extends WynVisual {
       type: 'scatter',
       coordinateSystem: 'geo',
       itemStyle: {
-        color: '#f00',
+        color: '#f00', 
       },
       symbol: function (value, params) {
         if(options.symbolStyle === 'pyramid') {
@@ -554,8 +557,8 @@ export default class Visual extends WynVisual {
           return params.data.img;
         }
       },
-      symbolSize: [25, 30],
-      symbolOffset: [0, -20],
+      symbolSize: [options.mapSymbolWidth, options.mapSymbolHeight],
+      symbolOffset: [0, -options.mapSymbolWidth],
       label: labelOptions(),
       z: 99,
       zlevel: 5,
@@ -651,20 +654,32 @@ export default class Visual extends WynVisual {
     let properties = options.properties;
     let hiddenStates = [];
     if(!properties.showTooltip) {
-      [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle', 'showLocation', 'showValue', 'tooltipBackgroundType', 'tooltipBackgroundImage'])
+      [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle', 'showLocation', 'showValue', 'tooltipBackgroundType', 'tooltipBackgroundImage', 'mapBarAnimateImage'])
+    }
+    
+    if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
+      hiddenStates = hiddenStates.concat(['mapBarClose', 'mapBarColor', 'mapBarWidth', 'mapBarAnimate', 'mapBarAnimateTime', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength', 'mapBarAnimateSymbolType', 'mapBarAnimateSymbol'])
     }
 
-    if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
-      hiddenStates = hiddenStates.concat(['mapBarColor', 'mapBarWidth', 'mapBarAnimate', 'mapBarAnimateTime', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength'])
+    if (properties.symbolStyle == 'circle' || properties.symbolStyle == 'diamond') {
+      hiddenStates = hiddenStates.concat(['mapSymbolWidth', 'mapSymbolHeight'])
     }
+
+    
 
     if (!properties.mapBarBottomCircle) {
       hiddenStates = hiddenStates.concat(['mapBarBottomAnimate', 'mapBarBottomAnimateColor', 'mapBarBottomAnimateSize', 'mapBarBottomAnimateTime'])
     }
     if (properties.tooltipBackgroundType == 'color') {
-      hiddenStates = hiddenStates.concat(['tooltipBackgroundImage'])
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundImage', 'tooltipBgBorderColor'])
     } else {
-      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor'])
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipBgBorderColor'])
+    }
+
+    if (properties.mapBarAnimateSymbolType == 'default') {
+      hiddenStates = hiddenStates.concat(['mapBarAnimateImage'])
+    } else {
+      hiddenStates = hiddenStates.concat(['mapBarAnimateSymbol', 'mapBarAnimateSymbolColor'])
     }
 
     return hiddenStates;
