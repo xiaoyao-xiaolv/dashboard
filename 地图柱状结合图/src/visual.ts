@@ -1,4 +1,5 @@
 import '../style/visual.less';
+// @ts-ignore
 import * as echarts from 'echarts';
 import geoCoordsMap from './geoCoordMap.json';
 import "echarts/map/js/china.js";
@@ -40,6 +41,9 @@ import "echarts/map/js/province/zhejiang.js";
 
 let myChart;
 let allSeriesData;
+let bindCoords;
+let longitudeName;
+let latitudeName;
 let rawData = [
   ["陕西",10,20,30],
   ["四川",10,25,30],
@@ -60,8 +64,6 @@ export default class Visual extends WynVisual {
   private valuesName: string;
   private seriesName: string;
   private locationName: string;
-  private longitudeName: string;
-  private latitudeName: string;
   private properties: any;
   private resultData: any;
   private series: any;
@@ -99,9 +101,10 @@ export default class Visual extends WynVisual {
       this.valuesName = profile.values.values[0].display;
       this.seriesName = profile.series.values[0].display;
       this.locationName = profile.location.values[0].display;
+      bindCoords = !!(profile.longitude.values.length && profile.latitude.values.length);
       if(profile.longitude.values.length && profile.latitude.values.length) {
-        this.longitudeName = profile.longitude.values[0].display;
-        this.latitudeName = profile.latitude.values[0].display;
+        longitudeName = profile.longitude.values[0].display;
+        latitudeName = profile.latitude.values[0].display;
       }
       bindData.forEach((data) => {
         if(this.series.indexOf(data[this.seriesName]) < 0) {
@@ -202,7 +205,12 @@ export default class Visual extends WynVisual {
       }
       echarts.util.each(areaData, function(dataItem, idx) {
         let locationName = dataItem[0];
-        let geoCoords = getCoords(locationName);
+        let geoCoords;
+        if (bindCoords) {
+          geoCoords = [dataItem[longitudeName], dataItem[latitudeName]];
+        } else {
+          geoCoords = getCoords(locationName);
+        }
         let pixel = myChart.convertToPixel('geo', geoCoords);
         let seriesData = dataItem.slice(1);
         let pieSeriesData = series.map((item, index) => {
