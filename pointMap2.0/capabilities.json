@@ -132,8 +132,14 @@
                         "name": "mapBarColor",
                         "type": "Color",
                         "displayName": "柱子颜色",
-                        "defaultValue": "#16FFFF"
-                    },                
+                        "defaultValue": "rgba(255, 255, 255, 1)"
+                    },
+                    {
+                        "name": "mapBarHightColor",
+                        "type": "Color",
+                        "displayName": "柱子高亮颜色",
+                        "defaultValue": "rgba(255, 255, 255, 0.5)"
+                    },                  
                     {
                         "name": "mapBarWidth",
                         "type": "Integer",
@@ -213,7 +219,23 @@
                     {
                         "name": "mapBarAnimateImage",
                         "type": "Image",
-                        "displayName": "动画图片"
+                        "displayName": "动sas画图片"
+                    },
+                    {
+                        "name": "mapBarAnimateSymbolColorType",
+                        "type": "Enum",
+                        "displayName": "图标颜色方式",
+                        "items": [
+                            {
+                                "value": "default",
+                                "displayNameKey": "跟随柱子"
+                            },
+                            {
+                                "value": "custom",
+                                "displayNameKey": "自定义颜色"
+                            }
+                        ],
+                        "defaultValue": "default"
                     },
                     {
                         "name": "mapBarAnimateSymbolColor",
@@ -450,7 +472,7 @@
                 ]
             },
             {
-                "displayName": "底部动画",
+                "displayName": "底部样式",
                 "properties": [
                     {
                         "name": "mapBarBottomCircle",
@@ -491,6 +513,22 @@
                         "type": "Integer",
                         "displayName": "动画时间",
                         "defaultValue": 4
+                    },
+                    {
+                        "name": "mapBarBottomLabel",
+                        "type": "Boolean",
+                        "displayName": "底部标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "mapBarBottomLabelText",
+                        "type": "TextStyle",
+                            "displayName": "底部字体",
+                            "inheritFrom": "dashboard.textStyle",
+                            "defaultValue": {
+                                "fontSize": "1.5X",
+                                "color": "#fff"
+                            }
                     }
                 ]
             },

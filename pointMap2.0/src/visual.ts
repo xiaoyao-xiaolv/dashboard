@@ -327,7 +327,7 @@ export default class Visual extends WynVisual {
       symbol: options.mapBarAnimateSymbolType === 'default' ? options.mapBarAnimateSymbol : `image://${options.mapBarAnimateImage}`,
       // symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
       symbolSize: [options.mapBarAnimateSymbolWidth, options.mapBarAnimateSymbolHeight], // 图标大小
-      color: options.mapBarAnimateSymbolColor,
+      color:  options.mapBarAnimateSymbolColorType === 'default' ? options.mapBarColor : options.mapBarAnimateSymbolColor,
       delay: 0,
       trailLength: options.mapBarAnimateSymbolTrailLength / 100,
     }
@@ -340,6 +340,7 @@ export default class Visual extends WynVisual {
         color: (params: any) => {
           const _value = params.data.datas;
           const _color =  options.useToBar? formatColor(options.mapBarColor, _value) : options.mapBarColor;
+          if (options.mapBarClose) return 'rgba(255, 255, 255, 0)';
           return {
             type: 'linear',
             x: 0,
@@ -349,29 +350,29 @@ export default class Visual extends WynVisual {
             colorStops: [
               {
                 offset: 0,
+                color: hexToRgba(_color, 0.8),
+              },
+              {
+                offset: 0.2,
+                color: hexToRgba(_color, 0.8),
+              },
+              {
+                offset: 0.5,
+                color: hexToRgba(options.mapBarHightColor, 0.8, options.symbolStyle === 'diamond'),
+              },
+              {
+                offset: 0.7,
+                color: hexToRgba(options.mapBarHightColor, 0.8, options.symbolStyle === 'diamond'),
+              },
+              {
+                offset: 1,
                 color: hexToRgba(_color, 0.6),
-              },
-              {
-                offset: 0.5,
-                color: hexToRgba(_color, 0.6)
-              },
-              {
-                offset: 0.5,
-                color: hexToRgba(_color,  0.6, options.symbolStyle === 'diamond'),
-              },
-              {
-                offset: 1,
-                color: hexToRgba(_color, 0.6,  options.symbolStyle === 'diamond'),
-              },
-              {
-                offset: 1,
-                color:  hexToRgba(_color, 0.6),
               }
             ],
             global: false // 缺省为 false
           }
         },
-        opacity: options.mapBarClose ? 0 : 0.1, // 尾迹线条透明度
+        opacity: options.mapBarClose ? 0 : 1, // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
       },
       animation:false,
@@ -384,7 +385,7 @@ export default class Visual extends WynVisual {
         effect: {
           show: false
         },
-      lineStyle: {
+        lineStyle: {
           with: 0,
           opacity: 0, // 尾迹线条透明度
         },
@@ -404,7 +405,7 @@ export default class Visual extends WynVisual {
         color: (params: any) => {
           const _value = params.data[2];
           const _color = options.useToBar? formatColor(options.mapBarColor, _value) : options.mapBarColor;
-          return _color;
+          return _color; 
         },
         opacity: options.mapBarClose ? 0 : 1
       },
@@ -417,23 +418,26 @@ export default class Visual extends WynVisual {
       coordinateSystem: 'geo',
       geoIndex: 0,
       zlevel: 4,
-      label: {
-        // 这儿是处理的
-        formatter: '{b}',
-        position: 'bottom',
-        color: '#fff',
-        fontSize: 12,
-        distance: 10,
-        show: true
-      },
+      // label: {
+      //   // 这儿是处理的
+      //   formatter: '{b}',
+      //   position: 'bottom',
+      //   color: '#fff',
+      //   fontSize: 12,
+      //   distance: 10,
+      //   show: false
+      // },
       symbol: options.symbolStyle,
       symbolSize: [options.mapBarWidth, options.mapBarWidth / 2],
       itemStyle: {
         color: (params: any) => {
-          const _color = options.useToBar? formatColor(options.mapBarColor, params.data.datas) :options.mapBarColor;
-          return _color;
+          const _color = options.useToBar ? formatColor(options.mapBarColor, params.data.datas) : options.mapBarColor;
+          return options.mapBarClose ? 'rgba(255, 255, 255, 0)' : _color;
         },
-        opacity: options.mapBarClose ? 0 : 0.1
+        opacity: 1,
+        shadowColor: '#000',
+        shadowBlur: 5,
+        shadowOffsetY: 2,
       },
       silent: true,
       data: scatterData2()
@@ -633,7 +637,27 @@ export default class Visual extends WynVisual {
         }]
        
       }],
-      series: [
+      series: [{
+        type: 'scatter',
+        coordinateSystem: 'geo',
+        itemStyle: {
+          color: 'rgba(255, 255, 255, 0)', 
+        },
+        symbolSize: [options.mapSymbolWidth, options.mapSymbolHeight],
+        symbolOffset: [0, -options.mapSymbolWidth],
+        label: {
+          // 这儿是处理的
+          formatter: '{b}',
+          position: 'bottom',
+          color: options.mapBarBottomLabelText.color,
+          fontSize: parseInt(options.mapBarBottomLabelText.fontSize),
+          distance: 20,
+          show: options.mapBarBottomLabel
+        },
+        z: 99,
+        zlevel: 5,
+        data: data,
+       },
         ...getSeries(),
       ],
     };
@@ -654,18 +678,16 @@ export default class Visual extends WynVisual {
     let properties = options.properties;
     let hiddenStates = [];
     if(!properties.showTooltip) {
-      [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle', 'showLocation', 'showValue', 'tooltipBackgroundType', 'tooltipBackgroundImage', 'mapBarAnimateImage'])
+      [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle', 'showLocation', 'showValue', 'tooltipBackgroundType', 'tooltipBackgroundImage'])
     }
     
     if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
-      hiddenStates = hiddenStates.concat(['mapBarClose', 'mapBarColor', 'mapBarWidth', 'mapBarAnimate', 'mapBarAnimateTime', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength', 'mapBarAnimateSymbolType', 'mapBarAnimateSymbol'])
+      hiddenStates = hiddenStates.concat(['mapBarClose', 'mapBarColor', 'mapBarHightColor', 'mapBarWidth', 'mapBarAnimate', 'mapBarAnimateTime','mapBarAnimateImage', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColorType', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength', 'mapBarAnimateSymbolType', 'mapBarAnimateSymbol'])
     }
 
     if (properties.symbolStyle == 'circle' || properties.symbolStyle == 'diamond') {
       hiddenStates = hiddenStates.concat(['mapSymbolWidth', 'mapSymbolHeight'])
     }
-
-    
 
     if (!properties.mapBarBottomCircle) {
       hiddenStates = hiddenStates.concat(['mapBarBottomAnimate', 'mapBarBottomAnimateColor', 'mapBarBottomAnimateSize', 'mapBarBottomAnimateTime'])
@@ -680,6 +702,14 @@ export default class Visual extends WynVisual {
       hiddenStates = hiddenStates.concat(['mapBarAnimateImage'])
     } else {
       hiddenStates = hiddenStates.concat(['mapBarAnimateSymbol', 'mapBarAnimateSymbolColor'])
+    }
+
+    if (properties.mapBarAnimateSymbolColorType == 'default') {
+      hiddenStates = hiddenStates.concat(['mapBarAnimateSymbolColor'])
+    }
+    
+    if (!properties.mapBarAnimate) {
+      hiddenStates = hiddenStates.concat([ 'mapBarAnimateTime','mapBarAnimateImage', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColorType', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength', 'mapBarAnimateSymbolType', 'mapBarAnimateSymbol'])
     }
 
     return hiddenStates;
