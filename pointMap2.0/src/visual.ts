@@ -344,8 +344,8 @@ export default class Visual extends WynVisual {
         })
     }
     
-    const effectOptions = !isSymBolChart && {
-      show: !isSymBolChart ? options.mapBarAnimate : !isSymBolChart,
+    const effectOptions =  {
+      show: options.mapBarAnimate,
       period: options.mapBarAnimateTime,
       symbol: options.mapBarAnimateSymbolType === 'default' ? options.mapBarAnimateSymbol : `image://${options.mapBarAnimateImage}`,
       // symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
@@ -354,10 +354,11 @@ export default class Visual extends WynVisual {
       delay: 0,
       trailLength: options.mapBarAnimateSymbolTrailLength / 100,
     }
+
     const setBarData = [{// 柱状体的主干
       type: 'lines',
       zlevel: 5,
-      effect: effectOptions,
+      effect: isSymBolChart ?  { show: false } : effectOptions,
       lineStyle: {
         width: options.mapBarWidth, // 尾迹线条宽度
         color: (params: any) => {
@@ -396,7 +397,7 @@ export default class Visual extends WynVisual {
             global: false // 缺省为 false
           }
         },
-        opacity: options.mapBarClose ? 0.1 : 0.1, // 尾迹线条透明度
+        opacity: options.mapBarClose || isSymBolChart ? 0 : 1, // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
       },
       animation:false,
@@ -415,6 +416,7 @@ export default class Visual extends WynVisual {
         },
         label: labelOptions(),
         silent: true,
+        animation:false,
         data: lineData('lable')
     },
     // 柱状体的顶部
@@ -422,7 +424,7 @@ export default class Visual extends WynVisual {
       type: 'scatter',
       coordinateSystem: 'geo',
       geoIndex: 0,
-      zlevel: 5,
+      zlevel: 7,
       symbol: options.symbolStyle,
       symbolSize: [options.mapBarWidth, options.mapBarWidth / 2],
       itemStyle: {
@@ -434,14 +436,14 @@ export default class Visual extends WynVisual {
         opacity: options.mapBarClose ? 0 : 1
       },
       silent: true,
-      data: scatterData()
+      data: isSymBolChart ? [] : scatterData()
     },
     // 柱状体的底部
     {
       type: 'scatter',
       coordinateSystem: 'geo',
       geoIndex: 0,
-      zlevel: 4,
+      zlevel: 8,
       // label: {
       //   // 这儿是处理的
       //   formatter: '{b}',
@@ -464,7 +466,7 @@ export default class Visual extends WynVisual {
         shadowOffsetY: 2,
       },
       silent: true,
-      data: scatterData2()
+      data: isSymBolChart ? [] : scatterData2()
     },
     // 底部外框
     {
@@ -474,7 +476,7 @@ export default class Visual extends WynVisual {
       type: 'effectScatter',
       coordinateSystem: 'geo',
       geoIndex: 0,
-      zlevel: 4,
+      zlevel: 9,
       label: {
         show: false
       },
@@ -516,7 +518,7 @@ export default class Visual extends WynVisual {
         opacity: 1
       },
       silent: true,
-      data: options.mapBarBottomCircle ? scatterData2(): []
+      data: isSymBolChart ? [] : (options.mapBarBottomCircle ? scatterData2() : [])
     }];
     
     const setSymbolData = [{
@@ -525,7 +527,7 @@ export default class Visual extends WynVisual {
       },
       type: 'effectScatter',
       coordinateSystem: 'geo',
-      zlevel: 4,
+      zlevel: 10,
       label: {
         show: false,
       },
@@ -572,7 +574,7 @@ export default class Visual extends WynVisual {
         },
       },
       silent: true,
-      data:  options.mapBarBottomCircle ? data : [],
+      data: isSymBolChart ? (options.mapBarBottomCircle ? data : []) : [],
     },
     {
       type: 'scatter',
@@ -591,8 +593,8 @@ export default class Visual extends WynVisual {
       symbolOffset: [0, -options.mapSymbolWidth],
       label: labelOptions(),
       z: 99,
-      zlevel: 5,
-      data: data,
+      zlevel: 11,
+      data: isSymBolChart ?  data : [],
     }];
     
     const getSeries = () => {
@@ -681,13 +683,14 @@ export default class Visual extends WynVisual {
           show: options.mapBarBottomLabel
         },
         z: 99,
-        zlevel: 5,
+        zlevel: 12,
         data: data,
        },
         ...getSeries(),
       ],
     };
-    myChart.setOption(mapOption);
+    
+    myChart.setOption(mapOption, true);
   }
 
   public onDestroy() {
