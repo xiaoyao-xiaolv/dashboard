@@ -39,6 +39,7 @@ import "echarts/map/js/province/xizang.js";
 import "echarts/map/js/province/yunnan.js";
 import "echarts/map/js/province/zhejiang.js";
 import geoCoordMap from './geoCoordMap.json';
+import { captureRejectionSymbol } from 'events';
 
 let myChart;
 let rawData;
@@ -178,20 +179,30 @@ export default class Visual extends WynVisual {
     
     const formatList = options.mapCollection;
     const isSymBolChart = options.symbolStyle === 'pyramid' || options.symbolStyle === 'water';
-    const formatColor = (defaultColor, _value) => {
+    const formatColor = (defaultColor, value) => {
       if (formatList.length > 0) {
         formatList.map((_item: any) => {
-          if (_item.formatValue && _item.formatColor) {
-            if (_item.formatRank === '>') {
-              defaultColor = (_value > _item.formatValue ? _item.formatColor : defaultColor)
+            if (value >= Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+              if (_item.minRank === '[' && _item.maxRank === ']') {
+                // _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                defaultColor = _item.formatColor
+              }
             }
-            if (_item.formatRank === '<') {
-              defaultColor = (_value < _item.formatValue ? _item.formatColor : defaultColor);
+            if (value >= Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+              if (_item.minRank === '[' && _item.maxRank === ')') {
+                defaultColor = _item.formatColor
+              }
             }
-            if (_item.formatRank === '=') {
-              defaultColor = (_value === _item.formatValue ? _item.formatColor : defaultColor);
+            if (value > Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+              if (_item.minRank === '(' && _item.maxRank === ']') {
+                defaultColor = _item.formatColor
+              }
             }
-          }
+            if (value > Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+              if (_item.minRank === '(' && _item.maxRank === ')') {
+                defaultColor = _item.formatColor
+              }
+            }
         })
       }
       return defaultColor;
@@ -200,7 +211,7 @@ export default class Visual extends WynVisual {
     const formatLabelColor = () => {
       const _richStyle = {};
       formatList && formatList.map((_item, _index) => {
-        _richStyle[`name${_item.formatValue}`] = {
+        _richStyle[`${_item.minFormatValue}To${_item.maxFormatValue}`] = {
           padding: [5, 0],
           color: _item.formatColor,
           fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
@@ -208,11 +219,12 @@ export default class Visual extends WynVisual {
       })
       return _richStyle;
     }
+
     const labelOptions = () => {
       return {
         normal: {
           show: options.showTooltip,
-          position: options.symbolStyle === 'water'  || options.symbolStyle === 'pyramid' ? [5, -options.tooltipDistance] : 'end',
+          position: options.symbolStyle === 'water'  || options.symbolStyle === 'pyramid' ? [Number(Math.floor(options.mapSymbolWidth / 2)), -options.tooltipDistance] : 'end',
           borderWidth: 1,
           align: 'center',
           verticalAlign: 'middle',
@@ -229,18 +241,29 @@ export default class Visual extends WynVisual {
             let _text = [];
             let value = params.data.datas;
             const _formatRichName = formatList.map((_item: any) => {
-              if (_item.formatValue && _item.formatColor) {
-                if (value > Number(_item.formatValue) && _item.formatRank === '>') {
-                  return `name${_item.formatValue}`
-                } else if (value < Number(_item.formatValue) && _item.formatRank === '<') {
-                  return `name${_item.formatValue}`
-                } else if (value === Number(_item.formatValue) && _item.formatRank === '=') {
-                  return `name${_item.formatValue}`
-                } else {
-                  return ''
+              let _name = '';
+              if (value >= Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+                if (_item.minRank === '[' && _item.maxRank === ']') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
                 }
               }
-            }).filter((item: any) => item)[0] || 'name';
+              if (value >= Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+                if (_item.minRank === '[' && _item.maxRank === ')') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                }
+              }
+              if (value > Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+                if (_item.minRank === '(' && _item.maxRank === ']') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                }
+              }
+              if (value > Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+                if (_item.minRank === '(' && _item.maxRank === ')') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                }
+              }
+              return _name;
+            }).filter(_item => _item)[0] || 'name';
             const _formatTarget = options.useToLabel ? _formatRichName: 'name';
             if (options.showLocation) {
               let name = params.name;
@@ -327,7 +350,7 @@ export default class Visual extends WynVisual {
       symbol: options.mapBarAnimateSymbolType === 'default' ? options.mapBarAnimateSymbol : `image://${options.mapBarAnimateImage}`,
       // symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
       symbolSize: [options.mapBarAnimateSymbolWidth, options.mapBarAnimateSymbolHeight], // 图标大小
-      color:  options.mapBarAnimateSymbolColorType === 'default' ? options.mapBarColor : options.mapBarAnimateSymbolColor,
+      color: options.useToBar && options.mapCollection.length ? '' : options.mapBarAnimateSymbolColorType === 'default' ? options.mapBarColor : options.mapBarAnimateSymbolColor,
       delay: 0,
       trailLength: options.mapBarAnimateSymbolTrailLength / 100,
     }
@@ -339,7 +362,8 @@ export default class Visual extends WynVisual {
         width: options.mapBarWidth, // 尾迹线条宽度
         color: (params: any) => {
           const _value = params.data.datas;
-          const _color =  options.useToBar? formatColor(options.mapBarColor, _value) : options.mapBarColor;
+          const _color = options.useToBar ? formatColor(options.mapBarColor, _value) : options.mapBarColor;
+          const _lightColor =options.useToBar ? formatColor(options.mapBarHightColor, _value) : options.mapBarHightColor;
           if (options.mapBarClose) return 'rgba(255, 255, 255, 0)';
           return {
             type: 'linear',
@@ -358,11 +382,11 @@ export default class Visual extends WynVisual {
               },
               {
                 offset: 0.5,
-                color: hexToRgba(options.mapBarHightColor, 0.8, options.symbolStyle === 'diamond'),
+                color: hexToRgba(_lightColor, 0.8, options.symbolStyle === 'diamond'),
               },
               {
                 offset: 0.7,
-                color: hexToRgba(options.mapBarHightColor, 0.8, options.symbolStyle === 'diamond'),
+                color: hexToRgba(_lightColor, 0.8, options.symbolStyle === 'diamond'),
               },
               {
                 offset: 1,
@@ -372,7 +396,7 @@ export default class Visual extends WynVisual {
             global: false // 缺省为 false
           }
         },
-        opacity: options.mapBarClose ? 0 : 1, // 尾迹线条透明度
+        opacity: options.mapBarClose ? 0.1 : 0.1, // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
       },
       animation:false,

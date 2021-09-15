@@ -389,7 +389,7 @@
                     {
                         "name": "showLocation",
                         "type": "Boolean",
-                        "displayName": "显示位置",
+                        "displayName": "显示位置名称",
                         "defaultValue": true
                     },
                     {
@@ -569,29 +569,45 @@
                         "type": "Collection",
                         "itemShape": [
                             {
-                                "name": "formatRank",
-                                "displayName": "条件范围",
+                                "name": "minFormatValue",
+                                "displayName": "条件MIX数值",
+                                "type": "number"
+                            },
+                            {
+                                "name": "minRank",
+                                "displayName": "MIX范围",
                                 "type": "Enum",
                                 "items": [
                                     {
-                                        "value": ">",
-                                        "displayName": "大于"
+                                        "value": "[",
+                                        "displayName": "包含"
                                     },
                                     {
-                                        "value": "<",
-                                        "displayName": "小于"
-                                    },
-                                    {
-                                        "value": "=",
-                                        "displayName": "等于"
+                                        "value": "(",
+                                        "displayName": "不包含"
                                     }
                                 ],
-                                "defaultValue": ">"
+                                "defaultValue": "["
                             },
                             {
-                                "name": "formatValue",
-                                "displayName": "条件数值",
+                                "name": "maxFormatValue",
+                                "displayName": "条件MAX数值",
                                 "type": "number"
+                            }, {
+                                "name": "maxRank",
+                                "displayName": "MAX范围",
+                                "type": "Enum",
+                                "items": [
+                                    {
+                                        "value": "]",
+                                        "displayName": "包含"
+                                    },
+                                    {
+                                        "value": ")",
+                                        "displayName": "不包含"
+                                    }
+                                ],
+                                "defaultValue": "]"
                             },
                             {
                                 "name": "formatColor",
