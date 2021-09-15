@@ -1,0 +1,46 @@
+{
+  "kpiCards": "KPI卡片圖",
+  "dataBinding": {
+    "kpi": "Kpi",
+    "category": "分類",
+    "measures": "度量",
+    "chart": "圖表",
+    "value": "數值",
+    "Layers": "層數",
+    "axis": "軸",
+    "chartType": "圖表類型",
+    "bar": "柱狀圖",
+    "line": "折線圖",
+    "area": "面積圖"
+  },
+  "options": {
+    "cardsStyle": "卡片樣式",
+    "maintainColorAssignment": "保持顏色分配",
+    "cardsColor": "調色板",
+    "cardsInALine": "單行顯示卡片個數",
+    "aspectRatio": "寬高比",
+    "cardMargin": "卡片外邊距",
+    "cardPadding": "卡片內邊距",
+    "cardTransparency": "圖表透明度",
+    "borderRadius": "邊框半徑",
+    "layout": "佈局",
+    "horizontalLayout": "水平佈局",
+    "verticalLayout": "垂直佈局",
+    "customizedLayout": "自定義佈局",
+    "categoryTopPosition": "分類上邊距",
+    "categoryLeftPosition": "分類左邊距",
+    "kpiTopPosition": "Kpi上邊距",
+    "kpiRightPosition": "Kpi右邊距",
+    "measureTopPosition": "度量上邊距",
+    "measureLeftPosition": "度量左邊距",
+    "categoryStyle": "分類字體設置",
+    "kpiStyle": "Kpi字體設置",
+    "measureStyle": "度量字體設置",
+    "chartColor": "迷你圖顏色",
+    "chartHeight": "迷你圖高度"
+  },
+  "visual": {
+    "null": "[空值]",
+    "emptyDisplay": "[空白文本]"
+  }
+}

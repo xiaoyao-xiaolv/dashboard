@@ -12,7 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doubleColumnChart/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/doubleColumnChart/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/地图柱状结合图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/地图柱状结合图/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,6 +142,8 @@
       <workItem from="1628739500259" duration="667000" />
       <workItem from="1628741818734" duration="668000" />
       <workItem from="1629097044274" duration="2008000" />
+      <workItem from="1631593151167" duration="733000" />
+      <workItem from="1631667534058" duration="599000" />
     </task>
     <servers />
   </component>
@@ -182,6 +184,17 @@
               <option name="CUSTOM_BOOLEAN_PROPERTIES">
                 <map>
                   <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="user">
+                    <value>
+                      <list>
+                        <option value="*" />
+                      </list>
+                    </value>
+                  </entry>
                 </map>
               </option>
             </State>

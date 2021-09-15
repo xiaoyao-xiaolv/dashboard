@@ -42,8 +42,8 @@ import "echarts/map/js/province/zhejiang.js";
 let myChart;
 let allSeriesData;
 let bindCoords;
-let longitudeName;
-let latitudeName;
+let longitude;
+let latitude;
 let rawData = [
   ["陕西",10,20,30],
   ["四川",10,25,30],
@@ -103,8 +103,8 @@ export default class Visual extends WynVisual {
       this.locationName = profile.location.values[0].display;
       bindCoords = !!(profile.longitude.values.length && profile.latitude.values.length);
       if(profile.longitude.values.length && profile.latitude.values.length) {
-        longitudeName = profile.longitude.values[0].display;
-        latitudeName = profile.latitude.values[0].display;
+        longitude = profile.longitude.values[0].display;
+        latitude = profile.latitude.values[0].display;
       }
       bindData.forEach((data) => {
         if(this.series.indexOf(data[this.seriesName]) < 0) {
@@ -207,7 +207,7 @@ export default class Visual extends WynVisual {
         let locationName = dataItem[0];
         let geoCoords;
         if (bindCoords) {
-          geoCoords = [dataItem[longitudeName], dataItem[latitudeName]];
+          geoCoords = [dataItem[longitude], dataItem[latitude]];
         } else {
           geoCoords = getCoords(locationName);
         }
