@@ -465,7 +465,8 @@ export default class Visual extends WynVisual {
       itemStyle: {
         color: (params: any) => {
           const _value = params.data.datas;
-          const _color = options.useToBar ?  formatColor(options.mapBarBottomAnimateColor, _value) : options.mapBarBottomAnimateColor;
+          const _isBarColor = options.mapBarBottomColorType === 'default' ? options.mapBarColor :  options.mapBarBottomAnimateColor;
+          const _color = options.useToBar ?  formatColor(_isBarColor, _value) : _isBarColor;
           return {
             type: 'radial',
             x: 0.5,
@@ -520,7 +521,8 @@ export default class Visual extends WynVisual {
           shadowOffsetY: 0,
           color: (params: any) => {
             const _value = params.data.datas;
-            const _color = options.useToBar ? formatColor(options.mapBarBottomAnimateColor, _value) : options.mapBarBottomAnimateColor;
+            const _isBarColor = options.mapBarBottomColorType === 'default' ? options.mapBarColor :  options.mapBarBottomAnimateColor;
+            const _color = options.useToBar ? formatColor(_isBarColor, _value) : _isBarColor;
             return {
               type: 'radial',
               x: 0.5,
@@ -686,11 +688,11 @@ export default class Visual extends WynVisual {
     }
 
     if (properties.symbolStyle == 'circle' || properties.symbolStyle == 'diamond') {
-      hiddenStates = hiddenStates.concat(['mapSymbolWidth', 'mapSymbolHeight'])
+      hiddenStates = hiddenStates.concat(['mapSymbolWidth', 'mapSymbolHeight', 'tooltipDistance'])
     }
 
     if (!properties.mapBarBottomCircle) {
-      hiddenStates = hiddenStates.concat(['mapBarBottomAnimate', 'mapBarBottomAnimateColor', 'mapBarBottomAnimateSize', 'mapBarBottomAnimateTime'])
+      hiddenStates = hiddenStates.concat(['mapBarBottomAnimate', 'mapBarBottomAnimateColor','mapBarBottomColorType', 'mapBarBottomAnimateSize', 'mapBarBottomAnimateTime'])
     }
     if (properties.tooltipBackgroundType == 'color') {
       hiddenStates = hiddenStates.concat(['tooltipBackgroundImage', 'tooltipBgBorderColor'])
@@ -711,7 +713,10 @@ export default class Visual extends WynVisual {
     if (!properties.mapBarAnimate) {
       hiddenStates = hiddenStates.concat([ 'mapBarAnimateTime','mapBarAnimateImage', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColorType', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength', 'mapBarAnimateSymbolType', 'mapBarAnimateSymbol'])
     }
-
+   
+    if (properties.mapBarBottomColorType == 'default') {
+      hiddenStates = hiddenStates.concat(['mapBarBottomAnimateColor'])
+    }
     return hiddenStates;
   }
 
