@@ -1,0 +1,343 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "kpi",
+                "displayNameKey": "dataBinding.kpi",
+                "kind": "value"
+            },
+            {
+                "name": "category",
+                "displayNameKey": "dataBinding.category",
+                "kind": "grouping"
+            },
+            {
+                "name": "measures",
+                "displayNameKey": "dataBinding.measures",
+                "kind": "value"
+            },
+            {
+                "kind": "collection",
+                "displayNameKey": "dataBinding.Layers",
+                "groups": [
+                    "chart"
+                ]
+            }
+        ],
+        "templates": [
+            {
+                "name": "chart",
+                "displayNameKey": "dataBinding.chart",
+                "dataRoles": [
+                    {
+                        "name": "value",
+                        "displayNameKey": "dataBinding.value",
+                        "kind": "value"
+                    },
+                    {
+                        "name": "axis",
+                        "displayNameKey": "dataBinding.axis",
+                        "kind": "grouping"
+                    }
+                ],
+                "dataViewMappings": [
+                    {
+                        "plain": {
+                            "dataRoles": [
+                                "value",
+                                "axis",
+                                "category",
+                                "kpi",
+                                "measures"
+                            ],
+                            "required": [
+                                {
+                                    "kpi": {
+                                        "min": 1
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "conditions": [
+                    {
+                        "value": {
+                            "max": 1
+                        },
+                        "axis": {
+                            "max": 1
+                        },
+                        "category": {
+                            "max": 1
+                        },
+                        "kpi": {
+                            "max": 1
+                        }
+                    }
+                ],
+                "options": [
+                    {
+                        "name": "chartType",
+                        "type": "enum",
+                        "displayNameKey": "dataBinding.chartType",
+                        "items": [
+                            {
+                                "value": "bar",
+                                "displayNameKey": "dataBinding.bar",
+                                "iconCss": "mdi mdi-chart-bar"
+                            },
+                            {
+                                "value": "line",
+                                "displayNameKey": "dataBinding.line",
+                                "iconCss": "mdi mdi-chart-line-variant"
+                            },
+                            {
+                                "value": "area",
+                                "displayNameKey": "dataBinding.area",
+                                "iconCss": "mdi mdi-chart-areaspline"
+                            }
+                        ],
+                        "defaultValue": "line"
+                    }
+                ]
+            }
+        ],
+        "conversionRules": {
+            "in": [
+                {
+                    "mode": "pre",
+                    "execute": [
+                        {
+                            "source": "values",
+                            "target": "kpi",
+                            "cmd": "first"
+                        }
+                    ]
+                }
+            ],
+            "out": [
+                {
+                    "mode": "pre",
+                    "execute": [
+                        {
+                            "source": "kpi",
+                            "target": "values",
+                            "cmd": "first"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "options": {
+        "visual": [
+            {
+                "displayNameKey": "options.cardsStyle",
+                "properties": [
+                    {
+                        "name": "maintainColorAssignment",
+                        "type": "ColorAssignment",
+                        "displayNameKey": "options.maintainColorAssignment",
+                        "defaultValue": false,
+                        "palettePath": "cardsColor"
+                    },
+                    {
+                        "name": "cardsColor",
+                        "type": "Palette",
+                        "displayNameKey": "options.cardsColor"
+                    },
+                    {
+                        "name": "cardTransparency",
+                        "type": "Percentage",
+                        "displayNameKey": "options.cardTransparency",
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "cardsInALine",
+                        "type": "Integer",
+                        "displayNameKey": "options.cardsInALine",
+                        "min": 1,
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "aspectRatio",
+                        "type": "Float",
+                        "displayNameKey": "options.aspectRatio",
+                        "defaultValue": 1.56
+                    },
+                    {
+                        "name": "cardMargin",
+                        "type": "Position",
+                        "displayNameKey": "options.cardMargin",
+                        "defaultValue": {
+                            "top": 3,
+                            "bottom": 3,
+                            "left": 3,
+                            "right": 3
+                        }
+                    },
+                    {
+                        "name": "cardPadding",
+                        "type": "Position",
+                        "displayNameKey": "options.cardPadding",
+                        "defaultValue": {
+                            "top": 6,
+                            "bottom": 6,
+                            "left": 6,
+                            "right": 6
+                        }
+                    },
+                    {
+                        "name": "borderRadius",
+                        "type": "Integer",
+                        "displayNameKey": "options.borderRadius",
+                        "min": 0,
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "layout",
+                        "type": "Enum",
+                        "displayNameKey": "options.layout",
+                        "items": [
+                            {
+                                "value": "horizontalLayout",
+                                "displayNameKey": "options.horizontalLayout"
+                            },
+                            {
+                                "value": "verticalLayout",
+                                "displayNameKey": "options.verticalLayout"
+                            },
+                            {
+                                "value": "customizedLayout",
+                                "displayNameKey": "options.customizedLayout"
+                            }
+                        ],
+                        "defaultValue": "customizedLayout"
+                    },
+                    {
+                        "name": "categoryTopPosition",
+                        "type": "Integer",
+                        "displayNameKey": "options.categoryTopPosition",
+                        "min": 0,
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "categoryLeftPosition",
+                        "type": "Integer",
+                        "displayNameKey": "options.categoryLeftPosition",
+                        "min": 0,
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "kpiTopPosition",
+                        "type": "Integer",
+                        "displayNameKey": "options.kpiTopPosition",
+                        "min": 0,
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "kpiRightPosition",
+                        "type": "Integer",
+                        "displayNameKey": "options.kpiRightPosition",
+                        "min": 0,
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "measureTopPosition",
+                        "type": "Integer",
+                        "displayNameKey": "options.measureTopPosition",
+                        "min": 0,
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "measureLeftPosition",
+                        "type": "Integer",
+                        "displayNameKey": "options.measureLeftPosition",
+                        "min": 0,
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "categoryStyle",
+                        "type": "TextStyle",
+                        "displayNameKey": "options.categoryStyle",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.2X"
+                        }
+                    },
+                    {
+                        "name": "kpiStyle",
+                        "type": "TextStyle",
+                        "displayNameKey": "options.kpiStyle",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.5X"
+                        }
+                    },
+                    {
+                        "name": "measureStyle",
+                        "type": "TextStyle",
+                        "displayNameKey": "options.measureStyle",
+                        "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "name": "chartColor",
+                        "type": "Color",
+                        "resetType": "Auto",
+                        "displayNameKey": "options.chartColor",
+                        "defaultValue": "rgba(255,255,255,0.6)"
+                    },
+                    {
+                        "name": "chartHeight",
+                        "type": "Percentage",
+                        "displayNameKey": "options.chartHeight",
+                        "defaultValue": 30
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "clearSelection"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "annotation"
+        },
+        {
+            "type": "shareScenario"
+        },
+        {
+            "type": "openFullDashboard"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "analysisPath"
+        }
+    ],
+    "analysis": []
+}
