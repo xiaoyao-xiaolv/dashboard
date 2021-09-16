@@ -1,8 +1,8 @@
 {
     "id": "ec080670-e3a5-11eb-b740-13dca33449c7",
-    "name": "3D效果点地图",
-    "displayName": "3D效果点地图",
-    "displayNameKey": "3D效果点地图",
+    "name": "3D柱状地图",
+    "displayName": "3D柱状地图",
+    "displayNameKey": "3D柱状地图",
     "icon": "visualIcon",
     "description": "",
     "externalJs": [],

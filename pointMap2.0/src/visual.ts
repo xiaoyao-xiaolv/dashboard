@@ -302,9 +302,55 @@ export default class Visual extends WynVisual {
       return type ? 14/maxValue : 10/maxValue
     }
 
-    const hexToRgba = (hex, opacity, isLine?: boolean) => {
+    const  RgbToHex  = (a, b, c)  =>{
+      var r = /^\d{1,3}$/;
+      if (!r.test(a) || !r.test(b) || !r.test(c)) return window.alert("输入错误的rgb颜色值");
+      var hexs = [a.toString(16), b.toString(16), c.toString(16)];
+      for (var i = 0; i < 3; i++) if (hexs[i].length == 1) hexs[i] = "0" + hexs[i];
+      return "#" + hexs.join("");
+    }
+    
+    const  HexToRgb = (str) =>{
+      var r = /^\#?[0-9a-f]{6}$/;
+      //test方法检查在字符串中是否存在一个模式，如果存在则返回true，否则返回false
+      if (!r.test(str)) return console.log("输入错误的hex");
+      //replace替换查找的到的字符串
+      str = str.replace("#", "");
+      //match得到查询数组
+      var hxs = str.match(/../g);
+      //alert('bf:'+hxs)
+      for (var i = 0; i < 3; i++) hxs[i] = parseInt(hxs[i], 16);
+      return hxs;
+    }
+    const getLightOrDarkColor = (color, level, isLight?: boolean) => {
+      var r = /^\#?[0-9a-f]{6}$/;
+      let rgbc = [];
+      console.log(color, '===color')
+      if (!r.test(color)) {
+        var rgb = color.split(',');
+        var _r = parseInt(rgb[0].split('(')[1]);
+        var _g = parseInt(rgb[1]);
+        var _b = parseInt(rgb[2].split(')')[0]);
+        rgbc = HexToRgb(RgbToHex(_r, _g, _b));
+      } else {
+        rgbc = HexToRgb(color);
+      }
+      if (isLight) {
+        for (var i = 0; i < 3; i++) {
+          rgbc[i] = Math.floor((255 - rgbc[i]) * level + rgbc[i]);
+        }
+        return RgbToHex(rgbc[0], rgbc[1], rgbc[2]);
+      } else {
+        for (var i = 0; i < 3; i++) {
+          rgbc[i] = Math.floor(rgbc[i] * (1 - level));
+        }
+        return RgbToHex(rgbc[0], rgbc[1], rgbc[2]);
+      }
+    }
+    
+    const hexToRgba = (hex, opacity?: number, isLine?: boolean) => {
       const isHex = hex.slice(0, 1) === '#';
-      const _opacity = isLine ? (opacity + 0.2) : opacity;
+      const _opacity = isLine ? 0.1 : opacity;
       if (isHex) {
         return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
               + parseInt('0x' + hex.slice(5, 7)) + ',' + _opacity + ')';
@@ -364,7 +410,6 @@ export default class Visual extends WynVisual {
         color: (params: any) => {
           const _value = params.data.datas;
           const _color = options.useToBar ? formatColor(options.mapBarColor, _value) : options.mapBarColor;
-          const _lightColor =options.useToBar ? formatColor(options.mapBarHightColor, _value) : options.mapBarHightColor;
           if (options.mapBarClose) return 'rgba(255, 255, 255, 0)';
           return {
             type: 'linear',
@@ -375,19 +420,19 @@ export default class Visual extends WynVisual {
             colorStops: [
               {
                 offset: 0,
-                color: hexToRgba(_color, 0.8),
+                color: hexToRgba(_color, 0.6),
               },
               {
                 offset: 0.2,
-                color: hexToRgba(_color, 0.8),
+                color: hexToRgba(_color, 0.6),
               },
               {
                 offset: 0.5,
-                color: hexToRgba(_lightColor, 0.8, options.symbolStyle === 'diamond'),
+                color: hexToRgba(getLightOrDarkColor(_color, 0.1, options.symbolStyle === 'diamond'), 1, options.symbolStyle === 'diamond'),
               },
               {
                 offset: 0.7,
-                color: hexToRgba(_lightColor, 0.8, options.symbolStyle === 'diamond'),
+                color: hexToRgba(getLightOrDarkColor(_color, 0.1, options.symbolStyle === 'diamond'), 1, options.symbolStyle === 'diamond'),
               },
               {
                 offset: 1,
@@ -397,7 +442,7 @@ export default class Visual extends WynVisual {
             global: false // 缺省为 false
           }
         },
-        opacity: options.mapBarClose || isSymBolChart ? 0 : 1, // 尾迹线条透明度
+        opacity: options.mapBarClose  ? 0 : (options.mapBarAnimate ? 0.1 : 1), // 尾迹线条透明度
         curveness: 0 // 尾迹线条曲直度
       },
       animation:false,
@@ -711,7 +756,7 @@ export default class Visual extends WynVisual {
     }
     
     if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
-      hiddenStates = hiddenStates.concat(['mapBarClose', 'mapBarColor', 'mapBarHightColor', 'mapBarWidth', 'mapBarAnimate', 'mapBarAnimateTime','mapBarAnimateImage', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColorType', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength', 'mapBarAnimateSymbolType', 'mapBarAnimateSymbol'])
+      hiddenStates = hiddenStates.concat(['mapBarClose', 'mapBarColor', 'mapBarWidth', 'mapBarAnimate', 'mapBarAnimateTime','mapBarAnimateImage', 'mapBarAnimateSymbol', 'mapBarAnimateSymbolColorType', 'mapBarAnimateSymbolColor', 'mapBarAnimateSymbolWidth', 'mapBarAnimateSymbolHeight', 'mapBarAnimateSymbolTrailLength', 'mapBarAnimateSymbolType', 'mapBarAnimateSymbol'])
     }
 
     if (properties.symbolStyle == 'circle' || properties.symbolStyle == 'diamond') {

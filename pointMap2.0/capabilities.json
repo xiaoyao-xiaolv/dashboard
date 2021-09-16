@@ -98,21 +98,21 @@
                         "displayName": "数据点样式",
                         "items": [
                             {
-                                "value": "pyramid",
-                                "displayNameKey": "四棱锥"
-                            },
-                            {
-                                "value": "water",
-                                "displayNameKey": "水滴型"
+                                "value": "diamond",
+                                "displayNameKey": "直方柱"
                             },
                             {
                                 "value": "circle",
                                 "displayNameKey": "圆柱"
                             },
                             {
-                                "value": "diamond",
-                                "displayNameKey": "直方柱"
-                            }
+                                "value": "water",
+                                "displayNameKey": "水滴型"
+                            },
+                            {
+                                "value": "pyramid",
+                                "displayNameKey": "四棱锥"
+                            } 
                         ],
                         "defaultValue": "diamond"
                     },
@@ -132,13 +132,7 @@
                         "name": "mapBarColor",
                         "type": "Color",
                         "displayName": "柱子颜色",
-                        "defaultValue": "rgba(255, 255, 255, 1)"
-                    },
-                    {
-                        "name": "mapBarHightColor",
-                        "type": "Color",
-                        "displayName": "柱子高亮颜色",
-                        "defaultValue": "rgba(255, 255, 255, 0.5)"
+                        "defaultValue": "#ffffff"
                     },                  
                     {
                         "name": "mapBarWidth",
@@ -162,7 +156,7 @@
                         "name": "mapBarAnimateTime",
                         "type": "Integer",
                         "displayName": "动画时间",
-                        "defaultValue": 4
+                        "defaultValue": 2
                     },
                     {
                         "name": "mapBarAnimateSymbolType",
@@ -219,7 +213,7 @@
                     {
                         "name": "mapBarAnimateImage",
                         "type": "Image",
-                        "displayName": "动sas画图片"
+                        "displayName": "动画图片"
                     },
                     {
                         "name": "mapBarAnimateSymbolColorType",
@@ -337,7 +331,7 @@
                         "name": "mapShadowColor",
                         "type": "Color",
                         "displayName": "地图阴影颜色",
-                        "defaultValue": "rgba(255,255,255, 0.8)"
+                        "defaultValue": "#1d3766"
                     },
                     {
                         "name": "mapShadowX",
@@ -384,7 +378,7 @@
                         "name": "showTooltip",
                         "type": "Boolean",
                         "displayName": "是否显示",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "showLocation",
@@ -543,7 +537,7 @@
                             "inheritFrom": "dashboard.textStyle",
                             "defaultValue": {
                                 "fontSize": "1.5X",
-                                "color": "#fff"
+                                "color": "#ffffff"
                             }
                     }
                 ]
@@ -570,41 +564,41 @@
                         "itemShape": [
                             {
                                 "name": "minFormatValue",
-                                "displayName": "条件MIX数值",
+                                "displayName": "下限值",
                                 "type": "number"
                             },
                             {
                                 "name": "minRank",
-                                "displayName": "MIX范围",
+                                "displayName": "区间范围",
                                 "type": "Enum",
                                 "items": [
                                     {
-                                        "value": "[",
-                                        "displayName": "包含"
+                                        "value": "(",
+                                        "displayName": "大于"
                                     },
                                     {
-                                        "value": "(",
-                                        "displayName": "不包含"
+                                        "value": "[",
+                                        "displayName": "大于等于"
                                     }
                                 ],
                                 "defaultValue": "["
                             },
                             {
                                 "name": "maxFormatValue",
-                                "displayName": "条件MAX数值",
+                                "displayName": "上限值",
                                 "type": "number"
                             }, {
                                 "name": "maxRank",
-                                "displayName": "MAX范围",
+                                "displayName": "上限范围",
                                 "type": "Enum",
-                                "items": [
-                                    {
-                                        "value": "]",
-                                        "displayName": "包含"
-                                    },
+                                "items": [ 
                                     {
                                         "value": ")",
-                                        "displayName": "不包含"
+                                        "displayName": "小于"
+                                    },
+                                    {
+                                        "value": "]",
+                                        "displayName": "小于等于"
                                     }
                                 ],
                                 "defaultValue": "]"
