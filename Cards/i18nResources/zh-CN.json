@@ -3,7 +3,8 @@
   "dataBinding": {
     "kpi": "Kpi",
     "category": "分类",
-    "measures": "度量",
+    "leftMeasures": "左侧度量",
+    "rightMeasures": "右侧度量",
     "chart": "图表",
     "value": "数值",
     "Layers": "层数",
@@ -33,6 +34,8 @@
     "kpiRightPosition": "Kpi右边距",
     "measureTopPosition": "度量上边距",
     "measureLeftPosition": "度量左边距",
+    "measureLeftWidth": "左侧度量宽度占比",
+    "measureRightWidth": "右侧度量宽度占比",
     "categoryStyle": "分类字体设置",
     "kpiStyle": "Kpi字体设置",
     "measureStyle": "度量字体设置",

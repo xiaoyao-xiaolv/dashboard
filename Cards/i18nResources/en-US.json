@@ -3,7 +3,8 @@
   "dataBinding": {
     "kpi": "Kpi",
     "category": "Category",
-    "measures": "Measures",
+    "leftMeasures": "Left Measures",
+    "rightMeasures": "Right Measures",
     "chart": "Chart",
     "value": "Value",
     "Layers": "Layers",
@@ -33,6 +34,8 @@
     "kpiRightPosition": "Kpi Right Position",
     "measureTopPosition": "Measure Top Position",
     "measureLeftPosition": "Measure Left Position",
+    "measureLeftWidth": "Measure Left Width Ratio",
+    "measureRightWidth": "Measure Right Width Ratio",
     "categoryStyle": "Category Font Setting",
     "kpiStyle": "Kpi Font Setting",
     "measureStyle": "Measure Font Setting",
