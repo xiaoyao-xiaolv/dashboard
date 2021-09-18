@@ -278,6 +278,18 @@
                 "displayName": "地图设置",
                 "properties": [
                     {
+                        "displayNameKey": "自定义地图",
+                        "name": "customMap",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    },
+                    {
+                        "displayNameKey": "地图GEOJSON",
+                        "name": "MapJson",
+                        "type": "LongText",
+                        "defaultValue": ""
+                    },
+                    {
                         "displayNameKey": "地图名称",
                         "name": "mapName",
                         "type": "Enum",

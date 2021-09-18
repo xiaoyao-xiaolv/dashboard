@@ -39,8 +39,6 @@ import "echarts/map/js/province/xizang.js";
 import "echarts/map/js/province/yunnan.js";
 import "echarts/map/js/province/zhejiang.js";
 import geoCoordMap from './geoCoordMap.json';
-import { captureRejectionSymbol } from 'events';
-
 let myChart;
 let rawData;
 const image = {
@@ -49,7 +47,7 @@ const image = {
 }
 const getImage = (host, name) => {
   return `image://${host.assetsManager.getImage(name)}`
-} 
+}
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private host: any;
@@ -163,6 +161,7 @@ export default class Visual extends WynVisual {
     this.totalValue = renderData.map((_item: any) => _item.datas).reduce((prev, current) => {
       return prev + current;
     });
+    echarts.registerMap('customMap', this.properties.customMap && this.properties.MapJson ? JSON.parse(this.properties.MapJson) : {})
     this.render(renderData);
   }
 
@@ -325,7 +324,6 @@ export default class Visual extends WynVisual {
     const getLightOrDarkColor = (color, level, isLight?: boolean) => {
       var r = /^\#?[0-9a-f]{6}$/;
       let rgbc = [];
-      console.log(color, '===color')
       if (!r.test(color)) {
         var rgb = color.split(',');
         var _r = parseInt(rgb[0].split('(')[1]);
@@ -656,6 +654,7 @@ export default class Visual extends WynVisual {
           break;
       }
     }
+    
 
     let mapOption = {
       grid: {
@@ -665,12 +664,19 @@ export default class Visual extends WynVisual {
         right: 0
       },
       geo: [{
-          map: options.mapName,
+          map: options.customMap && this.properties.MapJson ? "customMap" : options.mapName,
           zoom: options.zoom,
           roam: false,
           zlevel: 2,
           layoutSize: '95%',
-          layoutCenter: [`${50}%`,`${50}%`],
+          layoutCenter: [`${50}%`, `${50}%`],
+          label: {
+            position: 'bottom',
+            color: options.mapBarBottomLabelText.color,
+            fontSize: parseInt(options.mapBarBottomLabelText.fontSize),
+            distance: 20,
+            show: options.customMap && this.properties.MapJson ? options.mapBarBottomLabel : false
+          },
           itemStyle: {
             normal: {
                 areaColor: options.mapColor,
@@ -686,9 +692,9 @@ export default class Visual extends WynVisual {
             emphasis: {
                 areaColor: options.emphasisColor,
             }
-          }
+        },
         }, {
-        map: options.mapName,
+        map: options.customMap && this.properties.MapJson ? "customMap" : options.mapName,
         zoom: options.zoom,
         roam: false,
         zlevel: 1,
@@ -788,6 +794,12 @@ export default class Visual extends WynVisual {
    
     if (properties.mapBarBottomColorType == 'default') {
       hiddenStates = hiddenStates.concat(['mapBarBottomAnimateColor'])
+    }
+
+    if (properties.customMap) {
+      hiddenStates = hiddenStates.concat(['mapName'])
+    } else {
+      hiddenStates = hiddenStates.concat(['MapJson'])
     }
     return hiddenStates;
   }
