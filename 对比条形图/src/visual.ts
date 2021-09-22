@@ -140,7 +140,12 @@ export default class Visual {
       this.isDimension = !!plainData.profile.dimension.values.length;
       this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
       let datas = plainData.data;
-
+      const sortFlags = plainData.sort[this.Dimension].order;
+      let newItems: any = sortFlags.map((flags) => {
+        return newItems = datas.find((item) => item[this.Dimension] === flags && item)
+      })
+      datas = newItems.filter((item) => item)
+  
       datas.map((data: any) => {
         this.actualFormate = this.ActualValue && plainData.profile.ActualValue.values[0].format;
         this.contrastFormate = this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
@@ -708,7 +713,9 @@ export default class Visual {
     if (!updateOptions.properties.showBackgroundColor) {
       hiddenOptions = hiddenOptions.concat(['rankingConditionCollection'])
     }
-
+    if (updateOptions.properties.sortAccording === 'noOrder') {
+      hiddenOptions = hiddenOptions.concat(['sorttype'])
+    }
     return hiddenOptions;
   }
 

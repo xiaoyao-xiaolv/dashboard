@@ -108,7 +108,7 @@
                             },
                             {
                                 "value": "noOrder",
-                                "displayNameKey": "无"
+                                "displayNameKey": "原始排序"
                             }
                         ],
                         "defaultValue": "accordingPercent"

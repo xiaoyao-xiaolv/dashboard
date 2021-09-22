@@ -555,6 +555,24 @@
                 ]
             },
             {
+                "displayName": "轮播设置",
+                "properties": [
+                    {
+                    "name": "automaticRotation",
+                    "type": "Boolean",
+                    "displayName": "自动轮播",
+                    "defaultValue": false
+                    },
+                    {
+                        "name": "rotationInterval",
+                        "type": "Integer",
+                        "displayName": "轮播间隔",
+                        "defaultValue": 3,
+                        "min": 1
+                    }
+                ]
+            },
+            {
                 "displayName": "条件格式化",
                 "properties": [
                     {

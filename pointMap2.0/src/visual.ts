@@ -63,7 +63,9 @@ export default class Visual extends WynVisual {
   private shadowDiv: any;
   private format: any;
   private displayUnit: any;
-  private totalValue: any;
+  private items: any;
+  private timeInterval: any;
+
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     [].push.call(image.water, getImage(host, 'image1'), getImage(host, 'image2'), getImage(host, 'image3'));
@@ -71,7 +73,7 @@ export default class Visual extends WynVisual {
     this.host = host;
     this.isMock = true;
     this.bindCoords = false;
-    myChart = echarts.init(dom, null ,{ renderer: 'canvas'});
+    myChart = echarts.init(dom, null, { renderer: 'canvas' });
     // myChart = echarts.init(dom, null ,{ renderer: 'svg'});
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
@@ -116,6 +118,75 @@ export default class Visual extends WynVisual {
       },
     ];
   }
+  private dispatch = (type, payload) => myChart.dispatchAction({ ...payload, type });
+  public timer = () => {   
+    let index = 0;
+    let dataLength = this.items.length 
+    this.timeInterval = setInterval(() => {
+      const autoStopInfo = {
+        seriesIndex: 0,
+        // dataIndex: index,
+        name: (this.items[index].name).slice(0, this.items[index].name.length -1)
+      };
+      this.dispatch('downplay', autoStopInfo)
+      index = (index + 1) % dataLength
+      const autoInfo = {
+        seriesIndex: 0,
+        // dataIndex: index,
+        name: (this.items[index].name).slice(0, this.items[index].name.length -1)
+        // x: e.value[0],
+        // y: e.value[1],
+      };
+      this.dispatch('highlight', autoInfo)
+      this.dispatch('showTip',autoInfo)
+      if (index > dataLength - 1) {
+        index = 0;
+        // clear setInterval
+        clearInterval(this.timeInterval)
+      }
+    }, Number(this.properties.rotationInterval) *  1000)
+  }
+
+  public clearOperation = () => {
+   this.items.forEach((element, index) => {
+      const selectInfo = {
+        seriesIndex: 0,
+        // dataIndex: index,
+        name: (this.items[index].name).slice(0, this.items[index].name.length -1)
+      };
+      this.dispatch('downplay',selectInfo)
+   });
+    console.log(this.timeInterval, '====this.timeInterval')
+    clearInterval(this.timeInterval)
+  }
+
+  public bindEvents = (data) => {
+    console.log('开始监听-----------------')
+    let showTip;
+    // start auto
+    if (this.properties.automaticRotation) {
+      this.timer();
+    }
+    
+    this.container.addEventListener('mouseleave', (e: any) => {
+      // if (this.properties.automaticRotation && this.preview && !dataIndex)
+      // this.timer()
+    })
+    this.container.addEventListener('mouseenter', (e: any) => {
+      this.clearOperation()
+      // if (isTooltipModelShown) return;
+      // this.hideTooltip();
+    })
+
+    myChart.on('mouseout', (params) => {
+      const selectInfo = {
+        seriesIndex: 0,
+        name: params.name,
+      };
+      this.dispatch('downplay',selectInfo)
+    })
+   
+  }
 
   private getCoords = (keyWord: string) => {
     let reg = new RegExp(keyWord);
@@ -158,11 +229,10 @@ export default class Visual extends WynVisual {
     }
     this.properties = options.properties;
     let renderData = this.isMock ? rawData : this.resultData;
-    this.totalValue = renderData.map((_item: any) => _item.datas).reduce((prev, current) => {
-      return prev + current;
-    });
+    this.items = renderData;
     echarts.registerMap('customMap', this.properties.customMap && this.properties.MapJson ? JSON.parse(this.properties.MapJson) : {})
     this.render(renderData);
+    this.bindEvents(renderData);
   }
 
   private render(data) {
@@ -444,7 +514,6 @@ export default class Visual extends WynVisual {
         curveness: 0 // 尾迹线条曲直度
       },
       animation:false,
-      silent: true,
       data: lineData()
     },
     {// 柱状体的主干Label
@@ -565,9 +634,6 @@ export default class Visual extends WynVisual {
     }];
     
     const setSymbolData = [{
-      tooltip: {
-        show: false,
-      },
       type: 'effectScatter',
       coordinateSystem: 'geo',
       zlevel: 10,
@@ -657,6 +723,18 @@ export default class Visual extends WynVisual {
     
 
     let mapOption = {
+      tooltip: {
+        trigger: 'item',
+        padding: [15, 15],
+        formatter: (params) => {
+          // return params.name
+          const _toolTip = this.items.find((_item) => _item.name.slice(0, _item.name.length -1) === params.name);
+          
+          if (!this.isMock && _toolTip) {
+            return `${this.locationName}: ${_toolTip.name} <br /> ${this.valuesName}: ${_toolTip.datas}`;
+          }
+        },
+      },
       grid: {
         top: 0,
         bottom: 0,
@@ -679,7 +757,7 @@ export default class Visual extends WynVisual {
           },
           itemStyle: {
             normal: {
-                areaColor: options.mapColor,
+                areaColor: 'rgba(0,0,0,0.1)',
                 // areaColor: 'transparent',
                 color: () => {
                   return 'red'
@@ -693,31 +771,61 @@ export default class Visual extends WynVisual {
                 areaColor: options.emphasisColor,
             }
         },
-        }, {
+      }, {
+          // bg map
+          map: options.customMap && this.properties.MapJson ? "customMap" : options.mapName,
+          zoom: options.zoom,
+          roam: false,
+          zlevel: 1,
+          layoutSize: '95%',
+          layoutCenter: [`${options.mapShadowX}%`,`${options.mapShadowY}%`],
+          // aspectScale: 1.3,
+          silent: true,
+          itemStyle: {
+            normal: {
+              areaColor: options.mapShadowColor,
+              borderWidth: 0,
+            }
+          },
+          // data: data,
+          regions: [{
+            name: '南海诸岛',
+            itemStyle: {
+              opacity: 0,
+            },
+          }]
+        }],
+      series: [{
+        type: 'map',
         map: options.customMap && this.properties.MapJson ? "customMap" : options.mapName,
         zoom: options.zoom,
-        roam: false,
-        zlevel: 1,
+        roam: true,
+        zlevel: 3,
         layoutSize: '95%',
-        layoutCenter: [`${options.mapShadowX}%`,`${options.mapShadowY}%`],
-        // aspectScale: 1.3,
-        silent: true,
+        layoutCenter: [`${50}%`, `${50}%`],
+        label: {
+          position: 'bottom',
+          color: options.mapBarBottomLabelText.color,
+          fontSize: parseInt(options.mapBarBottomLabelText.fontSize),
+          distance: 20,
+          show: options.customMap && this.properties.MapJson ? options.mapBarBottomLabel : false
+        },
         itemStyle: {
           normal: {
-            areaColor: options.mapShadowColor,
-            borderWidth: 0,
+              areaColor: options.mapColor,
+              borderColor: options.mapBorderColor,
+              borderWidth: 1,
+              shadowColor: options.mapBorderShadowColor,
+              shadowBlur: 10,
+          },
+          emphasis: {
+              areaColor: options.emphasisColor,
           }
         },
-        regions: [{
-          name: '南海诸岛',
-          itemStyle: {
-            opacity: 0,
-          },
-        }]
-       
-      }],
-      series: [{
+      },
+      {
         type: 'scatter',
+        name: 'bottomScatter',
         coordinateSystem: 'geo',
         itemStyle: {
           color: 'rgba(255, 255, 255, 0)', 
@@ -735,6 +843,7 @@ export default class Visual extends WynVisual {
         },
         z: 99,
         zlevel: 12,
+        silent: true,
         data: data,
        },
         ...getSeries(),
