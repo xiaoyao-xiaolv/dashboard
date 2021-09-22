@@ -6,8 +6,14 @@ import Hsl from './palette';
 interface cardsRenderConfig {
   category: string[];
   kpiS: any[] | number[];
-  measuresDisplay: string[];
-  measuresValue: number[][];
+  measuresDisplay: {
+    left: string[],
+    right: string[]
+  };
+  measuresValue: {
+    left: number[][],
+    right: number[][]
+  };
   xAxis: string[][];
   values: number[][];
   isMock: boolean;
@@ -23,8 +29,14 @@ export default class Visual extends WynVisual {
   private static defaultConfig: cardsRenderConfig = {
     category: ['DD1', 'DD2', 'DD3', 'DD4'],
     kpiS: [123456, 123456, 123456, 123456],
-    measuresDisplay: ['Selling'],
-    measuresValue: [[89], [89], [89], [89]],
+    measuresDisplay: {
+      left: ['Selling'],
+      right: ['Price']
+    },
+    measuresValue: {
+      left:  [[89], [89], [89], [89]],
+      right: [[43], [43], [43], [43]]
+    },
     xAxis: [["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"], ["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"], ["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"], ["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"]],
     values: [[10, 11, 8, 9, 5, 7, 9, 6], [10, 11, 8, 9, 5, 7, 9, 6], [10, 11, 8, 9, 5, 7, 9, 6], [10, 11, 8, 9, 5, 7, 9, 6]],
     isMock: true
@@ -79,18 +91,26 @@ export default class Visual extends WynVisual {
     attribute.setAttribute("style", `margin:0;color: ${target.color};font-family: ${target.fontFamily};font-size: ${target.fontSize}; font-style: ${target.fontStyle};font-weight: ${target.fontWeight};`);
   }
 
-  private setCommonCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: Array<HTMLParagraphElement>,
+  private setCommonCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: { rightTag: any[]; leftTag: any[] },
     categoryStyle: any, kpiStyle: any, measureStyle: any) {
     this.setAttribute(tagCategory, categoryStyle);
     this.setAttribute(tagKpi, kpiStyle);
-    tagMeasures.forEach(tagMeasure => this.setAttribute(tagMeasure, measureStyle));
+    tagMeasures.leftTag.forEach(tagMeasure => this.setAttribute(tagMeasure, measureStyle));
+    tagMeasures.rightTag.forEach(tagMeasure => this.setAttribute(tagMeasure, measureStyle));
   }
 
-  private setDifferentCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: Array<HTMLParagraphElement>,
-    mainBox: HTMLDivElement, measuresBox: HTMLDivElement) {
+  private setDifferentCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: { rightTag: any[]; leftTag: any[] },
+    mainBox: HTMLDivElement, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement) {
     measuresBox.style.marginTop = `${this.styleConfig.measureTopPosition}px`;
     measuresBox.style.marginLeft = `${this.styleConfig.measureLeftPosition}px`;
-    tagMeasures.forEach(tagMeasure => {
+    measuresBox.style.display = 'flex';
+    measuresBox.style.width = '100%';
+    leftMeasuresBox.style.flex = `0 0 ${this.styleConfig.measureLeftWidth}%`;
+    rightMeasuresBox.style.flex = `0 0 ${this.styleConfig.measureRightWidth}%`;
+    tagMeasures.leftTag.forEach(tagMeasure => {
+      tagMeasure.style.display = 'block';
+    });
+    tagMeasures.rightTag.forEach(tagMeasure => {
       tagMeasure.style.display = 'block';
     });
     switch (this.styleConfig.layout) {
@@ -169,19 +189,30 @@ export default class Visual extends WynVisual {
     }
   }
 
-  private synthesisCard(tagCategory: HTMLParagraphElement, textCategory: Text, tagMeasures: Array<HTMLParagraphElement>,
-    tagKpi: HTMLParagraphElement, textKpi: Text, titleMeasures: Array<Text>, textMeasures: Array<Text>,
-    mainBox: HTMLDivElement, measuresBox: HTMLDivElement, chartBox: HTMLDivElement,
-    cardBox: HTMLDivElement, paletteNumber: number) {
+  private synthesisMeasure(tagMeasures: { rightTag: any[]; leftTag: any[] }, titleMeasures: { rightTitle: any[]; leftTitle: any[] }, textMeasures: { rightText: any[]; leftText: any[] }, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement) {
+    for (let i = 0; i < tagMeasures.leftTag.length; i++) {
+      tagMeasures.leftTag[i].appendChild(titleMeasures.leftTitle[i]);
+      tagMeasures.leftTag[i].appendChild(textMeasures.leftText[i]);
+    }
+    for (let i = 0; i < tagMeasures.rightTag.length; i++) {
+      tagMeasures.rightTag[i].appendChild(titleMeasures.rightTitle[i]);
+      tagMeasures.rightTag[i].appendChild(textMeasures.rightText[i]);
+    }
+    tagMeasures.leftTag.forEach(tagMeasure => leftMeasuresBox.appendChild(tagMeasure));
+    tagMeasures.rightTag.forEach(tagMeasure => rightMeasuresBox.appendChild(tagMeasure));
+    measuresBox.appendChild(leftMeasuresBox);
+    measuresBox.appendChild(rightMeasuresBox);
+  }
+
+  private synthesisCard(tagCategory: HTMLParagraphElement, textCategory: Text, tagMeasures: { rightTag: any[]; leftTag: any[] },
+    tagKpi: HTMLParagraphElement, textKpi: Text, titleMeasures: { rightTitle: any[]; leftTitle: any[] }, textMeasures: { rightText: any[]; leftText: any[] },
+    mainBox: HTMLDivElement, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement,
+    chartBox: HTMLDivElement, cardBox: HTMLDivElement, paletteNumber: number) {
     tagCategory.appendChild(textCategory);
     tagKpi.appendChild(textKpi);
-    for (let i = 0; i < tagMeasures.length; i++) {
-      tagMeasures[i].appendChild(titleMeasures[i]);
-      tagMeasures[i].appendChild(textMeasures[i]);
-    }
     mainBox.appendChild(tagCategory);
     mainBox.appendChild(tagKpi);
-    tagMeasures.forEach(tagMeasure => measuresBox.appendChild(tagMeasure));
+    this.synthesisMeasure(tagMeasures, titleMeasures, textMeasures, measuresBox, leftMeasuresBox, rightMeasuresBox);
     cardBox.appendChild(mainBox);
     cardBox.appendChild(measuresBox);
     cardBox.appendChild(chartBox);
@@ -202,12 +233,20 @@ export default class Visual extends WynVisual {
     chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom}px`;
   }
 
-  private fillMeasures(tagMeasures: Array<HTMLParagraphElement>, titleMeasures: Array<Text>, textMeasures: Array<Text>, index: number) {
-    for (let i = 0; i < this.renderConfig.measuresDisplay.length; i++) {
-      tagMeasures.push(document.createElement('p'));
-      titleMeasures.push(document.createTextNode(`${this.renderConfig.measuresDisplay[i]}: `));
-      textMeasures.push(document.createTextNode(`${this.renderConfig.measuresValue[index][i]}`));
+  private fillMeasures(measuresDisplay: { left: string[]; right: string[] }, measuresValue: { left: number[][], right: number[][] }, tagMeasures: { rightTag: any[]; leftTag: any[] },
+    titleMeasures: { rightTitle: any[]; leftTitle: any[] }, textMeasures: { rightText: any[]; leftText: any[] }, index: number) {
+    function fillMeasure(display, side) {
+      for (let i = 0; i < display.length; i++) {
+        const tag = document.createElement('p');
+        tag.classList.add('tag');
+
+        tagMeasures[`${side}Tag`].push(tag);
+        titleMeasures[`${side}Title`].push(document.createTextNode(`${display[i]}: `));
+        textMeasures[`${side}Text`].push(document.createTextNode(`${measuresValue[side][index][i]}`));
+      }
     }
+    fillMeasure(measuresDisplay.left, 'left');
+    fillMeasure(measuresDisplay.right, 'right');
   }
 
   private mouseoverHandler = (e: any) => {
@@ -294,15 +333,52 @@ export default class Visual extends WynVisual {
     }
   }
 
+  private setMeasures(display: any[], format: any[]) {
+    const measures = [];
+    if (this.category.length === 0) {
+      const formatMeasures = [];
+      for(let i = 0; i < display.length; i++) {
+        formatMeasures.push(this.host.formatService.format(format[i], this.plainDataView.data[0][display[i]]));
+      }
+      measures.push(formatMeasures);
+    } else {
+      for (let i = 0; i < this.category.length; i++) {
+        let sumMeasures = new Array(format.length).fill(0);
+        const formatMeasures = [];
+        for (let j = 0; j < display.length; j++) {
+          this.plainDataView.data.forEach((dataPoint: any) => {
+            if (dataPoint[this.categoryDisplay] === this.category[i]) {
+              sumMeasures[j] += Number(dataPoint[display[j]]);
+            }
+          });
+        }
+        for (let j = 0; j < display.length; j++) {
+          formatMeasures.push(this.host.formatService.format(format[j], sumMeasures[j]))
+        }
+        measures.push(formatMeasures);
+      }
+    }
+    return measures;
+  }
+
   private setRenderConfig(options: VisualNS.IVisualUpdateOptions) {
     if (this.plainDataView) {
       this.category = [];
       const kpiS = [];
       const xAxis = [];
       const values = [];
-      const measuresDisplay = [];
-      const measuresFormat = [];
-      const measuresValue = [];
+      const measuresDisplay = {
+        left: [],
+        right: []
+      };
+      const measuresFormat = {
+        left: [],
+        right: []
+      };
+      const measuresValue = {
+        left: [],
+        right: []
+      };
       if (this.plainDataView.profile.category.values[0] !== undefined) {
         this.categoryDisplay = this.plainDataView.profile.category.values[0].display;
         this.category.push(...this.plainDataView.sort[this.categoryDisplay].order);
@@ -332,34 +408,23 @@ export default class Visual extends WynVisual {
           }
         }
       }
-      if (this.plainDataView.profile.measures.values[0] !== undefined) {
-        this.plainDataView.profile.measures.values.forEach((value: any) => {
-          measuresDisplay.push(value.display);
-          measuresFormat.push(value.format);
+
+      if (this.plainDataView.profile.leftMeasures.values[0] !== undefined) {
+        this.plainDataView.profile.leftMeasures.values.forEach((value: any) => {
+          measuresDisplay.left.push(value.display);
+          measuresFormat.left.push(value.format);
         });
-        if (this.category.length === 0) {
-          const formatMeasures = [];
-          formatMeasures.push(this.host.formatService.format(measuresFormat[0], this.plainDataView.data[0][measuresDisplay[0]]));
-          measuresValue.push(formatMeasures);
-        } else {
-          for (let i = 0; i < this.category.length; i++) {
-            let sumMeasures = new Array(measuresFormat.length);
-            const formatMeasures = [];
-            sumMeasures.fill(0);
-            for (let j = 0; j < measuresDisplay.length; j++) {
-              this.plainDataView.data.forEach((dataPoint: any) => {
-                if (dataPoint[this.categoryDisplay] === this.category[i]) {
-                  sumMeasures[j] += Number(dataPoint[measuresDisplay[j]]);
-                }
-              });
-            }
-            for (let j = 0; j < measuresDisplay.length; j++) {
-              formatMeasures.push(this.host.formatService.format(measuresFormat[j], sumMeasures[j]))
-            }
-            measuresValue.push(formatMeasures);
-          }
-        }
+        measuresValue.left = this.setMeasures(measuresDisplay.left, measuresFormat.left);
       }
+
+      if (this.plainDataView.profile.rightMeasures.values[0] !== undefined) {
+        this.plainDataView.profile.rightMeasures.values.forEach((value: any) => {
+          measuresDisplay.right.push(value.display);
+          measuresFormat.right.push(value.format);
+        });
+        measuresValue.right = this.setMeasures(measuresDisplay.right, measuresFormat.right);
+      }
+
       if (this.plainDataView.profile.axis.values[0] !== undefined) {
         this.chartAxisDisplay = this.plainDataView.profile.axis.values[0].display;
         for (let i = 0; i < this.category.length; i++) {
@@ -460,19 +525,30 @@ export default class Visual extends WynVisual {
       const cardBox = document.createElement('div');
       const mainBox = document.createElement('div');
       const measuresBox = document.createElement('div');
+      const leftMeasuresBox = document.createElement('div');
+      const rightMeasuresBox = document.createElement('div');
       const chartBox = document.createElement('div');
       const tagCategory = document.createElement('p');
       const tagKpi = document.createElement('p');
-      const tagMeasures = [];
+      const tagMeasures = {
+        leftTag : [],
+        rightTag : []
+      };
       const textCategory = document.createTextNode(this.renderConfig.category.length === 0 ? '' : this.renderConfig.category[i]);
       const textKpi = document.createTextNode(this.renderConfig === Visual.defaultConfig ? `${Visual.defaultConfig.kpiS[i]}` : `${this.renderConfig.kpiS[i].kpi}`);
-      const titleMeasures = [];
-      const textMeasures = [];
-      this.fillMeasures(tagMeasures, titleMeasures, textMeasures, i);
+      const titleMeasures = {
+        leftTitle : [],
+        rightTitle : []
+      };
+      const textMeasures = {
+        leftText : [],
+        rightText : []
+      };
+      this.fillMeasures(this.renderConfig.measuresDisplay, this.renderConfig.measuresValue, tagMeasures, titleMeasures, textMeasures, i);
       this.setCommonCardStyle(tagCategory, tagKpi, tagMeasures, this.styleConfig.categoryStyle, this.styleConfig.kpiStyle, this.styleConfig.measureStyle);
-      this.setDifferentCardStyle(tagCategory, tagKpi, tagMeasures, mainBox, measuresBox);
       this.synthesisCard(tagCategory, textCategory, tagMeasures, tagKpi, textKpi, titleMeasures, textMeasures,
-        mainBox, measuresBox, chartBox, cardBox, i);
+        mainBox, measuresBox, leftMeasuresBox, rightMeasuresBox, chartBox, cardBox, i);
+      this.setDifferentCardStyle(tagCategory, tagKpi, tagMeasures, mainBox, measuresBox, leftMeasuresBox, rightMeasuresBox);
       this.chartBoxes.push(chartBox);
       cardBox.addEventListener('click', this.cardClickHandler);
       this.cardBoxes.push(cardBox);

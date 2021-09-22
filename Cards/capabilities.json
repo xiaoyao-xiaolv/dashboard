@@ -12,8 +12,13 @@
                 "kind": "grouping"
             },
             {
-                "name": "measures",
-                "displayNameKey": "dataBinding.measures",
+                "name": "leftMeasures",
+                "displayNameKey": "dataBinding.leftMeasures",
+                "kind": "value"
+            },
+            {
+                "name": "rightMeasures",
+                "displayNameKey": "dataBinding.rightMeasures",
                 "kind": "value"
             },
             {
@@ -48,7 +53,8 @@
                                 "axis",
                                 "category",
                                 "kpi",
-                                "measures"
+                                "leftMeasures",
+                                "rightMeasures"
                             ],
                             "required": [
                                 {
@@ -256,6 +262,20 @@
                         "displayNameKey": "options.measureLeftPosition",
                         "min": 0,
                         "defaultValue": 5
+                    },
+                    {
+                        "name": "measureLeftWidth",
+                        "type": "Percentage",
+                        "displayNameKey": "options.measureLeftWidth",
+                        "min": 0,
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "measureRightWidth",
+                        "type": "Percentage",
+                        "displayNameKey": "options.measureRightWidth",
+                        "min": 0,
+                        "defaultValue": 50
                     },
                     {
                         "name": "categoryStyle",
