@@ -68,6 +68,7 @@ export default class Visual extends WynVisual {
   private timeInterval: any;
   private config: any;
   private myTooltip: any;
+  private preview: boolean;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -76,12 +77,14 @@ export default class Visual extends WynVisual {
     this.host = host;
     this.isMock = true;
     this.bindCoords = false;
+    this.preview = false;
     myChart = echarts.init(dom, null, { renderer: 'canvas' });
     // myChart = echarts.init(dom, null ,{ renderer: 'svg'});
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
     this.container.style.transform = 'rotate3d(-70, -1, 0, -45deg)';
-    this.container.firstElementChild.setAttribute('style','height : 0');
+    this.container.firstElementChild.setAttribute('style', 'height : 0');
+    
     this.config = {
       priority: 'top',        // 默认在点上方OR下方（top/bottom）
       partition: 2,         // 左右分割比例
@@ -137,71 +140,67 @@ export default class Visual extends WynVisual {
     ];
   }
   private dispatch = (type, payload) => myChart.dispatchAction({ ...payload, type });
-  public timer = () => {   
-    let index = 0;
-    let dataLength = this.items.length 
-    this.timeInterval = setInterval(() => {
-      const autoStopInfo = {
-        seriesIndex: 0,
-        // dataIndex: index,
-        name: (this.items[index].name).slice(0, this.items[index].name.length -1)
-      };
-      this.dispatch('downplay', autoStopInfo)
-      index = (index + 1) % dataLength
-      const autoInfo = {
-        seriesIndex: 0,
-        // dataIndex: index,
-        name: (this.items[index].name).slice(0, this.items[index].name.length -1)
-        // x: e.value[0],
-        // y: e.value[1],
-      };
-      this.dispatch('highlight', autoInfo)
-      this.dispatch('showTip',autoInfo)
-      if (index > dataLength - 1) {
-        index = 0;
-        // clear setInterval
-        clearInterval(this.timeInterval)
-      }
-    }, Number(this.properties.rotationInterval) *  1000)
-  }
 
-  public clearOperation = () => {
-   this.items.forEach((element, index) => {
-      const selectInfo = {
-        seriesIndex: 0,
-        // dataIndex: index,
-        name: (this.items[index].name).slice(0, this.items[index].name.length -1)
-      };
-      this.dispatch('downplay',selectInfo)
-   });
-    clearInterval(this.timeInterval)
-  }
 
-  public bindEvents = (data) => {
-    let showTip;
-    // start auto
-    if (this.properties.automaticRotation) {
-      this.timer();
+  public autoPlayTimer = () => {
+    let timer;
+    this.timeInterval = [];
+    const timerPlay = () => {
+      let index = 0;
+      let dataLength = this.items.length;
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (timer !==  this.timeInterval[this.timeInterval.length - 1]) {
+          return clearInterval(timer);
+        }
+        const autoStopInfo = {
+          seriesIndex: 0,
+          // dataIndex: index,
+          name: (this.items[index].name).slice(0, this.items[index].name.length - 1)
+        };
+        this.dispatch('downplay', autoStopInfo)
+        index++;
+        if (index >= dataLength) {
+          index = 0;
+          // this.timeInterval.map(_timer => clearInterval(_timer))
+          clearInterval(timer)
+        }
+        const autoInfo = {
+          seriesIndex: 0,
+          // dataIndex: index,
+          name: (this.items[index].name).slice(0, this.items[index].name.length - 1)
+        };
+        this.dispatch('highlight', autoInfo)
+        this.dispatch('showTip', autoInfo)
+      }, (Number(this.properties.rotationInterval) * 1000));
+      this.timeInterval.push(timer);
     }
-    
-    this.container.addEventListener('mouseleave', (e: any) => {
-      // if (this.properties.automaticRotation && this.preview && !dataIndex)
-      // this.timer()
-    })
-    this.container.addEventListener('mouseenter', (e: any) => {
-      this.clearOperation()
-      // if (isTooltipModelShown) return;
-      // this.hideTooltip();
+
+    myChart.on('mousemove', (e) => {
+        clearInterval(timer);
+        myChart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
     })
 
-    myChart.on('mouseout', (params) => {
-      const selectInfo = {
-        seriesIndex: 0,
-        name: params.name,
-      };
-      this.dispatch('downplay',selectInfo)
+    timerPlay();
+    this.container.addEventListener('mouseenter', (e: any) => {
+      clearInterval(timer)
+      this.items.forEach((element, index) => {
+        const selectInfo = {
+          seriesIndex: 0,
+          // dataIndex: index,
+          name: (element.name).slice(0, this.items[index].name.length -1)
+        };
+        this.dispatch('downplay',selectInfo)
+      });
     })
-   
+    this.container.addEventListener('mouseleave', (e: any) => {
+      if (timer) clearInterval(timer);
+      timerPlay();
+    })
   }
 
   private getCoords = (keyWord: string) => {
@@ -229,6 +228,7 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     this.locationArr = [];
+    this.preview = options.isViewer
     this.isMock = !options.dataViews.length;
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
@@ -251,14 +251,14 @@ export default class Visual extends WynVisual {
     this.items = renderData;
     echarts.registerMap('customMap', this.properties.customMap && this.properties.MapJson ? JSON.parse(this.properties.MapJson) : {})
     this.render(renderData);
-    this.bindEvents(renderData);
+    
   }
 
-  private render(data) {
+  private render(_data) {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     let myTooltip = this.myTooltip;
     myChart.clear();
-    
+  
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; `;
@@ -266,6 +266,7 @@ export default class Visual extends WynVisual {
     //  background: url(${options.mapShadowImage})
     // this.container.style.background = `url(${options.mapShadowImage}) center center no-repeat`;
     // this.container.style.backgroundSize = '100% 100%'
+    options.automaticRotation && this.preview && this.autoPlayTimer();
     myTooltip.config['text'] = {
       time: 0.3,
       font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
@@ -403,7 +404,7 @@ export default class Visual extends WynVisual {
     }
     
     const lineMaxHeight = (type?: string) => {
-      const maxValue = Math.max(...data.map(item => item.datas))
+      const maxValue = Math.max(...this.items.map(item => item.datas))
       return type ? 14/maxValue : 10/maxValue
     }
 
@@ -470,7 +471,7 @@ export default class Visual extends WynVisual {
     }
 
     const lineData = (type?: string) => {
-      return data.map((item) => {
+      return this.items.map((item) => {
         return {
           ...item,
           coords: [item.value, [item.value[0], item.value[1] + item.datas * lineMaxHeight(type)]]
@@ -479,13 +480,13 @@ export default class Visual extends WynVisual {
     }
 
     const scatterData = () => {
-      return data.map((item) => {
+      return this.items.map((item) => {
         return [item.value[0], item.value[1] + item.datas * lineMaxHeight(), item.datas]
       })
     }
     // 柱状体的底部
     const scatterData2 = () => {
-        return data.map((item) => {
+        return this.items.map((item) => {
           return {
             name: item.name,
             value: item.value,
@@ -719,7 +720,7 @@ export default class Visual extends WynVisual {
         },
       },
       silent: true,
-      data: isSymBolChart ? (options.mapBarBottomCircle ? data : []) : [],
+      data: isSymBolChart ? (options.mapBarBottomCircle ? this.items : []) : [],
     },
     {
       type: 'scatter',
@@ -739,7 +740,7 @@ export default class Visual extends WynVisual {
       label: labelOptions(),
       z: 99,
       zlevel: 11,
-      data: isSymBolChart ?  data : [],
+      data: isSymBolChart ?  this.items : [],
     }];
     
     const getSeries = () => {
@@ -764,16 +765,16 @@ export default class Visual extends WynVisual {
         // padding: [15, 15],
         show: options.showTooltip,
         backgroundColor: 'transparent',
-        position(pos) {
+        position(pos) { 
           return myTooltip.getPosOrSize('pos', pos);
         },
         formatter: (params) => {
           // return params.name
           const _toolTip = this.items.find((_item) => _item.name.slice(0, _item.name.length -1) === params.name);
           if (!this.isMock && _toolTip) {
-            let _addToolTipText = `${this.locationName}: ${_toolTip.name} \n ${this.valuesName}: ${_toolTip.datas}`
+            let _addToolTipText = `${this.locationName}: ${_toolTip.name} \n${this.valuesName}: ${_toolTip.datas}`
             _toolTip.toolTip.map((_text: any, index: number) => {
-              _addToolTipText += `\n ${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`
+              _addToolTipText += `\n${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`
             })
             return myTooltip.getTooltipDom(_addToolTipText)
           }
@@ -888,7 +889,7 @@ export default class Visual extends WynVisual {
         z: 99,
         zlevel: 12,
         silent: true,
-        data: data,
+        data: this.items,
        },
         ...getSeries(),
       ],
@@ -953,6 +954,10 @@ export default class Visual extends WynVisual {
       hiddenStates = hiddenStates.concat(['mapName'])
     } else {
       hiddenStates = hiddenStates.concat(['MapJson'])
+    }
+
+    if (!options.properties.showTooltip) {
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipTextStyle'])
     }
     return hiddenStates;
   }
