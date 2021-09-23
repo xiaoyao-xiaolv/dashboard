@@ -32,6 +32,11 @@
                 "name": "latitude",
                 "displayNameKey": "纬度",
                 "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
             }
         ],
         "dataViewMappings": [
@@ -387,7 +392,7 @@
                 "displayName": "数据标签",
                 "properties": [
                     {
-                        "name": "showTooltip",
+                        "name": "showLabel",
                         "type": "Boolean",
                         "displayName": "是否显示",
                         "defaultValue": false
@@ -421,7 +426,7 @@
                         "defaultValue": "color"
                     },
                     {
-                        "name": "tooltipBackgroundColor",
+                        "name": "labelBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",
                         "defaultValue": "rgba(66, 125, 249, 0.3)"
@@ -438,7 +443,7 @@
                         "defaultValue": 55
                     },
                     {
-                        "name": "tooltipBorderColor",
+                        "name": "labelBorderColor",
                         "type": "Color",
                         "displayName": "边框颜色",
                         "defaultValue": "rgba(115, 216, 255, 0.88)"
@@ -457,7 +462,7 @@
                     },
                     {
                         "displayNameKey": "边框内边距",
-                        "name": "tooltipPadding",
+                        "name": "labelPadding",
                         "type": "Position",
                         "defaultValue": {
                             "top": 5,
@@ -467,13 +472,88 @@
                         }
                     },
                     {
-                        "name": "tooltipTextStyle",
+                        "name": "TextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
                             "fontSize": "15px"
                         }
+                    }
+                ]
+            },
+            {
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "showTooltip",
+                        "type": "Boolean",
+                        "displayName": "显示提示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "tooltipBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "displayNameKey": "宽度",
+                        "name": "tooltipWidth",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 200
+                    },
+                    {
+                        "displayNameKey": "高度",
+                        "name": "tooltipHeight",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 80
+                    },
+                    {
+                        "name": "tooltipBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "tooltipPadding",
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 10,
+                            "bottom": 10,
+                            "left": 10,
+                            "right": 10
+                        }
+                    },
+                    {
+                        "name": "tooltipTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "轮播设置",
+                "properties": [
+                    {
+                    "name": "automaticRotation",
+                    "type": "Boolean",
+                    "displayName": "自动轮播",
+                    "defaultValue": false
+                    },
+                    {
+                        "name": "rotationInterval",
+                        "type": "Integer",
+                        "displayName": "轮播间隔",
+                        "defaultValue": 3,
+                        "min": 1
                     }
                 ]
             },
@@ -551,24 +631,6 @@
                                 "fontSize": "1.5X",
                                 "color": "#ffffff"
                             }
-                    }
-                ]
-            },
-            {
-                "displayName": "轮播设置",
-                "properties": [
-                    {
-                    "name": "automaticRotation",
-                    "type": "Boolean",
-                    "displayName": "自动轮播",
-                    "defaultValue": false
-                    },
-                    {
-                        "name": "rotationInterval",
-                        "type": "Integer",
-                        "displayName": "轮播间隔",
-                        "defaultValue": 3,
-                        "min": 1
                     }
                 ]
             },

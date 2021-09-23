@@ -1,7 +1,7 @@
 import '../style/visual.less';
 // @ts-ignore
 import * as echarts from 'echarts';
-import geoCoordsMap from './geoCoordMap.json';
+import { myTooltipC } from './myTooltip.js';
 import "echarts/map/js/china.js";
 import "echarts/map/js/world.js";
 import "echarts/map/js/province/anhui.js";
@@ -55,6 +55,7 @@ export default class Visual extends WynVisual {
   private bindCoords: boolean;
   private valuesName: string;
   private locationName: string;
+  private toolTipName: string [];
   private longitudeName: string;
   private latitudeName: string;
   private properties: any;
@@ -65,6 +66,8 @@ export default class Visual extends WynVisual {
   private displayUnit: any;
   private items: any;
   private timeInterval: any;
+  private config: any;
+  private myTooltip: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -79,6 +82,21 @@ export default class Visual extends WynVisual {
     this.container.appendChild(this.shadowDiv);
     this.container.style.transform = 'rotate3d(-70, -1, 0, -45deg)';
     this.container.firstElementChild.setAttribute('style','height : 0');
+    this.config = {
+      priority: 'top',        // 默认在点上方OR下方（top/bottom）
+      partition: 2,         // 左右分割比例
+      lineColor: 'rgba(253, 129, 91, 0.8)',      // 引导线颜色
+      offset: [5, 5],
+      L1: {
+        time: 0.2,          // L1动画时长(单位s)
+        long: 40            // L1长度
+      },
+      L2: {
+        time: 0.2,
+        long: 40
+      }
+    }
+    this.myTooltip = new myTooltipC(dom, this.config);
     rawData = [
       {
         name: '北京',
@@ -156,12 +174,10 @@ export default class Visual extends WynVisual {
       };
       this.dispatch('downplay',selectInfo)
    });
-    console.log(this.timeInterval, '====this.timeInterval')
     clearInterval(this.timeInterval)
   }
 
   public bindEvents = (data) => {
-    console.log('开始监听-----------------')
     let showTip;
     // start auto
     if (this.properties.automaticRotation) {
@@ -200,11 +216,13 @@ export default class Visual extends WynVisual {
   private prepareData(data: any) {
     return data.map((item, index) => {
       let geoCoord = this.bindCoords ? [item[this.longitudeName], item[this.latitudeName]] : this.getCoords(item[this.locationName]);
+      const toolTip = this.toolTipName.map((_item: string) => { return { [_item]: item[_item]}});
       return {
           name: item[this.locationName],
           value: geoCoord,
           datas: item[this.valuesName],
-          img: image.water[index % 3]
+          img: image.water[index % 3],
+          toolTip: toolTip,
       }
     })
   }
@@ -217,6 +235,7 @@ export default class Visual extends WynVisual {
       let bindData = options.dataViews[0].plain.data;
       this.valuesName = profile.values.values[0].display;
       this.locationName = profile.location.values[0].display;
+      this.toolTipName = profile.tooltipFields.values.map((_item) => _item.display);
       this.bindCoords = !!(profile.longitude.values.length && profile.latitude.values.length);
       if(this.bindCoords) {
         this.longitudeName = profile.longitude.values[0].display;
@@ -237,7 +256,9 @@ export default class Visual extends WynVisual {
 
   private render(data) {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
-    myChart.clear(); 
+    let myTooltip = this.myTooltip;
+    myChart.clear();
+    
     this.shadowDiv.style.cssText = '';
     let options = this.properties;
     this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; `;
@@ -245,7 +266,22 @@ export default class Visual extends WynVisual {
     //  background: url(${options.mapShadowImage})
     // this.container.style.background = `url(${options.mapShadowImage}) center center no-repeat`;
     // this.container.style.backgroundSize = '100% 100%'
-    
+    myTooltip.config['text'] = {
+      time: 0.3,
+      font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
+      color: options.tooltipTextStyle.color,
+      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left],
+      width: options.tooltipWidth,
+      height: options.tooltipHeight,
+      lineHeight: 24,
+      backgroundColor: options.tooltipBackgroundColor,
+      borderColor: options.tooltipBorderColor,
+      borderWidth: 1,
+      angle: {
+        width: 2,
+        long: 15
+      }
+    }
     const formatList = options.mapCollection;
     const isSymBolChart = options.symbolStyle === 'pyramid' || options.symbolStyle === 'water';
     const formatColor = (defaultColor, value) => {
@@ -283,7 +319,7 @@ export default class Visual extends WynVisual {
         _richStyle[`${_item.minFormatValue}To${_item.maxFormatValue}`] = {
           padding: [5, 0],
           color: _item.formatColor,
-          fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
+          fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2))
         }
       })
       return _richStyle;
@@ -292,20 +328,20 @@ export default class Visual extends WynVisual {
     const labelOptions = () => {
       return {
         normal: {
-          show: options.showTooltip,
+          show: options.showLabel,
           position: options.symbolStyle === 'water'  || options.symbolStyle === 'pyramid' ? [Number(Math.floor(options.mapSymbolWidth / 2)), -options.tooltipDistance] : 'end',
           borderWidth: 1,
           align: 'center',
           verticalAlign: 'middle',
           borderType: 'solid',
-          borderColor: options.tooltipBackgroundType === 'color' ? options.tooltipBorderColor : options.tooltipBgBorderColor,
+          borderColor: options.tooltipBackgroundType === 'color' ? options.labelBorderColor : options.tooltipBgBorderColor,
           borderRadius: options.tooltipBorderRadius,
-          padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
-          fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2)),
-          fontFamily: options.tooltipTextStyle.fontFamily,
-          fontStyle: options.tooltipTextStyle.fontStyle,
-          fontWeight: options.tooltipTextStyle.fontWeight,
-          backgroundColor: options.tooltipBackgroundType === 'color' ? options.tooltipBackgroundColor : { image: options.tooltipBackgroundImage },
+          padding: [options.labelPadding.top, options.labelPadding.right, options.labelPadding.bottom, options.labelPadding.left ],
+          fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2)),
+          fontFamily: options.labelTextStyle.fontFamily,
+          fontStyle: options.labelTextStyle.fontStyle,
+          fontWeight: options.labelTextStyle.fontWeight,
+          backgroundColor: options.tooltipBackgroundType === 'color' ? options.labelBackgroundColor : { image: options.tooltipBackgroundImage },
           formatter: (params: any) => {
             let _text = [];
             let value = params.data.datas;
@@ -357,8 +393,8 @@ export default class Visual extends WynVisual {
           rich:{
             name:{
               padding: [5, 0],
-              color: options.tooltipTextStyle.color,
-              fontSize: parseInt(options.tooltipTextStyle.fontSize.slice(0, -2))
+              color: options.labelTextStyle.color,
+              fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2))
             },
             ...formatLabelColor(),
           }
@@ -725,13 +761,21 @@ export default class Visual extends WynVisual {
     let mapOption = {
       tooltip: {
         trigger: 'item',
-        padding: [15, 15],
+        // padding: [15, 15],
+        show: options.showTooltip,
+        backgroundColor: 'transparent',
+        position(pos) {
+          return myTooltip.getPosOrSize('pos', pos);
+        },
         formatter: (params) => {
           // return params.name
           const _toolTip = this.items.find((_item) => _item.name.slice(0, _item.name.length -1) === params.name);
-          
           if (!this.isMock && _toolTip) {
-            return `${this.locationName}: ${_toolTip.name} <br /> ${this.valuesName}: ${_toolTip.datas}`;
+            let _addToolTipText = `${this.locationName}: ${_toolTip.name} \n ${this.valuesName}: ${_toolTip.datas}`
+            _toolTip.toolTip.map((_text: any, index: number) => {
+              _addToolTipText += `\n ${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`
+            })
+            return myTooltip.getTooltipDom(_addToolTipText)
           }
         },
       },
@@ -866,8 +910,8 @@ export default class Visual extends WynVisual {
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     let properties = options.properties;
     let hiddenStates = [];
-    if(!properties.showTooltip) {
-      [].push.apply(hiddenStates, ['tooltipBackgroundColor', 'tooltipDistance', 'tooltipBorderColor', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipPadding', 'tooltipTextStyle', 'showLocation', 'showValue', 'tooltipBackgroundType', 'tooltipBackgroundImage'])
+    if(!properties.showLabel) {
+      [].push.apply(hiddenStates, ['labelBackgroundColor', 'tooltipDistance', 'labelBorderColor', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'labelPadding', 'labelTextStyle', 'showLocation', 'showValue', 'tooltipBackgroundType', 'tooltipBackgroundImage'])
     }
     
     if (properties.symbolStyle == 'pyramid' || properties.symbolStyle == 'water') {
@@ -884,7 +928,7 @@ export default class Visual extends WynVisual {
     if (properties.tooltipBackgroundType == 'color') {
       hiddenStates = hiddenStates.concat(['tooltipBackgroundImage', 'tooltipBgBorderColor'])
     } else {
-      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipBgBorderColor'])
+      hiddenStates = hiddenStates.concat(['labelBackgroundColor', 'tooltipBgBorderColor'])
     }
 
     if (properties.mapBarAnimateSymbolType == 'default') {

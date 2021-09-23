@@ -23,10 +23,15 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(ts|js)$/,
+        test: /\.(ts)$/,
         exclude: /node_modules/,
         use: ['babel-loader', 'awesome-typescript-loader?silent=true'],
       },
+      {
+        test: /\.(js)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+    },
       {
         test: /\.less|.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
@@ -43,7 +48,7 @@ const config = {
     unknownContextCritical: false,
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json', '.css', '.less'],
+    extensions: ['.ts', '.tsx', '.jsx', '.js', '.json', '.css', '.less'],
   },
   mode: 'development',
 };
