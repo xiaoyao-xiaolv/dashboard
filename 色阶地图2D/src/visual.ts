@@ -1,7 +1,7 @@
 import '../style/visual.less';
 import _ = require('lodash');
 import * as echarts from 'echarts';
-import china from "echarts/map/json/china.json";
+import china from "./china.json";
 import namedata from './mapname.json';
 import { myTooltipC } from './myTooltip.js';
 import $ from 'jquery';
