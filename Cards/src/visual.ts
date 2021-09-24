@@ -17,6 +17,8 @@ interface cardsRenderConfig {
   xAxis: string[][];
   values: number[][];
   isMock: boolean;
+  actualValues: number[];
+  contrastValues: number[];
 }
 
 enum CardLayout {
@@ -34,12 +36,14 @@ export default class Visual extends WynVisual {
       right: ['Price']
     },
     measuresValue: {
-      left:  [[89], [89], [89], [89]],
+      left: [[89], [89], [89], [89]],
       right: [[43], [43], [43], [43]]
     },
     xAxis: [["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"], ["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"], ["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"], ["XXS", "XS", 'S', 'M', 'L', 'XL', 'XXL', "XXL"]],
     values: [[10, 11, 8, 9, 5, 7, 9, 6], [10, 11, 8, 9, 5, 7, 9, 6], [10, 11, 8, 9, 5, 7, 9, 6], [10, 11, 8, 9, 5, 7, 9, 6]],
-    isMock: true
+    isMock: true,
+    actualValues: [80, 80, 80, 80],
+    contrastValues: [100, 100, 100, 100]
   }
 
   private renderConfig: cardsRenderConfig;
@@ -50,6 +54,7 @@ export default class Visual extends WynVisual {
   private host: VisualNS.VisualHost;
   private category: string[];
   private chartBoxes: HTMLDivElement[];
+  private progressBoxes: HTMLDivElement[];
   private cardBoxes: HTMLDivElement[];
   private chartValueFormat: string;
   private chartValueDisplay: string;
@@ -59,6 +64,7 @@ export default class Visual extends WynVisual {
   private kpiDisplay: string;
   private cardWidth: number;
   private ps: PerfectScrollbar;
+  private progressDataView: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -92,7 +98,7 @@ export default class Visual extends WynVisual {
   }
 
   private setCommonCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: { rightTag: any[]; leftTag: any[] },
-    categoryStyle: any, kpiStyle: any, measureStyle: any) {
+                             categoryStyle: any, kpiStyle: any, measureStyle: any) {
     this.setAttribute(tagCategory, categoryStyle);
     this.setAttribute(tagKpi, kpiStyle);
     tagMeasures.leftTag.forEach(tagMeasure => this.setAttribute(tagMeasure, measureStyle));
@@ -100,13 +106,15 @@ export default class Visual extends WynVisual {
   }
 
   private setDifferentCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: { rightTag: any[]; leftTag: any[] },
-    mainBox: HTMLDivElement, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement) {
+                                mainBox: HTMLDivElement, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement) {
     measuresBox.style.marginTop = `${this.styleConfig.measureTopPosition}px`;
     measuresBox.style.marginLeft = `${this.styleConfig.measureLeftPosition}px`;
     measuresBox.style.display = 'flex';
     measuresBox.style.width = '100%';
     leftMeasuresBox.style.flex = `0 0 ${this.styleConfig.measureLeftWidth}%`;
-    rightMeasuresBox.style.flex = `0 0 ${this.styleConfig.measureRightWidth}%`;
+    leftMeasuresBox.style.textAlign = this.styleConfig.measureLeftAlign;
+    rightMeasuresBox.style.width = '100%';
+    rightMeasuresBox.style.textAlign = this.styleConfig.measureRightAlign;
     tagMeasures.leftTag.forEach(tagMeasure => {
       tagMeasure.style.display = 'block';
     });
@@ -168,7 +176,7 @@ export default class Visual extends WynVisual {
   }
 
   private getPalette = (category: string[], a: number) => {
-    const { cardsColor } = this.styleConfig;
+    const {cardsColor} = this.styleConfig;
     const hsl = [];
     this.palettes = [];
     for (let i = 0; i < category.length; i++) {
@@ -178,7 +186,7 @@ export default class Visual extends WynVisual {
   }
 
   private getBackgroundColor = (index: number) => {
-    const { cardsColor, maintainColorAssignment, cardTransparency } = this.styleConfig;
+    const {cardsColor, maintainColorAssignment, cardTransparency} = this.styleConfig;
     if (JSON.stringify(this.renderConfig) === JSON.stringify(Visual.defaultConfig) || this.palettes === undefined) {
       return this.colorRgba(cardsColor[index], cardTransparency * (0.01));
     } else if (maintainColorAssignment) {
@@ -207,7 +215,7 @@ export default class Visual extends WynVisual {
   private synthesisCard(tagCategory: HTMLParagraphElement, textCategory: Text, tagMeasures: { rightTag: any[]; leftTag: any[] },
     tagKpi: HTMLParagraphElement, textKpi: Text, titleMeasures: { rightTitle: any[]; leftTitle: any[] }, textMeasures: { rightText: any[]; leftText: any[] },
     mainBox: HTMLDivElement, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement,
-    chartBox: HTMLDivElement, cardBox: HTMLDivElement, paletteNumber: number) {
+    chartBox: HTMLDivElement, progressBox: HTMLDivElement, cardBox: HTMLDivElement, paletteNumber: number) {
     tagCategory.appendChild(textCategory);
     tagKpi.appendChild(textKpi);
     mainBox.appendChild(tagCategory);
@@ -231,6 +239,14 @@ export default class Visual extends WynVisual {
     chartBox.style.height = `calc((100% - (${this.styleConfig.cardPadding.top + this.styleConfig.cardPadding.bottom}px)) * ${this.styleConfig.chartHeight / 100})`;
     chartBox.style.width = `calc(100% - (${this.styleConfig.cardPadding.left + this.styleConfig.cardPadding.right}px)`;
     chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom}px`;
+    if(this.renderConfig.actualValues.length && this.renderConfig.contrastValues.length) {
+      cardBox.appendChild(progressBox);
+      progressBox.style.position = 'absolute';
+      progressBox.style.bottom = '0';
+      progressBox.style.left = '0';
+      progressBox.style.width = '100%';
+      progressBox.style.height = '100%';
+    }
   }
 
   private fillMeasures(measuresDisplay: { left: string[]; right: string[] }, measuresValue: { left: number[][], right: number[][] }, tagMeasures: { rightTag: any[]; leftTag: any[] },
@@ -281,6 +297,67 @@ export default class Visual extends WynVisual {
     }
     if (this.selectionManager.isEmpty()) {
       this.host.toolTipService.hide();
+    }
+  }
+
+  private renderProgress() {
+    let that = this;
+    for (let i = 0; i < this.progressBoxes.length; i++) {
+      const progressInstance = eCharts.init(that.progressBoxes[i]);
+      progressInstance.resize({
+        width: getComputedStyle(that.progressBoxes[i]).width,
+        height: getComputedStyle(that.progressBoxes[i]).height
+      });
+      const options = {
+        grid:{
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: `${that.styleConfig.progressBarWidth}px`
+        },
+        xAxis: {
+          show: false,
+          max: that.renderConfig.contrastValues[i],
+        },
+        yAxis: {
+          type: 'category',
+          axisLine: {
+            show: false,
+          }
+        },
+        series: [
+          {
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+              color: that.styleConfig.progressBarBackground,
+              barBorderRadius: 30
+            },
+            label:{
+              show: that.styleConfig.showProgressLabel,
+              position:'right',
+              formatter: function () {
+                return `${((that.renderConfig.actualValues[i]/that.renderConfig.contrastValues[i]) * 100).toFixed(2)}%`;
+              },
+              textStyle: {
+                ...that.styleConfig.progressTextStyle,
+                fontSize: parseFloat(that.styleConfig.progressTextStyle.fontSize),
+              }
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: 10,
+                color: that.styleConfig.progressBarColor,
+              }
+            },
+            barWidth: that.styleConfig.progressBarWidth,
+            data: [that.renderConfig.actualValues[i]],
+          }
+        ]
+      };
+
+      // @ts-ignore
+      progressInstance.setOption(options);
     }
   }
 
@@ -379,11 +456,15 @@ export default class Visual extends WynVisual {
         left: [],
         right: []
       };
+      const actualValues = [];
+      const contrastValues = [];
+
       if (this.plainDataView.profile.category.values[0] !== undefined) {
         this.categoryDisplay = this.plainDataView.profile.category.values[0].display;
         this.category.push(...this.plainDataView.sort[this.categoryDisplay].order);
         this.getPalette(this.category, this.styleConfig.cardTransparency * 0.01);
       }
+
       if (this.plainDataView.profile.kpi.values[0] !== undefined) {
         this.kpiDisplay = this.plainDataView.profile.kpi.values[0].display;
         const kpiFormat = this.plainDataView.profile.kpi.values[0].format;
@@ -433,6 +514,7 @@ export default class Visual extends WynVisual {
           xAxis.push(categoryAxis);
         }
       }
+
       if (this.plainDataView.profile.value.values[0] !== undefined && xAxis.length !== 0) {
         this.chartValueDisplay = this.plainDataView.profile.value.values[0].display;
         this.chartValueFormat = this.plainDataView.profile.value.values[0].format
@@ -447,8 +529,20 @@ export default class Visual extends WynVisual {
           values.push(categoryValue);
         }
       }
+
       const category = this.category;
       this.dealNullArray(category);
+
+      if (this.progressDataView) {
+        let actualValueDisplay = this.progressDataView.profile.actualValue.values[0].display;
+        let contrastValueDisplay = this.progressDataView.profile.contrastValue.values[0].display;
+        for (let i = 0; i < this.category.length; i++) {
+          let index = this.progressDataView.data.findIndex(dataPoint => dataPoint[this.categoryDisplay] === this.category[i]);
+          actualValues[i] = this.progressDataView.data[index][actualValueDisplay];
+          contrastValues[i] = this.progressDataView.data[index][contrastValueDisplay];
+        }
+      }
+
       this.renderConfig = {
         category,
         kpiS,
@@ -457,6 +551,8 @@ export default class Visual extends WynVisual {
         xAxis,
         values,
         isMock: false,
+        actualValues,
+        contrastValues
       };
     } else if (!this.plainDataView) {
       this.renderConfig = Visual.defaultConfig;
@@ -518,6 +614,7 @@ export default class Visual extends WynVisual {
 
   private createCards() {
     this.chartBoxes = [];
+    this.progressBoxes = [];
     this.cardBoxes = [];
     this.cardWidth = parseFloat(getComputedStyle(this.dom).width) / this.styleConfig.cardsInALine - this.styleConfig.cardMargin.left - this.styleConfig.cardMargin.right;
     const length = this.renderConfig.category.length === 0 ? 1 : this.renderConfig.category.length;
@@ -528,6 +625,7 @@ export default class Visual extends WynVisual {
       const leftMeasuresBox = document.createElement('div');
       const rightMeasuresBox = document.createElement('div');
       const chartBox = document.createElement('div');
+      const progressBox = document.createElement('div');
       const tagCategory = document.createElement('p');
       const tagKpi = document.createElement('p');
       const tagMeasures = {
@@ -547,9 +645,10 @@ export default class Visual extends WynVisual {
       this.fillMeasures(this.renderConfig.measuresDisplay, this.renderConfig.measuresValue, tagMeasures, titleMeasures, textMeasures, i);
       this.setCommonCardStyle(tagCategory, tagKpi, tagMeasures, this.styleConfig.categoryStyle, this.styleConfig.kpiStyle, this.styleConfig.measureStyle);
       this.synthesisCard(tagCategory, textCategory, tagMeasures, tagKpi, textKpi, titleMeasures, textMeasures,
-        mainBox, measuresBox, leftMeasuresBox, rightMeasuresBox, chartBox, cardBox, i);
+        mainBox, measuresBox, leftMeasuresBox, rightMeasuresBox, chartBox, progressBox, cardBox, i);
       this.setDifferentCardStyle(tagCategory, tagKpi, tagMeasures, mainBox, measuresBox, leftMeasuresBox, rightMeasuresBox);
       this.chartBoxes.push(chartBox);
+      this.progressBoxes.push(progressBox);
       cardBox.addEventListener('click', this.cardClickHandler);
       this.cardBoxes.push(cardBox);
     }
@@ -571,11 +670,13 @@ export default class Visual extends WynVisual {
     this.createCards();
     this.ps.update();
     this.renderChart();
+    this.renderProgress();
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     this.styleConfig = options.properties;
     this.plainDataView = options.dataViews[0] && options.dataViews[0].plain;
+    this.progressDataView = options.dataViews[1] && options.dataViews[1].plain;
     this.setRenderConfig(options);
     this.renderCards();
   }

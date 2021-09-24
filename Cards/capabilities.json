@@ -25,7 +25,8 @@
                 "kind": "collection",
                 "displayNameKey": "dataBinding.Layers",
                 "groups": [
-                    "chart"
+                    "chart",
+                    "progress"
                 ]
             }
         ],
@@ -105,6 +106,65 @@
                             }
                         ],
                         "defaultValue": "line"
+                    }
+                ]
+            },
+            {
+                "name": "progress",
+                "displayNameKey": "dataBinding.progress",
+                "dataRoles": [
+                    {
+                        "name": "actualValue",
+                        "displayNameKey": "dataBinding.actualValue",
+                        "kind": "value"
+                    },
+                    {
+                        "name": "contrastValue",
+                        "displayNameKey": "dataBinding.contrastValue",
+                        "kind": "value"
+                    }
+                ],
+                "dataViewMappings": [
+                    {
+                        "plain": {
+                            "dataRoles": [
+                                "actualValue",
+                                "contrastValue",
+                                "category",
+                                "kpi",
+                                "leftMeasures",
+                                "rightMeasures"
+                            ],
+                            "required": [
+                                {
+                                    "kpi": {
+                                        "min": 1
+                                    },
+                                    "actualValue": {
+                                        "min": 1
+                                    },
+                                    "contrastValue": {
+                                        "min": 1
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "conditions": [
+                    {
+                        "actualValue": {
+                            "max": 1
+                        },
+                        "contrastValue": {
+                            "max": 1
+                        },
+                        "category": {
+                            "max": 1
+                        },
+                        "kpi": {
+                            "max": 1
+                        }
                     }
                 ]
             }
@@ -271,11 +331,44 @@
                         "defaultValue": 50
                     },
                     {
-                        "name": "measureRightWidth",
-                        "type": "Percentage",
-                        "displayNameKey": "options.measureRightWidth",
-                        "min": 0,
-                        "defaultValue": 50
+                        "name": "measureLeftAlign",
+                        "type": "Enum",
+                        "displayNameKey": "options.measureLeftAlign",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "options.left"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "options.center"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "options.right"
+                            }
+                        ],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "measureRightAlign",
+                        "type": "Enum",
+                        "displayNameKey": "options.measureRightAlign",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "options.left"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "options.center"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "options.right"
+                            }
+                        ],
+                        "defaultValue": "left"
                     },
                     {
                         "name": "categoryStyle",
@@ -313,6 +406,46 @@
                         "type": "Percentage",
                         "displayNameKey": "options.chartHeight",
                         "defaultValue": 30
+                    }
+                ]
+            },
+            {
+                "displayNameKey": "options.progressBarStyle",
+                "properties": [
+                    {
+                        "name": "progressBarWidth",
+                        "type": "Integer",
+                        "displayNameKey": "options.progressBarWidth",
+                        "defaultValue": 15,
+                        "min": 0
+                    },
+                    {
+                        "name": "progressBarColor",
+                        "type": "Color",
+                        "displayNameKey": "options.progressBarColor",
+                        "defaultValue": "#1ae636"
+                    },
+                    {
+                        "name": "progressBarBackground",
+                        "type": "Color",
+                        "displayNameKey": "options.progressBarBackground",
+                        "defaultValue": "rgba(255, 255, 255, 0.5)"
+                    },
+                    {
+                        "name": "showProgressLabel",
+                        "type": "Boolean",
+                        "displayNameKey": "options.showProgressLabel",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "progressTextStyle",
+                        "type": "TextStyle",
+                        "displayNameKey": "options.progressTextStyle",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.0x",
+                            "color": "#333333"
+                        }
                     }
                 ]
             },
