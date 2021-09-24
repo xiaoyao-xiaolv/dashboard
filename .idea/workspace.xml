@@ -16,9 +16,8 @@
       <change beforePath="$PROJECT_DIR$/Cards/i18nResources/en-US.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/i18nResources/en-US.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cards/i18nResources/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/i18nResources/zh-CN.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cards/i18nResources/zh-TW.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/i18nResources/zh-TW.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cards/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cards/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,19 +68,19 @@
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\pointMap2.0\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\3DMap\src" />
-      <recent name="D:\Wyn plugins code\dashboard\pointMap2.0\src" />
-      <recent name="D:\Wyn plugins code\dashboard\timeStatusBar\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\天气预报\src" />
-      <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\Cards" />
       <recent name="D:\Wyn plugins code\dashboard" />
       <recent name="D:\Wyn plugins code\dashboard\doubleColumnChart\assets" />
       <recent name="D:\Wyn plugins code\dashboard\pointMap2.0\assets" />
       <recent name="D:\Wyn plugins code\dashboard\carouselPicture\assets" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\3DMap\src" />
+      <recent name="D:\Wyn plugins code\dashboard\pointMap2.0\src" />
+      <recent name="D:\Wyn plugins code\dashboard\timeStatusBar\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\天气预报\src" />
+      <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -152,7 +151,9 @@
       <workItem from="1631667534058" duration="599000" />
       <workItem from="1631672270485" duration="16169000" />
       <workItem from="1631755550913" duration="3055000" />
-      <workItem from="1631840027376" duration="37768000" />
+      <workItem from="1631840027376" duration="39686000" />
+      <workItem from="1632275327814" duration="11205000" />
+      <workItem from="1632391691984" duration="15703000" />
     </task>
     <servers />
   </component>
@@ -222,51 +223,51 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628490376333" />
-    <state x="-219" y="-951" width="1951" height="1040" key="DiffContextDialog" timestamp="1631956984555">
-      <screen x="5" y="-1080" width="1920" height="1040" />
+    <state x="-13" y="0" width="1280" height="680" key="DiffContextDialog" timestamp="1632366978130">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="92" y="-988" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1623910224159" />
     <state x="61" y="60" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602467853" />
-    <state x="-13" y="0" width="1280" height="680" key="DiffContextDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631929039458" />
-    <state x="-219" y="-951" width="1951" height="1040" key="DiffContextDialog/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1631956984555" />
+    <state x="-13" y="0" width="1280" height="680" key="DiffContextDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632366978130" />
+    <state x="29" y="-1011" width="1951" height="1036" key="DiffContextDialog/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1631958997255" />
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1631697892005">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624420536733" />
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631697892005" />
-    <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1627009936526">
+    <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1632383358076">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1259" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1623922571332" />
-    <state width="1259" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1627009936526" />
-    <state width="1259" height="162" key="GridCell.Tab.0.center" timestamp="1627009936526">
+    <state width="1259" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
+    <state width="1259" height="162" key="GridCell.Tab.0.center" timestamp="1632383358076">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1259" height="162" key="GridCell.Tab.0.center/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1623922571332" />
-    <state width="1259" height="162" key="GridCell.Tab.0.center/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1627009936526" />
-    <state width="1259" height="162" key="GridCell.Tab.0.left" timestamp="1627009936526">
+    <state width="1259" height="162" key="GridCell.Tab.0.center/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
+    <state width="1259" height="162" key="GridCell.Tab.0.left" timestamp="1632383358076">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1259" height="162" key="GridCell.Tab.0.left/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1623922571332" />
-    <state width="1259" height="162" key="GridCell.Tab.0.left/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1627009936526" />
-    <state width="1259" height="162" key="GridCell.Tab.0.right" timestamp="1627009936526">
+    <state width="1259" height="162" key="GridCell.Tab.0.left/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
+    <state width="1259" height="162" key="GridCell.Tab.0.right" timestamp="1632383358076">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1259" height="162" key="GridCell.Tab.0.right/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1623922571332" />
-    <state width="1259" height="162" key="GridCell.Tab.0.right/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1627009936526" />
+    <state width="1259" height="162" key="GridCell.Tab.0.right/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
     <state x="695" y="-1016" key="RollbackChangesDialog" timestamp="1631956985831">
       <screen x="5" y="-1080" width="1920" height="1040" />
     </state>
     <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602468942" />
     <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631929040771" />
     <state x="695" y="-1016" key="RollbackChangesDialog/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1631956985831" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1631869919634">
+    <state width="498" height="398" key="SwitcherDM" timestamp="1632464233207">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1623915449616" />
     <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602130265" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631869919634" />
-    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1629097720801" />
+    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632464233207" />
+    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1632456713434" />
     <state x="778" y="-864" key="VCS.ChangeListViewerDialog" timestamp="1623910202659">
       <screen x="0" y="-1080" width="1920" height="1040" />
     </state>
@@ -275,26 +276,27 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625733640829" />
-    <state x="836" y="-961" width="1089" height="921" key="find.popup" timestamp="1631956174002">
-      <screen x="5" y="-1080" width="1920" height="1040" />
+    <state x="128" y="25" width="747" height="602" key="find.popup" timestamp="1632464178747">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="662" y="-828" width="816" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1624501873130" />
     <state x="289" y="112" width="891" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624431300103" />
-    <state x="554" y="78" width="726" height="602" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631849513498" />
-    <state x="836" y="-961" width="1089" height="921" key="find.popup/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1631956174002" />
+    <state x="128" y="25" width="747" height="602" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632464178747" />
+    <state x="836" y="-961" width="1089" height="921" key="find.popup/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1632456661258" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1628492788235">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624336170325" />
     <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628492788235" />
-    <state x="297" y="151" key="run.anything.popup" timestamp="1626681611604">
+    <state x="297" y="151" key="run.anything.popup" timestamp="1632389370141">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="297" y="151" key="run.anything.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1626681611604" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1625803929011">
+    <state x="297" y="151" key="run.anything.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632389370141" />
+    <state x="451" y="-849" key="run.anything.popup/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1632381537473" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1632454412147">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625803929011" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632454412147" />
     <state x="363" y="304" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1631672413782">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
