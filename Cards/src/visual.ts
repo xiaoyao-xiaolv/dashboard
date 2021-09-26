@@ -310,9 +310,9 @@ export default class Visual extends WynVisual {
       });
       const options = {
         grid:{
-          left: 0,
-          right: 0,
-          bottom: 0,
+          bottom: 10,
+          left:10,
+          right:10,
           height: `${that.styleConfig.progressBarWidth}px`
         },
         xAxis: {
@@ -335,7 +335,7 @@ export default class Visual extends WynVisual {
             },
             label:{
               show: that.styleConfig.showProgressLabel,
-              position:'right',
+              position:'insideRight',
               formatter: function () {
                 return `${((that.renderConfig.actualValues[i]/that.renderConfig.contrastValues[i]) * 100).toFixed(2)}%`;
               },
@@ -493,7 +493,7 @@ export default class Visual extends WynVisual {
       if (this.plainDataView.profile.leftMeasures.values[0] !== undefined) {
         this.plainDataView.profile.leftMeasures.values.forEach((value: any) => {
           measuresDisplay.left.push(value.display);
-          measuresFormat.left.push(value.format);
+          measuresFormat.left.push(value.options.dataFormat);
         });
         measuresValue.left = this.setMeasures(measuresDisplay.left, measuresFormat.left);
       }
@@ -501,7 +501,7 @@ export default class Visual extends WynVisual {
       if (this.plainDataView.profile.rightMeasures.values[0] !== undefined) {
         this.plainDataView.profile.rightMeasures.values.forEach((value: any) => {
           measuresDisplay.right.push(value.display);
-          measuresFormat.right.push(value.format);
+          measuresFormat.right.push(value.options.dataFormat);
         });
         measuresValue.right = this.setMeasures(measuresDisplay.right, measuresFormat.right);
       }

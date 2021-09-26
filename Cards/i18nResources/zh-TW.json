@@ -5,6 +5,7 @@
     "category": "分類",
     "leftMeasures": "左側度量",
     "rightMeasures": "右側度量",
+    "dataFormat": "數據格式",
     "chart": "圖表",
     "progress": "進度條",
     "actualValue": "實際值",

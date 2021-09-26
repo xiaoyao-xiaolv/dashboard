@@ -14,12 +14,22 @@
             {
                 "name": "leftMeasures",
                 "displayNameKey": "dataBinding.leftMeasures",
-                "kind": "value"
+                "kind": "attributeOrValue",
+                "itemOptions": [{
+                    "name": "dataFormat",
+                    "type": "format",
+                    "displayNameKey": "dataBinding.dataFormat"
+                }]
             },
             {
                 "name": "rightMeasures",
                 "displayNameKey": "dataBinding.rightMeasures",
-                "kind": "value"
+                "kind": "attributeOrValue",
+                "itemOptions": [{
+                    "name": "dataFormat",
+                    "type": "format",
+                    "displayNameKey": "dataBinding.dataFormat"
+                }]
             },
             {
                 "kind": "collection",
