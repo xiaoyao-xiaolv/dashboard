@@ -236,13 +236,13 @@ export default class Visual extends WynVisual {
     cardBox.style.width = `${this.cardWidth}px`;
     cardBox.style.height = `${this.cardWidth / this.styleConfig.aspectRatio}px`;
     chartBox.style.position = 'absolute';
-    chartBox.style.height = `calc((100% - (${this.styleConfig.cardPadding.top + this.styleConfig.cardPadding.bottom}px)) * ${this.styleConfig.chartHeight / 100})`;
+    chartBox.style.height = `calc((100% - (${this.styleConfig.cardPadding.top + this.styleConfig.cardPadding.bottom + 24}px)) * ${this.styleConfig.chartHeight / 100})`;
     chartBox.style.width = `calc(100% - (${this.styleConfig.cardPadding.left + this.styleConfig.cardPadding.right}px)`;
-    chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom}px`;
+    chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom + 24}px`;
     if(this.renderConfig.actualValues.length && this.renderConfig.contrastValues.length) {
       cardBox.appendChild(progressBox);
       progressBox.style.position = 'absolute';
-      progressBox.style.bottom = '0';
+      progressBox.style.bottom = `${this.styleConfig.cardPadding.bottom}px`;
       progressBox.style.left = '0';
       progressBox.style.width = '100%';
       progressBox.style.height = '100%';
