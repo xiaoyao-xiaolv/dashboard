@@ -12,11 +12,6 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cards/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cards/i18nResources/en-US.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/i18nResources/en-US.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cards/i18nResources/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/i18nResources/zh-CN.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cards/i18nResources/zh-TW.json" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/i18nResources/zh-TW.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cards/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Cards/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
