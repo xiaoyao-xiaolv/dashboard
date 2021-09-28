@@ -305,7 +305,7 @@
                 ]
             },
             {
-                "displayName": "数据标注样式",
+                "displayName": "副标题样式",
                 "properties": [
                     {
                         "name": "showSubTitle",
@@ -320,33 +320,81 @@
                         "defaultValue": "示例"
                     },
                     {
-                        "name": "showNum",
-                        "type": "Boolean",
-                        "displayName": "显示数据标注",
-                        "defaultValue": false
+                        "name": "titleXPosition",
+                        "type": "Integer",
+                        "displayName": "标签X偏移量",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "titleYPosition",
+                        "type": "Integer",
+                        "displayName": "标签Y偏移量",
+                        "defaultValue": 30
                     },
                     {
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "2.0X"
+                        }
                     }
                 ]
             },
             {
-                "displayName": "比例标签样式",
+                "displayName": "数据标签",
                 "properties": [
+                    {
+                        "name": "showDataLabel",
+                        "type": "Boolean",
+                        "displayName": "数据标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showActual",
+                        "type": "Boolean",
+                        "displayName": "实际值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showContrast",
+                        "type": "Boolean",
+                        "displayName": "对比值",
+                        "defaultValue": true
+                    },
                     {
                         "name": "showDetail",
                         "type": "Boolean",
-                        "displayName": "比例数据标签",
+                        "displayName": "比例值",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "dataLabelLineHeight",
+                        "type": "Integer",
+                        "displayName": "标签行高",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "dataLabelXPosition",
+                        "type": "Integer",
+                        "displayName": "标签X偏移量",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "dataLabelYPosition",
+                        "type": "Integer",
+                        "displayName": "标签Y偏移量",
+                        "defaultValue": 60
                     },
                     {
                         "name": "detailTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "2.0X"
+                        }
                     }
                 ]
             },

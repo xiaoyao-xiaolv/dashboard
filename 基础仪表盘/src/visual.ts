@@ -11,6 +11,10 @@ echarts.use(
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
+  private _actualValue: any;
+  private _contrastValue: any;
+  private _ActualValue: any;
+  private _ContrastValue: any;
   private items: any;
   private properties: any;
   private ActualValue: any;
@@ -30,13 +34,13 @@ export default class Visual extends WynVisual {
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length) {
       const plainData = dataView.plain;
-      let ActualValue = plainData.profile.ActualValue.values[0].display;
-      let ContrastValue = plainData.profile.ContrastValue.values[0].display;
-      this.ActualValue = plainData.data[0][ActualValue];
+      this._ActualValue = plainData.profile.ActualValue.values[0].display;
+      this._ContrastValue = plainData.profile.ContrastValue.values[0].display;
+      this.ActualValue = plainData.data[0][this._ActualValue];
       // custom 
-      const _actualValue = options.properties.Actual === 'dataset' ? (<number>plainData.data[0][ActualValue]) : (Number(options.properties.customActual));
-      const _contrastValue = options.properties.Contrast === 'dataset' ? (<number>plainData.data[0][ContrastValue]) : (Number(options.properties.customContrast));
-      this.items = (_actualValue / _contrastValue).toFixed(4);
+      this._actualValue = options.properties.Actual === 'dataset' ? (<number>plainData.data[0][this._ActualValue]) : (Number(options.properties.customActual));
+      this._contrastValue = options.properties.Contrast === 'dataset' ? (<number>plainData.data[0][this._ContrastValue]) : (Number(options.properties.customContrast));
+      this.items = (this._actualValue / this._contrastValue).toFixed(4);
      
     }
 
@@ -121,7 +125,50 @@ export default class Visual extends WynVisual {
         }
       }
     }
-
+    // 数据标注和标题
+    const _titleDataAndDetail = () => {
+      return {
+        title: { //标题
+          show: options.showSubTitle,
+          // offsetCenter: [0, "30%"], // x, y，单位px
+          offsetCenter: [`${options.titleXPosition}%`,`${options.titleYPosition}%`],
+          lineHeight:15,
+          color: options.textStyle.color,
+          fontSize: options.textStyle.fontSize.substr(0, 2),
+          fontWeight: fontWeight,
+          fontFamily: options.textStyle.fontFamily,
+          fontStyle: options.textStyle.fontStyle
+        },
+        detail: {//明细
+          show: options.showDataLabel,
+          formatter: (value) => {
+            let _detail = [];
+            if (!isMock) {
+              if (options.showActual) {
+                _detail.push(this._actualValue)
+              }
+              if (options.showContrast) {
+                _detail.push(this._contrastValue)
+              }
+            }
+            if (options.showDetail) {
+              _detail.push(`(${value}%)`)
+            }
+            return _detail.join('/')
+          },
+          offsetCenter: [`${options.dataLabelXPosition}%`,`${options.dataLabelYPosition}%`],
+          color: options.detailTextStyle.color,
+          fontSize: options.detailTextStyle.fontSize.substr(0, 2),
+          fontWeight: detailfontWeight,
+          fontFamily: options.detailTextStyle.fontFamily,
+          fontStyle: options.detailTextStyle.fontStyle
+        },
+        data: [{
+          value: Number(items.toFixed(2)),
+          name: options.subtitle || this._ActualValue || '实际值'
+        }]
+      }
+    }
     const basicGauge = [{
       name: options.subtitle,
       ..._gaugeStyle(),
@@ -133,56 +180,33 @@ export default class Visual extends WynVisual {
         width: 5,
         length: "80%"
       },
-      title: { //标题
-        show: options.showSubTitle || options.showNum,
-        offsetCenter: [0, "30%"], // x, y，单位px
-        lineHeight:15,
-        color: options.textStyle.color,
-        fontSize: options.textStyle.fontSize.substr(0, 2),
-        fontWeight: fontWeight,
-        fontFamily: options.textStyle.fontFamily,
-        fontStyle: options.textStyle.fontStyle
-      },
-      detail: {//明细
-        show: options.showDetail,
-        formatter: '{value}%',
-        offsetCenter: ["0", "60%"],
-        color: options.detailTextStyle.color,
-        fontSize: options.detailTextStyle.fontSize.substr(0, 2),
-        fontWeight: detailfontWeight,
-        fontFamily: options.detailTextStyle.fontFamily,
-        fontStyle: options.detailTextStyle.fontStyle
-
-      },
-      data: [{
-        value: Number(items.toFixed(2)),
-        name: subtitle
-      }]
+      ..._titleDataAndDetail()
     }]
     // const percent = 52; //百分数
     let color_percent0 = '',
         color_percent100 = '',
         dotArray = [];
 
-    const calculateDot = (data) =>{
+    const calculateDot = (data) => {
+      const _number = 90;
         if (data <= 20) {
-            dotArray.push(80)
+            dotArray.push(_number)
             color_percent0 = 'rgba(12,255,0,1)'
             color_percent100 = 'rgba(12,255,0,.3)'
         }else if (data > 20&&data<=40) {
-            dotArray.push(...[80,80])
+            dotArray.push(...[_number,_number])
             color_percent0 = 'rgba(12,255,0,1)'
             color_percent100 = 'rgba(12,255,0,.3)'
         }else if (data > 40&&data<=60) {
-            dotArray.push(...[80,80,80])
+            dotArray.push(...[_number,_number,_number])
              color_percent0 = 'rgba(255,123,0,1)'
             color_percent100 = 'rgba(255,123,0,.3)'
         }else if (data > 60&&data<=80) {
-            dotArray.push(...[80,80,80,80])
+            dotArray.push(...[_number,_number,_number,_number])
              color_percent0 = 'rgba(255,0,36,1)'
             color_percent100 = 'rgba(255,0,36,.3)'
         }else if (data > 80&&data<=100) {
-            dotArray.push(...[80,80,80,80,80])
+            dotArray.push(...[_number,_number,_number,_number,_number])
              color_percent0 = 'rgba(255,0,36,1)'
             color_percent100 = 'rgba(255,0,36,.3)'
         }
@@ -221,27 +245,7 @@ export default class Visual extends WynVisual {
       anchor: {
         show: false
       },
-      title: {
-        show: true
-      },
-      detail: {
-        valueAnimation: false,
-        // width: '60%',
-        lineHeight: 40,
-        borderRadius: 8,
-        offsetCenter: [0, '-15%'],
-        fontSize: 24,
-        fontWeight: 'bolder',
-        formatter: (value) => {
-          return `${value.toFixed(0)}°C`
-        } ,
-        color: '#fff'
-      },
-      data: [
-        {
-          value: Number(items)
-        }
-      ]
+      ..._titleDataAndDetail()
     },
     {
       ..._gaugeStyle(options.gaugeR * 0.7),
@@ -275,7 +279,7 @@ export default class Visual extends WynVisual {
       symbolOffset: ['20', '0'],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
       type: 'scatter',
       color: '#fff',
-      data: [80, 80, 80, 80, 80]
+      data: [90, 90, 90, 90, 90]
     },
     //根据数据判断小球的颜色
     {
@@ -303,7 +307,7 @@ export default class Visual extends WynVisual {
         color: color_percent100
       }]),
       symbol: "none",
-      data: [85, 85, 85, 85, 85, 85]
+      data: [95, 95, 95, 95, 95, 95]
     },
     {//第二根线
       name: '',
@@ -316,7 +320,7 @@ export default class Visual extends WynVisual {
         offset: 1,
         color: color_percent100
       }]),
-      data: [75, 75, 75, 75, 75, 75]
+      data: [85, 85, 85, 85, 85, 85]
     }
     ];
 
@@ -435,37 +439,7 @@ export default class Visual extends WynVisual {
             axisTick: { show: false,},
             splitLine: {show: false,},
             itemStyle: {color:"#ffffff"},
-            detail: {
-              show: false,
-                formatter: function(value) {
-                    if (value !== 0) {
-                        var num = Math.round(value ) ;
-                        return parseInt(`${num}`).toFixed(0)+"%";
-                    } else {
-                        return 0;
-                    }
-                },
-                offsetCenter: [0, 67],
-                textStyle: {
-                    padding: [0, 0, 0, 0],
-                    fontSize: 18,
-                    fontWeight: '700',
-                    color: '#ffffff'
-                }
-            },
-            title: { //标题
-                show: false,
-                offsetCenter: [0, 46], // x, y，单位px
-                textStyle: {
-                    color: "rgba(0,0,0,0)",
-                    fontSize: 14, //表盘上的标题文字大小
-                    fontFamily: 'PingFangSC'
-                }
-            },
-            data: [{
-                name: "",
-                value: items,
-            }],
+            ..._titleDataAndDetail(),
             pointer: {
                 show: true,
                 length: '70%',
@@ -573,41 +547,41 @@ export default class Visual extends WynVisual {
           itemStyle: {
               color:"#ffffff"
           },
-          detail: {
-              formatter: function(value) {
-                  if (value !== 0) {
-                      var num = Math.round(value ) ;
-                      return parseInt(`${num}`).toFixed(0)+"%";
-                  } else {
-                      return 0;
-                  }
-              },
-              offsetCenter: [0, 67],
-              textStyle: {
-                  padding: [0, 0, 0, 0],
-                  fontSize: 18,
-                  color: "#fff"
-              }
-          },
-          title: { //标题
-              show: true,
-              offsetCenter: [0, 46], // x, y，单位px
-              textStyle: {
-                  color: "#fff",
-                  fontSize: 14, //表盘上的标题文字大小
-                  fontWeight: 400,
-                  fontFamily: 'MicrosoftYaHei'
-              }
-          },
-          data: [{
-              name: "去年优良率",
-              value: items,
-              itemStyle:{
-                color:"#ffffff",
-                fontFamily: "MicrosoftYaHei",
-                fontSize:14
-              }
-          }],
+          // detail: {
+          //     formatter: function(value) {
+          //         if (value !== 0) {
+          //             var num = Math.round(value ) ;
+          //             return parseInt(`${num}`).toFixed(0)+"%";
+          //         } else {
+          //             return 0;
+          //         }
+          //     },
+          //     offsetCenter: [0, 67],
+          //     textStyle: {
+          //         padding: [0, 0, 0, 0],
+          //         fontSize: 18,
+          //         color: "#fff"
+          //     }
+          // },
+          // title: { //标题
+          //     show: true,
+          //     offsetCenter: [0, 46], // x, y，单位px
+          //     textStyle: {
+          //         color: "#fff",
+          //         fontSize: 14, //表盘上的标题文字大小
+          //         fontWeight: 400,
+          //         fontFamily: 'MicrosoftYaHei'
+          //     }
+          // },
+          // data: [{
+          //     name: "去年优良率",
+          //     value: items,
+          //     itemStyle:{
+          //       color:"#ffffff",
+          //       fontFamily: "MicrosoftYaHei",
+          //       fontSize:14
+          //     }
+          // }],
       },
       { //指针上的圆
           type: 'pie',
