@@ -3,7 +3,6 @@ import * as echarts from 'echarts/core';
 import { GaugeChart,PieChart,ScatterChart,LineChart   } from 'echarts/charts';
 import { TitleComponent , GraphicComponent , AriaComponent , TooltipComponent, LegendComponent, GridComponent   } from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
-import { number } from 'echarts/core';
 
 echarts.use(
   [ GaugeChart,PieChart , ScatterChart , LineChart ,TitleComponent , GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
@@ -71,44 +70,64 @@ export default class Visual extends WynVisual {
     } else {
       detailfontWeight = options.detailTextStyle.fontWeight
     }
+    // 图表样式
+    const _gaugeStyle = (radius?: any, splitNumber?: number) => {
+      return {
+        type: 'gauge',
+        radius: radius ? `${radius}%` : `${options.gaugeR}%`,
+        center: [`${options.gaugeXPosition}%`, `${options.gaugeYPosition}%`],
+        min: options.min,
+        max: options.max,
+        startAngle: options.startAngle,
+        endAngle: options.endAngle,
+        splitNumber: options.scope,
+      }
+    }
+    // 仪表盘轴线
+    const _axisLine = (_width?: number , _color?: any) => {
+      return {
+        show: true,
+        roundCap: options.gaugeRoundCap,
+        lineStyle: {
+          width: _width || options.width,
+          color: _color || color,
+        },
+      }
+    }
+    // 分割线
+    const _splitLine = (_distance?: number) => {
+      return {
+        show: options.showsplitLine,
+        length: options.splitLineLength,
+        distance: options.splitLineDistance,
+        lineStyle: {
+          type: "solid",
+          color: options.splitLineColor,
+          width: options.splitLineWidth,
+        }
+      }
+    }
 
-    const _axisLine = {
-      show: true,
-      lineStyle: {
-        width: options.width,
-        color: color
-      },
-    }
-    const _splitLine = {
-      show: options.showsplitLine,
-      length: options.splitLineLength,
-      lineStyle: {
-        type: "solid",
-        color: options.splitLineColor,
-        width: options.splitLineWidth,
+    //刻度样式
+    const _axisTick = (_distance?: number) => {
+      return {
+        show: options.showaxisTick,
+        splitNumber: options.axisTickNum, //分割线之间的刻度数
+        distance:  options.axisTickDistance ||  _distance || 10,
+        lineStyle: {
+          type: "solid",
+          color: options.axisTickColor,
+          width: options.axisTickWidth
+        }
       }
     }
-    const _axisTick = { //刻度样式
-      show: options.showaxisTick,
-      splitNumber: options.axisTickNum, //分割线之间的刻度数
-      lineStyle: {
-        type: "solid",
-        color: options.axisTickColor,
-        width: options.axisTickWidth
-      }
-    }
+
     const basicGauge = [{
       name: options.subtitle,
-      type: 'gauge',
-      radius: `${options.gaugeR}%`,
-      min: options.min,
-      max: options.max,
-      startAngle: options.startAngle,
-      endAngle: options.endAngle,
-      splitNumber: options.scope,
-      axisLine: _axisLine,
-      splitLine: _splitLine,
-      axisTick: _axisTick,
+      ..._gaugeStyle(),
+      axisLine: _axisLine((options.width * (options.gaugeR / 100))),
+      splitLine: _splitLine(),
+      axisTick: _axisTick(),
       pointer: {//指针
         show: true,
         width: 5,
@@ -171,14 +190,7 @@ export default class Visual extends WynVisual {
     }
     calculateDot(items)//80%显示4个点，
     const pieGauge = [{
-      type: 'gauge',
-      // center: ['50%', '60%'],
-      radius: `${options.gaugeR - 10}%`,
-      startAngle: options.startAngle,
-      endAngle: options.endAngle,
-      // splitNumber: options.scope,
-      min: options.min,
-      max: options.max,
+      ..._gaugeStyle( options.gaugeR * 0.9),
       itemStyle: {
         color: new echarts.graphic.LinearGradient(1, 0.4, 0, 0, [{
           offset: 0,
@@ -190,32 +202,13 @@ export default class Visual extends WynVisual {
       },
       progress: {
         show: true,
-        width: options.width
+        width: (options.width * (options.gaugeR /100))
       },
       pointer: {
         show: false
       },
-      axisLine: {
-        lineStyle: {
-          width: options.width
-        }
-      },
-      axisTick: {
-        distance: -45,
-        splitNumber: 5,
-        lineStyle: {
-          width: 2,
-          color: '#999'
-        }
-      },
-      splitLine: {
-        distance: -52,
-        length: 14,
-        lineStyle: {
-          width: 3,
-          color: '#999'
-        }
-      },
+      axisLine: _axisLine((options.width * (options.gaugeR / 100)), [[1, options.gradientBgColor]]),
+      axisTick: _axisTick(-(options.width + 20)),
       axisLabel: {
         show: true,
         // distance: -20,
@@ -225,9 +218,6 @@ export default class Visual extends WynVisual {
           return `${value.toFixed(0)}`
         } ,
       },
-      // axisLine: _axisLine,
-      // splitLine: _splitLine,
-      // axisTick: _axisTick,
       anchor: {
         show: false
       },
@@ -254,14 +244,7 @@ export default class Visual extends WynVisual {
       ]
     },
     {
-      type: 'gauge',
-      // center: ['50%', '60%'],
-      radius: `${options.gaugeR - 40}%`,
-      startAngle: options.startAngle,
-      endAngle: options.endAngle,
-      splitNumber: options.scope,
-      min: options.min,
-      max: options.max,
+      ..._gaugeStyle(options.gaugeR * 0.7),
       itemStyle: {
         color: new echarts.graphic.LinearGradient(1, 0.4, 0, 0, [{
           offset: 0,
@@ -273,26 +256,13 @@ export default class Visual extends WynVisual {
       },
       progress: {
         show: true,
-        // width: 8
       },
-      pointer: {
-        show: false
-      },
-      axisLine: {
-        show: false
-      },
-      axisTick: {
-        show: false
-      },
-      splitLine: {
-        show: false
-      },
-      axisLabel: {
-        show: false
-      },
-      detail: {
-        show: false
-      },
+      pointer: {show: false },
+      axisLine: {show: false },
+      axisTick: { show: false },
+      splitLine: { show: false},
+      axisLabel: {show: false},
+      detail: { show: false },
       data: [
         {
           value: Number(items)
@@ -351,10 +321,73 @@ export default class Visual extends WynVisual {
     ];
 
     // progress
+    const  RgbToHex  = (a, b, c)  =>{
+      var r = /^\d{1,3}$/;
+      if (!r.test(a) || !r.test(b) || !r.test(c)) return window.alert("输入错误的rgb颜色值");
+      var hexs = [a.toString(16), b.toString(16), c.toString(16)];
+      for (var i = 0; i < 3; i++) if (hexs[i].length == 1) hexs[i] = "0" + hexs[i];
+      return "#" + hexs.join("");
+    }
+    
+    const  HexToRgb = (str) =>{
+      var r = /^\#?[0-9a-f]{6}$/;
+      //test方法检查在字符串中是否存在一个模式，如果存在则返回true，否则返回false
+      if (!r.test(str)) return console.log("输入错误的hex");
+      //replace替换查找的到的字符串
+      str = str.replace("#", "");
+      //match得到查询数组
+      var hxs = str.match(/../g);
+      //alert('bf:'+hxs)
+      for (var i = 0; i < 3; i++) hxs[i] = parseInt(hxs[i], 16);
+      return hxs;
+    }
+    const getLightOrDarkColor = (color, level, isLight?: boolean) => {
+      var r = /^\#?[0-9a-f]{6}$/;
+      let rgbc = [];
+      if (!r.test(color)) {
+        var rgb = color.split(',');
+        var _r = parseInt(rgb[0].split('(')[1]);
+        var _g = parseInt(rgb[1]);
+        var _b = parseInt(rgb[2].split(')')[0]);
+        rgbc = HexToRgb(RgbToHex(_r, _g, _b));
+      } else {
+        rgbc = HexToRgb(color);
+      }
+      if (isLight) {
+        for (var i = 0; i < 3; i++) {
+          rgbc[i] = Math.floor((255 - rgbc[i]) * level + rgbc[i]);
+        }
+        return RgbToHex(rgbc[0], rgbc[1], rgbc[2]);
+      } else {
+        for (var i = 0; i < 3; i++) {
+          rgbc[i] = Math.floor(rgbc[i] * (1 - level));
+        }
+        return RgbToHex(rgbc[0], rgbc[1], rgbc[2]);
+      }
+    }
+
+    const hexToRgba = (hex, opacity?: number, isLine?: boolean) => {
+      const isHex = hex.slice(0, 1) === '#';
+      const _opacity = isLine ? 0.1 : opacity;
+      if (isHex) {
+        return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
+              + parseInt('0x' + hex.slice(5, 7)) + ',' + _opacity + ')';
+      } else {
+        // fixed rgba to rgba
+        var rgb = hex.split(',');
+        var r = parseInt(rgb[0].split('(')[1]);
+        var g = parseInt(rgb[1]);
+        var b = parseInt(rgb[2].split(')')[0]);
+        var a = isLine ? (Number(rgb[3].split(')')[0]) + 0.2) : Number(rgb[3].split(')')[0])
+        return `rgba(${r}, ${g}, ${b}, ${a})`
+      }
+    }
     const dataArr = 44;
     const colorSet = {
-        color: '#22B95E'
+        color: options.shadowColor,
+        lightColor: getLightOrDarkColor(options.shadowColor, 0.1, true)
     };
+
     const color1 = {
             type: "linear",
             x: 0,
@@ -383,11 +416,11 @@ export default class Visual extends WynVisual {
         colorStops: [
             {
               offset: 0,
-              color: "#30DBBA"
+              color: colorSet.lightColor
             },
             {
                 offset: 1,
-                color: "#2DE696"
+                color: colorSet.color
             }
         ],
             global: false
@@ -395,37 +428,13 @@ export default class Visual extends WynVisual {
 
     const pieGaugeProgress = [
       {
-            name: "内部进度条",
-            type: "gauge",
-            // center: ['20%', '50%'],
-            radius: `${options.gaugeR}%`,
-            min: options.min,
-            max: options.max,
-            startAngle: options.startAngle,
-            endAngle: options.endAngle,
-            splitNumber: options.scope,
-            axisLine: {
-                lineStyle: {
-                    color: [
-                        [ Number(items) / 100, colorSet.color],
-                        [1, colorSet.color]
-                    ],
-                    width: 2
-                }
-            },
-            axisLabel: {
-                show: false,
-            },
-            axisTick: {
-                show: false,
-
-            },
-            splitLine: {
-                show: false,
-            },
-            itemStyle: {
-                color:"#ffffff"
-            },
+            name: "外部进度条",
+            ..._gaugeStyle(),
+            axisLine: _axisLine(2, [[ Number(items) / 100, colorSet.color], [1, colorSet.color]]),
+            axisLabel: {show: false,},
+            axisTick: { show: false,},
+            splitLine: {show: false,},
+            itemStyle: {color:"#ffffff"},
             detail: {
               show: false,
                 formatter: function(value) {
@@ -462,48 +471,34 @@ export default class Visual extends WynVisual {
                 length: '70%',
                 radius: '20%',
                 width: 3 //指针粗细
-
             },
             progress: {
               show: false,
-              // width: 5
             },
-            // animationDuration: 4000,
       },
       {
           name: "内部阴影",
           type: "gauge",
-          radius: `${options.gaugeR - 8}%`,
-          min: options.min,
-          max: options.max,
-          startAngle: options.startAngle,
-          endAngle: options.endAngle,
-          splitNumber: options.scope,
-          axisLine: {
-              lineStyle: {
-                  color: [
-                      [Number(items) / 100, new echarts.graphic.LinearGradient(
-                          0, 1, 0, 0, [{
-                                  offset: 0,
-                                  color: 'rgba(45,230,150,0)',
-                              }, {
-                                  offset: 0.5,
-                                  color: 'rgba(45,230,150,0.2)',
-                              },
-                              {
-                                  offset: 1,
-                                  color: 'rgba(45,230,150,1)',
-                              }
-                          ]
-                      )],
-                      [
-                          1, 'rgba(28,128,245,0)'
-                      ]
-                  ],
-                  width: 100
-
-              },
-          },
+          ..._gaugeStyle(options.gaugeR * (46 / 52)),
+          axisLine: _axisLine((100 * (options.gaugeR / 100)), [
+            [Number(items) / 100, new echarts.graphic.LinearGradient(
+                0, 1, 0, 0, [{
+                        offset: 0,
+                        color: hexToRgba(options.shadowColor, 0.1),
+                    }, {
+                        offset: 0.5,
+                        color: hexToRgba(options.shadowColor, 0.2),
+                    },
+                    {
+                        offset: 1,
+                        color: hexToRgba(options.shadowColor, 1),
+                    }
+                ]
+            )],
+            [
+                1, 'rgba(0,0,0,0)'
+            ]
+        ]),
           axisLabel: {
               show: false,
           },
@@ -521,23 +516,11 @@ export default class Visual extends WynVisual {
       },
       {
           name: "内部小圆",
-          type: "gauge",
-          // center: ['20%', '50%'],
-          radius: `${options.gaugeR - 6}%`,
-          min: options.min,
-          max: options.max,
-          startAngle: options.startAngle,
-          endAngle: options.endAngle,
-          splitNumber: options.scope,
-          axisLine: {
-              lineStyle: {
-                  color: [
-                      [Number(items) / 100, color2],
-                      [1, "rgba(0,0,0,0)"]
-                  ],
-                  width: 50
-              }
-          },
+          ..._gaugeStyle(options.gaugeR * (48 / 52)),
+          axisLine: _axisLine((10 * (options.gaugeR / 100)),  [
+            [Number(items) / 100, color2],
+            [1, "rgba(0,0,0,0)"]
+          ]),
           axisLabel: {
               show: false,
           },
@@ -554,23 +537,8 @@ export default class Visual extends WynVisual {
       },
       {
           name: '外部刻度',
-          type: 'gauge',
-          //  center: ['20%', '50%'],
-          radius: `${options.gaugeR - 4}%`,
-          min: options.min,
-          max: options.max,
-          startAngle: options.startAngle,
-          endAngle: options.endAngle,
-          splitNumber: options.scope,
-          axisLine: {
-              show: true,
-              lineStyle: {
-                  width: 1,
-                  color: [
-                      [1, 'rgba(0,0,0,0)']
-                  ]
-              }
-          }, //仪表盘轴线
+          ..._gaugeStyle(options.gaugeR * (48 / 52)),
+          axisLine: _axisLine(1,  [[1, 'rgba(0,0,0,0)']]),
           axisLabel: {
               show: true,
               color: '#ffffff',
@@ -579,55 +547,25 @@ export default class Visual extends WynVisual {
               fontWeight:'bold',
               // position: "top",
                 distance: -30,
-          }, //刻度标签。
-          axisTick: {
-              show: true,
-              splitNumber: 3,
-              lineStyle: {
-                  color: color1, //用颜色渐变函数不起作用
-                  width: 1,
-              },
-              length: -6
-          }, //刻度样式
-          splitLine: {
-              show: true,
-              length: -12,
-              lineStyle: {
-                  color: color1, //用颜色渐变函数不起作用
-              }
-          }, //分隔线样式
-          // axisLine: _axisLine,
-          // splitLine: _splitLine,
-          // axisTick: _axisTick,
+        }, //刻度标签。
+        axisTick: _axisTick(),
+          splitLine: _splitLine(),
           detail: {
               show: false
           }
       },
       {
           name: "内部进度条",
-          type: "gauge",
-          // center: ['20%', '50%'],
-          radius: `${options.gaugeR - 32}%`,
-          min: options.min,
-          max: options.max,
-          startAngle: options.startAngle,
-          endAngle: options.endAngle,
-          splitNumber: options.scope,
-          axisLine: {
-              lineStyle: {
-                  color: [
-                      [Number(items)  / 100, colorSet.color],
-                      [1, colorSet.color]
-                  ],
-                  width: 1
-              }
-          },
+          ..._gaugeStyle(options.gaugeR * (20 / 52)),
+          axisLine: _axisLine(1,  [
+            [Number(items)  / 100, colorSet.color],
+            [1, colorSet.color]
+          ]),
           axisLabel: {
               show: false,
           },
           axisTick: {
               show: false,
-
           },
           splitLine: {
               show: false,
@@ -670,24 +608,14 @@ export default class Visual extends WynVisual {
                 fontSize:14
               }
           }],
-          pointer: {
-              show: true,
-              length: '70%',
-              radius: '20%',
-              width: 3 //指针粗细
-
-          },
-          animationDuration: 4000,
       },
       { //指针上的圆
           type: 'pie',
-          tooltip: {
-              show: false
-          },
+          tooltip: { show: false },
           hoverAnimation: false,
           legendHoverLink: false,
           radius: ['0%', '4%'],
-          center: ['50%', '50%'],
+          center: [`${options.gaugeXPosition}%`, `${options.gaugeYPosition}%`],
           label: {
               normal: {
                   show: false

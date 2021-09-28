@@ -154,10 +154,16 @@
                         "defaultValue": 100
                     },
                     {
+                        "name": "gaugeRoundCap",
+                        "type": "Boolean",
+                        "displayName": "表盘端点圆角",
+                        "defaultValue": false
+                    },
+                    {
                         "name": "width",
                         "type": "Integer",
                         "displayName": "表盘宽度",
-                        "defaultValue": 70
+                        "defaultValue": 50
                     },
                     {
                         "name": "scope",
@@ -187,14 +193,42 @@
                         "inheritFrom": "dashboard.palette"
                     },
                     {
+                        "name": "shadowColor",
+                        "type": "Color",
+                        "displayName": "仪表盘颜色",
+                        "defaultValue": "#22b95e"
+                    },
+                    {
+                        "name": "gradientBgColor",
+                        "type": "Color",
+                        "displayName": "仪表盘背景颜色",
+                        "defaultValue": "#FFF"
+                    },
+                    {
+                        "name": "gaugeXPosition",
+                        "type": "Percentage",
+                        "displayName": "X偏移量",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "gaugeYPosition",
+                        "type": "Percentage",
+                        "displayName": "Y偏移量",
+                        "defaultValue": 50
+                    },
+                    {
                         "name": "startAngle",
-                        "type": "Angle",
+                        "type": "Integer",
+                        "min": -360,
+                        "max": 360,
                         "displayName": "起始角度",
                         "defaultValue": 225
                     },
                     {
                         "name": "endAngle",
-                        "type": "Angle",
+                        "type": "Integer", 
+                        "min": -360,
+                        "max": 360,
                         "displayName": "终止角度",
                         "defaultValue": -45
                     }
@@ -220,6 +254,12 @@
                         "type": "Integer",
                         "displayName": "线长",
                         "defaultValue": 10
+                    },
+                    {
+                        "name": "splitLineDistance",
+                        "type": "Integer",
+                        "displayName": "线和轴的距离",
+                        "defaultValue": -60
                     },
                     {
                         "name": "splitLineColor",
@@ -249,6 +289,12 @@
                         "type": "Integer",
                         "displayName": "线宽",
                         "defaultValue": 1
+                    },
+                    {
+                        "name": "axisTickDistance",
+                        "type": "Integer",
+                        "displayName": "线和轴的距离",
+                        "defaultValue": -60
                     },
                     {
                         "name": "axisTickColor",
