@@ -236,13 +236,14 @@ export default class Visual extends WynVisual {
     cardBox.style.width = `${this.cardWidth}px`;
     cardBox.style.height = `${this.cardWidth / this.styleConfig.aspectRatio}px`;
     chartBox.style.position = 'absolute';
-    chartBox.style.height = `calc((100% - (${this.styleConfig.cardPadding.top + this.styleConfig.cardPadding.bottom}px)) * ${this.styleConfig.chartHeight / 100})`;
+    chartBox.style.height = `calc((100% - (${this.styleConfig.cardPadding.top + this.styleConfig.cardPadding.bottom + 24}px)) * ${this.styleConfig.chartHeight / 100})`;
     chartBox.style.width = `calc(100% - (${this.styleConfig.cardPadding.left + this.styleConfig.cardPadding.right}px)`;
     chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom}px`;
     if(this.renderConfig.actualValues.length && this.renderConfig.contrastValues.length) {
+      chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom + 34}px`;
       cardBox.appendChild(progressBox);
       progressBox.style.position = 'absolute';
-      progressBox.style.bottom = '0';
+      progressBox.style.bottom = `${this.styleConfig.cardPadding.bottom}px`;
       progressBox.style.left = '0';
       progressBox.style.width = '100%';
       progressBox.style.height = '100%';
@@ -310,9 +311,9 @@ export default class Visual extends WynVisual {
       });
       const options = {
         grid:{
-          left: 0,
-          right: 0,
-          bottom: 0,
+          bottom: 10,
+          left:10,
+          right:10,
           height: `${that.styleConfig.progressBarWidth}px`
         },
         xAxis: {
@@ -335,7 +336,7 @@ export default class Visual extends WynVisual {
             },
             label:{
               show: that.styleConfig.showProgressLabel,
-              position:'right',
+              position:'insideRight',
               formatter: function () {
                 return `${((that.renderConfig.actualValues[i]/that.renderConfig.contrastValues[i]) * 100).toFixed(2)}%`;
               },
@@ -493,7 +494,7 @@ export default class Visual extends WynVisual {
       if (this.plainDataView.profile.leftMeasures.values[0] !== undefined) {
         this.plainDataView.profile.leftMeasures.values.forEach((value: any) => {
           measuresDisplay.left.push(value.display);
-          measuresFormat.left.push(value.format);
+          measuresFormat.left.push(value.options.dataFormat);
         });
         measuresValue.left = this.setMeasures(measuresDisplay.left, measuresFormat.left);
       }
@@ -501,7 +502,7 @@ export default class Visual extends WynVisual {
       if (this.plainDataView.profile.rightMeasures.values[0] !== undefined) {
         this.plainDataView.profile.rightMeasures.values.forEach((value: any) => {
           measuresDisplay.right.push(value.display);
-          measuresFormat.right.push(value.format);
+          measuresFormat.right.push(value.options.dataFormat);
         });
         measuresValue.right = this.setMeasures(measuresDisplay.right, measuresFormat.right);
       }

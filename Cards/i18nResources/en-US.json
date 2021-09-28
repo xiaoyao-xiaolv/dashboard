@@ -5,6 +5,7 @@
     "category": "Category",
     "leftMeasures": "Left Measures",
     "rightMeasures": "Right Measures",
+    "dataFormat": "Data Format",
     "chart": "Chart",
     "progress": "Progress",
     "actualValue": "Actual Value",
