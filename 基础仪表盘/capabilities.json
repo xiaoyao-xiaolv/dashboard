@@ -94,6 +94,13 @@
                           "defaultValue": "dataset"
                     },
                     {
+                        "name": "customActual",
+                        "type": "Input",
+                        "displayName": "自定义实际值",
+                        "min": 0,
+                        "defaultValue": "50"
+                    },
+                    {
                         "displayNameKey": "对比值来源",
                         "name": "Contrast",
                         "type": "Enum",
@@ -108,12 +115,44 @@
                             }
                           ],
                           "defaultValue": "dataset"
+                    },
+                    {
+                        "name": "customContrast",
+                        "type": "Input",
+                        "displayName": "自定义实际值",
+                        "min": 0,
+                        "defaultValue": "100"
                     }
                 ]
             },
             {
                 "displayName": "图表样式",
-                "properties": [
+                "properties": [{
+                        "displayNameKey": "仪表盘样式",
+                        "name": "gaugeOptions",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "displayNameKey": "基础样式",
+                                "value": "basic"
+                            },
+                            {
+                                "displayNameKey": "渐变样式",
+                                "value": "gradient"
+                            },
+                            {
+                                "displayNameKey": "阴影样式",
+                                "value": "shadow"
+                            }
+                        ],
+                        "defaultValue": "basic"
+                    },
+                    {
+                        "name": "gaugeR",
+                        "type": "Percentage",
+                        "displayName": "表盘半径",
+                        "defaultValue": 100
+                    },
                     {
                         "name": "width",
                         "type": "Integer",
@@ -175,6 +214,12 @@
                         "type": "Integer",
                         "displayName": "线宽",
                         "defaultValue": 1
+                    },
+                    {
+                        "name": "splitLineLength",
+                        "type": "Integer",
+                        "displayName": "线长",
+                        "defaultValue": 10
                     },
                     {
                         "name": "splitLineColor",
