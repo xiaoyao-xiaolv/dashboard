@@ -11,6 +11,7 @@ echarts.use(
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
+  private host: any;
   private _actualValue: any;
   private _contrastValue: any;
   private _ActualValue: any;
@@ -18,11 +19,16 @@ export default class Visual extends WynVisual {
   private items: any;
   private properties: any;
   private ActualValue: any;
+  private ActualFormat: any;
+  private ActualDisplayUnit: any;
+  private ContrastFormat: any;
+  private ContrastDisplayUnit: any;
   static mockItems = 0.5;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
+    this.host = host;
     this.chart = echarts.init(dom);
     this.items = [];
     this.properties = {
@@ -41,7 +47,18 @@ export default class Visual extends WynVisual {
       this._actualValue = options.properties.Actual === 'dataset' ? (<number>plainData.data[0][this._ActualValue]) : (Number(options.properties.customActual));
       this._contrastValue = options.properties.Contrast === 'dataset' ? (<number>plainData.data[0][this._ContrastValue]) : (Number(options.properties.customContrast));
       this.items = (this._actualValue / this._contrastValue).toFixed(4);
-     
+
+      // format 
+      this.ActualFormat = dataView.plain.profile.ActualValue.options.valueFormat;
+      this.ActualDisplayUnit = dataView.plain.profile.ActualValue.options.valueDisplayUnit;
+      this.ContrastFormat = dataView.plain.profile.ContrastValue.options.valueFormat;
+      this.ContrastDisplayUnit = dataView.plain.profile.ContrastValue.options.valueDisplayUnit;
+    } else {
+      this._actualValue = options.properties.Actual === 'customdata' && (Number(options.properties.customActual)) || 0;
+      this._contrastValue = options.properties.Contrast === 'customdata' &&  (Number(options.properties.customContrast)) || 0;
+      if (this._actualValue > 0 && this._contrastValue> 0) {
+        this.items = (this._actualValue / this._contrastValue).toFixed(4);
+      }
     }
 
     this.properties = options.properties;
@@ -141,27 +158,31 @@ export default class Visual extends WynVisual {
     }
     // 数据标注和标题
     const _dataAndDetail = (_labelNumber?: string) => {
-      if (_labelNumber) {
-        console.log(options[`${_labelNumber}TextStyle`], '=====')
-      }
-      
       return {
         detail: {//明细
           show: options[`show${_labelNumber}`] || options.showDataLabel,
           formatter: (value) => {
-            let _detail = [];
+            let _detail ='';
             if (!isMock) {
               if (options[`show${_labelNumber}`]) {
                 if (_labelNumber === 'Detail') {
-                  _detail.push(`(${value}%)`)
+                  _detail = `(${value}${options.DetailDisplayUnit})`
                 } else {
-                  _detail.push(this[`_${_labelNumber.toLowerCase()}Value`])
+                  _detail = this[`_${_labelNumber.toLowerCase()}Value`];
+                  let realDisplayUnit = this[`${_labelNumber}DisplayUnit`];
+                  const formatService = this.host.formatService;
+                  if (formatService.isAutoDisplayUnit(this[`${_labelNumber}DisplayUnit`])) {
+                    realDisplayUnit = formatService.getAutoDisplayUnit(_detail);
+                  }
+                  _detail = formatService.format(this[`${_labelNumber}Format`], _detail, realDisplayUnit);
                 }
               }
             } else {
-              _detail.push(`(${value}%)`)
+              if (_labelNumber === 'Detail') {
+                _detail = `(${value}${options.DetailDisplayUnit})`
+              }
             }
-            return _detail.join('\n')
+            return _detail;
           },
           offsetCenter: [`${options[`${_labelNumber}XPosition`]}%`,`${options[`${_labelNumber}YPosition`]}%`],
           color: options[`${_labelNumber}TextStyle`].color,
@@ -199,7 +220,7 @@ export default class Visual extends WynVisual {
       ..._disableStyle,
       ..._gaugeStyle(),
       ..._dataAndDetail('Detail')
-      }];
+    }];
     
     const basicGauge = [{
       name: options.subtitle,

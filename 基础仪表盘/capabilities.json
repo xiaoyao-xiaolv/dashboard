@@ -7,12 +7,16 @@
                 "kind": "value",
                 "options": [
                     {
-                        "displayNameKey": "数据格式",
-                        "iconCss": "icon-format-data",
-                        "type": "format",
-                        "name": "valueFormat"
-                    }
-                ]
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                      }
+                  ]
             },
             {
                 "name": "ContrastValue",
@@ -20,12 +24,16 @@
                 "kind": "value",
                 "options": [
                     {
-                        "displayNameKey": "数据格式",
-                        "iconCss": "icon-format-data",
-                        "type": "format",
-                        "name": "valueFormat"
-                    }
-                ]
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                      }
+                  ]
             }
         ],
         "dataViewMappings": [
@@ -427,7 +435,31 @@
                         "type": "Boolean",
                         "displayName": "比例值",
                         "defaultValue": true
-                    },   
+                    },
+                    {
+                        "name": "DetailDisplayUnit",
+                        "type": "Enum",
+                        "displayName": "数据单位",
+                        "items": [
+                            {
+                                "value": "%",
+                                "displayNameKey": "%"
+                            },
+                            {
+                                "value": "℃",
+                                "displayNameKey": "℃"
+                            },
+                            {
+                                "value": "$",
+                                "displayNameKey": "$"
+                            },
+                            {
+                                "value": "￥",
+                                "displayNameKey": "￥"
+                            }
+                        ],
+                        "defaultValue": "%"
+                    },
                     {
                         "name": "DetailLineHeight",
                         "type": "Integer",
