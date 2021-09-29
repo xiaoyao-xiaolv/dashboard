@@ -115,6 +115,7 @@ export default class Visual extends WynVisual {
         },
       }
     }
+    
     // 分割线
     const _splitLine = (_distance?: number) => {
       return {
@@ -140,6 +141,19 @@ export default class Visual extends WynVisual {
           width: options.axisTickWidth
         }
       }
+    }
+
+    // 刻度标签
+    const _axisLabel =  {
+      show: options.showAxisLabel,
+      color: options.axisLabelColor,
+      fontSize: options.axisLabelTextStyle.fontSize.substr(0, 2),
+      fontFamily:options.axisLabelTextStyle.fontFamily,
+      fontWeight:options.axisLabelTextStyle.fontWeight,
+      distance: options.axisLabelDistance,
+      formatter: (value) => {
+        return `${value.toFixed(0)}`
+      } 
     }
     const _title = () => {
       return {
@@ -228,6 +242,7 @@ export default class Visual extends WynVisual {
       axisLine: _axisLine((options.width * (options.gaugeR / 100))),
       splitLine: _splitLine(),
       axisTick: _axisTick(),
+      axisLabel:　_axisLabel,
       pointer: {//指针
         show: true,
         width: 5,
@@ -290,15 +305,7 @@ export default class Visual extends WynVisual {
       },
       axisLine: _axisLine((options.width * (options.gaugeR / 100)), [[1, options.gradientBgColor]]),
       axisTick: _axisTick(-(options.width + 20)),
-      axisLabel: {
-        show: true,
-        // distance: -20,
-        color: '#999',
-        // fontSize: 20,
-        formatter: (value) => {
-          return `${value.toFixed(0)}`
-        } ,
-      },
+      axisLabel:　_axisLabel,
       anchor: {
         show: false
       },
@@ -538,15 +545,7 @@ export default class Visual extends WynVisual {
           name: '外部刻度',
           ..._gaugeStyle(options.gaugeR * (48 / 52)),
           axisLine: _axisLine(1,  [[1, 'rgba(0,0,0,0)']]),
-          axisLabel: {
-              show: true,
-              color: '#ffffff',
-              fontSize:14,
-              fontFamily:'SourceHanSansSC-Regular',
-              fontWeight:'bold',
-              // position: "top",
-                distance: -30,
-          }, //刻度标签。
+          axisLabel: _axisLabel, //刻度标签。
         axisTick: _axisTick(),
           splitLine: _splitLine(),
           detail: {

@@ -313,6 +313,38 @@
                 ]
             },
             {
+                "displayName": "刻度标签",
+                "properties": [
+                    {
+                        "name": "showAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "axisLabelDistance",
+                        "type": "Integer",
+                        "displayName": "标签和线的距离",
+                        "defaultValue": -30
+                    },
+                    {
+                        "name": "axisLabelColor",
+                        "type": "Color",
+                        "displayName": "颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "axisLabelTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.5X"
+                        }
+                    }
+                ]
+            },
+            {
                 "displayName": "副标题样式",
                 "properties": [
                     {
