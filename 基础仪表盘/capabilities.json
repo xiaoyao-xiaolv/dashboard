@@ -311,13 +311,13 @@
                         "name": "showSubTitle",
                         "type": "Boolean",
                         "displayName": "显示副标题",
-                        "defaultValue": false
+                        "defaultValue": true
                     },
                     {
                         "name": "subtitle",
                         "type": "Text",
                         "displayNameKey": "副标题",
-                        "defaultValue": "示例"
+                        "defaultValue": ""
                     },
                     {
                         "name": "titleXPosition",
@@ -343,14 +343,8 @@
                 ]
             },
             {
-                "displayName": "数据标签",
+                "displayName": "数据标签一",
                 "properties": [
-                    {
-                        "name": "showDataLabel",
-                        "type": "Boolean",
-                        "displayName": "数据标签",
-                        "defaultValue": true
-                    },
                     {
                         "name": "showActual",
                         "type": "Boolean",
@@ -358,37 +352,102 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "ActualLineHeight",
+                        "type": "Integer",
+                        "displayName": "标签行高",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "ActualXPosition",
+                        "type": "Integer",
+                        "displayName": "标签X偏移量",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "ActualYPosition",
+                        "type": "Integer",
+                        "displayName": "标签Y偏移量",
+                        "defaultValue": 40
+                    },
+                    {
+                        "name": "ActualTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "2.0X"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标签二",
+                "properties": [
+                    {
                         "name": "showContrast",
                         "type": "Boolean",
                         "displayName": "对比值",
                         "defaultValue": true
                     },
                     {
-                        "name": "showDetail",
-                        "type": "Boolean",
-                        "displayName": "比例值",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "dataLabelLineHeight",
+                        "name": "ContrastLineHeight",
                         "type": "Integer",
                         "displayName": "标签行高",
                         "defaultValue": 30
                     },
+                  
                     {
-                        "name": "dataLabelXPosition",
+                        "name": "ContrastXPosition",
                         "type": "Integer",
                         "displayName": "标签X偏移量",
                         "defaultValue": 0
                     },
                     {
-                        "name": "dataLabelYPosition",
+                        "name": "ContrastYPosition",
+                        "type": "Integer",
+                        "displayName": "标签Y偏移量",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "ContrastTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "2.0X"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标签三",
+                "properties": [
+                    {
+                        "name": "showDetail",
+                        "type": "Boolean",
+                        "displayName": "比例值",
+                        "defaultValue": true
+                    },   
+                    {
+                        "name": "DetailLineHeight",
+                        "type": "Integer",
+                        "displayName": "标签行高",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "DetailXPosition",
+                        "type": "Integer",
+                        "displayName": "标签X偏移量",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "DetailYPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
                         "defaultValue": 60
                     },
                     {
-                        "name": "detailTextStyle",
+                        "name": "DetailTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",

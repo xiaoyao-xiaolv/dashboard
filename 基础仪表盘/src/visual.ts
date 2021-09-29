@@ -68,12 +68,12 @@ export default class Visual extends WynVisual {
     } else {
       fontWeight = options.textStyle.fontWeight
     }
-    let detailfontWeight: string;
-    if (options.detailTextStyle.fontWeight == "Light") {
-      detailfontWeight = options.detailTextStyle.fontWeight + "er"
-    } else {
-      detailfontWeight = options.detailTextStyle.fontWeight
-    }
+    // let detailfontWeight: string;
+    // if (options.detailTextStyle.fontWeight == "Light") {
+    //   detailfontWeight = options.detailTextStyle.fontWeight + "er"
+    // } else {
+    //   detailfontWeight = options.detailTextStyle.fontWeight
+    // }
     // 图表样式
     const _gaugeStyle = (radius?: any, splitNumber?: number) => {
       return {
@@ -111,7 +111,6 @@ export default class Visual extends WynVisual {
         }
       }
     }
-
     //刻度样式
     const _axisTick = (_distance?: number) => {
       return {
@@ -125,8 +124,7 @@ export default class Visual extends WynVisual {
         }
       }
     }
-    // 数据标注和标题
-    const _titleDataAndDetail = () => {
+    const _title = () => {
       return {
         title: { //标题
           show: options.showSubTitle,
@@ -135,33 +133,43 @@ export default class Visual extends WynVisual {
           lineHeight:15,
           color: options.textStyle.color,
           fontSize: options.textStyle.fontSize.substr(0, 2),
-          fontWeight: fontWeight,
+          // fontWeight: fontWeight,
           fontFamily: options.textStyle.fontFamily,
           fontStyle: options.textStyle.fontStyle
         },
+      }
+    }
+    // 数据标注和标题
+    const _dataAndDetail = (_labelNumber?: string) => {
+      if (_labelNumber) {
+        console.log(options[`${_labelNumber}TextStyle`], '=====')
+      }
+      
+      return {
         detail: {//明细
-          show: options.showDataLabel,
+          show: options[`show${_labelNumber}`] || options.showDataLabel,
           formatter: (value) => {
             let _detail = [];
             if (!isMock) {
-              if (options.showActual) {
-                _detail.push(this._actualValue)
+              if (options[`show${_labelNumber}`]) {
+                if (_labelNumber === 'Detail') {
+                  _detail.push(`(${value}%)`)
+                } else {
+                  _detail.push(this[`_${_labelNumber.toLowerCase()}Value`])
+                }
               }
-              if (options.showContrast) {
-                _detail.push(this._contrastValue)
-              }
-            }
-            if (options.showDetail) {
+            } else {
               _detail.push(`(${value}%)`)
             }
-            return _detail.join('/')
+            return _detail.join('\n')
           },
-          offsetCenter: [`${options.dataLabelXPosition}%`,`${options.dataLabelYPosition}%`],
-          color: options.detailTextStyle.color,
-          fontSize: options.detailTextStyle.fontSize.substr(0, 2),
-          fontWeight: detailfontWeight,
-          fontFamily: options.detailTextStyle.fontFamily,
-          fontStyle: options.detailTextStyle.fontStyle
+          offsetCenter: [`${options[`${_labelNumber}XPosition`]}%`,`${options[`${_labelNumber}YPosition`]}%`],
+          color: options[`${_labelNumber}TextStyle`].color,
+          fontSize: options[`${_labelNumber}TextStyle`].fontSize.substr(0, 2),
+          // fontWeight: detailfontWeight,
+          fontFamily: options[`${_labelNumber}TextStyle`].fontFamily,
+          // fontStyle: options.detailTextStyle.fontStyle
+          fontStyle: options[`${_labelNumber}TextStyle`].fontStyle
         },
         data: [{
           value: Number(items.toFixed(2)),
@@ -169,6 +177,30 @@ export default class Visual extends WynVisual {
         }]
       }
     }
+    
+    const _disableStyle = {
+      progress: { show: false},
+      pointer: { show: false },
+      axisLine: {show: false },
+      axisTick: { show: false },
+      splitLine: { show: false},
+      axisLabel: { show: false },
+      title: {show: false},
+    }
+
+    const ContrastAndDetailGauge = [{
+      name: 'Contrast',
+      ..._disableStyle,
+      ..._gaugeStyle(),
+      ..._dataAndDetail('Contrast')
+    },
+    {
+      name: 'Detail',
+      ..._disableStyle,
+      ..._gaugeStyle(),
+      ..._dataAndDetail('Detail')
+      }];
+    
     const basicGauge = [{
       name: options.subtitle,
       ..._gaugeStyle(),
@@ -180,8 +212,12 @@ export default class Visual extends WynVisual {
         width: 5,
         length: "80%"
       },
-      ..._titleDataAndDetail()
-    }]
+      ..._title(),
+      ..._dataAndDetail('Actual')
+    },
+    ...ContrastAndDetailGauge,
+    ];
+    
     // const percent = 52; //百分数
     let color_percent0 = '',
         color_percent100 = '',
@@ -207,14 +243,14 @@ export default class Visual extends WynVisual {
             color_percent100 = 'rgba(255,0,36,.3)'
         }else if (data > 80&&data<=100) {
             dotArray.push(...[_number,_number,_number,_number,_number])
-             color_percent0 = 'rgba(255,0,36,1)'
+            color_percent0 = 'rgba(255,0,36,1)'
             color_percent100 = 'rgba(255,0,36,.3)'
         }
-    
     }
+
     calculateDot(items)//80%显示4个点，
     const pieGauge = [{
-      ..._gaugeStyle( options.gaugeR * 0.9),
+      ..._gaugeStyle( options.gaugeR),
       itemStyle: {
         color: new echarts.graphic.LinearGradient(1, 0.4, 0, 0, [{
           offset: 0,
@@ -245,7 +281,8 @@ export default class Visual extends WynVisual {
       anchor: {
         show: false
       },
-      ..._titleDataAndDetail()
+      ..._title(),
+      ..._dataAndDetail('Actual')
     },
     {
       ..._gaugeStyle(options.gaugeR * 0.7),
@@ -261,11 +298,7 @@ export default class Visual extends WynVisual {
       progress: {
         show: true,
       },
-      pointer: {show: false },
-      axisLine: {show: false },
-      axisTick: { show: false },
-      splitLine: { show: false},
-      axisLabel: {show: false},
+      ..._disableStyle,
       detail: { show: false },
       data: [
         {
@@ -273,6 +306,7 @@ export default class Visual extends WynVisual {
         }
       ]
     },
+    ...ContrastAndDetailGauge,
     //总共有5个小球
     {
       name: '',
@@ -297,7 +331,6 @@ export default class Visual extends WynVisual {
     },
     {//第一个线
       name: '',
-
       type: 'line',
       color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
         offset: 0,
@@ -386,31 +419,11 @@ export default class Visual extends WynVisual {
         return `rgba(${r}, ${g}, ${b}, ${a})`
       }
     }
-    const dataArr = 44;
+
     const colorSet = {
         color: options.shadowColor,
         lightColor: getLightOrDarkColor(options.shadowColor, 0.1, true)
     };
-
-    const color1 = {
-            type: "linear",
-            x: 0,
-            y: 0,
-            x2: 1,
-            y2: 1,
-            colorStops: [
-                {
-                  offset: 0,
-                  color: "rgba(255,255,255,0.1)"
-                },
-                {
-                    offset: 1,
-                    color: "rgba(255,255,255,0.3)"
-                }
-            ],
-                global: false
-    }
-
     const color2 = {
         type: "linear",
         x: 0,
@@ -431,6 +444,7 @@ export default class Visual extends WynVisual {
     }
 
     const pieGaugeProgress = [
+      ...ContrastAndDetailGauge,
       {
             name: "外部进度条",
             ..._gaugeStyle(),
@@ -439,7 +453,8 @@ export default class Visual extends WynVisual {
             axisTick: { show: false,},
             splitLine: {show: false,},
             itemStyle: {color:"#ffffff"},
-            ..._titleDataAndDetail(),
+            ..._title(),
+            ..._dataAndDetail('Actual'),
             pointer: {
                 show: true,
                 length: '70%',
@@ -454,8 +469,7 @@ export default class Visual extends WynVisual {
           name: "内部阴影",
           type: "gauge",
           ..._gaugeStyle(options.gaugeR * (46 / 52)),
-          axisLine: _axisLine((100 * (options.gaugeR / 100)), [
-            [Number(items) / 100, new echarts.graphic.LinearGradient(
+          axisLine: _axisLine((100 * (options.gaugeR / 100)), [[Number(items) / 100, new echarts.graphic.LinearGradient(
                 0, 1, 0, 0, [{
                         offset: 0,
                         color: hexToRgba(options.shadowColor, 0.1),
@@ -472,28 +486,6 @@ export default class Visual extends WynVisual {
             [
                 1, 'rgba(0,0,0,0)'
             ]
-        ]),
-          axisLabel: {
-              show: false,
-          },
-          axisTick: {
-              show: false,
-
-          },
-          splitLine: {
-              show: false,
-          },
-          itemStyle: {
-              show: false,
-          },
-      
-      },
-      {
-          name: "内部小圆",
-          ..._gaugeStyle(options.gaugeR * (48 / 52)),
-          axisLine: _axisLine((10 * (options.gaugeR / 100)),  [
-            [Number(items) / 100, color2],
-            [1, "rgba(0,0,0,0)"]
           ]),
           axisLabel: {
               show: false,
@@ -508,6 +500,18 @@ export default class Visual extends WynVisual {
           itemStyle: {
               show: false,
           },
+      },
+      {
+          name: "内部小圆",
+          ..._gaugeStyle(options.gaugeR * (48 / 52)),
+          axisLine: _axisLine((10 * (options.gaugeR / 100)),  [
+            [Number(items) / 100, color2],
+            [1, "rgba(0,0,0,0)"]
+          ]),
+          axisLabel: { show: false,},
+          axisTick: { show: false,},
+          splitLine: { show: false,},
+          itemStyle: { show: false, },
       },
       {
           name: '外部刻度',
@@ -521,12 +525,12 @@ export default class Visual extends WynVisual {
               fontWeight:'bold',
               // position: "top",
                 distance: -30,
-        }, //刻度标签。
+          }, //刻度标签。
         axisTick: _axisTick(),
           splitLine: _splitLine(),
           detail: {
               show: false
-          }
+        }
       },
       {
           name: "内部进度条",
@@ -535,53 +539,10 @@ export default class Visual extends WynVisual {
             [Number(items)  / 100, colorSet.color],
             [1, colorSet.color]
           ]),
-          axisLabel: {
-              show: false,
-          },
-          axisTick: {
-              show: false,
-          },
-          splitLine: {
-              show: false,
-          },
-          itemStyle: {
-              color:"#ffffff"
-          },
-          // detail: {
-          //     formatter: function(value) {
-          //         if (value !== 0) {
-          //             var num = Math.round(value ) ;
-          //             return parseInt(`${num}`).toFixed(0)+"%";
-          //         } else {
-          //             return 0;
-          //         }
-          //     },
-          //     offsetCenter: [0, 67],
-          //     textStyle: {
-          //         padding: [0, 0, 0, 0],
-          //         fontSize: 18,
-          //         color: "#fff"
-          //     }
-          // },
-          // title: { //标题
-          //     show: true,
-          //     offsetCenter: [0, 46], // x, y，单位px
-          //     textStyle: {
-          //         color: "#fff",
-          //         fontSize: 14, //表盘上的标题文字大小
-          //         fontWeight: 400,
-          //         fontFamily: 'MicrosoftYaHei'
-          //     }
-          // },
-          // data: [{
-          //     name: "去年优良率",
-          //     value: items,
-          //     itemStyle:{
-          //       color:"#ffffff",
-          //       fontFamily: "MicrosoftYaHei",
-          //       fontSize:14
-          //     }
-          // }],
+          axisLabel: { show: false,},
+          axisTick: { show: false, },
+          splitLine: { show: false, },
+          itemStyle: { color:"#ffffff"},
       },
       { //指针上的圆
           type: 'pie',
@@ -711,8 +672,20 @@ export default class Visual extends WynVisual {
 
     if (options.properties.Contrast == "dataset") {
       hiddenOptions = hiddenOptions.concat(['customContrast'])
-
     }
+
+    if (!options.properties.showActual) {
+      hiddenOptions = hiddenOptions.concat(['ActualLineHeight', 'ActualXPosition', 'ActualYPosition', 'ActualTextStyle'])
+    }
+
+    if (!options.properties.showContrast) {
+      hiddenOptions = hiddenOptions.concat(['ContrastLineHeight', 'ContrastXPosition', 'ContrastYPosition', 'ContrastTextStyle'])
+    }
+
+    if (!options.properties.showDetail) {
+      hiddenOptions = hiddenOptions.concat(['DetailLineHeight', 'DetailXPosition', 'DetailYPosition', 'DetailTextStyle'])
+    }
+
     return hiddenOptions;
   }
 
