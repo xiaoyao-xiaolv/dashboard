@@ -174,37 +174,45 @@ export default class Visual extends WynVisual {
     const _dataAndDetail = (_labelNumber?: string) => {
       return {
         detail: {//明细
-          show: options[`show${_labelNumber}`] || options.showDataLabel,
+          show: options[`showDataLabel${_labelNumber}`],
           formatter: (value) => {
-            let _detail ='';
+            let _detail = [];
             if (!isMock) {
-              if (options[`show${_labelNumber}`]) {
-                if (_labelNumber === 'Detail') {
-                  _detail = `(${value}${options.DetailDisplayUnit})`
-                } else {
-                  _detail = this[`_${_labelNumber.toLowerCase()}Value`];
-                  let realDisplayUnit = this[`${_labelNumber}DisplayUnit`];
-                  const formatService = this.host.formatService;
-                  if (formatService.isAutoDisplayUnit(this[`${_labelNumber}DisplayUnit`])) {
-                    realDisplayUnit = formatService.getAutoDisplayUnit(_detail);
-                  }
-                  _detail = formatService.format(this[`${_labelNumber}Format`], _detail, realDisplayUnit);
+              const formatAndDisplayUnit = (_value: number, _label: string) => {
+                let realDisplayUnit = this[`${_label}DisplayUnit`];
+                const formatService = this.host.formatService;
+                if (formatService.isAutoDisplayUnit(this[`${_label}DisplayUnit`])) {
+                  realDisplayUnit = formatService.getAutoDisplayUnit(_value);
                 }
+                return  formatService.format(this[`${_label}Format`], _value, realDisplayUnit);
+              }
+              if (options[`showActual${_labelNumber}`]) {
+                _detail.push(formatAndDisplayUnit(this._actualValue, 'Actual'))
+              }
+              if (options[`showContrast${_labelNumber}`]) {
+                _detail.push(formatAndDisplayUnit(this._contrastValue, 'Contrast'))
+              }
+
+              if (options[`showDetail${_labelNumber}`]) {
+                _detail.push(`(${value}${options.DetailDisplayUnit})`)
               }
             } else {
-              if (_labelNumber === 'Detail') {
-                _detail = `(${value}${options.DetailDisplayUnit})`
+              // data label 1
+              if (_labelNumber === '1') {
+                _detail.push(`20`)
+              } else {
+                _detail.push(`(${value}${options.DetailDisplayUnit})`)
               }
             }
-            return _detail;
+            return _detail.join('/');
           },
-          offsetCenter: [`${options[`${_labelNumber}XPosition`]}%`,`${options[`${_labelNumber}YPosition`]}%`],
-          color: options[`${_labelNumber}TextStyle`].color,
-          fontSize: options[`${_labelNumber}TextStyle`].fontSize.substr(0, 2),
+          offsetCenter: [`${options[`dataLabel${_labelNumber}XPosition`]}%`,`${options[`dataLabel${_labelNumber}YPosition`]}%`],
+          color: options[`dataLabel${_labelNumber}TextStyle`].color,
+          fontSize: options[`dataLabel${_labelNumber}TextStyle`].fontSize.substr(0, 2),
           // fontWeight: detailfontWeight,
-          fontFamily: options[`${_labelNumber}TextStyle`].fontFamily,
+          fontFamily: options[`dataLabel${_labelNumber}TextStyle`].fontFamily,
           // fontStyle: options.detailTextStyle.fontStyle
-          fontStyle: options[`${_labelNumber}TextStyle`].fontStyle
+          fontStyle: options[`dataLabel${_labelNumber}TextStyle`].fontStyle
         },
         data: [{
           value: Number(items.toFixed(2)),
@@ -227,13 +235,13 @@ export default class Visual extends WynVisual {
       name: 'Contrast',
       ..._disableStyle,
       ..._gaugeStyle(),
-      ..._dataAndDetail('Contrast')
+      ..._dataAndDetail('2')
     },
     {
-      name: 'Detail',
-      ..._disableStyle,
-      ..._gaugeStyle(),
-      ..._dataAndDetail('Detail')
+      // name: 'Detail',
+      // ..._disableStyle,
+      // ..._gaugeStyle(),
+      // ..._dataAndDetail('Detail')
     }];
     
     const basicGauge = [{
@@ -249,7 +257,7 @@ export default class Visual extends WynVisual {
         length: "80%"
       },
       ..._title(),
-      ..._dataAndDetail('Actual')
+      ..._dataAndDetail('1')
     },
     ...ContrastAndDetailGauge,
     ];
@@ -310,7 +318,7 @@ export default class Visual extends WynVisual {
         show: false
       },
       ..._title(),
-      ..._dataAndDetail('Actual')
+      ..._dataAndDetail('1')
     },
     {
       ..._gaugeStyle(options.gaugeR * 0.7),
@@ -482,7 +490,7 @@ export default class Visual extends WynVisual {
             splitLine: {show: false,},
             itemStyle: {color:"#ffffff"},
             ..._title(),
-            ..._dataAndDetail('Actual'),
+            // ..._dataAndDetail('1'),
             pointer: {
                 show: true,
                 length: '70%',
@@ -692,18 +700,6 @@ export default class Visual extends WynVisual {
 
     if (options.properties.Contrast == "dataset") {
       hiddenOptions = hiddenOptions.concat(['customContrast'])
-    }
-
-    if (!options.properties.showActual) {
-      hiddenOptions = hiddenOptions.concat(['ActualLineHeight', 'ActualXPosition', 'ActualYPosition', 'ActualTextStyle'])
-    }
-
-    if (!options.properties.showContrast) {
-      hiddenOptions = hiddenOptions.concat(['ContrastLineHeight', 'ContrastXPosition', 'ContrastYPosition', 'ContrastTextStyle'])
-    }
-
-    if (!options.properties.showDetail) {
-      hiddenOptions = hiddenOptions.concat(['DetailLineHeight', 'DetailXPosition', 'DetailYPosition', 'DetailTextStyle'])
     }
 
     return hiddenOptions;

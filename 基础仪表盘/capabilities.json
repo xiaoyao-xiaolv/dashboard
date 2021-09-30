@@ -325,7 +325,7 @@
                         "name": "axisLabelDistance",
                         "type": "Integer",
                         "displayName": "标签和线的距离",
-                        "defaultValue": -30
+                        "defaultValue": 0
                     },
                     {
                         "name": "axisLabelColor",
@@ -383,34 +383,52 @@
                 ]
             },
             {
-                "displayName": "数据标签一",
+                "displayName": "数据标签1",
                 "properties": [
                     {
-                        "name": "showActual",
+                        "name": "showDataLabel1",
+                        "type": "Boolean",
+                        "displayName": "数据标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showActual1",
                         "type": "Boolean",
                         "displayName": "实际值",
                         "defaultValue": true
                     },
                     {
-                        "name": "ActualLineHeight",
+                        "name": "showContrast1",
+                        "type": "Boolean",
+                        "displayName": "对比值",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showDetail1",
+                        "type": "Boolean",
+                        "displayName": "百分比",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dataLabel1LineHeight",
                         "type": "Integer",
                         "displayName": "标签行高",
                         "defaultValue": 30
                     },
                     {
-                        "name": "ActualXPosition",
+                        "name": "dataLabel1XPosition",
                         "type": "Integer",
                         "displayName": "标签X偏移量",
                         "defaultValue": 0
                     },
                     {
-                        "name": "ActualYPosition",
+                        "name": "dataLabel1YPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
-                        "defaultValue": 40
+                        "defaultValue": 60
                     },
                     {
-                        "name": "ActualTextStyle",
+                        "name": "dataLabel1TextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
@@ -421,57 +439,54 @@
                 ]
             },
             {
-                "displayName": "数据标签二",
+                "displayName": "数据标签2",
                 "properties": [
                     {
-                        "name": "showContrast",
+                        "name": "showDataLabel2",
+                        "type": "Boolean",
+                        "displayName": "数据标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showActual2",
+                        "type": "Boolean",
+                        "displayName": "实际值",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showContrast2",
                         "type": "Boolean",
                         "displayName": "对比值",
                         "defaultValue": true
                     },
                     {
-                        "name": "ContrastLineHeight",
+                        "name": "showDetail2",
+                        "type": "Boolean",
+                        "displayName": "百分比",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "dataLabel2LineHeight",
                         "type": "Integer",
                         "displayName": "标签行高",
                         "defaultValue": 30
                     },
-                  
                     {
-                        "name": "ContrastXPosition",
+                        "name": "dataLabel2XPosition",
                         "type": "Integer",
                         "displayName": "标签X偏移量",
                         "defaultValue": 0
                     },
                     {
-                        "name": "ContrastYPosition",
+                        "name": "dataLabel2YPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
-                        "defaultValue": 50
-                    },
-                    {
-                        "name": "ContrastTextStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle",
-                        "defaultValue" : {
-                            "fontSize": "2.0X"
-                        }
-                    }
-                ]
-            },
-            {
-                "displayName": "数据标签三",
-                "properties": [
-                    {
-                        "name": "showDetail",
-                        "type": "Boolean",
-                        "displayName": "比例值",
-                        "defaultValue": true
+                        "defaultValue": 70
                     },
                     {
                         "name": "DetailDisplayUnit",
                         "type": "Enum",
-                        "displayName": "数据单位",
+                        "displayName": "百分比单位",
                         "items": [
                             {
                                 "value": "%",
@@ -493,25 +508,7 @@
                         "defaultValue": "%"
                     },
                     {
-                        "name": "DetailLineHeight",
-                        "type": "Integer",
-                        "displayName": "标签行高",
-                        "defaultValue": 30
-                    },
-                    {
-                        "name": "DetailXPosition",
-                        "type": "Integer",
-                        "displayName": "标签X偏移量",
-                        "defaultValue": 0
-                    },
-                    {
-                        "name": "DetailYPosition",
-                        "type": "Integer",
-                        "displayName": "标签Y偏移量",
-                        "defaultValue": 60
-                    },
-                    {
-                        "name": "DetailTextStyle",
+                        "name": "dataLabel2TextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
