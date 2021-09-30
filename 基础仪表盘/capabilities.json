@@ -267,8 +267,9 @@
                         "name": "splitLineDistance",
                         "type": "Integer",
                         "displayName": "线和轴的距离",
-                        "defaultValue": -60
+                        "defaultValue": 0
                     },
+                
                     {
                         "name": "splitLineColor",
                         "type": "Color",
@@ -302,7 +303,13 @@
                         "name": "axisTickDistance",
                         "type": "Integer",
                         "displayName": "线和轴的距离",
-                        "defaultValue": -60
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "axisTickShadowDistance",
+                        "type": "Integer",
+                        "displayName": "线和轴的距离",
+                        "defaultValue": -10
                     },
                     {
                         "name": "axisTickColor",
@@ -325,7 +332,13 @@
                         "name": "axisLabelDistance",
                         "type": "Integer",
                         "displayName": "标签和线的距离",
-                        "defaultValue": 0
+                        "defaultValue": 65
+                    },
+                    {
+                        "name": "axisLabelShadowDistance",
+                        "type": "Integer",
+                        "displayName": "标签和线的距离",
+                        "defaultValue": -55
                     },
                     {
                         "name": "axisLabelColor",

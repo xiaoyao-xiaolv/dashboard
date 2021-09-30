@@ -134,7 +134,7 @@ export default class Visual extends WynVisual {
       return {
         show: options.showaxisTick,
         splitNumber: options.axisTickNum, //分割线之间的刻度数
-        distance:  options.axisTickDistance ||  _distance || 10,
+        distance: options.gaugeOptions === 'shadow' ? options.axisTickShadowDistance :   options.axisTickDistance,
         lineStyle: {
           type: "solid",
           color: options.axisTickColor,
@@ -150,7 +150,7 @@ export default class Visual extends WynVisual {
       fontSize: options.axisLabelTextStyle.fontSize.substr(0, 2),
       fontFamily:options.axisLabelTextStyle.fontFamily,
       fontWeight:options.axisLabelTextStyle.fontWeight,
-      distance: options.axisLabelDistance,
+      distance:options.gaugeOptions === 'shadow' ? options.axisLabelShadowDistance : options.axisLabelDistance,
       formatter: (value) => {
         return `${value.toFixed(0)}`
       } 
@@ -237,12 +237,7 @@ export default class Visual extends WynVisual {
       ..._gaugeStyle(),
       ..._dataAndDetail('2')
     },
-    {
-      // name: 'Detail',
-      // ..._disableStyle,
-      // ..._gaugeStyle(),
-      // ..._dataAndDetail('Detail')
-    }];
+    ];
     
     const basicGauge = [{
       name: options.subtitle,
@@ -490,7 +485,7 @@ export default class Visual extends WynVisual {
             splitLine: {show: false,},
             itemStyle: {color:"#ffffff"},
             ..._title(),
-            // ..._dataAndDetail('1'),
+            ..._dataAndDetail('1'),
             pointer: {
                 show: true,
                 length: '70%',
@@ -702,6 +697,25 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['customContrast'])
     }
 
+    if (options.properties.gaugeOptions == "shadow") {
+      hiddenOptions = hiddenOptions.concat(['axisTickDistance', 'axisLabelDistance', 'gradientBgColor', , 'palette'])
+    } else {
+      hiddenOptions = hiddenOptions.concat(['axisTickShadowDistance', 'axisLabelShadowDistance', 'shadowColor'])
+      if (options.properties.gaugeOptions !== "gradient") {
+        hiddenOptions = hiddenOptions.concat(['gradientBgColor'])
+      } else {
+        hiddenOptions = hiddenOptions.concat(['palette'])
+      }
+    }
+
+    if (!options.properties.showDataLabel1) {
+      hiddenOptions = hiddenOptions.concat(['showActual1', 'showContrast1', 'showDetail1', 'dataLabel1LineHeight', 'dataLabel1XPosition', 'dataLabel1YPosition', 'dataLabel1TextStyle'])
+    }
+
+    if (!options.properties.showDataLabel2) {
+      hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle', 'DetailDisplayUnit'])
+    }
+    
     return hiddenOptions;
   }
 
