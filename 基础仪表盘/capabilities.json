@@ -358,6 +358,29 @@
                 ]
             },
             {
+                "displayName": "指针样式",
+                "properties": [
+                    {
+                        "name": "showPointer",
+                        "type": "Boolean",
+                        "displayName": "显示指针",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "pointerLength",
+                        "type": "Percentage",
+                        "displayName": "指针长度",
+                        "defaultValue": 70
+                    },
+                    {
+                        "name": "pointerWidth",
+                        "type": "Integer",
+                        "displayName": "指针宽度",
+                        "defaultValue": 3
+                    }
+                ]
+            },
+            {
                 "displayName": "副标题样式",
                 "properties": [
                     {
@@ -438,7 +461,7 @@
                         "name": "dataLabel1YPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
-                        "defaultValue": 60
+                        "defaultValue":40
                     },
                     {
                         "name": "dataLabel1TextStyle",
@@ -494,7 +517,7 @@
                         "name": "dataLabel2YPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
-                        "defaultValue": 70
+                        "defaultValue": 50
                     },
                     {
                         "name": "DetailDisplayUnit",

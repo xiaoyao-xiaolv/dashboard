@@ -155,6 +155,7 @@ export default class Visual extends WynVisual {
         return `${value.toFixed(0)}`
       } 
     }
+
     const _title = () => {
       return {
         title: { //标题
@@ -170,6 +171,15 @@ export default class Visual extends WynVisual {
         },
       }
     }
+
+    // 指针样式
+    const _pointer = {
+      show: options.showPointer,
+      length: `${options.pointerLength}%`,
+      radius: '20%',
+      width: options.pointerWidth, //指针粗细
+      // offsetCenter: [`${options.pointerXPosition}%`, `${options.pointerYPosition}%`]
+  }
     // 数据标注和标题
     const _dataAndDetail = (_labelNumber?: string) => {
       return {
@@ -246,11 +256,7 @@ export default class Visual extends WynVisual {
       splitLine: _splitLine(),
       axisTick: _axisTick(),
       axisLabel:　_axisLabel,
-      pointer: {//指针
-        show: true,
-        width: 5,
-        length: "80%"
-      },
+      pointer:_pointer,
       ..._title(),
       ..._dataAndDetail('1')
     },
@@ -486,12 +492,7 @@ export default class Visual extends WynVisual {
             itemStyle: {color:"#ffffff"},
             ..._title(),
             ..._dataAndDetail('1'),
-            pointer: {
-                show: true,
-                length: '70%',
-                radius: '20%',
-                width: 3 //指针粗细
-            },
+            pointer: _pointer,
             progress: {
               show: false,
             },
@@ -549,7 +550,7 @@ export default class Visual extends WynVisual {
           ..._gaugeStyle(options.gaugeR * (48 / 52)),
           axisLine: _axisLine(1,  [[1, 'rgba(0,0,0,0)']]),
           axisLabel: _axisLabel, //刻度标签。
-        axisTick: _axisTick(),
+          axisTick: _axisTick(),
           splitLine: _splitLine(),
           detail: {
               show: false
@@ -704,10 +705,13 @@ export default class Visual extends WynVisual {
       if (options.properties.gaugeOptions !== "gradient") {
         hiddenOptions = hiddenOptions.concat(['gradientBgColor'])
       } else {
-        hiddenOptions = hiddenOptions.concat(['palette'])
+        hiddenOptions = hiddenOptions.concat(['palette','showPointer', 'pointerLength', 'pointerWidth'])
       }
     }
 
+    if (!options.properties.showPointer) {
+      hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth'])
+    }
     if (!options.properties.showDataLabel1) {
       hiddenOptions = hiddenOptions.concat(['showActual1', 'showContrast1', 'showDetail1', 'dataLabel1LineHeight', 'dataLabel1XPosition', 'dataLabel1YPosition', 'dataLabel1TextStyle'])
     }
