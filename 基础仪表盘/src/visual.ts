@@ -192,7 +192,7 @@ export default class Visual extends WynVisual {
                 let realDisplayUnit = this[`${_label}DisplayUnit`];
                 const formatService = this.host.formatService;
                 if (formatService.isAutoDisplayUnit(this[`${_label}DisplayUnit`])) {
-                  realDisplayUnit = formatService.getAutoDisplayUnit(_value);
+                  realDisplayUnit = formatService.getAutoDisplayUnit([_value]);
                 }
                 return  formatService.format(this[`${_label}Format`], _value, realDisplayUnit);
               }
@@ -204,14 +204,18 @@ export default class Visual extends WynVisual {
               }
 
               if (options[`showDetail${_labelNumber}`]) {
-                _detail.push(`(${value}${options.DetailDisplayUnit})`)
+                _detail.length > 0
+                  ? _detail.push(`(${value}${options.DetailDisplayUnit})`)
+                  : _detail.push(`${value}${options.DetailDisplayUnit}`);
               }
             } else {
               // data label 1
               if (_labelNumber === '1') {
                 _detail.push(`20`)
               } else {
-                _detail.push(`(${value}${options.DetailDisplayUnit})`)
+                _detail.length > 0
+                  ? _detail.push(`(${value}${options.DetailDisplayUnit})`)
+                  :_detail.push(`${value}${options.DetailDisplayUnit}`)
               }
             }
             return _detail.join('/');
@@ -573,7 +577,7 @@ export default class Visual extends WynVisual {
           tooltip: { show: false },
           hoverAnimation: false,
           legendHoverLink: false,
-          radius: ['0%', '4%'],
+          radius: ['0%', `${options.showPointer ? '4%' : '0%'}`],
           center: [`${options.gaugeXPosition}%`, `${options.gaugeYPosition}%`],
           label: {
               normal: {
@@ -685,7 +689,8 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    let hiddenOptions: Array<string> = [''];
+    //  hidden gauge style
+    let hiddenOptions: Array<string> = ['gaugeOptions'];
     
     if (!options.properties.showSubTitle) {
       hiddenOptions = hiddenOptions.concat(['subtitle'])

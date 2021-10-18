@@ -153,7 +153,7 @@
                                 "value": "shadow"
                             }
                         ],
-                        "defaultValue": "basic"
+                        "defaultValue": "shadow"
                     },
                     {
                         "name": "gaugeR",
@@ -413,7 +413,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue" : {
-                            "fontSize": "2.0X"
+                            "fontSize": "1.5X"
                         }
                     }
                 ]
@@ -461,7 +461,7 @@
                         "name": "dataLabel1YPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
-                        "defaultValue":40
+                        "defaultValue":50
                     },
                     {
                         "name": "dataLabel1TextStyle",
@@ -469,7 +469,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue" : {
-                            "fontSize": "2.0X"
+                            "fontSize": "1.5X"
                         }
                     }
                 ]
@@ -517,7 +517,7 @@
                         "name": "dataLabel2YPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
-                        "defaultValue": 50
+                        "defaultValue": 65
                     },
                     {
                         "name": "DetailDisplayUnit",
@@ -549,7 +549,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue" : {
-                            "fontSize": "2.0X"
+                            "fontSize": "1.0X"
                         }
                     }
                 ]
