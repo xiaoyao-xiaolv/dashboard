@@ -204,7 +204,7 @@
                         "name": "shadowColor",
                         "type": "Color",
                         "displayName": "仪表盘颜色",
-                        "defaultValue": "#22b95e"
+                        "defaultValue": "#509dea"
                     },
                     {
                         "name": "gradientBgColor",
@@ -267,14 +267,14 @@
                         "name": "splitLineDistance",
                         "type": "Integer",
                         "displayName": "线和轴的距离",
-                        "defaultValue": 0
+                        "defaultValue": -10
                     },
                 
                     {
                         "name": "splitLineColor",
                         "type": "Color",
                         "displayName": "颜色",
-                        "defaultValue": "rgba(255, 255, 255, 1)"
+                        "defaultValue": "#f0f0f0"
                     }
                 ]
             },
@@ -309,13 +309,13 @@
                         "name": "axisTickShadowDistance",
                         "type": "Integer",
                         "displayName": "线和轴的距离",
-                        "defaultValue": -10
+                        "defaultValue": 0
                     },
                     {
                         "name": "axisTickColor",
                         "type": "Color",
                         "displayName": "颜色",
-                        "defaultValue": "rgba(255, 255, 255, 1)"
+                        "defaultValue": "#f0f0f0"
                     }
                 ]
             },
@@ -338,13 +338,13 @@
                         "name": "axisLabelShadowDistance",
                         "type": "Integer",
                         "displayName": "标签和线的距离",
-                        "defaultValue": -55
+                        "defaultValue": 2
                     },
                     {
                         "name": "axisLabelColor",
                         "type": "Color",
                         "displayName": "颜色",
-                        "defaultValue": "#fff"
+                        "defaultValue": "#f0f0f0"
                     },
                     {
                         "name": "axisLabelTextStyle",
@@ -352,7 +352,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue" : {
-                            "fontSize": "1.5X"
+                            "fontSize": "1.0X"
                         }
                     }
                 ]
@@ -469,7 +469,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue" : {
-                            "fontSize": "1.5X"
+                            "fontSize": "2.0X"
                         }
                     }
                 ]
@@ -549,7 +549,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue" : {
-                            "fontSize": "1.0X"
+                            "fontSize": "1.2X"
                         }
                     }
                 ]
