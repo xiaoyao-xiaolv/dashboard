@@ -19,6 +19,8 @@ export default class Visual extends WynVisual {
   private items: any;
   private properties: any;
   private ActualValue: any;
+  private isActual: boolean;
+  private isContrast: boolean;
   private ActualFormat: any;
   private ActualDisplayUnit: any;
   private ContrastFormat: any;
@@ -37,16 +39,17 @@ export default class Visual extends WynVisual {
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     const dataView = options.dataViews[0];
-    if (dataView &&
-      dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.ContrastValue.values.length) {
+    if (dataView && dataView.plain.profile.ActualValue.values.length) {
       const plainData = dataView.plain;
-      this._ActualValue = plainData.profile.ActualValue.values[0].display;
-      this._ContrastValue = plainData.profile.ContrastValue.values[0].display;
+      this.isActual = !!plainData.profile.ActualValue.values.length;
+      this.isContrast = !!plainData.profile.ContrastValue.values.length;
+      this._ActualValue = this.isActual && plainData.profile.ActualValue.values[0].display ;
+      this._ContrastValue = this.isContrast && plainData.profile.ContrastValue.values[0].display || '';
       this.ActualValue = plainData.data[0][this._ActualValue];
       // custom 
-      this._actualValue = options.properties.Actual === 'dataset' ? (<number>plainData.data[0][this._ActualValue]) : (Number(options.properties.customActual));
-      this._contrastValue = options.properties.Contrast === 'dataset' ? (<number>plainData.data[0][this._ContrastValue]) : (Number(options.properties.customContrast));
-      this.items = (this._actualValue / this._contrastValue).toFixed(4);
+      this._actualValue = options.properties.Actual === 'dataset' ? (this.isActual && <number>plainData.data[0][this._ActualValue] || 0) : (Number(options.properties.customActual));
+      this._contrastValue = options.properties.Contrast === 'dataset' ? (this.isContrast && <number>plainData.data[0][this._ContrastValue] || 0) : (Number(options.properties.customContrast));
+      this.items = this.isActual && this.isContrast ? (this._actualValue / this._contrastValue).toFixed(4) :  `${1}`;
 
       // format 
       this.ActualFormat = dataView.plain.profile.ActualValue.options.valueFormat;
@@ -56,17 +59,19 @@ export default class Visual extends WynVisual {
     } else {
       this._actualValue = options.properties.Actual === 'customdata' && (Number(options.properties.customActual)) || 0;
       this._contrastValue = options.properties.Contrast === 'customdata' &&  (Number(options.properties.customContrast)) || 0;
-      if (this._actualValue > 0 && this._contrastValue> 0) {
+      if (this._actualValue > 0 && this._contrastValue > 0) {
         this.items = (this._actualValue / this._contrastValue).toFixed(4);
       }
-    }
 
+    }
+    if (dataView && dataView.plain.profile.ContrastValue.values.length && !dataView.plain.profile.ActualValue.values.length) {
+      this.items = '1';
+    }
     this.properties = options.properties;
     this.render();
   }
 
   private render() {
-    this.chart.clear();
     const isMock = !this.items.length;
     const items = ((isMock ? Visual.mockItems : this.items) * 100);
     this.container.style.opacity = isMock ? '0.3' : '1';
@@ -196,10 +201,10 @@ export default class Visual extends WynVisual {
                 }
                 return  formatService.format(this[`${_label}Format`], _value, realDisplayUnit);
               }
-              if (options[`showActual${_labelNumber}`]) {
+              if (options[`showActual${_labelNumber}`] && this.isActual && this._actualValue) {
                 _detail.push(formatAndDisplayUnit(this._actualValue, 'Actual'))
               }
-              if (options[`showContrast${_labelNumber}`]) {
+              if (options[`showContrast${_labelNumber}`] && this.isContrast) {
                 _detail.push(formatAndDisplayUnit(this._contrastValue, 'Contrast'))
               }
 
@@ -620,26 +625,6 @@ export default class Visual extends WynVisual {
     }
 
     const option = {
-      // backgroundColor: '#000',
-      // haha chart options
-      // title: {
-      //     "x": '50%',
-      //     "y": '45%',
-      //     textAlign: "center",
-      //     top: '68%',//字体的位置
-      //     'text': '哈哈',
-      //     "textStyle": {
-      //         "fontWeight": 'normal',
-      //         "color": '#FFF',
-      //         "fontSize": 60
-      //     },
-      //     "subtextStyle": {//副标题的文字的样式
-      //         "fontWeight": 'bold',
-      //         "fontSize": 18,
-      //         "color": '#3ea1ff'
-      //     },
-  
-      // },
       xAxis: {
           show: false,//是否展示x轴
           min: function(value) {//调整x轴上面数据的位置
