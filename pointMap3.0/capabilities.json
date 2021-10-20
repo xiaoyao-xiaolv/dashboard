@@ -1,0 +1,156 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                      }
+                  ]
+            },
+            {
+                "name": "location",
+                "displayNameKey": "位置",
+                "kind": "grouping"
+            },
+            {
+                "name": "longitude",
+                "displayNameKey": "经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "latitude",
+                "displayNameKey": "纬度",
+                "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "max": 0
+                            },
+                            "latitude": {
+                                "max": 0
+                            }
+                        },
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "min": 1
+                            },
+                            "latitude": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "location": {
+                    "max": 1
+                },
+                "longitude": {
+                    "max": 1
+                },
+                "latitude": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction",
+                "properties": [{
+                    "name": "clickLeftMouse",
+                    "type": "Enum",
+                    "displayName": "鼠标左键选项",
+                    "items": [
+                        {
+                            "value": "none",
+                            "displayNameKey": "无"
+                        },
+                        {
+                            "value": "showToolTip",
+                            "displayNameKey": "显示工具提示"
+                        },
+                        {
+                            "value": "Keep",
+                            "displayNameKey": "保留"
+                        },
+                        {
+                            "value": "Exclude",
+                            "displayNameKey": "排除"
+                        },
+                        {
+                            "value": "Drill",
+                            "displayNameKey": "钻取"
+                        },
+                        {
+                            "value": "Jump",
+                            "displayNameKey": "跳转"
+                        }
+                    ],
+                    "defaultValue": "none"
+                }]
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "annotation"
+        }
+
+    ],
+    "analysis": []
+}
