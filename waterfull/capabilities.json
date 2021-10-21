@@ -85,6 +85,12 @@
                         "type": "Color",
                         "displayName": "辅助线颜色",
                         "defaultValue": "#eb4b5c" 
+                    }, 
+                    {
+                        "name": "showTotal",
+                        "type": "Boolean",
+                        "displayName": "显示累计",
+                        "defaultValue": true
                     }
                 ]
             },

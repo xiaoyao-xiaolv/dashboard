@@ -129,7 +129,9 @@ export default class Visual extends WynVisual {
       }
 
       this.items[0] = plainData.data.map((item) => item[dimension]);
-      this.items[0].push('累计')
+      if (options.properties.showTotal) {
+        this.items[0].push('累计')
+      }
       this.items[1] = plainData.data.map((item) => item[ActualValue]);
       this.items[2] = plainData.data.map((item) => getSelectionId(item));
     }
@@ -150,7 +152,8 @@ export default class Visual extends WynVisual {
         }
         return barColor
       }
-      if (i === 0 || i === dy.length - 1) {
+      const lastIndex = options.showTotal ? dy.length - 1 : dy.length;
+      if (i === 0 || i === lastIndex) {
         let x = parseFloat(dy[i]);
         if (x < 0) {
           label.push({
@@ -206,7 +209,7 @@ export default class Visual extends WynVisual {
     }
   }
 
-  public getLineData = (data: Array<number>) => {
+  public getLineData = (data: Array<number>, options: any) => {
     let line = []
     for (let i = 0; i < data.length; i++) {
       if (i === 0) {
@@ -216,7 +219,9 @@ export default class Visual extends WynVisual {
         line[i] = _.sum(sumData)
       }
     }
-    line[data.length - 1] = 0
+    if (options.showTotal) {
+      line[data.length - 1] = 0
+    }
     return line
   }
 
@@ -227,9 +232,9 @@ export default class Visual extends WynVisual {
     const options = this.properties;
     const initData = isMock ? Visual.mockItems[1] : this.items[1]
     const dx: Array<any> = isMock ? Visual.mockItems[0] : this.items[0]
-    const dyData: Array<any> = initData.concat([_.sum(initData)])
-    let { dy, zt, label } = this.getBasicData(dyData, [], [], options)
-    const lineData = this.getLineData(dyData)
+    const dyData: Array<any> = options.showTotal ? initData.concat([_.sum(initData)]) : initData;
+    let { dy, zt, label } = this.getBasicData(dyData, [], [], options);
+    const lineData = this.getLineData(dyData, options);
     // get properties
 
     const option = {
