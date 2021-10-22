@@ -174,13 +174,6 @@
                         "defaultValue": 50
                     },
                     {
-                        "name": "scope",
-                        "type": "Integer",
-                        "displayName": "划分范围",
-                        "min":0,
-                        "defaultValue": 4
-                    },
-                    {
                         "name": "min",
                         "type": "Integer",
                         "displayName": "最小比例",
@@ -199,12 +192,6 @@
                         "type": "Palette",
                         "displayName": "范围颜色",
                         "inheritFrom": "dashboard.palette"
-                    },
-                    {
-                        "name": "shadowColor",
-                        "type": "Color",
-                        "displayName": "仪表盘颜色",
-                        "defaultValue": "#509dea"
                     },
                     {
                         "name": "gradientBgColor",
@@ -244,6 +231,101 @@
                         "max": 360,
                         "displayName": "终止角度",
                         "defaultValue": -45
+                    }
+                ]
+            },
+            {
+                "displayName": "刻度盘样式",
+                "properties": [
+                    {
+                        "name": "dialColor",
+                        "displayName": "刻度盘颜色",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "displayNameKey": "单色",
+                                "value": "single"
+                            },
+                            {
+                                "displayNameKey": "区间色",
+                                "value": "section"
+                            }
+                        ],
+                        "defaultValue": "single"
+                    },
+                    {
+                        "name": "dialSingleColor",
+                        "type": "Color",
+                        "displayName": "刻度盘单色",
+                        "defaultValue": "#509dea"
+                    },
+                    {
+                        "name": "scope",
+                        "type": "Integer",
+                        "displayName": "划分范围",
+                        "min":0,
+                        "defaultValue": 4
+                    },
+                    {
+                        "name": "dialSectionColor",
+                        "displayName": "刻度盘区间色",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "section",
+                                "displayName": "区间号",
+                                "type": "Integer", 
+                                "min": 1
+                            },
+                            {
+                                "name": "sectionMax",
+                                "displayName": "区间上限值",
+                                "type": "Integer",
+                                "defaultValue": 100
+                            },
+                            {
+                                "name": "color",
+                                "displayName": "区间颜色",
+                                "type": "Color",
+                                "defaultValue": "#509dea"
+                            }
+                        ],
+                        "defaultValue": [{
+                            "section": 1,
+                            "sectionMax": 25,
+                            "color": "#509dea"
+                        },
+                        {
+                            "section": 2,
+                            "sectionMax": 50,
+                            "color": "#0bbc98"
+                        },{
+                            "section": 3,
+                            "sectionMax": 75,
+                            "color": "#8c7df2"
+                        },{
+                            "section": 4,
+                            "sectionMax": 100,
+                            "color": "#f58a1a"
+                        }]
+                    },
+                    {
+                        "name": "dialColorUseToLabel",
+                        "type": "Boolean",
+                        "displayName": "作用到标签",
+                        "defaultValue": true
+                    }, 
+                    {
+                        "name": "dialColorUseToShadow",
+                        "type": "Boolean",
+                        "displayName": "作用到阴影",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "dialColorUseToPointer",
+                        "type": "Boolean",
+                        "displayName": "作用到指针",
+                        "defaultValue": true
                     }
                 ]
             },
