@@ -213,6 +213,11 @@
                         "defaultValue": "#FFF"
                     },
                     {
+                        "name": "shadowLineColor",
+                        "type": "Palette",
+                        "displayName": "仪表盘线条颜色"
+                    },
+                    {
                         "name": "gaugeXPosition",
                         "type": "Percentage",
                         "displayName": "X偏移量",
@@ -267,7 +272,7 @@
                         "name": "splitLineDistance",
                         "type": "Integer",
                         "displayName": "线和轴的距离",
-                        "defaultValue": -10
+                        "defaultValue":5
                     },
                 
                     {

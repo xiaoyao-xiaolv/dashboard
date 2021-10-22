@@ -7,7 +7,7 @@ import {CanvasRenderer} from 'echarts/renderers';
 echarts.use(
   [ GaugeChart,PieChart , ScatterChart , LineChart ,TitleComponent , GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
 );
-
+let gaugeStyle = 'basic';
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
@@ -26,7 +26,6 @@ export default class Visual extends WynVisual {
   private ContrastFormat: any;
   private ContrastDisplayUnit: any;
   static mockItems = 0.5;
-
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
@@ -49,7 +48,7 @@ export default class Visual extends WynVisual {
       // custom 
       this._actualValue = options.properties.Actual === 'dataset' ? (this.isActual && <number>plainData.data[0][this._ActualValue] || 0) : (Number(options.properties.customActual));
       this._contrastValue = options.properties.Contrast === 'dataset' ? (this.isContrast && <number>plainData.data[0][this._ContrastValue] || 0) : (Number(options.properties.customContrast));
-      this.items = this.isActual && this.isContrast ? (this._actualValue / this._contrastValue).toFixed(4) :  `${1}`;
+      this.items = (this._actualValue / this._contrastValue).toFixed(4);
 
       // format 
       this.ActualFormat = dataView.plain.profile.ActualValue.options.valueFormat;
@@ -64,9 +63,9 @@ export default class Visual extends WynVisual {
       }
 
     }
-    if (dataView && dataView.plain.profile.ContrastValue.values.length && !dataView.plain.profile.ActualValue.values.length) {
-      this.items = '1';
-    }
+    // if (dataView && dataView.plain.profile.ContrastValue.values.length && !dataView.plain.profile.ActualValue.values.length) {
+    //   this.items = '1';
+    // }
     this.properties = options.properties;
     this.render();
   }
@@ -75,6 +74,7 @@ export default class Visual extends WynVisual {
     const isMock = !this.items.length;
     const items = ((isMock ? Visual.mockItems : this.items) * 100);
     this.container.style.opacity = isMock ? '0.3' : '1';
+    
     const options = this.properties;
     let subtitle = options.showNum ? options.subtitle + '\n' + this.ActualValue : options.subtitle
     let scope = 100 / options.scope
@@ -184,7 +184,7 @@ export default class Visual extends WynVisual {
       radius: '20%',
       width: options.pointerWidth, //指针粗细
       // offsetCenter: [`${options.pointerXPosition}%`, `${options.pointerYPosition}%`]
-  }
+    }
     // 数据标注和标题
     const _dataAndDetail = (_labelNumber?: string) => {
       return {
@@ -404,7 +404,7 @@ export default class Visual extends WynVisual {
     ];
 
     // progress
-    const  RgbToHex  = (a, b, c)  =>{
+    const RgbToHex  = (a, b, c)  =>{
       var r = /^\d{1,3}$/;
       if (!r.test(a) || !r.test(b) || !r.test(c)) return window.alert("输入错误的rgb颜色值");
       var hexs = [a.toString(16), b.toString(16), c.toString(16)];
@@ -412,7 +412,7 @@ export default class Visual extends WynVisual {
       return "#" + hexs.join("");
     }
     
-    const  HexToRgb = (str) =>{
+    const HexToRgb = (str) =>{
       var r = /^\#?[0-9a-f]{6}$/;
       //test方法检查在字符串中是否存在一个模式，如果存在则返回true，否则返回false
       if (!r.test(str)) return console.log("输入错误的hex");
@@ -510,7 +510,7 @@ export default class Visual extends WynVisual {
           name: "内部阴影",
           type: "gauge",
           ..._gaugeStyle(options.gaugeR * (46 / 52)),
-          axisLine: _axisLine((100 * (options.gaugeR / 100)), [[Number(items) / 100, new echarts.graphic.LinearGradient(
+          axisLine: _axisLine((100 * (options.gaugeR / 100)), [[Number(items) / options.max, new echarts.graphic.LinearGradient(
                 0, 1, 0, 0, [{
                         offset: 0,
                         color: hexToRgba(options.shadowColor, 0.1),
@@ -543,12 +543,28 @@ export default class Visual extends WynVisual {
           },
       },
       {
-          name: "内部小圆",
+          name: "内部刻度",
           ..._gaugeStyle(options.gaugeR * (48 / 52)),
-          axisLine: _axisLine((10 * (options.gaugeR / 100)),  [
-            [Number(items) / 100, color2],
-            [1, "rgba(0,0,0,0)"]
-          ]),
+          axisLine: {
+            lineStyle: {
+                width: 10 * (options.gaugeR / 100),
+                color: [
+                    [1, new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                            offset: 0.33,
+                            color: options.shadowLineColor[0]
+                        },
+                        {
+                            offset: 0.66,
+                            color: options.shadowLineColor[1]
+                        },
+                        {
+                            offset: 1,
+                            color: options.shadowLineColor[2]
+                        }
+                    ])]
+                ],
+            }
+          },
           axisLabel: { show: false,},
           axisTick: { show: false,},
           splitLine: { show: false,},
@@ -564,18 +580,6 @@ export default class Visual extends WynVisual {
           detail: {
               show: false
         }
-      },
-      {
-          name: "内部进度条",
-          ..._gaugeStyle(options.gaugeR * (20 / 52)),
-          axisLine: _axisLine(1,  [
-            [Number(items)  / 100, colorSet.color],
-            [1, colorSet.color]
-          ]),
-          axisLabel: { show: false,},
-          axisTick: { show: false, },
-          splitLine: { show: false, },
-          itemStyle: { color:"#ffffff"},
       },
       { //指针上的圆
           type: 'pie',
@@ -607,6 +611,9 @@ export default class Visual extends WynVisual {
 
     const getSeries = () => {
       const _option = this.properties.gaugeOptions;
+      if (gaugeStyle !== _option) {
+        this.chart.clear();
+      }
       let series = [];
       switch (_option) {
         case 'basic':
@@ -621,6 +628,7 @@ export default class Visual extends WynVisual {
         default:
           break;
       }
+      gaugeStyle = _option;
       return series;
     }
 
@@ -675,7 +683,7 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     //  hidden gauge style
-    let hiddenOptions: Array<string> = ['gaugeOptions'];
+    let hiddenOptions: Array<string> = [''];
     
     if (!options.properties.showSubTitle) {
       hiddenOptions = hiddenOptions.concat(['subtitle'])
