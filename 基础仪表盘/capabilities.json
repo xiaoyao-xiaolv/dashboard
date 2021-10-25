@@ -237,13 +237,6 @@
                         "defaultValue": "#509dea"
                     },
                     {
-                        "name": "scope",
-                        "type": "Integer",
-                        "displayName": "划分范围",
-                        "min":0,
-                        "defaultValue": 4
-                    },
-                    {
                         "name": "dialSectionColor",
                         "displayName": "刻度盘区间色",
                         "type": "Collection",
@@ -387,6 +380,13 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "scope",
+                        "type": "Integer",
+                        "displayName": "刻度划分",
+                        "min":0,
+                        "defaultValue": 4
+                    },
+                    {
                         "name": "axisLabelShadowDistance",
                         "type": "Integer",
                         "displayName": "标签和线的距离",
@@ -399,6 +399,24 @@
                         "defaultValue": "#f0f0f0"
                     },
                     {
+                        "name": "axisLabelCustom",
+                        "displayName": "刻度值自定义",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "axisLabel",
+                                "displayName": "旧刻度值",
+                                "type": "Integer"
+                            },
+                            {
+                                "name": "newAxisLabel",
+                                "displayName": "新刻度值",
+                                "type": "Text"
+                            }
+                        ],
+                        "defaultValue": []
+                    },
+                    {
                         "name": "axisLabelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -407,6 +425,7 @@
                             "fontSize": "1.0X"
                         }
                     }
+
                 ]
             },
             {
