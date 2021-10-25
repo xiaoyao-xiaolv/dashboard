@@ -168,12 +168,6 @@
                         "defaultValue": false
                     },
                     {
-                        "name": "width",
-                        "type": "Integer",
-                        "displayName": "表盘宽度",
-                        "defaultValue": 50
-                    },
-                    {
                         "name": "min",
                         "type": "Integer",
                         "displayName": "最小比例",
@@ -186,23 +180,6 @@
                         "displayName": "最大比例",
                         "min":0,
                         "defaultValue": 100
-                    },
-                    {
-                        "name": "palette",
-                        "type": "Palette",
-                        "displayName": "范围颜色",
-                        "inheritFrom": "dashboard.palette"
-                    },
-                    {
-                        "name": "gradientBgColor",
-                        "type": "Color",
-                        "displayName": "仪表盘背景颜色",
-                        "defaultValue": "#FFF"
-                    },
-                    {
-                        "name": "shadowLineColor",
-                        "type": "Palette",
-                        "displayName": "仪表盘线条颜色"
                     },
                     {
                         "name": "gaugeXPosition",
@@ -387,12 +364,6 @@
                         "defaultValue": 1
                     },
                     {
-                        "name": "axisTickDistance",
-                        "type": "Integer",
-                        "displayName": "线和轴的距离",
-                        "defaultValue": 0
-                    },
-                    {
                         "name": "axisTickShadowDistance",
                         "type": "Integer",
                         "displayName": "线和轴的距离",
@@ -414,12 +385,6 @@
                         "type": "Boolean",
                         "displayName": "显示刻度标签",
                         "defaultValue": true
-                    },
-                    {
-                        "name": "axisLabelDistance",
-                        "type": "Integer",
-                        "displayName": "标签和线的距离",
-                        "defaultValue": 65
                     },
                     {
                         "name": "axisLabelShadowDistance",

@@ -76,15 +76,7 @@ export default class Visual extends WynVisual {
     const items = ((isMock ? Visual.mockItems : this.items) * 100);
     this.container.style.opacity = isMock ? '0.3' : '1';
     
-    const options = this.properties;
-    let subtitle = options.showNum ? options.subtitle + '\n' + this.ActualValue : options.subtitle
-    let scope = 100 / options.scope
-    let color = [];
-    for (let i = 0; i < options.scope; i++) {
-      let j = i % options.palette.length
-      color.push([scope * (i + 1) / 100, options.palette[j]])
-    }
-   
+    const options = this.properties; 
     let fontWeight: string;
     if (options.textStyle.fontWeight == "Light") {
       fontWeight = options.textStyle.fontWeight + "er"
@@ -131,8 +123,8 @@ export default class Visual extends WynVisual {
         show: true,
         roundCap: options.gaugeRoundCap,
         lineStyle: {
-          width: _width || options.width,
-          color: _color || color,
+          width: _width,
+          color: _color || '#fff',
         },
       }
     }
@@ -155,7 +147,7 @@ export default class Visual extends WynVisual {
       return {
         show: options.showaxisTick,
         splitNumber: options.axisTickNum, //分割线之间的刻度数
-        distance: options.gaugeOptions === 'shadow' ? options.axisTickShadowDistance :   options.axisTickDistance,
+        distance: options.axisTickShadowDistance,
         lineStyle: {
           type: "solid",
           color: options.axisTickColor,
@@ -171,7 +163,7 @@ export default class Visual extends WynVisual {
       fontSize: options.axisLabelTextStyle.fontSize.substr(0, 2),
       fontFamily:options.axisLabelTextStyle.fontFamily,
       fontWeight:options.axisLabelTextStyle.fontWeight,
-      distance:options.gaugeOptions === 'shadow' ? options.axisLabelShadowDistance : options.axisLabelDistance,
+      distance: options.axisLabelShadowDistance,
       formatter: (value) => {
         return `${value.toFixed(0)}`
       } 
@@ -273,45 +265,28 @@ export default class Visual extends WynVisual {
       name: 'Contrast',
       ..._disableStyle,
       ..._gaugeStyle(),
-      ..._dataAndDetail('2')
-    },
+      ..._dataAndDetail('2')},
     ];
-    
-    const basicGauge = [{
-      name: options.subtitle,
-      ..._gaugeStyle(),
-      axisLine: _axisLine((options.width * (options.gaugeR / 100))),
-      splitLine: _splitLine(),
-      axisTick: _axisTick(),
-      axisLabel:　_axisLabel,
-      pointer:_pointer,
-      ..._title(),
-      ..._dataAndDetail('1')
-    },
-    ...ContrastAndDetailGauge,
-    ];
-    
-    // const percent = 52; //百分数
-    let color_percent0 = '',
-        color_percent100 = '',
-        dotArray = [];
+
+    let dotArray = [];
 
     const calculateDot = (data) => {
       const _number = 90;
-        if (data <= 20) {
-            dotArray.push(_number)
-        }else if (data > 20&&data<=40) {
-            dotArray.push(...[_number,_number])
-        }else if (data > 40&&data<=60) {
-            dotArray.push(...[_number,_number,_number])
-        }else if (data > 60&&data<=80) {
-            dotArray.push(...[_number,_number,_number,_number])
-        }else if (data > 80&&data<=100) {
-            dotArray.push(...[_number,_number,_number,_number,_number])
-        }
+      if (data <= 20) {
+          dotArray.push(_number)
+      }else if (data > 20&&data<=40) {
+          dotArray.push(...[_number,_number])
+      }else if (data > 40&&data<=60) {
+          dotArray.push(...[_number,_number,_number])
+      }else if (data > 60&&data<=80) {
+          dotArray.push(...[_number,_number,_number,_number])
+      }else if (data > 80&&data<=100) {
+          dotArray.push(...[_number,_number,_number,_number,_number])
+      }
     }
-    const centerPointerStyle = [   //总共有5个小球
-      {
+    calculateDot(items)//80%显示4个点，
+    const centerPointerStyle = [{
+      // 五个小球
         name: '',
         symbolOffset: ['20', '0'],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
         type: 'scatter',
@@ -340,61 +315,7 @@ export default class Visual extends WynVisual {
         color: _getSectionColor(options.dialColorUseToPointer),
         data: [85, 85, 85, 85, 85, 85]
       }]
-
-    calculateDot(items)//80%显示4个点，
-    const pieGauge = [{
-      ..._gaugeStyle( options.gaugeR),
-      itemStyle: {
-        color: new echarts.graphic.LinearGradient(1, 0.4, 0, 0, [{
-          offset: 0,
-          color: color_percent0
-        }, {
-          offset: 1,
-          color: color_percent100
-        }]),
-      },
-      progress: {
-        show: true,
-        width: (options.width * (options.gaugeR /100))
-      },
-      pointer: {
-        show: false
-      },
-      axisLine: _axisLine((options.width * (options.gaugeR / 100)), [[1, options.gradientBgColor]]),
-      axisTick: _axisTick(-(options.width + 20)),
-      axisLabel:　_axisLabel,
-      anchor: {
-        show: false
-      },
-      ..._title(),
-      ..._dataAndDetail('1')
-    },
-    {
-      ..._gaugeStyle(options.gaugeR * 0.7),
-      itemStyle: {
-        color: new echarts.graphic.LinearGradient(1, 0.4, 0, 0, [{
-          offset: 0,
-          color: color_percent0
-        }, {
-          offset: 1,
-          color: color_percent100
-        }]),
-      },
-      progress: {
-        show: true,
-      },
-      ..._disableStyle,
-      detail: { show: false },
-      data: [
-        {
-          value: Number(items)
-        }
-      ]
-    },
-      ...ContrastAndDetailGauge,
-      ...centerPointerStyle
-    ];
-
+    
     // progress
     const RgbToHex  = (a, b, c)  =>{
       var r = /^\d{1,3}$/;
@@ -462,24 +383,7 @@ export default class Visual extends WynVisual {
         color: options.dialSingleColor,
         lightColor: getLightOrDarkColor(options.dialSingleColor, 0.1, true)
     };
-    const color2 = {
-        type: "linear",
-        x: 0,
-        y: 0,
-        x2: 1,
-        y2: 1,
-        colorStops: [
-            {
-              offset: 0,
-              color: colorSet.lightColor
-            },
-            {
-                offset: 1,
-                color: colorSet.color
-            }
-        ],
-            global: false
-    }
+ 
     const _getDialColor = () => {
       let _colors;
       if (options.dialColor === 'single') {
@@ -634,28 +538,6 @@ export default class Visual extends WynVisual {
     if (pointerStyle !== _option) {
       this.chart.clear();
     }
-    const getSeries = () => {
-      const _option = this.properties.gaugeOptions;
-      if (gaugeStyle !== _option) {
-        this.chart.clear();
-      }
-      let series = [];
-      switch (_option) {
-        case 'basic':
-          series = basicGauge;
-          break;
-        case 'gradient':
-          series = pieGauge;
-          break;
-        case 'shadow':
-          series = pieGaugeProgress;
-          break;
-        default:
-          break;
-      }
-      gaugeStyle = _option;
-      return series;
-    }
 
     const option = {
       xAxis: {
@@ -692,7 +574,7 @@ export default class Visual extends WynVisual {
               }
           }
       },
-      series: getSeries()
+      series: pieGaugeProgress
     };
     this.chart.setOption(option);
   }
@@ -721,16 +603,6 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['customContrast'])
     }
 
-    if (options.properties.gaugeOptions == "shadow") {
-      hiddenOptions = hiddenOptions.concat(['axisTickDistance', 'axisLabelDistance', 'gradientBgColor', , 'palette'])
-    } else {
-      hiddenOptions = hiddenOptions.concat(['axisTickShadowDistance', 'axisLabelShadowDistance'])
-      if (options.properties.gaugeOptions !== "gradient") {
-        hiddenOptions = hiddenOptions.concat(['gradientBgColor'])
-      } else {
-        hiddenOptions = hiddenOptions.concat(['palette','showPointer', 'pointerLength', 'pointerWidth'])
-      }
-    }
     // pointer style
     if (!options.properties.showPointer) {
       hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerStyle', 'pointerColor'])
@@ -751,8 +623,37 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['dialSectionColor', 'dialColorUseToLabel', 'dialColorUseToShadow', 'dialColorUseToPointer'])
     } else {
       hiddenOptions = hiddenOptions.concat(['dialSingleColor', 'scope'])
-    } 
-  
+    }
+    // splitLine
+    if (!options.properties.showsplitLine) {
+      hiddenOptions = hiddenOptions.concat(['splitLineWidth', 'splitLineLength', 'splitLineDistance', 'splitLineColor'])
+    }
+
+     // axisTick
+     if (!options.properties.showaxisTick) {
+      hiddenOptions = hiddenOptions.concat(['axisTickNum', 'axisTickWidth', 'axisTickShadowDistance', 'axisTickColor'])
+    }
+
+     // axisLabel
+     if (!options.properties.showAxisLabel) {
+      hiddenOptions = hiddenOptions.concat(['axisLabelShadowDistance', 'axisLabelColor', 'axisLabelTextStyle'])
+    }
+    // SubTitle
+    if (!options.properties.showSubTitle) {
+      hiddenOptions = hiddenOptions.concat(['subtitle', 'titleXPosition', 'titleYPosition', 'textStyle'])
+    }
+
+    // DataLabel1
+    if (!options.properties.showDataLabel1) {
+      hiddenOptions = hiddenOptions.concat(['showActual1', 'showContrast1', 'showDetail1', 'dataLabel1LineHeight', 'dataLabel1XPosition', 'dataLabel1YPosition', 'dataLabel1TextStyle'])
+    }
+
+     // DataLabel2
+     if (!options.properties.showDataLabel2) {
+      hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle'])
+    }
+
+   
     return hiddenOptions;
   }
 
