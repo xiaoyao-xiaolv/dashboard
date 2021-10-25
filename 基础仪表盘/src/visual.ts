@@ -8,6 +8,7 @@ echarts.use(
   [ GaugeChart,PieChart , ScatterChart , LineChart ,TitleComponent , GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
 );
 let gaugeStyle = 'basic';
+let pointerStyle = 'dot';
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
@@ -199,12 +200,11 @@ export default class Visual extends WynVisual {
       radius: '20%',
       width: options.pointerWidth, //指针粗细
       itemStyle: {
-        color: _getSectionColor(options.dialColorUseToPointer),
+        color: options.dialColorUseToPointer ? _getSectionColor(options.dialColorUseToPointer) : options.pointerColor,
       }
       // offsetCenter: [`${options.pointerXPosition}%`, `${options.pointerYPosition}%`]
     }
     // 数据标注和标题
-  
     const _dataAndDetail = (_labelNumber?: string) => {
       return {
         detail: {//明细
@@ -300,26 +300,46 @@ export default class Visual extends WynVisual {
       const _number = 90;
         if (data <= 20) {
             dotArray.push(_number)
-            color_percent0 = 'rgba(12,255,0,1)'
-            color_percent100 = 'rgba(12,255,0,.3)'
         }else if (data > 20&&data<=40) {
             dotArray.push(...[_number,_number])
-            color_percent0 = 'rgba(12,255,0,1)'
-            color_percent100 = 'rgba(12,255,0,.3)'
         }else if (data > 40&&data<=60) {
             dotArray.push(...[_number,_number,_number])
-             color_percent0 = 'rgba(255,123,0,1)'
-            color_percent100 = 'rgba(255,123,0,.3)'
         }else if (data > 60&&data<=80) {
             dotArray.push(...[_number,_number,_number,_number])
-             color_percent0 = 'rgba(255,0,36,1)'
-            color_percent100 = 'rgba(255,0,36,.3)'
         }else if (data > 80&&data<=100) {
             dotArray.push(...[_number,_number,_number,_number,_number])
-            color_percent0 = 'rgba(255,0,36,1)'
-            color_percent100 = 'rgba(255,0,36,.3)'
         }
     }
+    const centerPointerStyle = [   //总共有5个小球
+      {
+        name: '',
+        symbolOffset: ['20', '0'],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
+        type: 'scatter',
+        color: _getSectionColor(options.dialColorUseToPointer),
+        data: [90, 90, 90, 90, 90]
+      },
+      //根据数据判断小球的颜色
+      {
+        name: '',
+        type: 'scatter',
+        symbolOffset: ['20', '0'],//移动小球的位置
+        color: _getSectionColor(options.dialColorUseToPointer),
+        data: dotArray
+      },
+      {//第一个线
+        name: '',
+        type: 'line',
+        color: _getSectionColor(options.dialColorUseToPointer),
+        symbol: "none",
+        data: [95, 95, 95, 95, 95, 95]
+      },
+      {//第二根线
+        name: '',
+        type: 'line',
+        symbol: "none",//去掉横线上的小点
+        color: _getSectionColor(options.dialColorUseToPointer),
+        data: [85, 85, 85, 85, 85, 85]
+      }]
 
     calculateDot(items)//80%显示4个点，
     const pieGauge = [{
@@ -371,55 +391,8 @@ export default class Visual extends WynVisual {
         }
       ]
     },
-    ...ContrastAndDetailGauge,
-    //总共有5个小球
-    {
-      name: '',
-      symbolOffset: ['20', '0'],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
-      type: 'scatter',
-      color: '#fff',
-      data: [90, 90, 90, 90, 90]
-    },
-    //根据数据判断小球的颜色
-    {
-      name: '',
-      type: 'scatter',
-      symbolOffset: ['20', '0'],//移动小球的位置
-      color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-        offset: 0,
-        color: color_percent0
-      }, {
-        offset: 1,
-        color: color_percent100
-      }]),
-      data: dotArray
-    },
-    {//第一个线
-      name: '',
-      type: 'line',
-      color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-        offset: 0,
-        color: color_percent0
-      }, {
-        offset: 1,
-        color: color_percent100
-      }]),
-      symbol: "none",
-      data: [95, 95, 95, 95, 95, 95]
-    },
-    {//第二根线
-      name: '',
-      type: 'line',
-      symbol: "none",//去掉横线上的小点
-      color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-        offset: 0,
-        color: color_percent0
-      }, {
-        offset: 1,
-        color: color_percent100
-      }]),
-      data: [85, 85, 85, 85, 85, 85]
-    }
+      ...ContrastAndDetailGauge,
+      ...centerPointerStyle
     ];
 
     // progress
@@ -542,7 +515,7 @@ export default class Visual extends WynVisual {
     }
     const _dialColor = _getDialColor();
     
-    const pieGaugeProgress = [
+    const pieGaugeProgress : any = [
       ...ContrastAndDetailGauge,
       {
             name: "外部进度条",
@@ -554,13 +527,15 @@ export default class Visual extends WynVisual {
                   color: _dialColor,
               }
             },
-           axisLabel: { show: false, },
+            axisLabel: { show: false, },
             axisTick: { show: false,},
             splitLine: {show: false,},
             itemStyle: {color:"#ffffff"},
             ..._title(),
             ..._dataAndDetail('1'),
-            pointer: _pointer,
+            pointer: options.pointerStyle === 'pointer'  ? _pointer : {
+              show: false,
+            },
             progress: {
               show: false,
             },
@@ -631,7 +606,7 @@ export default class Visual extends WynVisual {
           tooltip: { show: false },
           hoverAnimation: false,
           legendHoverLink: false,
-          radius: ['0%', `${options.showPointer ? '4%' : '0%'}`],
+          radius: ['0%', `${options.showPointer && options.pointerStyle === 'pointer' ? '4%' : '0%'}`],
           center: [`${options.gaugeXPosition}%`, `${options.gaugeYPosition}%`],
           label: {
               normal: {
@@ -647,13 +622,18 @@ export default class Visual extends WynVisual {
               value: 120,
               itemStyle: {
                   normal: {
-                      color: _getSectionColor(options.dialColorUseToPointer),
+                      color:options.dialColorUseToPointer ? _getSectionColor(options.dialColorUseToPointer) : options.pointerColor,
                   },
               }
           }]
-      }, 
+      },
+      ...(options.showPointer && options.pointerStyle === 'dot' ?  centerPointerStyle: []),
     ]
-
+    // clear pointer style
+    const _option = this.properties.pointerStyle;
+    if (pointerStyle !== _option) {
+      this.chart.clear();
+    }
     const getSeries = () => {
       const _option = this.properties.gaugeOptions;
       if (gaugeStyle !== _option) {
@@ -712,7 +692,7 @@ export default class Visual extends WynVisual {
               }
           }
       },
-      series: [...getSeries()]
+      series: getSeries()
     };
     this.chart.setOption(option);
   }
@@ -751,9 +731,13 @@ export default class Visual extends WynVisual {
         hiddenOptions = hiddenOptions.concat(['palette','showPointer', 'pointerLength', 'pointerWidth'])
       }
     }
-
+    // pointer style
     if (!options.properties.showPointer) {
-      hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth'])
+      hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerStyle', 'pointerColor'])
+    } else {
+      if (options.properties.pointerStyle === 'dot') {
+        hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerColor'])
+      }
     }
     if (!options.properties.showDataLabel1) {
       hiddenOptions = hiddenOptions.concat(['showActual1', 'showContrast1', 'showDetail1', 'dataLabel1LineHeight', 'dataLabel1XPosition', 'dataLabel1YPosition', 'dataLabel1TextStyle'])
@@ -767,8 +751,8 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['dialSectionColor', 'dialColorUseToLabel', 'dialColorUseToShadow', 'dialColorUseToPointer'])
     } else {
       hiddenOptions = hiddenOptions.concat(['dialSingleColor', 'scope'])
-    }
-    
+    } 
+  
     return hiddenOptions;
   }
 

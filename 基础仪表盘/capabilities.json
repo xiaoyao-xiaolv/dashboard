@@ -454,6 +454,28 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "pointerStyle",
+                        "displayName": "指针样式",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "displayNameKey": "指针",
+                                "value": "pointer"
+                            },
+                            {
+                                "displayNameKey": "圆点",
+                                "value": "dot"
+                            }
+                        ],
+                        "defaultValue": "pointer"
+                    },
+                    {
+                        "name": "pointerColor",
+                        "type": "Color",
+                        "displayName": "指针颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
                         "name": "pointerLength",
                         "type": "Percentage",
                         "displayName": "指针长度",
