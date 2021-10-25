@@ -114,7 +114,7 @@ export default class Visual extends WynVisual {
         max: options.max,
         startAngle: options.startAngle,
         endAngle: options.endAngle,
-        splitNumber: options.dialColor === 'single' ? options.scope : options.dialSectionColor.length,
+        splitNumber:  options.scope,
       }
     }
     // 仪表盘轴线
@@ -165,7 +165,15 @@ export default class Visual extends WynVisual {
       fontWeight:options.axisLabelTextStyle.fontWeight,
       distance: options.axisLabelShadowDistance,
       formatter: (value) => {
-        return `${value.toFixed(0)}`
+        console.log(options.axisLabelCustom, '====')
+        let _label = `${value.toFixed(0)}`
+        options.axisLabelCustom.length && options.axisLabelCustom.map((item: any) => {
+          if (Number(value.toFixed(0)) === Number(item.axisLabel)) {
+            _label = item.newAxisLabel
+          }
+        })
+        
+        return _label
       } 
     }
 
@@ -622,7 +630,7 @@ export default class Visual extends WynVisual {
     if (options.properties.dialColor == "single") {
       hiddenOptions = hiddenOptions.concat(['dialSectionColor', 'dialColorUseToLabel', 'dialColorUseToShadow', 'dialColorUseToPointer'])
     } else {
-      hiddenOptions = hiddenOptions.concat(['dialSingleColor', 'scope'])
+      hiddenOptions = hiddenOptions.concat(['dialSingleColor'])
     }
     // splitLine
     if (!options.properties.showsplitLine) {
@@ -636,7 +644,7 @@ export default class Visual extends WynVisual {
 
      // axisLabel
      if (!options.properties.showAxisLabel) {
-      hiddenOptions = hiddenOptions.concat(['axisLabelShadowDistance', 'axisLabelColor', 'axisLabelTextStyle'])
+      hiddenOptions = hiddenOptions.concat(['axisLabelShadowDistance', 'axisLabelColor', 'axisLabelTextStyle', 'scope', 'axisLabelCustom'])
     }
     // SubTitle
     if (!options.properties.showSubTitle) {
