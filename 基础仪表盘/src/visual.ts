@@ -8,7 +8,7 @@ echarts.use(
   [ GaugeChart,PieChart , ScatterChart , LineChart ,TitleComponent , GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
 );
 let gaugeStyle = 'basic';
-let pointerStyle = 'dot';
+let pointerStyle = 'pointer';
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
@@ -89,9 +89,9 @@ export default class Visual extends WynVisual {
     // } else {
     //   detailfontWeight = options.detailTextStyle.fontWeight
     // }
-    const _getSectionColor = (useTo: boolean) => {
-      let _shadowColor = options.dialSingleColor;
-      if (options.dialColor === 'section' && useTo) {
+    const _getSectionColor = (useTo: boolean, defaultColor?: string) => {
+      let _shadowColor = defaultColor || options.gaugeStartColor;
+      if (useTo) {
         options.dialSectionColor.map((item: any, index: number) => {
           if (index === 0 && Number(this.items) * 100 < Number(item.sectionMax)) {
             _shadowColor = item.color
@@ -121,7 +121,6 @@ export default class Visual extends WynVisual {
     const _axisLine = (_width?: number , _color?: any) => {
       return {
         show: true,
-        roundCap: options.gaugeRoundCap,
         lineStyle: {
           width: _width,
           color: _color || '#fff',
@@ -169,9 +168,7 @@ export default class Visual extends WynVisual {
         let _label = `${value.toFixed(0)}`
         options.axisLabelCustom.length && options.axisLabelCustom.map((item: any) => {
           if (Number(value.toFixed(0)) === Number(item.axisLabel)) {
-            _label = item.newAxisLabel
-          } else if (Number(value.toFixed(0)) === Number(options.min) || Number(value.toFixed(0)) === Number(options.max)) {
-            _label = value.toFixed(0)
+            _label = item.newAxisLabel 
           } else {
             // min and max
             _label = options.showDefaultLabel ? _label : '';
@@ -204,7 +201,7 @@ export default class Visual extends WynVisual {
       radius: '20%',
       width: options.pointerWidth, //指针粗细
       itemStyle: {
-        color: options.dialColorUseToPointer ? _getSectionColor(options.dialColorUseToPointer) : options.pointerColor,
+        color: _getSectionColor(options.dialColorUseToPointer, options.pointerColor),
       }
       // offsetCenter: [`${options.pointerXPosition}%`, `${options.pointerYPosition}%`]
     }
@@ -215,6 +212,8 @@ export default class Visual extends WynVisual {
           show: options[`showDataLabel${_labelNumber}`],
           formatter: (value) => {
             let _detail = [];
+            let _text = '';
+            let _unit = '';
             if (!isMock) {
               const formatAndDisplayUnit = (_value: number, _label: string) => {
                 let realDisplayUnit = this[`${_label}DisplayUnit`];
@@ -233,8 +232,13 @@ export default class Visual extends WynVisual {
 
               if (options[`showDetail${_labelNumber}`]) {
                 _detail.length > 0
-                  ? _detail.push(`(${value}${options.DetailDisplayUnit})`)
-                  : _detail.push(`${value}${options.DetailDisplayUnit}`);
+                  ? _detail.push(`(${value}%)`)
+                  : _detail.push(`${value}%}`);
+              }
+              // _labelNumber is 1 
+              _text = _detail.join('/');
+              if (Number(_labelNumber) === 1 && options.DetailDisplayUnit) {
+                _unit = options.DetailDisplayUnit;
               }
             } else {
               // data label 1
@@ -242,14 +246,24 @@ export default class Visual extends WynVisual {
                 _detail.push(`20`)
               } else {
                 _detail.length > 0
-                  ? _detail.push(`(${value}${options.DetailDisplayUnit})`)
-                  : _detail.push(`${value}${options.DetailDisplayUnit}`)
+                  ? _detail.push(`(${value}%)`)
+                  : _detail.push(`${value}%}`)
               }
+              _text = _detail.join('/');
             }
-            return _detail.join('/');         
+            return `${_text} {unitFont|${_unit}}`;         
+          },
+          rich: {
+            unitFont: {
+              color: options.DetailDisplayUnitTextStyle.color,
+              fontSize: options.DetailDisplayUnitTextStyle.fontSize.substr(0, 2),
+              fontFamily:options.DetailDisplayUnitTextStyle.fontFamily,
+              fontStyle: options.DetailDisplayUnitTextStyle.fontStyle,
+              verticalAlign: 'bottom',
+            }
           },
           offsetCenter: [`${options[`dataLabel${_labelNumber}XPosition`]}%`, `${options[`dataLabel${_labelNumber}YPosition`]}%`],
-          color:  options.dialColor === 'section' &&  options.dialColorUseToLabel ? _getSectionColor(options.dialColorUseToLabel) : options[`dataLabel${_labelNumber}TextStyle`].color,
+          color: _getSectionColor(options[`dialColorUseToLabel${_labelNumber}`], options[`dataLabel${_labelNumber}TextStyle`].color),
           fontSize: options[`dataLabel${_labelNumber}TextStyle`].fontSize.substr(0, 2),
           // fontWeight: detailfontWeight,
           fontFamily: options[`dataLabel${_labelNumber}TextStyle`].fontFamily,
@@ -300,7 +314,8 @@ export default class Visual extends WynVisual {
     const centerPointerStyle = [{
       // 五个小球
         name: '',
-        symbolOffset: ['20', '0'],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
+        symbolSize: 5,
+        symbolOffset: ['10', '0'],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
         type: 'scatter',
         color: _getSectionColor(options.dialColorUseToPointer),
         data: [90, 90, 90, 90, 90]
@@ -309,7 +324,8 @@ export default class Visual extends WynVisual {
       {
         name: '',
         type: 'scatter',
-        symbolOffset: ['20', '0'],//移动小球的位置
+        symbolSize: 5,
+        symbolOffset: ['10', '0'],//移动小球的位置
         color: _getSectionColor(options.dialColorUseToPointer),
         data: dotArray
       },
@@ -391,25 +407,11 @@ export default class Visual extends WynVisual {
       }
     }
 
-    const colorSet = {
-        color: options.dialSingleColor,
-        lightColor: getLightOrDarkColor(options.dialSingleColor, 0.1, true)
-    };
  
     const _getDialColor = () => {
       let _colors;
-      if (options.dialColor === 'single') {
-        _colors = [[1, new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-          offset: 0,
-          color: options.dialSingleColor
-      },
-      {
-          offset: 1,
-          color: options.dialSingleColor
-      }
-        ])]]
-           
-      } else {
+      // is use to dial
+      if (options.dialColorUseToDial) {
         _colors = options.dialSectionColor.map((item: any, index: number) => {
           return [
             Number(item.sectionMax) / options.max,
@@ -426,7 +428,26 @@ export default class Visual extends WynVisual {
           )
           ]
         })
+      } else {
+        _colors = [[1, new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+            offset: 0,
+            color:  options.gaugeStartColor
+          },
+          {
+            offset: 0.3,
+            color:options.gaugeCenterColor ||  options.gaugeStartColor
+          },
+          {
+            offset: 0.6,
+            color:options.gaugeCenterColor ||  options.gaugeStartColor
+          },
+          {
+            offset: 1,
+            color:options.gaugeEndColor ||  options.gaugeStartColor
+         }
+        ])]]
       }
+      
       return _colors;
     }
     const _dialColor = _getDialColor();
@@ -460,17 +481,17 @@ export default class Visual extends WynVisual {
           name: "内部阴影",
           type: "gauge",
           ..._gaugeStyle(options.gaugeR * (46 / 52)),
-          axisLine: _axisLine((100 * (options.gaugeR / 100)), [[Number(items) / options.max, new echarts.graphic.LinearGradient(
+          axisLine: _axisLine((options.shadowWidth * (options.gaugeR / 100)), [[Number(items) / options.max, new echarts.graphic.LinearGradient(
                 0, 1, 0, 0, [{
                         offset: 0,
-                        color: hexToRgba(_getSectionColor(options.dialColorUseToShadow), 0.1),
+                        color: hexToRgba(_getSectionColor(options.dialColorUseToShadow, options.shadowColor), 0.1),
                     }, {
                         offset: 0.5,
-                        color: hexToRgba(_getSectionColor(options.dialColorUseToShadow), 0.2),
+                        color: hexToRgba(_getSectionColor(options.dialColorUseToShadow, options.shadowColor), 0.2),
                     },
                     {
                         offset: 1,
-                        color: hexToRgba(_getSectionColor(options.dialColorUseToShadow), 1),
+                        color: hexToRgba(_getSectionColor(options.dialColorUseToShadow, options.shadowColor), 1),
                     }
                 ]
             )],
@@ -538,7 +559,7 @@ export default class Visual extends WynVisual {
               value: 120,
               itemStyle: {
                   normal: {
-                      color:options.dialColorUseToPointer ? _getSectionColor(options.dialColorUseToPointer) : options.pointerColor,
+                      color:_getSectionColor(options.dialColorUseToPointer, options.pointerColor) ,
                   },
               }
           }]
@@ -549,6 +570,7 @@ export default class Visual extends WynVisual {
     const _option = this.properties.pointerStyle;
     if (pointerStyle !== _option) {
       this.chart.clear();
+      pointerStyle = _option;
     }
 
     const option = {
@@ -631,11 +653,11 @@ export default class Visual extends WynVisual {
       hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle', 'DetailDisplayUnit'])
     }
     // dial section 
-    if (options.properties.dialColor == "single") {
-      hiddenOptions = hiddenOptions.concat(['dialSectionColor', 'dialColorUseToLabel', 'dialColorUseToShadow', 'dialColorUseToPointer'])
-    } else {
-      hiddenOptions = hiddenOptions.concat(['dialSingleColor'])
-    }
+    // if (options.properties.dialColor == "single") {
+    //   hiddenOptions = hiddenOptions.concat(['dialSectionColor', 'dialColorUseToLabel', 'dialColorUseToShadow', 'dialColorUseToPointer'])
+    // } else {
+    //   hiddenOptions = hiddenOptions.concat(['dialSingleColor'])
+    // }
     // splitLine
     if (!options.properties.showsplitLine) {
       hiddenOptions = hiddenOptions.concat(['splitLineWidth', 'splitLineLength', 'splitLineDistance', 'splitLineColor'])

@@ -208,44 +208,50 @@
                         "max": 360,
                         "displayName": "终止角度",
                         "defaultValue": -45
+                    },
+                    {
+                        "name": "gaugeStartColor",
+                        "type": "Color",
+                        "displayName": "刻度盘开始色",
+                        "defaultValue": "#509dea"
+                    },
+                    {
+                        "name": "gaugeCenterColor",
+                        "type": "Color",
+                        "displayName": "刻度盘过渡色"
+                    }, 
+                    {
+                        "name": "gaugeEndColor",
+                        "type": "Color",
+                        "displayName": "刻度盘结束色"
+                    },
+                    {
+                        "name": "shadowColor",
+                        "type": "Color",
+                        "displayName": "阴影颜色",
+                        "defaultValue": "#509dea"
+                    },
+                    {
+                        "name": "shadowWidth",
+                        "type": "Integer",
+                        "displayName": "阴影宽度",
+                        "defaultValue": 46
                     }
                 ]
             },
             {
-                "displayName": "刻度盘样式",
+                "displayName": "区间划分",
                 "properties": [
-                    {
-                        "name": "dialColor",
-                        "displayName": "刻度盘颜色",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "displayNameKey": "单色",
-                                "value": "single"
-                            },
-                            {
-                                "displayNameKey": "区间色",
-                                "value": "section"
-                            }
-                        ],
-                        "defaultValue": "single"
-                    },
-                    {
-                        "name": "dialSingleColor",
-                        "type": "Color",
-                        "displayName": "刻度盘单色",
-                        "defaultValue": "#509dea"
-                    },
                     {
                         "name": "scope",
                         "type": "Integer",
-                        "displayName": "刻度盘划分",
+                        "displayName": "区间划分",
                         "min":0,
                         "defaultValue": 4
                     },
                     {
                         "name": "dialSectionColor",
-                        "displayName": "刻度盘区间色",
+                        "displayName": "区间色",
                         "type": "Collection",
                         "itemShape": [
                             {
@@ -287,22 +293,34 @@
                         }]
                     },
                     {
-                        "name": "dialColorUseToLabel",
+                        "name": "dialColorUseToDial",
                         "type": "Boolean",
-                        "displayName": "作用到标签",
-                        "defaultValue": true
+                        "displayName": "作用到刻度盘",
+                        "defaultValue": false
+                    }, 
+                    {
+                        "name": "dialColorUseToLabel1",
+                        "type": "Boolean",
+                        "displayName": "作用到标签1",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dialColorUseToLabel2",
+                        "type": "Boolean",
+                        "displayName": "作用到标签2",
+                        "defaultValue": false
                     }, 
                     {
                         "name": "dialColorUseToShadow",
                         "type": "Boolean",
                         "displayName": "作用到阴影",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "dialColorUseToPointer",
                         "type": "Boolean",
                         "displayName": "作用到指针",
-                        "defaultValue": true
+                        "defaultValue": false
                     }
                 ]
             },
