@@ -49,7 +49,7 @@ export default class Visual extends WynVisual {
       // custom 
       this._actualValue = options.properties.Actual === 'dataset' ? (this.isActual && <number>plainData.data[0][this._ActualValue] || 0) : (Number(options.properties.customActual));
       this._contrastValue = options.properties.Contrast === 'dataset' ? (this.isContrast && <number>plainData.data[0][this._ContrastValue] || 0) : (Number(options.properties.customContrast));
-      this.items = (this._actualValue / this._contrastValue).toFixed(4);
+      this.items = this._contrastValue ? (this._actualValue / this._contrastValue).toFixed(4) : '1';
 
       // format 
       this.ActualFormat = dataView.plain.profile.ActualValue.options.valueFormat;
@@ -170,9 +170,13 @@ export default class Visual extends WynVisual {
         options.axisLabelCustom.length && options.axisLabelCustom.map((item: any) => {
           if (Number(value.toFixed(0)) === Number(item.axisLabel)) {
             _label = item.newAxisLabel
+          } else if (Number(value.toFixed(0)) === Number(options.min) || Number(value.toFixed(0)) === Number(options.max)) {
+            _label = value.toFixed(0)
+          } else {
+            // min and max
+            _label = options.showDefaultLabel ? _label : '';
           }
         })
-        
         return _label
       } 
     }
@@ -644,7 +648,7 @@ export default class Visual extends WynVisual {
 
      // axisLabel
      if (!options.properties.showAxisLabel) {
-      hiddenOptions = hiddenOptions.concat(['axisLabelShadowDistance', 'axisLabelColor', 'axisLabelTextStyle', 'scope', 'axisLabelCustom'])
+      hiddenOptions = hiddenOptions.concat(['axisLabelShadowDistance', 'axisLabelColor', 'axisLabelTextStyle', 'scope', 'axisLabelCustom', 'showDefaultLabel'])
     }
     // SubTitle
     if (!options.properties.showSubTitle) {

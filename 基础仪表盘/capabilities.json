@@ -237,6 +237,13 @@
                         "defaultValue": "#509dea"
                     },
                     {
+                        "name": "scope",
+                        "type": "Integer",
+                        "displayName": "刻度盘划分",
+                        "min":0,
+                        "defaultValue": 4
+                    },
+                    {
                         "name": "dialSectionColor",
                         "displayName": "刻度盘区间色",
                         "type": "Collection",
@@ -300,42 +307,6 @@
                 ]
             },
             {
-                "displayName": "分隔线样式",
-                "properties": [
-                    {
-                        "name": "showsplitLine",
-                        "type": "Boolean",
-                        "displayName": "显示分隔线",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "splitLineWidth",
-                        "type": "Integer",
-                        "displayName": "线宽",
-                        "defaultValue": 1
-                    },
-                    {
-                        "name": "splitLineLength",
-                        "type": "Integer",
-                        "displayName": "线长",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "splitLineDistance",
-                        "type": "Integer",
-                        "displayName": "线和轴的距离",
-                        "defaultValue":5
-                    },
-                
-                    {
-                        "name": "splitLineColor",
-                        "type": "Color",
-                        "displayName": "颜色",
-                        "defaultValue": "#f0f0f0"
-                    }
-                ]
-            },
-            {
                 "displayName": "刻度样式",
                 "properties": [
                     {
@@ -380,13 +351,6 @@
                         "defaultValue": true
                     },
                     {
-                        "name": "scope",
-                        "type": "Integer",
-                        "displayName": "刻度划分",
-                        "min":0,
-                        "defaultValue": 4
-                    },
-                    {
                         "name": "axisLabelShadowDistance",
                         "type": "Integer",
                         "displayName": "标签和线的距离",
@@ -417,6 +381,12 @@
                         "defaultValue": []
                     },
                     {
+                        "name": "showDefaultLabel",
+                        "type": "Boolean",
+                        "displayName": "显示默认刻度值",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "axisLabelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -428,6 +398,43 @@
 
                 ]
             },
+            {
+                "displayName": "分隔线样式",
+                "properties": [
+                    {
+                        "name": "showsplitLine",
+                        "type": "Boolean",
+                        "displayName": "显示分隔线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "splitLineWidth",
+                        "type": "Integer",
+                        "displayName": "线宽",
+                        "defaultValue": 1
+                    },
+                    {
+                        "name": "splitLineLength",
+                        "type": "Integer",
+                        "displayName": "线长",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "splitLineDistance",
+                        "type": "Integer",
+                        "displayName": "线和轴的距离",
+                        "defaultValue":5
+                    },
+                
+                    {
+                        "name": "splitLineColor",
+                        "type": "Color",
+                        "displayName": "颜色",
+                        "defaultValue": "#f0f0f0"
+                    }
+                ]
+            },
+            
             {
                 "displayName": "指针样式",
                 "properties": [
