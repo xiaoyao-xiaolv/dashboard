@@ -164,7 +164,6 @@ export default class Visual extends WynVisual {
       fontWeight:options.axisLabelTextStyle.fontWeight,
       distance: options.axisLabelShadowDistance,
       formatter: (value) => {
-        console.log(options.axisLabelCustom, '====')
         let _label = `${value.toFixed(0)}`
         options.axisLabelCustom.length && options.axisLabelCustom.map((item: any) => {
           if (Number(value.toFixed(0)) === Number(item.axisLabel)) {
@@ -187,7 +186,7 @@ export default class Visual extends WynVisual {
           lineHeight:15,
           color: options.textStyle.color,
           fontSize: options.textStyle.fontSize.substr(0, 2),
-          // fontWeight: fontWeight,
+          fontWeight: options.textStyle.fontWeight,
           fontFamily: options.textStyle.fontFamily,
           fontStyle: options.textStyle.fontStyle
         },
@@ -233,7 +232,7 @@ export default class Visual extends WynVisual {
               if (options[`showDetail${_labelNumber}`]) {
                 _detail.length > 0
                   ? _detail.push(`(${value}%)`)
-                  : _detail.push(`${value}%}`);
+                  : _detail.push(`${value}%`);
               }
               // _labelNumber is 1 
               _text = _detail.join('/');
@@ -247,7 +246,7 @@ export default class Visual extends WynVisual {
               } else {
                 _detail.length > 0
                   ? _detail.push(`(${value}%)`)
-                  : _detail.push(`${value}%}`)
+                  : _detail.push(`${value}%`)
               }
               _text = _detail.join('/');
             }
@@ -257,15 +256,16 @@ export default class Visual extends WynVisual {
             unitFont: {
               color: options.DetailDisplayUnitTextStyle.color,
               fontSize: options.DetailDisplayUnitTextStyle.fontSize.substr(0, 2),
-              fontFamily:options.DetailDisplayUnitTextStyle.fontFamily,
+              fontFamily: options.DetailDisplayUnitTextStyle.fontFamily,
+              fontWeight: options.DetailDisplayUnitTextStyle.fontWeight,
               fontStyle: options.DetailDisplayUnitTextStyle.fontStyle,
-              verticalAlign: 'bottom',
+              // verticalAlign: 'text-bottom',
             }
           },
           offsetCenter: [`${options[`dataLabel${_labelNumber}XPosition`]}%`, `${options[`dataLabel${_labelNumber}YPosition`]}%`],
           color: _getSectionColor(options[`dialColorUseToLabel${_labelNumber}`], options[`dataLabel${_labelNumber}TextStyle`].color),
           fontSize: options[`dataLabel${_labelNumber}TextStyle`].fontSize.substr(0, 2),
-          // fontWeight: detailfontWeight,
+          fontWeight: options[`dataLabel${_labelNumber}TextStyle`].fontWeight,
           fontFamily: options[`dataLabel${_labelNumber}TextStyle`].fontFamily,
           // fontStyle: options.detailTextStyle.fontStyle
           fontStyle: options[`dataLabel${_labelNumber}TextStyle`].fontStyle,

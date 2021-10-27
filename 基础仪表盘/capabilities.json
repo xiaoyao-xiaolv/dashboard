@@ -159,13 +159,8 @@
                         "name": "gaugeR",
                         "type": "Percentage",
                         "displayName": "表盘半径",
-                        "defaultValue": 100
-                    },
-                    {
-                        "name": "gaugeRoundCap",
-                        "type": "Boolean",
-                        "displayName": "表盘端点圆角",
-                        "defaultValue": false
+                        "defaultValue": 100,
+                        "max": 200
                     },
                     {
                         "name": "min",
@@ -223,7 +218,8 @@
                     {
                         "name": "gaugeEndColor",
                         "type": "Color",
-                        "displayName": "刻度盘结束色"
+                        "displayName": "刻度盘结束色",
+                        "defaultValue": "#8c7df2"
                     },
                     {
                         "name": "shadowColor",
@@ -235,7 +231,7 @@
                         "name": "shadowWidth",
                         "type": "Integer",
                         "displayName": "阴影宽度",
-                        "defaultValue": 46
+                        "defaultValue": 45
                     }
                 ]
             },
@@ -589,6 +585,21 @@
                         "defaultValue" : {
                             "fontSize": "2.0X"
                         }
+                    },
+                    {
+                        "name": "DetailDisplayUnit",
+                        "type": "Text",
+                        "displayName": "后缀单位",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "DetailDisplayUnitTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "后缀单位字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.0X"
+                        }
                     }
                 ]
             },
@@ -636,30 +647,6 @@
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
                         "defaultValue": 65
-                    },
-                    {
-                        "name": "DetailDisplayUnit",
-                        "type": "Enum",
-                        "displayName": "百分比单位",
-                        "items": [
-                            {
-                                "value": "%",
-                                "displayNameKey": "%"
-                            },
-                            {
-                                "value": "℃",
-                                "displayNameKey": "℃"
-                            },
-                            {
-                                "value": "$",
-                                "displayNameKey": "$"
-                            },
-                            {
-                                "value": "￥",
-                                "displayNameKey": "￥"
-                            }
-                        ],
-                        "defaultValue": "%"
                     },
                     {
                         "name": "dataLabel2TextStyle",
