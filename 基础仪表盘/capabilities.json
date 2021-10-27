@@ -135,26 +135,7 @@
             },
             {
                 "displayName": "图表样式",
-                "properties": [{
-                        "displayNameKey": "仪表盘样式",
-                        "name": "gaugeOptions",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "displayNameKey": "基础样式",
-                                "value": "basic"
-                            },
-                            {
-                                "displayNameKey": "渐变样式",
-                                "value": "gradient"
-                            },
-                            {
-                                "displayNameKey": "阴影样式",
-                                "value": "shadow"
-                            }
-                        ],
-                        "defaultValue": "shadow"
-                    },
+                "properties": [
                     {
                         "name": "gaugeR",
                         "type": "Percentage",
@@ -231,7 +212,7 @@
                         "name": "shadowWidth",
                         "type": "Integer",
                         "displayName": "阴影宽度",
-                        "defaultValue": 45
+                        "defaultValue": 30
                     }
                 ]
             },
@@ -447,8 +428,7 @@
                         "defaultValue": "#f0f0f0"
                     }
                 ]
-            },
-            
+            },           
             {
                 "displayName": "指针样式",
                 "properties": [
@@ -481,10 +461,34 @@
                         "defaultValue": "#fff"
                     },
                     {
+                        "name": "dotColor",
+                        "type": "Color",
+                        "displayName": "圆点颜色",
+                        "defaultValue": "#509dea"
+                    },
+                    {
+                        "name": "dotWidth",
+                        "type": "Integer",
+                        "displayName": "圆点宽度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "dotHeight",
+                        "type": "Integer",
+                        "displayName": "圆点高度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "dotOffset",
+                        "type": "Integer",
+                        "displayName": "圆点X偏移量",
+                        "defaultValue": 10
+                    },
+                    {
                         "name": "pointerLength",
                         "type": "Percentage",
                         "displayName": "指针长度",
-                        "defaultValue": 70
+                        "defaultValue": 60
                     },
                     {
                         "name": "pointerWidth",

@@ -9,6 +9,22 @@ echarts.use(
 );
 let gaugeStyle = 'basic';
 let pointerStyle = 'pointer';
+let currentStyleName = 'default'
+let customStyle = {
+  'style1': {
+    'showPointer': false,
+  },
+  'style2': {
+    'dialColorUseToDial': true,
+    // 'DetailDisplayUnitTextStyle': {
+    //   'color': '#509dea'
+    // },
+    // 'axisLabelCustom': [{
+    //   'axisLabel': 25,
+    //   'newAxisLabel': '高风险'
+    // }]
+  }
+};
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
@@ -64,8 +80,19 @@ export default class Visual extends WynVisual {
       }
 
     }
-    // if (dataView && dataView.plain.profile.ContrastValue.values.length && !dataView.plain.profile.ActualValue.values.length) {
-    //   this.items = '1';
+    // 快速多种样式
+    // if (options.properties.styleName !== currentStyleName) {
+    //   // 加载新的样式默认值
+    //   for (let key in options.properties) {
+    //     for (let customK in customStyle[options.properties.styleName]) {
+    //       if (key = customK) {
+    //         // value is object
+    //         console.log(typeof (customStyle[options.properties.styleName][key]), '==s');
+    //         options.properties[key]= customStyle[options.properties.styleName][key]
+    //         // console.log(customK, options.properties[key], customStyle[options.properties.styleName][key], 2222)
+    //       }
+    //     }
+    //   }
     // }
     this.properties = options.properties;
     this.render();
@@ -310,38 +337,39 @@ export default class Visual extends WynVisual {
           dotArray.push(...[_number,_number,_number,_number,_number])
       }
     }
+
     calculateDot(items)//80%显示4个点，
     const centerPointerStyle = [{
       // 五个小球
         name: '',
-        symbolSize: 5,
-        symbolOffset: ['10', '0'],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
+        symbolSize: options.dotWidth,
+        symbolOffset: [options.dotOffset, 0],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
         type: 'scatter',
-        color: _getSectionColor(options.dialColorUseToPointer),
+        color: '#fff',
         data: [90, 90, 90, 90, 90]
       },
       //根据数据判断小球的颜色
       {
         name: '',
         type: 'scatter',
-        symbolSize: 5,
-        symbolOffset: ['10', '0'],//移动小球的位置
-        color: _getSectionColor(options.dialColorUseToPointer),
+        symbolSize: options.dotWidth,
+        symbolOffset: [options.dotOffset, 0],//移动小球的位置
+        color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
         data: dotArray
       },
       {//第一个线
         name: '',
         type: 'line',
-        color: _getSectionColor(options.dialColorUseToPointer),
+        color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
         symbol: "none",
-        data: [95, 95, 95, 95, 95, 95]
+        data: [100, 100, 100, 100, 100, 100]
       },
       {//第二根线
         name: '',
         type: 'line',
         symbol: "none",//去掉横线上的小点
-        color: _getSectionColor(options.dialColorUseToPointer),
-        data: [85, 85, 85, 85, 85, 85]
+        color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
+        data: [80, 80, 80, 80, 80, 80]
       }]
     
     // progress
@@ -624,7 +652,7 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     //  hidden gauge style
-    let hiddenOptions: Array<string> = ['gaugeOptions'];
+    let hiddenOptions: Array<string> = [''];
     
     if (!options.properties.showSubTitle) {
       hiddenOptions = hiddenOptions.concat(['subtitle'])
@@ -639,10 +667,12 @@ export default class Visual extends WynVisual {
 
     // pointer style
     if (!options.properties.showPointer) {
-      hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerStyle', 'pointerColor'])
+      hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerStyle', 'pointerColor', 'dotColor', 'dotWidth', 'dotHeight', 'dotOffset'])
     } else {
       if (options.properties.pointerStyle === 'dot') {
         hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerColor'])
+      } else {
+        hiddenOptions = hiddenOptions.concat(['dotColor', 'dotWidth', 'dotHeight', 'dotOffset']);
       }
     }
     if (!options.properties.showDataLabel1) {
