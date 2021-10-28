@@ -137,7 +137,23 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
-                        "name": "gaugeR",
+                        "name": "styleName",
+                        "displayName": "快速样式",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "displayNameKey": "默认",
+                                "value": "default"
+                            },
+                            {
+                                "displayNameKey": "样式1",
+                                "value": "Style1"
+                            }
+                        ],
+                        "defaultValue": "default"
+                    },
+                    {
+                         "name": "gaugeR",
                         "type": "Percentage",
                         "displayName": "表盘半径",
                         "defaultValue": 100,
@@ -213,11 +229,89 @@
                         "type": "Integer",
                         "displayName": "阴影宽度",
                         "defaultValue": 30
-                    }
+                    },
+                    {
+                        "name": "gaugeRStyle1",
+                       "type": "Percentage",
+                       "displayName": "表盘半径",
+                       "defaultValue": 100,
+                       "max": 200
+                   },
+                   {
+                       "name": "minStyle1",
+                       "type": "Integer",
+                       "displayName": "最小比例",
+                       "min":0,
+                       "defaultValue": 0
+                   },
+                   {
+                       "name": "maxStyle1",
+                       "type": "Integer",
+                       "displayName": "最大比例",
+                       "min":0,
+                       "defaultValue": 100
+                   },
+                   {
+                       "name": "gaugeXPositionStyle1",
+                       "type": "Percentage",
+                       "displayName": "X偏移量",
+                       "defaultValue": 50
+                   },
+                   {
+                       "name": "gaugeYPositionStyle1",
+                       "type": "Percentage",
+                       "displayName": "Y偏移量",
+                       "defaultValue": 50
+                   },
+                   {
+                       "name": "startAngleStyle1",
+                       "type": "Integer",
+                       "min": -360,
+                       "max": 360,
+                       "displayName": "起始角度",
+                       "defaultValue": 225
+                   },
+                   {
+                       "name": "endAngleStyle1",
+                       "type": "Integer", 
+                       "min": -360,
+                       "max": 360,
+                       "displayName": "终止角度",
+                       "defaultValue": -45
+                   },
+                   {
+                       "name": "gaugeStartColorStyle1",
+                       "type": "Color",
+                       "displayName": "刻度盘开始色",
+                       "defaultValue": "#509dea"
+                   },
+                   {
+                       "name": "gaugeCenterColorStyle1",
+                       "type": "Color",
+                       "displayName": "刻度盘过渡色"
+                   }, 
+                   {
+                       "name": "gaugeEndColorStyle1",
+                       "type": "Color",
+                       "displayName": "刻度盘结束色",
+                       "defaultValue": "#8c7df2"
+                   },
+                   {
+                       "name": "shadowColorStyle1",
+                       "type": "Color",
+                       "displayName": "阴影颜色",
+                       "defaultValue": "#509dea"
+                   },
+                   {
+                       "name": "shadowWidthStyle1",
+                       "type": "Integer",
+                       "displayName": "阴影宽度",
+                       "defaultValue": 30
+                   }
                 ]
             },
             {
-                "displayName": "区间划分",
+                "displayName": "区间划分--default",
                 "properties": [
                     {
                         "name": "scope",
@@ -302,7 +396,92 @@
                 ]
             },
             {
-                "displayName": "刻度样式",
+                "displayName": "区间划分--style1",
+                "properties": [
+                    {
+                        "name": "scopeStyle1",
+                        "type": "Integer",
+                        "displayName": "区间划分",
+                        "min":0,
+                        "defaultValue": 4
+                    },
+                    {
+                        "name": "dialSectionColorStyle1",
+                        "displayName": "区间色",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "section",
+                                "displayName": "区间号",
+                                "type": "Integer", 
+                                "min": 1
+                            },
+                            {
+                                "name": "sectionMax",
+                                "displayName": "区间上限值",
+                                "type": "Integer",
+                                "defaultValue": 100
+                            },
+                            {
+                                "name": "color",
+                                "displayName": "区间颜色",
+                                "type": "Color",
+                                "defaultValue": "#509dea"
+                            }
+                        ],
+                        "defaultValue": [{
+                            "section": 1,
+                            "sectionMax": 25,
+                            "color": "#509dea"
+                        },
+                        {
+                            "section": 2,
+                            "sectionMax": 50,
+                            "color": "#0bbc98"
+                        },{
+                            "section": 3,
+                            "sectionMax": 75,
+                            "color": "#8c7df2"
+                        },{
+                            "section": 4,
+                            "sectionMax": 100,
+                            "color": "#f58a1a"
+                        }]
+                    },
+                    {
+                        "name": "dialColorUseToDialStyle1",
+                        "type": "Boolean",
+                        "displayName": "作用到刻度盘",
+                        "defaultValue": true
+                    }, 
+                    {
+                        "name": "dialColorUseToLabel1Style1",
+                        "type": "Boolean",
+                        "displayName": "作用到标签1",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dialColorUseToLabel2Style1",
+                        "type": "Boolean",
+                        "displayName": "作用到标签2",
+                        "defaultValue": false
+                    }, 
+                    {
+                        "name": "dialColorUseToShadowStyle1",
+                        "type": "Boolean",
+                        "displayName": "作用到阴影",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dialColorUseToPointerStyle1",
+                        "type": "Boolean",
+                        "displayName": "作用到指针",
+                        "defaultValue": false
+                    }
+                ]
+            },
+            {
+                "displayName": "刻度样式--default",
                 "properties": [
                     {
                         "name": "showaxisTick",
@@ -337,7 +516,42 @@
                 ]
             },
             {
-                "displayName": "刻度标签",
+                "displayName": "刻度样式--Style1",
+                "properties": [
+                    {
+                        "name": "showaxisTickStyle1",
+                        "type": "Boolean",
+                        "displayName": "显示刻度",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "axisTickNumStyle1",
+                        "type": "Integer",
+                        "displayName": "数量",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "axisTickWidthStyle1",
+                        "type": "Integer",
+                        "displayName": "线宽",
+                        "defaultValue": 1
+                    },
+                    {
+                        "name": "axisTickShadowDistanceStyle1",
+                        "type": "Integer",
+                        "displayName": "线和轴的距离",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "axisTickColorStyle1",
+                        "type": "Color",
+                        "displayName": "颜色",
+                        "defaultValue": "#f0f0f0"
+                    }
+                ]
+            },
+            {
+                "displayName": "刻度标签--default",
                 "properties": [
                     {
                         "name": "showAxisLabel",
@@ -394,7 +608,73 @@
                 ]
             },
             {
-                "displayName": "分隔线样式",
+                "displayName": "刻度标签--Style1",
+                "properties": [
+                    {
+                        "name": "showAxisLabelStyle1",
+                        "type": "Boolean",
+                        "displayName": "显示刻度标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "axisLabelShadowDistanceStyle1",
+                        "type": "Integer",
+                        "displayName": "标签和线的距离",
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "axisLabelColorStyle1",
+                        "type": "Color",
+                        "displayName": "颜色",
+                        "defaultValue": "#f0f0f0"
+                    },
+                    {
+                        "name": "axisLabelCustomStyle1",
+                        "displayName": "刻度值自定义",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "axisLabel",
+                                "displayName": "旧刻度值",
+                                "type": "Integer"
+                            },
+                            {
+                                "name": "newAxisLabel",
+                                "displayName": "新刻度值",
+                                "type": "Text"
+                            }
+                        ],
+                        "defaultValue": [{
+                            "axisLabel": 25,
+                            "newAxisLabel": "高风险"
+                        },{
+                            "axisLabel": 50,
+                            "newAxisLabel": "中风险"
+                        },{
+                            "axisLabel": 75,
+                            "newAxisLabel": "达标"
+                        }]
+                    },
+                    {
+                        "name": "showDefaultLabelStyle1",
+                        "type": "Boolean",
+                        "displayName": "显示默认刻度值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "axisLabelTextStyleStyle1",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.0X"
+                        }
+                    }
+
+                ]
+            },
+            {
+                "displayName": "分隔线样式--default",
                 "properties": [
                     {
                         "name": "showsplitLine",
@@ -428,9 +708,45 @@
                         "defaultValue": "#f0f0f0"
                     }
                 ]
+            },
+            {
+                "displayName": "分隔线样式--Style1",
+                "properties": [
+                    {
+                        "name": "showsplitLineStyle1",
+                        "type": "Boolean",
+                        "displayName": "显示分隔线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "splitLineWidthStyle1",
+                        "type": "Integer",
+                        "displayName": "线宽",
+                        "defaultValue": 1
+                    },
+                    {
+                        "name": "splitLineLengthStyle1",
+                        "type": "Integer",
+                        "displayName": "线长",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "splitLineDistanceStyle1",
+                        "type": "Integer",
+                        "displayName": "线和轴的距离",
+                        "defaultValue":5
+                    },
+                
+                    {
+                        "name": "splitLineColorStyle1",
+                        "type": "Color",
+                        "displayName": "颜色",
+                        "defaultValue": "#f0f0f0"
+                    }
+                ]
             },           
             {
-                "displayName": "指针样式",
+                "displayName": "指针样式--default",
                 "properties": [
                     {
                         "name": "showPointer",
@@ -505,7 +821,82 @@
                 ]
             },
             {
-                "displayName": "副标题样式",
+                "displayName": "指针样式--style1",
+                "properties": [
+                    {
+                        "name": "showPointerStyle1",
+                        "type": "Boolean",
+                        "displayName": "显示指针",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "pointerStyleStyle1",
+                        "displayName": "指针样式",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "displayNameKey": "指针",
+                                "value": "pointer"
+                            },
+                            {
+                                "displayNameKey": "圆点",
+                                "value": "dot"
+                            }
+                        ],
+                        "defaultValue": "pointer"
+                    },
+                    {
+                        "name": "pointerColorStyle1",
+                        "type": "Color",
+                        "displayName": "指针颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "dotColorStyle1",
+                        "type": "Color",
+                        "displayName": "圆点颜色",
+                        "defaultValue": "#509dea"
+                    },
+                    {
+                        "name": "dotWidthStyle1",
+                        "type": "Integer",
+                        "displayName": "圆点宽度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "dotHeightStyle1",
+                        "type": "Integer",
+                        "displayName": "圆点高度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "dotOffsetXStyle1",
+                        "type": "Integer",
+                        "displayName": "圆点X偏移量",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "dotOffsetYStyle1",
+                        "type": "Integer",
+                        "displayName": "圆点Y偏移量",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "pointerLengthStyle1",
+                        "type": "Percentage",
+                        "displayName": "指针长度",
+                        "defaultValue": 60
+                    },
+                    {
+                        "name": "pointerWidthStyle1",
+                        "type": "Integer",
+                        "displayName": "指针宽度",
+                        "defaultValue": 3
+                    }
+                ]
+            },
+            {
+                "displayName": "副标题样式--default",
                 "properties": [
                     {
                         "name": "showSubTitle",
@@ -543,7 +934,45 @@
                 ]
             },
             {
-                "displayName": "数据标签1",
+                "displayName": "副标题样式--Style1",
+                "properties": [
+                    {
+                        "name": "showSubTitleStyle1",
+                        "type": "Boolean",
+                        "displayName": "显示副标题",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "subtitleStyle1",
+                        "type": "Text",
+                        "displayNameKey": "副标题",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "titleXPositionStyle1",
+                        "type": "Integer",
+                        "displayName": "标签X偏移量",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "titleYPositionStyle1",
+                        "type": "Integer",
+                        "displayName": "标签Y偏移量",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "textStyleStyle1",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.5X"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标签1--default",
                 "properties": [
                     {
                         "name": "showDataLabel1",
@@ -614,7 +1043,78 @@
                 ]
             },
             {
-                "displayName": "数据标签2",
+                "displayName": "数据标签1--Style1",
+                "properties": [
+                    {
+                        "name": "showDataLabel1Style1",
+                        "type": "Boolean",
+                        "displayName": "数据标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showActual1Style1",
+                        "type": "Boolean",
+                        "displayName": "实际值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showContrast1Style1",
+                        "type": "Boolean",
+                        "displayName": "对比值",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showDetail1Style1",
+                        "type": "Boolean",
+                        "displayName": "百分比",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dataLabel1LineHeightStyle1",
+                        "type": "Integer",
+                        "displayName": "标签行高",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "dataLabel1XPositionStyle1",
+                        "type": "Integer",
+                        "displayName": "标签X偏移量",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "dataLabel1YPositionStyle1",
+                        "type": "Integer",
+                        "displayName": "标签Y偏移量",
+                        "defaultValue":50
+                    },
+                    {
+                        "name": "dataLabel1TextStyleStyle1",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "2.0X"
+                        }
+                    },
+                    {
+                        "name": "DetailDisplayUnitStyle1",
+                        "type": "Text",
+                        "displayName": "后缀单位",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "DetailDisplayUnitTextStyleStyle1",
+                        "type": "TextStyle",
+                        "displayName": "后缀单位字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.0X"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标签2--default",
                 "properties": [
                     {
                         "name": "showDataLabel2",
@@ -660,6 +1160,62 @@
                     },
                     {
                         "name": "dataLabel2TextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.2X"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据标签2--Style1",
+                "properties": [
+                    {
+                        "name": "showDataLabel2Style1",
+                        "type": "Boolean",
+                        "displayName": "数据标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showActual2Style1",
+                        "type": "Boolean",
+                        "displayName": "实际值",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showContrast2Style1",
+                        "type": "Boolean",
+                        "displayName": "对比值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showDetail2Style1",
+                        "type": "Boolean",
+                        "displayName": "百分比",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "dataLabel2LineHeightStyle1",
+                        "type": "Integer",
+                        "displayName": "标签行高",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "dataLabel2XPositionStyle1",
+                        "type": "Integer",
+                        "displayName": "标签X偏移量",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "dataLabel2YPositionStyle1",
+                        "type": "Integer",
+                        "displayName": "标签Y偏移量",
+                        "defaultValue": 65
+                    },
+                    {
+                        "name": "dataLabel2TextStyleStyle1",
                         "type": "TextStyle",
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
