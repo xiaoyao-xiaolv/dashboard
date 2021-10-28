@@ -483,7 +483,7 @@ export default class Visual extends WynVisual {
           name: "内部阴影",
           type: "gauge",
           ..._gaugeStyle(options.gaugeR * (46 / 52)),
-          axisLine: _axisLine((options.shadowWidth * (options.gaugeR / 100)), [[Number(items) / options.max, new echarts.graphic.LinearGradient(
+          axisLine: _axisLine((options.shadowWidth * (options.gaugeR / 100)), [[Number(Number(items.toFixed(2)) - options.min) / ( options.max), new echarts.graphic.LinearGradient(
                 0, 1, 0, 0, [{
                         offset: 0,
                         color: hexToRgba(_getSectionColor(options.dialColorUseToShadow, options.shadowColor), 0.1),
@@ -512,7 +512,7 @@ export default class Visual extends WynVisual {
               show: false,
           },
           itemStyle: {
-              show: false,
+            show: false,
           },
       },
       {
@@ -690,8 +690,29 @@ export default class Visual extends WynVisual {
      if (!options.properties.showDataLabel2) {
       hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle'])
     }
-
-   
+    const _styleName = ['default', 'Style1'];
+    const _currentStyleName = options.properties.styleName;
+    const _hiddenOptions = [];
+    const _publicKey = ['Actual', 'customActual', 'Contrast', 'customContrast', 'styleName'];
+    _publicKey.map((item: string) => {
+      // delete public key
+      // delete options.properties[item]
+    })
+    for (let key in options.properties) {
+      if (_currentStyleName === 'default') {
+        _styleName.map((_name) => {
+          // key includes style name array
+          if (key.indexOf(_name) !== -1) {
+            _hiddenOptions.push(key)
+          }
+        })
+      } else {
+        // key not includes style name
+        if (key.indexOf(_currentStyleName) == -1) {
+          _hiddenOptions.push(key)
+        }
+      }
+    }
     return hiddenOptions;
   }
 

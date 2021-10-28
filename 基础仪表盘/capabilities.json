@@ -127,7 +127,7 @@
                     {
                         "name": "customContrast",
                         "type": "Input",
-                        "displayName": "自定义实际值",
+                        "displayName": "自定义对比值",
                         "min": 0,
                         "defaultValue": "100"
                     }
