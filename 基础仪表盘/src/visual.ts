@@ -9,22 +9,6 @@ echarts.use(
 );
 let gaugeStyle = 'basic';
 let pointerStyle = 'pointer';
-let currentStyleName = 'default'
-let customStyle = {
-  'style1': {
-    'showPointer': false,
-  },
-  'style2': {
-    'dialColorUseToDial': true,
-    // 'DetailDisplayUnitTextStyle': {
-    //   'color': '#509dea'
-    // },
-    // 'axisLabelCustom': [{
-    //   'axisLabel': 25,
-    //   'newAxisLabel': '高风险'
-    // }]
-  }
-};
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
@@ -80,20 +64,7 @@ export default class Visual extends WynVisual {
       }
 
     }
-    // 快速多种样式
-    // if (options.properties.styleName !== currentStyleName) {
-    //   // 加载新的样式默认值
-    //   for (let key in options.properties) {
-    //     for (let customK in customStyle[options.properties.styleName]) {
-    //       if (key = customK) {
-    //         // value is object
-    //         console.log(typeof (customStyle[options.properties.styleName][key]), '==s');
-    //         options.properties[key]= customStyle[options.properties.styleName][key]
-    //         // console.log(customK, options.properties[key], customStyle[options.properties.styleName][key], 2222)
-    //       }
-    //     }
-    //   }
-    // }
+    
     this.properties = options.properties;
     this.render();
   }
@@ -324,7 +295,7 @@ export default class Visual extends WynVisual {
     let dotArray = [];
 
     const calculateDot = (data) => {
-      const _number = 90;
+      const _number = 90 + Number(-options.dotOffsetY);
       if (data <= 20) {
           dotArray.push(_number)
       }else if (data > 20&&data<=40) {
@@ -339,38 +310,41 @@ export default class Visual extends WynVisual {
     }
 
     calculateDot(items)//80%显示4个点，
+    const scatterData =  90 + Number(-options.dotOffsetY);
+    const topLineData = 100 + Number(-options.dotOffsetY);
+    const bottomLineData = 80 + Number(-options.dotOffsetY);
     const centerPointerStyle = [{
       // 五个小球
-        name: '',
-        symbolSize: options.dotWidth,
-        symbolOffset: [options.dotOffset, 0],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
-        type: 'scatter',
-        color: '#fff',
-        data: [90, 90, 90, 90, 90]
-      },
-      //根据数据判断小球的颜色
-      {
-        name: '',
-        type: 'scatter',
-        symbolSize: options.dotWidth,
-        symbolOffset: [options.dotOffset, 0],//移动小球的位置
-        color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
-        data: dotArray
-      },
-      {//第一个线
-        name: '',
-        type: 'line',
-        color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
-        symbol: "none",
-        data: [100, 100, 100, 100, 100, 100]
-      },
-      {//第二根线
-        name: '',
-        type: 'line',
-        symbol: "none",//去掉横线上的小点
-        color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
-        data: [80, 80, 80, 80, 80, 80]
-      }]
+      name: '',
+      symbolSize: options.dotWidth,
+      symbolOffset: [options.dotOffsetX, 0],//就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
+      type: 'scatter',
+      color: '#fff',
+      data: options.showPointer && options.pointerStyle === 'dot' ? [scatterData, scatterData, scatterData, scatterData, scatterData] : []
+    },
+    //根据数据判断小球的颜色
+    {
+      name: '',
+      type: 'scatter',
+      symbolSize: options.dotWidth,
+      symbolOffset: [options.dotOffsetX, 0],//移动小球的位置
+      color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
+      data: options.showPointer && options.pointerStyle === 'dot' ? dotArray : []
+    },
+    {//第一个线
+      name: '',
+      type: 'line',
+      color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
+      symbol: "none",
+      data: options.showPointer && options.pointerStyle === 'dot' ? [topLineData, topLineData, topLineData, topLineData, topLineData, topLineData] : []
+    },
+    {//第二根线
+      name: '',
+      type: 'line',
+      symbol: "none",//去掉横线上的小点
+      color: _getSectionColor(options.dialColorUseToPointer, options.dotColor),
+      data: options.showPointer && options.pointerStyle === 'dot' ? [bottomLineData, bottomLineData, bottomLineData, bottomLineData, bottomLineData, bottomLineData] : []
+    }];
     
     // progress
     const RgbToHex  = (a, b, c)  =>{
@@ -592,14 +566,14 @@ export default class Visual extends WynVisual {
               }
           }]
       },
-      ...(options.showPointer && options.pointerStyle === 'dot' ?  centerPointerStyle: []),
+      ...centerPointerStyle,
     ]
     // clear pointer style
     const _option = this.properties.pointerStyle;
     if (pointerStyle !== _option) {
       this.chart.clear();
       pointerStyle = _option;
-    }
+    } 
 
     const option = {
       xAxis: {
@@ -667,20 +641,20 @@ export default class Visual extends WynVisual {
 
     // pointer style
     if (!options.properties.showPointer) {
-      hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerStyle', 'pointerColor', 'dotColor', 'dotWidth', 'dotHeight', 'dotOffset'])
+      hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerStyle', 'pointerColor', 'dotColor', 'dotWidth', 'dotHeight', 'dotOffsetX', 'dotOffsetY'])
     } else {
       if (options.properties.pointerStyle === 'dot') {
         hiddenOptions = hiddenOptions.concat(['pointerLength', 'pointerWidth', 'pointerColor'])
       } else {
-        hiddenOptions = hiddenOptions.concat(['dotColor', 'dotWidth', 'dotHeight', 'dotOffset']);
+        hiddenOptions = hiddenOptions.concat(['dotColor', 'dotWidth', 'dotHeight', 'dotOffsetX', 'dotOffsetY']);
       }
     }
     if (!options.properties.showDataLabel1) {
-      hiddenOptions = hiddenOptions.concat(['showActual1', 'showContrast1', 'showDetail1', 'dataLabel1LineHeight', 'dataLabel1XPosition', 'dataLabel1YPosition', 'dataLabel1TextStyle'])
+      hiddenOptions = hiddenOptions.concat(['showActual1', 'showContrast1', 'showDetail1', 'dataLabel1LineHeight', 'dataLabel1XPosition', 'dataLabel1YPosition', 'dataLabel1TextStyle', 'DetailDisplayUnit', 'DetailDisplayUnitTextStyle'])
     }
 
     if (!options.properties.showDataLabel2) {
-      hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle', 'DetailDisplayUnit'])
+      hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle'])
     }
     // dial section 
     // if (options.properties.dialColor == "single") {
@@ -700,7 +674,7 @@ export default class Visual extends WynVisual {
 
      // axisLabel
      if (!options.properties.showAxisLabel) {
-      hiddenOptions = hiddenOptions.concat(['axisLabelShadowDistance', 'axisLabelColor', 'axisLabelTextStyle', 'scope', 'axisLabelCustom', 'showDefaultLabel'])
+      hiddenOptions = hiddenOptions.concat(['axisLabelShadowDistance', 'axisLabelColor', 'axisLabelTextStyle', 'axisLabelCustom', 'showDefaultLabel'])
     }
     // SubTitle
     if (!options.properties.showSubTitle) {

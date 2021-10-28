@@ -479,9 +479,15 @@
                         "defaultValue": 10
                     },
                     {
-                        "name": "dotOffset",
+                        "name": "dotOffsetX",
                         "type": "Integer",
                         "displayName": "圆点X偏移量",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "dotOffsetY",
+                        "type": "Integer",
+                        "displayName": "圆点Y偏移量",
                         "defaultValue": 10
                     },
                     {
