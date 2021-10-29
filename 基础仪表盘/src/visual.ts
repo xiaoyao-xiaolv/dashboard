@@ -392,30 +392,7 @@ export default class Visual extends WynVisual {
       for (var i = 0; i < 3; i++) hxs[i] = parseInt(hxs[i], 16);
       return hxs;
     }
-    const getLightOrDarkColor = (color, level, isLight?: boolean) => {
-      var r = /^\#?[0-9a-f]{6}$/;
-      let rgbc = [];
-      if (!r.test(color)) {
-        var rgb = color.split(',');
-        var _r = parseInt(rgb[0].split('(')[1]);
-        var _g = parseInt(rgb[1]);
-        var _b = parseInt(rgb[2].split(')')[0]);
-        rgbc = HexToRgb(RgbToHex(_r, _g, _b));
-      } else {
-        rgbc = HexToRgb(color);
-      }
-      if (isLight) {
-        for (var i = 0; i < 3; i++) {
-          rgbc[i] = Math.floor((255 - rgbc[i]) * level + rgbc[i]);
-        }
-        return RgbToHex(rgbc[0], rgbc[1], rgbc[2]);
-      } else {
-        for (var i = 0; i < 3; i++) {
-          rgbc[i] = Math.floor(rgbc[i] * (1 - level));
-        }
-        return RgbToHex(rgbc[0], rgbc[1], rgbc[2]);
-      }
-    }
+   
 
     const hexToRgba = (hex, opacity?: number, isLine?: boolean) => {
       const isHex = hex.slice(0, 1) === '#';
@@ -675,12 +652,7 @@ export default class Visual extends WynVisual {
     if (!options.properties.showDataLabel2) {
       hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle'])
     }
-    // dial section 
-    // if (options.properties.dialColor == "single") {
-    //   hiddenOptions = hiddenOptions.concat(['dialSectionColor', 'dialColorUseToLabel', 'dialColorUseToShadow', 'dialColorUseToPointer'])
-    // } else {
-    //   hiddenOptions = hiddenOptions.concat(['dialSingleColor'])
-    // }
+
     // splitLine
     if (!options.properties.showsplitLine) {
       hiddenOptions = hiddenOptions.concat(['splitLineWidth', 'splitLineLength', 'splitLineDistance', 'splitLineColor'])
@@ -709,29 +681,7 @@ export default class Visual extends WynVisual {
      if (!options.properties.showDataLabel2) {
       hiddenOptions = hiddenOptions.concat(['showActual2', 'showContrast2', 'showDetail2', 'dataLabel2LineHeight', 'dataLabel2XPosition', 'dataLabel2YPosition', 'dataLabel2TextStyle'])
     }
-    const _styleName = ['default', 'Style1'];
-    const _currentStyleName = options.properties.styleName;
-    const _hiddenOptions = [];
-    const _publicKey = ['Actual', 'customActual', 'Contrast', 'customContrast', 'styleName'];
-    _publicKey.map((item: string) => {
-      // delete public key
-      // delete options.properties[item]
-    })
-    for (let key in options.properties) {
-      if (_currentStyleName === 'default') {
-        _styleName.map((_name) => {
-          // key includes style name array
-          if (key.indexOf(_name) !== -1) {
-            // _hiddenOptions.push(key)
-          }
-        })
-      } else {
-        // key not includes style name
-        if (key.indexOf(_currentStyleName) == -1) {
-          // _hiddenOptions.push(key)
-        }
-      }
-    }
+  
     return hiddenOptions;
   }
 
