@@ -3,12 +3,14 @@ import * as echarts from 'echarts/core';
 import { GaugeChart,PieChart,ScatterChart,LineChart   } from 'echarts/charts';
 import { TitleComponent , GraphicComponent , AriaComponent , TooltipComponent, LegendComponent, GridComponent   } from 'echarts/components';
 import {CanvasRenderer} from 'echarts/renderers';
+import  CustomStyle  from './customStyle.js';
 
 echarts.use(
   [ GaugeChart,PieChart , ScatterChart , LineChart ,TitleComponent , GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
 );
-let gaugeStyle = 'basic';
+let _styleName = 'default';
 let pointerStyle = 'pointer';
+
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
   private chart: any;
@@ -69,6 +71,21 @@ export default class Visual extends WynVisual {
     this.render();
   }
 
+  private onUpdateStylePropertiesData = () => {
+    if (this.properties.styleName !== _styleName) {
+      _styleName = this.properties.styleName;
+      const _initData = this.properties.styleName === 'default' ? CustomStyle.default : {
+        ...CustomStyle.default,
+        ...CustomStyle[this.properties.styleName]
+      }
+      for (let key in _initData) {
+        if (key !== 'styleName') {
+          this.host.propertyService.setProperty(key, _initData[key]);
+        }
+      }
+    }
+  }
+
   private render() {
     const isMock = !this.items.length;
     const items = ((isMock ? Visual.mockItems : this.items) * 100);
@@ -81,6 +98,14 @@ export default class Visual extends WynVisual {
     } else {
       fontWeight = options.textStyle.fontWeight
     }
+    // clear pointer style
+    const _option = this.properties.pointerStyle;
+    if (pointerStyle !== _option || this.properties.styleName !== _styleName) {
+      this.chart.clear();
+      pointerStyle = _option;
+    } 
+    // update capabilities data
+    this.onUpdateStylePropertiesData();
     // let detailfontWeight: string;
     // if (options.detailTextStyle.fontWeight == "Light") {
     //   detailfontWeight = options.detailTextStyle.fontWeight + "er"
@@ -483,7 +508,7 @@ export default class Visual extends WynVisual {
           name: "内部阴影",
           type: "gauge",
           ..._gaugeStyle(options.gaugeR * (46 / 52)),
-          axisLine: _axisLine((options.shadowWidth * (options.gaugeR / 100)), [[Number(Number(items.toFixed(2)) - options.min) / ( options.max), new echarts.graphic.LinearGradient(
+          axisLine: _axisLine((options.shadowWidth * (options.gaugeR / 100)), [[Number(Number(items.toFixed(2)) - options.min) / ( options.max - options.min), new echarts.graphic.LinearGradient(
                 0, 1, 0, 0, [{
                         offset: 0,
                         color: hexToRgba(_getSectionColor(options.dialColorUseToShadow, options.shadowColor), 0.1),
@@ -568,12 +593,6 @@ export default class Visual extends WynVisual {
       },
       ...centerPointerStyle,
     ]
-    // clear pointer style
-    const _option = this.properties.pointerStyle;
-    if (pointerStyle !== _option) {
-      this.chart.clear();
-      pointerStyle = _option;
-    } 
 
     const option = {
       xAxis: {
@@ -703,13 +722,13 @@ export default class Visual extends WynVisual {
         _styleName.map((_name) => {
           // key includes style name array
           if (key.indexOf(_name) !== -1) {
-            _hiddenOptions.push(key)
+            // _hiddenOptions.push(key)
           }
         })
       } else {
         // key not includes style name
         if (key.indexOf(_currentStyleName) == -1) {
-          _hiddenOptions.push(key)
+          // _hiddenOptions.push(key)
         }
       }
     }

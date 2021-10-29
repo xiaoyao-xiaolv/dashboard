@@ -137,6 +137,34 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
+                        "displayNameKey": "快速样式",
+                        "name": "styleName",
+                        "type": "Enum",
+                        "items": [
+                            {
+                              "value": "default",
+                              "displayNameKey": "默认"
+                            },
+                            {
+                              "value": "style1",
+                              "displayNameKey": "样式1"
+                            },
+                            {
+                                "value": "style2",
+                                "displayNameKey": "样式2"
+                            },
+                            {
+                                "value": "style3",
+                                "displayNameKey": "样式3"
+                            },
+                            {
+                                "value": "style4",
+                                "displayNameKey": "样式4"
+                            }
+                          ],
+                          "defaultValue": "default"
+                    },
+                    {
                         "name": "gaugeR",
                         "type": "Percentage",
                         "displayName": "表盘半径",
@@ -253,20 +281,20 @@
                         "defaultValue": [{
                             "section": 1,
                             "sectionMax": 25,
-                            "color": "#509dea"
+                            "color": "#f84d4d"
                         },
                         {
                             "section": 2,
                             "sectionMax": 50,
-                            "color": "#0bbc98"
+                            "color": "#f5ba1a"
                         },{
                             "section": 3,
                             "sectionMax": 75,
-                            "color": "#8c7df2"
+                            "color": "#509dea"
                         },{
                             "section": 4,
                             "sectionMax": 100,
-                            "color": "#f58a1a"
+                            "color": "#08bc9b"
                         }]
                     },
                     {
