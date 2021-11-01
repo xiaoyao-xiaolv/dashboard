@@ -94,6 +94,12 @@
                           "defaultValue": "default"
                     },
                     {
+                        "name": "initStyleName",
+                        "type": "Hidden",
+                        "displayName": "默认样式值",
+                        "defaultValue": "default"
+                    },
+                    {
                         "name": "barWidth",
                         "type": "Integer",
                         "displayName": "柱子宽度",

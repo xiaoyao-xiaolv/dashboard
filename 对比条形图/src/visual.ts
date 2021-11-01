@@ -401,7 +401,8 @@ export default class Visual {
   }
 
   private onUpdateStylePropertiesData = () => {
-    if (this.properties.styleName !== _styleName) {
+    if (this.properties.styleName !== this.properties.initStyleName) {
+      this.host.propertyService.setProperty('initStyleName', this.properties.styleName);
       _styleName = this.properties.styleName;
       const _initData = this.properties.styleName === 'default' ? CustomStyle.default : {
         ...CustomStyle.default,
@@ -415,7 +416,7 @@ export default class Visual {
     }
   }
   private render() {
-    this.chart.clear();
+    // this.chart.clear();
     const options = this.properties;
     // update custom style 
     this.onUpdateStylePropertiesData();

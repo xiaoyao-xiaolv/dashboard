@@ -130,6 +130,8 @@ export default {
             "ontStyle": "Normal",
             "color": "#f0f0f0"
         },
+        "showActual1": false,
+        "showDetail1": true,
         "showActual2": true,
         "showDetail2": false,
         "dataLabel2YPosition": 25
@@ -186,7 +188,9 @@ export default {
         "shadowWidth": 0,
         "dialColorUseToLabel1": true,
         "showActual1": false,
-        "showDetail1": true
+        "showDetail1": true,
+        "showActual2": true,
+        "showDetail2": false,
     },
     style4: {
         "dialColorUseToDial": true,
@@ -208,5 +212,6 @@ export default {
             "fontStyle": "Normal",
             "color": "#509dea"
         },
+
     },
 }

@@ -66,14 +66,14 @@ export default class Visual extends WynVisual {
       }
 
     }
-    
     this.properties = options.properties;
     this.render();
   }
 
-  private onUpdateStylePropertiesData = () => {
-    if (this.properties.styleName !== _styleName) {
+  private onUpdateStylePropertiesData = (_initStyleName?: string) => {
+    if (this.properties.styleName !== this.properties.initStyleName) {
       _styleName = this.properties.styleName;
+      this.host.propertyService.setProperty('initStyleName', this.properties.styleName);
       const _initData = this.properties.styleName === 'default' ? CustomStyle.default : {
         ...CustomStyle.default,
         ...CustomStyle[this.properties.styleName]
@@ -85,13 +85,13 @@ export default class Visual extends WynVisual {
       }
     }
   }
-
+ 
   private render() {
     const isMock = !this.items.length;
     const items = ((isMock ? Visual.mockItems : this.items) * 100);
     this.container.style.opacity = isMock ? '0.3' : '1';
     
-    const options = this.properties; 
+    const options = this.properties;
     let fontWeight: string;
     if (options.textStyle.fontWeight == "Light") {
       fontWeight = options.textStyle.fontWeight + "er"
