@@ -70,6 +70,30 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
+                        "displayNameKey": "快速样式",
+                        "name": "styleName",
+                        "type": "Enum",
+                        "items": [
+                            {
+                              "value": "default",
+                              "displayNameKey": "默认"
+                            },
+                            {
+                              "value": "style1",
+                              "displayNameKey": "样式1"
+                            },
+                            {
+                                "value": "style2",
+                                "displayNameKey": "样式2"
+                            },
+                            {
+                                "value": "style3",
+                                "displayNameKey": "样式3"
+                            }
+                          ],
+                          "defaultValue": "default"
+                    },
+                    {
                         "name": "barWidth",
                         "type": "Integer",
                         "displayName": "柱子宽度",
@@ -416,7 +440,10 @@
                         "name": "labelTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.0X"
+                        }
                     }
                 ]
             },
@@ -554,7 +581,10 @@
                         "name": "textStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.0X"
+                        }
                     }
                 ]
             },
@@ -624,7 +654,10 @@
                         "name": "rankingTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue" : {
+                            "fontSize": "1.0X"
+                        }
                     },
                     {
                         "name": "showBackgroundColor",

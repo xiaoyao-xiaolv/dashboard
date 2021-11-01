@@ -1,9 +1,11 @@
 import '../style/visual.less';
 import _ = require('lodash');
+import  CustomStyle  from './customStyle.js';
 const echarts = require('echarts');
 
 const clickLeftMouse = 0;
 const clickRightMouse = 2;
+let _styleName = 'default';
 export default class Visual {
   private container: HTMLDivElement;
   private chart: any;
@@ -397,9 +399,26 @@ export default class Visual {
       return newColor
     }
   }
+
+  private onUpdateStylePropertiesData = () => {
+    if (this.properties.styleName !== _styleName) {
+      _styleName = this.properties.styleName;
+      const _initData = this.properties.styleName === 'default' ? CustomStyle.default : {
+        ...CustomStyle.default,
+        ...CustomStyle[this.properties.styleName]
+      }
+      for (let key in _initData) {
+        if (key !== 'styleName') {
+          this.host.propertyService.setProperty(key, _initData[key]);
+        }
+      }
+    }
+  }
   private render() {
     this.chart.clear();
     const options = this.properties;
+    // update custom style 
+    this.onUpdateStylePropertiesData();
     const items = this.isMock ? Visual.mockItems : this.items;
     if (!this.isMock) {
       this.selectionSort(items, options.sorttype, options.sortAccording);
