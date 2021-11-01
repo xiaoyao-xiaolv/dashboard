@@ -5,7 +5,7 @@ export default {
         "DetailDisplayUnit": "",
         "DetailDisplayUnitTextStyle": {
             "fontFamily": "微软雅黑",
-            "fontSize": "10pt",
+            "fontSize": "1.0X",
             "fontWeight": "Normal",
             "fontStyle": "Normal",
             "color": "#f0f0f0"
@@ -15,7 +15,7 @@ export default {
         "axisLabelShadowDistance": 2,
         "axisLabelTextStyle": {
             "fontFamily": "微软雅黑",
-            "fontSize": "10pt",
+            "fontSize": "1.0X",
             "fontWeight": "Normal",
             "fontStyle": "Normal",
             "color": "#f0f0f0"
@@ -29,7 +29,7 @@ export default {
         "dataLabel1LineHeight": 30,
         "dataLabel1TextStyle": {
             "fontFamily": "微软雅黑",
-            "fontSize": "20pt",
+            "fontSize": "2.0X",
             "fontWeight": "Normal",
             "fontStyle": "Normal",
             "color": "#f0f0f0"
@@ -39,7 +39,7 @@ export default {
         "dataLabel2LineHeight": 30,
         "dataLabel2TextStyle": {
             "fontFamily": "微软雅黑",
-            "fontSize": "12pt",
+            "fontSize": "1.2X",
             "fontWeight": "Normal",
             "fontStyle": "Normal",
             "color": "#f0f0f0"
@@ -111,7 +111,7 @@ export default {
         "subtitle": "",
         "textStyle": {
             "fontFamily": "微软雅黑",
-            "fontSize": "15pt",
+            "fontSize": "1.5X",
             "fontWeight": "Normal",
             "ontStyle": "Normal",
             "color": "#f0f0f0"
@@ -120,46 +120,27 @@ export default {
         "titleYPosition": 30
     },
     style1: {
-        "dialColorUseToDial": true,
-        "shadowWidth": 0,
-        "axisLabelCustom": [{
-            axisLabel: 25,
-            newAxisLabel: "高风险",
-        },{
-            axisLabel: 50,
-            newAxisLabel: "中风险",
-        },{
-            axisLabel: 75,
-            newAxisLabel: "达标",
-            }],
-        "dataLabel1TextStyle": {
-            "fontFamily": "微软雅黑",
-            "fontSize": "20pt",
-            "fontWeight": "Normal",
-            "fontStyle": "Normal",
-            "color": "#509dea"
-        },
-    },
-    style2: {
         "showPointer": false,
         "titleYPosition": -30,
         "dataLabel1YPosition": 0,
         "dataLabel1TextStyle": {
             "fontFamily": "微软雅黑",
-            "fontSize": "3.0x",
+            "fontSize": "3.0X",
             "fontWeight": "Normal",
             "ontStyle": "Normal",
             "color": "#f0f0f0"
         },
+        "showActual2": true,
+        "showDetail2": false,
         "dataLabel2YPosition": 25
     },
-    style3: {
+    style2: {
         "titleYPosition": 30,
         "pointerStyle": "dot",
         "dataLabel1YPosition": -25,
         "dataLabel1TextStyle": {
             "fontFamily": "微软雅黑",
-            "fontSize": "3.0x",
+            "fontSize": "3.0X",
             "fontWeight": "Normal",
             "ontStyle": "Normal",
             "color": "#f0f0f0"
@@ -169,14 +150,14 @@ export default {
         "showDataLabel2": false,
         "dialColorUseToPointer": true
     },
-    style4: {
+    style3: {
         "showPointer": false,
         "titleYPosition": -30,
         "dataLabel1YPosition": 0,
         "gaugeStartColor": '#f84d4d',
         "gaugeEndColor": '#08bc9b',
         "dialColorUseToLabel1":true,
-        "dialColorUseToDial": true,
+        "dialColorUseToDial": false,
         "dialSectionColor": [{
             "section": 1,
             "sectionMax": 25,
@@ -194,10 +175,38 @@ export default {
             "sectionMax": 100,
             "color": "#08bc9b"
         }],
+        "dataLabel1TextStyle": {
+            "fontFamily": "微软雅黑",
+            "fontSize": "3.0X",
+            "fontWeight": "Normal",
+            "ontStyle": "Normal",
+            "color": "#f0f0f0"
+        },
         "dataLabel2YPosition": 25,
         "shadowWidth": 0,
         "dialColorUseToLabel1": true,
         "showActual1": false,
         "showDetail1": true
+    },
+    style4: {
+        "dialColorUseToDial": true,
+        "shadowWidth": 0,
+        "axisLabelCustom": [{
+            axisLabel: 25,
+            newAxisLabel: "高风险",
+        },{
+            axisLabel: 50,
+            newAxisLabel: "中风险",
+        },{
+            axisLabel: 75,
+            newAxisLabel: "达标",
+            }],
+        "dataLabel1TextStyle": {
+            "fontFamily": "微软雅黑",
+            "fontSize": "2.0X",
+            "fontWeight": "Normal",
+            "fontStyle": "Normal",
+            "color": "#509dea"
+        },
     },
 }
