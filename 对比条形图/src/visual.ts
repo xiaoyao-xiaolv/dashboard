@@ -28,6 +28,7 @@ export default class Visual {
   private ActualValue: string;
   private Dimension: string;
   private ContrastValue: string;
+  private richStyle: any;
   static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
     , [58, 46, 47, 49, 59, 17, 25, 83, 34]
     , [74, 64, 78, 65, 79, 21, 28, 91, 38]
@@ -289,7 +290,7 @@ export default class Visual {
     }
     return;
   }
-
+  
   private _getRichList(_options, allData: any) {
     const { rankingConditionCollection: rankingArr, rankingTextStyle: textStyle, rankingShape: bgShape, rankingSize: widthSize, rankingBackgroundImage: bgImage, rankingBackgroundColor: bgColor, showBackgroundColor } = _options;
     const _basicTextStyle = {
@@ -319,6 +320,7 @@ export default class Visual {
         }
       }
     })
+    this.richStyle = styleList;
     return styleList;
   }
 
@@ -416,7 +418,7 @@ export default class Visual {
     }
   }
   private render() {
-    // this.chart.clear();
+    this.chart.clear();
     const options = this.properties;
     // update custom style 
     this.onUpdateStylePropertiesData();
@@ -437,7 +439,7 @@ export default class Visual {
     } else {
       labelfontWeight = options.textStyle.fontWeight
     }
-
+    this._getRichList(options, items)
     let option = {
       tooltip: {
         show: true,
@@ -638,15 +640,10 @@ export default class Visual {
               } else {
                 return '{idx|' + replaceOrder + '}'
               }
-              // if (options.showBackgroundColor && options.rankingConditionCollection) {
-              //     return '{idx'+ (value.dataIndex+1) +'|'+ replaceOrder + '}'
-              //   }else {
-              //     return '{idx|'+ replaceOrder + '}'
-              //   }
             }
 
           },
-          rich: this._getRichList(options, items),
+          rich: this.richStyle,
         },
         emphasis: {
           itemStyle: {

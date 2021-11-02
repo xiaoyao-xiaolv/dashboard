@@ -701,11 +701,27 @@
                                 "type": "Image"
                             }
                         ],
-                        "defaultValue": []
-                    }
-                    
-                    
-                ]
+                        "defaultValue": [
+                            {
+                                "rankingConditionValue": "1",
+                                "rankingReplaceValue": "1",
+                                "rankingFontColor": "",
+                                "rankingConditionColor": "#509dea",
+                                "rankingConditionImage":""
+                             },{
+                                "rankingConditionValue": "2",
+                                "rankingReplaceValue": "2",
+                                "rankingFontColor": "",
+                                "rankingConditionColor": "#08bc9b",
+                                "rankingConditionImage":""
+                            },{
+                                "rankingConditionValue": "3",
+                                "rankingReplaceValue": "3",
+                                "rankingFontColor": "",
+                                "rankingConditionColor": "#bc7df2",
+                                "rankingConditionImage":""
+                            }]
+                    }]
             },
             {
                 "type": "interaction",
