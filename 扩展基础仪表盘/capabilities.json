@@ -139,7 +139,7 @@
                     {
                         "displayNameKey": "快速样式",
                         "name": "styleName",
-                        "type": "Hidden",
+                        "type": "Enum",
                         "items": [
                             {
                               "value": "default",
@@ -152,15 +152,7 @@
                             {
                                 "value": "style2",
                                 "displayNameKey": "样式2"
-                            },
-                            {
-                                "value": "style3",
-                                "displayNameKey": "样式3"
-                            },
-                            {
-                                "value": "style4",
-                                "displayNameKey": "样式4"
-                            }
+                              }
                           ],
                           "defaultValue": "default"
                     },
@@ -171,10 +163,28 @@
                         "defaultValue": "default"
                     },
                     {
+                        "name": "showBgImage",
+                        "type": "Boolean",
+                        "displayName": "显示背景",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "bgImageAnimate",
+                        "type": "Boolean",
+                        "displayName": "背景旋转",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "bgImage",
+                        "type": "Image",
+                        "displayName": "背景图片",
+                        "defaultValue": ""
+                    },
+                    {
                         "name": "gaugeR",
                         "type": "Percentage",
                         "displayName": "表盘半径",
-                        "defaultValue": 50,
+                        "defaultValue": 100,
                         "max": 200
                     },
                     {
@@ -201,7 +211,7 @@
                         "min": -360,
                         "max": 360,
                         "displayName": "起始角度",
-                        "defaultValue": 225
+                        "defaultValue": 90
                     },
                     {
                         "name": "endAngle",
@@ -209,209 +219,97 @@
                         "min": -360,
                         "max": 360,
                         "displayName": "终止角度",
-                        "defaultValue": -45
+                        "defaultValue": -270
                     },
                     {
-                        "name": "gaugeStartColor",
+                        "name": "gaugeBgColor",
                         "type": "Color",
-                        "displayName": "刻度盘进度色",
-                        "defaultValue": "#509dea"
-                    },
-                    {
-                        "name": "gaugeEndColor",
-                        "type": "Color",
-                        "displayName": "刻度盘背景色",
+                        "displayName": "刻度盘颜色",
                         "defaultValue": "#8c7df2"
                     },
                     {
-                        "name": "shadowColor",
+                        "name": "gaugeGear",
+                        "type": "Boolean",
+                        "displayName": "刻度盘齿轮",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "gearNumber",
+                        "type": "Integer",
+                        "displayName": "齿轮个数",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "gearWidth",
+                        "type": "Integer",
+                        "displayName": "齿轮宽度",
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "gearLength",
+                        "type": "Integer",
+                        "displayName": "齿轮长度",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "gearColor",
                         "type": "Color",
-                        "displayName": "阴影颜色",
+                        "displayName": "齿轮颜色",
                         "defaultValue": "#509dea"
                     },
                     {
-                        "name": "shadowWidth",
-                        "type": "Integer",
-                        "displayName": "阴影宽度",
-                        "defaultValue": 30
-                    }
-                ]
-            },
-            {
-                "displayName": "区间划分",
-                "properties": [
-                    {
-                        "name": "scope",
-                        "type": "Integer",
-                        "displayName": "区间划分",
-                        "min":0,
-                        "defaultValue": 4
-                    },
-                    {
-                        "name": "dialSectionColor",
-                        "displayName": "区间色",
-                        "type": "Collection",
-                        "itemShape": [
-                            {
-                                "name": "section",
-                                "displayName": "区间号",
-                                "type": "Integer", 
-                                "min": 1
-                            },
-                            {
-                                "name": "sectionMax",
-                                "displayName": "区间上限值",
-                                "type": "Integer",
-                                "defaultValue": 100
-                            },
-                            {
-                                "name": "color",
-                                "displayName": "区间颜色",
-                                "type": "Color",
-                                "defaultValue": "#509dea"
-                            }
-                        ],
-                        "defaultValue": [{
-                            "section": 1,
-                            "sectionMax": 25,
-                            "color": "#f84d4d"
-                        },
-                        {
-                            "section": 2,
-                            "sectionMax": 50,
-                            "color": "#f5ba1a"
-                        },{
-                            "section": 3,
-                            "sectionMax": 75,
-                            "color": "#509dea"
-                        },{
-                            "section": 4,
-                            "sectionMax": 100,
-                            "color": "#08bc9b"
-                        }]
-                    },
-                    {
-                        "name": "dialColorUseToDial",
+                        "name": "gaugeCircle",
                         "type": "Boolean",
-                        "displayName": "作用到刻度盘",
-                        "defaultValue": false
-                    }, 
-                    {
-                        "name": "dialColorUseToLabel1",
-                        "type": "Boolean",
-                        "displayName": "作用到标签1",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "dialColorUseToLabel2",
-                        "type": "Boolean",
-                        "displayName": "作用到标签2",
-                        "defaultValue": false
-                    }, 
-                    {
-                        "name": "dialColorUseToShadow",
-                        "type": "Boolean",
-                        "displayName": "作用到阴影",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "dialColorUseToPointer",
-                        "type": "Boolean",
-                        "displayName": "作用到指针",
-                        "defaultValue": false
-                    }
-                ]
-            },
-            {
-                "displayName": "刻度样式",
-                "properties": [
-                    {
-                        "name": "showaxisTick",
-                        "type": "Boolean",
-                        "displayName": "显示刻度",
+                        "displayName": "刻度盘内圈",
                         "defaultValue": true
                     },
                     {
-                        "name": "axisTickNum",
+                        "name": "gaugeCircleWidth",
                         "type": "Integer",
-                        "displayName": "数量",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "axisTickWidth",
-                        "type": "Integer",
-                        "displayName": "线宽",
-                        "defaultValue": 1
-                    },
-                    {
-                        "name": "axisTickShadowDistance",
-                        "type": "Integer",
-                        "displayName": "线和轴的距离",
-                        "defaultValue": 0
-                    },
-                    {
-                        "name": "axisTickColor",
-                        "type": "Color",
-                        "displayName": "颜色",
-                        "defaultValue": "#f0f0f0"
-                    }
-                ]
-            },
-            {
-                "displayName": "刻度标签",
-                "properties": [
-                    {
-                        "name": "showAxisLabel",
-                        "type": "Boolean",
-                        "displayName": "显示刻度标签",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "axisLabelShadowDistance",
-                        "type": "Integer",
-                        "displayName": "标签和线的距离",
+                        "displayName": "内圈宽度",
                         "defaultValue": 2
                     },
                     {
-                        "name": "axisLabelColor",
+                        "name": "gaugeCircleColor",
                         "type": "Color",
-                        "displayName": "颜色",
-                        "defaultValue": "#f0f0f0"
+                        "displayName": "内圈颜色",
+                        "defaultValue": "#fff"
                     },
                     {
-                        "name": "axisLabelCustom",
-                        "displayName": "刻度值自定义",
-                        "type": "Collection",
-                        "itemShape": [
-                            {
-                                "name": "axisLabel",
-                                "displayName": "旧刻度值",
-                                "type": "Integer"
-                            },
-                            {
-                                "name": "newAxisLabel",
-                                "displayName": "新刻度值",
-                                "type": "Text"
-                            }
-                        ],
-                        "defaultValue": []
-                    },
+                        "name": "gaugeCircleR",
+                        "type": "Integer",
+                        "displayName": "内圈半径",
+                        "defaultValue": 50
+                    }
+                ]
+            },
+            {
+                "displayName": "进度条样式",
+                "properties": [
                     {
-                        "name": "showDefaultLabel",
+                        "name": "showProgress",
                         "type": "Boolean",
-                        "displayName": "显示默认刻度值",
+                        "displayName": "显示进度条",
                         "defaultValue": true
                     },
                     {
-                        "name": "axisLabelTextStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle",
-                        "defaultValue" : {
-                            "fontSize": "1.0X"
-                        }
+                        "name": "progressRoundCap",
+                        "type": "Boolean",
+                        "displayName": "进度条圆角",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "progressRoundCapWidth",
+                        "type": "Integer",
+                        "displayName": "进度条宽度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "progressRoundColor",
+                        "type": "Color",
+                        "displayName": "进度条颜色",
+                        "defaultValue": "#509dea"
                     }
-
                 ]
             },
             {
@@ -440,85 +338,10 @@
                         "name": "splitLineColor",
                         "type": "Color",
                         "displayName": "颜色",
-                        "defaultValue": "#fff"
+                        "defaultValue": "#000"
                     }
                 ]
             },           
-            {
-                "displayName": "指针样式",
-                "properties": [
-                    {
-                        "name": "showPointer",
-                        "type": "Boolean",
-                        "displayName": "显示指针",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "pointerStyle",
-                        "displayName": "指针样式",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "displayNameKey": "指针",
-                                "value": "pointer"
-                            },
-                            {
-                                "displayNameKey": "圆点",
-                                "value": "dot"
-                            }
-                        ],
-                        "defaultValue": "pointer"
-                    },
-                    {
-                        "name": "pointerColor",
-                        "type": "Color",
-                        "displayName": "指针颜色",
-                        "defaultValue": "#fff"
-                    },
-                    {
-                        "name": "dotColor",
-                        "type": "Color",
-                        "displayName": "圆点颜色",
-                        "defaultValue": "#509dea"
-                    },
-                    {
-                        "name": "dotWidth",
-                        "type": "Integer",
-                        "displayName": "圆点宽度",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "dotHeight",
-                        "type": "Integer",
-                        "displayName": "圆点高度",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "dotOffsetX",
-                        "type": "Integer",
-                        "displayName": "圆点X偏移量",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "dotOffsetY",
-                        "type": "Integer",
-                        "displayName": "圆点Y偏移量",
-                        "defaultValue": 10
-                    },
-                    {
-                        "name": "pointerLength",
-                        "type": "Percentage",
-                        "displayName": "指针长度",
-                        "defaultValue": 60
-                    },
-                    {
-                        "name": "pointerWidth",
-                        "type": "Integer",
-                        "displayName": "指针宽度",
-                        "defaultValue": 3
-                    }
-                ]
-            },
             {
                 "displayName": "副标题样式",
                 "properties": [
@@ -570,7 +393,7 @@
                         "name": "showActual1",
                         "type": "Boolean",
                         "displayName": "实际值",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "showContrast1",
@@ -582,7 +405,7 @@
                         "name": "showDetail1",
                         "type": "Boolean",
                         "displayName": "百分比",
-                        "defaultValue": false
+                        "defaultValue":  true
                     },
                     {
                         "name": "dataLabel1LineHeight",
@@ -641,7 +464,7 @@
                         "name": "showActual2",
                         "type": "Boolean",
                         "displayName": "实际值",
-                        "defaultValue": false
+                        "defaultValue": true
                     },
                     {
                         "name": "showContrast2",
@@ -653,7 +476,7 @@
                         "name": "showDetail2",
                         "type": "Boolean",
                         "displayName": "百分比",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "dataLabel2LineHeight",
@@ -671,7 +494,7 @@
                         "name": "dataLabel2YPosition",
                         "type": "Integer",
                         "displayName": "标签Y偏移量",
-                        "defaultValue": 30
+                        "defaultValue": 20
                     },
                     {
                         "name": "dataLabel2TextStyle",

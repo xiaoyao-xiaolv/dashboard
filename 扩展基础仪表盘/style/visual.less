@@ -1,4 +1,30 @@
 ::-webkit-scrollbar {display:none}
 #visualDom{
     overflow: hidden;
+    position: relative;
+    
+}
+
+.gaugeBg {
+    transform: translate(-50%, -50%);
+}
+.rotateBg {
+    transform-style: preserve-3d;
+    animation: _rotateBg 5s linear infinite;
+}
+
+.rotateBg:hover {
+    animation-play-state: paused;
+}
+
+@keyframes _rotateBg {
+    0% {
+        transform: translate(-50%, -50%) rotateZ(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateZ(180deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateZ(360deg);
+    }
 }
