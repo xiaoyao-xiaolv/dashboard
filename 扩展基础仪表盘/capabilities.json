@@ -163,47 +163,6 @@
                         "defaultValue": "default"
                     },
                     {
-                        "name": "showBgImage",
-                        "type": "Boolean",
-                        "displayName": "显示背景",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "bgImageAnimate",
-                        "type": "Boolean",
-                        "displayName": "背景旋转",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "bgAnimateTime",
-                        "type": "Integer",
-                        "min": 0,
-                        "displayName": "旋转时间",
-                        "defaultValue": 5
-                    },
-                    {
-                        "displayName": "旋转方向",
-                        "name": "bgAnimateDirection",
-                        "type": "Enum",
-                        "items": [
-                            {
-                              "value": "Positive",
-                              "displayNameKey": "顺时针"
-                            },
-                            {
-                              "value": "Negative",
-                              "displayNameKey": "逆时针"
-                            }
-                          ],
-                          "defaultValue": "dataset"
-                    },
-                    {
-                        "name": "bgImage",
-                        "type": "Image",
-                        "displayName": "背景图片",
-                        "defaultValue": ""
-                    },
-                    {
                         "name": "gaugeR",
                         "type": "Percentage",
                         "displayName": "表盘半径",
@@ -249,69 +208,11 @@
                         "type": "Color",
                         "displayName": "刻度盘颜色",
                         "defaultValue": "#8c7df2"
-                    },
-                    {
-                        "name": "gaugeGear",
-                        "type": "Boolean",
-                        "displayName": "刻度盘齿轮",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "gearNumber",
-                        "type": "Integer",
-                        "displayName": "齿轮个数",
-                        "defaultValue": 50
-                    },
-                    {
-                        "name": "gearR",
-                        "type": "Integer",
-                        "displayName": "齿轮半径",
-                        "defaultValue": 100
-                    },
-                    {
-                        "name": "gearWidth",
-                        "type": "Integer",
-                        "displayName": "齿轮宽度",
-                        "defaultValue": 5
-                    },
-                    {
-                        "name": "gearLength",
-                        "type": "Integer",
-                        "displayName": "齿轮长度",
-                        "defaultValue": 30
-                    },
-                    {
-                        "name": "gearColor",
-                        "type": "Color",
-                        "displayName": "齿轮颜色",
-                        "defaultValue": "#509dea"
-                    },
-                    {
-                        "name": "gaugeCircle",
-                        "type": "Boolean",
-                        "displayName": "刻度盘内圈",
-                        "defaultValue": true
-                    },
-                    {
-                        "name": "gaugeCircleWidth",
-                        "type": "Integer",
-                        "displayName": "内圈宽度",
-                        "defaultValue": 2
-                    },
-                    {
-                        "name": "gaugeCircleColor",
-                        "type": "Color",
-                        "displayName": "内圈颜色",
-                        "defaultValue": "#fff"
-                    },
-                    {
-                        "name": "gaugeCircleR",
-                        "type": "Integer",
-                        "displayName": "内圈半径",
-                        "defaultValue": 50
                     }
+                    
                 ]
-            }, {
+            },
+             {
                 "displayName": "区间划分",
                 "properties": [
                     {
@@ -378,6 +279,134 @@
                 ]
             },
             {
+                "displayName": "背景样式",
+                "properties": [
+                    {
+                        "name": "showBgImage",
+                        "type": "Boolean",
+                        "displayName": "显示背景",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "bgImageAnimate",
+                        "type": "Boolean",
+                        "displayName": "背景旋转",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "bgAnimateTime",
+                        "type": "Integer",
+                        "min": 0,
+                        "displayName": "旋转时间",
+                        "defaultValue": 5
+                    },
+                    {
+                        "displayName": "旋转方向",
+                        "name": "bgAnimateDirection",
+                        "type": "Enum",
+                        "items": [
+                            {
+                              "value": "Positive",
+                              "displayNameKey": "顺时针"
+                            },
+                            {
+                              "value": "Negative",
+                              "displayNameKey": "逆时针"
+                            }
+                          ],
+                          "defaultValue": "Positive"
+                    },
+                    {
+                        "name": "bgImage",
+                        "type": "Image",
+                        "displayName": "背景图片",
+                        "defaultValue": ""
+                    }
+                ]
+            },
+            {
+                "displayName": "圆环样式",
+                "properties": [
+                    {
+                        "name": "gaugeCircle",
+                        "type": "Boolean",
+                        "displayName": "显示圆环",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "gaugeCircleStartColor",
+                        "type": "Color",
+                        "displayName": "圆环开始颜色",
+                        "defaultValue": "#0ff"
+                    },
+                    {
+                        "name": "gaugeCircleEndColor",
+                        "type": "Color",
+                        "displayName": "圆环结束颜色",
+                        "defaultValue": "#060f20"
+                    },
+                    {
+                        "name": "gaugeCircleInsideR",
+                        "type": "Integer",
+                        "displayName": "圆环内径",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "gaugeCircleOutsideR",
+                        "type": "Integer",
+                        "displayName": "圆环外径",
+                        "defaultValue": 50
+                    }
+                ]
+            },
+            {
+                "displayName": "齿轮样式",
+                "properties": [
+                    {
+                        "name": "gaugeGear",
+                        "type": "Boolean",
+                        "displayName": "显示齿轮",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "gearNumber",
+                        "type": "Integer",
+                        "displayName": "齿轮个数",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "gearR",
+                        "type": "Integer",
+                        "displayName": "齿轮半径",
+                        "defaultValue": 100
+                    },
+                    {
+                        "name": "gearWidth",
+                        "type": "Integer",
+                        "displayName": "齿轮宽度",
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "gearLength",
+                        "type": "Integer",
+                        "displayName": "齿轮长度",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "gearColor",
+                        "type": "Color",
+                        "displayName": "齿轮颜色",
+                        "defaultValue": "#509dea"
+                    },
+                    {
+                        "name": "gearShadowColor",
+                        "type": "Color",
+                        "displayName": "齿轮阴影颜色",
+                        "defaultValue": "#fff"
+                    }
+                ]
+            },
+            {
                 "displayName": "进度条样式",
                 "properties": [
                     {
@@ -407,7 +436,7 @@
                 ]
             },
             {
-                "displayName": "分隔线样式",
+                "displayName": "刻度盘分隔线样式",
                 "properties": [
                     {
                         "name": "showsplitLine",
@@ -437,7 +466,7 @@
                     {
                         "name": "splitLineColor",
                         "type": "Color",
-                        "displayName": "颜色",
+                        "displayName": "分隔线颜色",
                         "defaultValue": "#000"
                     }
                 ]

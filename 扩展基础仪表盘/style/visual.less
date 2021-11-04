@@ -10,14 +10,11 @@
 }
 .rotateBg {
     transform-style: preserve-3d;
-    animation: _rotateBg 5s linear infinite;
+    // animation: _rotateBg 5s linear infinite;
 }
 
-.rotateBg:hover {
-    animation-play-state: paused;
-}
 
-@keyframes _rotateBg {
+@keyframes _rotatePositiveBg {
     0% {
         transform: translate(-50%, -50%) rotateZ(0deg);
     }
@@ -26,5 +23,17 @@
     }
     100% {
         transform: translate(-50%, -50%) rotateZ(360deg);
+    }
+}
+
+@keyframes _rotateNegativeBg {
+    0% {
+        transform: translate(-50%, -50%) rotateZ(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateZ(-180deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateZ(-360deg);
     }
 }

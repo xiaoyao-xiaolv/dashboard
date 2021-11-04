@@ -278,12 +278,6 @@ export default class Visual extends WynVisual {
         splitNumber: Number(options.gearNumber),
         axisLine: {
           show: false,
-          lineStyle: {
-            color: [
-              [1, 'green']
-            ],
-            width: 20
-          }
         },
         splitLine: {
           show: options.gaugeGear,
@@ -292,6 +286,9 @@ export default class Visual extends WynVisual {
             width: options.gearWidth,
             color: options.gearColor,
             distance: 10,
+            shadowBlur: 10,
+            shadowColor: options.gearShadowColor,
+            shadowOffsetY:'0',
           } //刻度节点线
         },
         pointer: {
@@ -383,46 +380,74 @@ export default class Visual extends WynVisual {
         z: 3,
       },
       {
-        //内部圆圈
-        type: 'gauge',
-        center: [`${options.gaugeXPosition}%`, `${options.gaugeYPosition}%`],
-        // radius: `${options.gaugeR}%`,
-        radius: `${options.gaugeR * (options.gaugeCircleR / 100)}%`,
-        clockwise: true,
+        type: 'pie',
         startAngle: options.startAngle,
-        endAngle:  options.endAngle,
-        // splitNumber: 15,
-        detail: {
-          show: false
+        endAngle: options.endAngle,
+        center: [`${options.gaugeXPosition}%`, `${options.gaugeYPosition}%`],
+        radius: [`${options.gaugeR * (options.gaugeCircleInsideR / 100)}%`, `${ options.gaugeCircle  ? options.gaugeR * (options.gaugeCircleOutsideR / 100) : 0}%`],
+        hoverAnimation: false,
+        clockWise: false,
+        itemStyle: {
+            normal: {
+                shadowBlur: 20,
+                shadowColor: '#000',
+                color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                    offset: 0,
+                    color: options.gaugeCircleStartColor,
+                }, {
+                    offset: 1,
+                    color: options.gaugeCircleEndColor
+                }])
+            }
         },
-        pointer: {
-          show: false
+        label: {
+            show: false
         },
-        progress: {
-          show: options.gaugeCircle,
-          roundCap: true,
-          width:options.gaugeCircleWidth,
-          itemStyle: {
-            color: options.gaugeCircleColor,
-            // borderWidth: 2
-          }
-        },
-        axisLine: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        },
-        splitLine: {
-          show: false,
-        },
-        axisLabel: {
-          show: false
-        },
-        data: [{
-          value: 100
-        }],
+        data:  [100],
+        z: 0
       },
+      // {
+      //   //内部圆圈
+      //   type: 'gauge',
+      //   center: [`${options.gaugeXPosition}%`, `${options.gaugeYPosition}%`],
+      //   // radius: `${options.gaugeR}%`,
+      //   radius: `${options.gaugeR * (options.gaugeCircleR / 100)}%`,
+      //   clockwise: true,
+      //   startAngle: options.startAngle,
+      //   endAngle:  options.endAngle,
+      //   // splitNumber: 15,
+      //   detail: {
+      //     show: false
+      //   },
+      //   pointer: {
+      //     show: false
+      //   },
+      //   progress: {
+      //     show: options.gaugeCircle,
+      //     roundCap: true,
+      //     width:options.gaugeCircleWidth,
+      //     itemStyle: {
+      //       color: options.gaugeCircleColor,
+      //       // borderWidth: 2
+      //     }
+      //   },
+      //   axisLine: {
+      //     show: false
+      //   },
+      //   axisTick: {
+      //     show: false
+      //   },
+      //   splitLine: {
+      //     show: false,
+      //   },
+      //   axisLabel: {
+      //     show: false
+      //   },
+      //   data: [{
+      //     value: 100
+      //   }],
+      // },
+
     ];
 
     const option = {
