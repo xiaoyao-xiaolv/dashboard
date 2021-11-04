@@ -175,6 +175,29 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "bgAnimateTime",
+                        "type": "Integer",
+                        "min": 0,
+                        "displayName": "旋转时间",
+                        "defaultValue": 5
+                    },
+                    {
+                        "displayName": "旋转方向",
+                        "name": "bgAnimateDirection",
+                        "type": "Enum",
+                        "items": [
+                            {
+                              "value": "Positive",
+                              "displayNameKey": "顺时针"
+                            },
+                            {
+                              "value": "Negative",
+                              "displayNameKey": "逆时针"
+                            }
+                          ],
+                          "defaultValue": "dataset"
+                    },
+                    {
                         "name": "bgImage",
                         "type": "Image",
                         "displayName": "背景图片",
@@ -240,6 +263,12 @@
                         "defaultValue": 50
                     },
                     {
+                        "name": "gearR",
+                        "type": "Integer",
+                        "displayName": "齿轮半径",
+                        "defaultValue": 100
+                    },
+                    {
                         "name": "gearWidth",
                         "type": "Integer",
                         "displayName": "齿轮宽度",
@@ -282,6 +311,71 @@
                         "defaultValue": 50
                     }
                 ]
+            }, {
+                "displayName": "区间划分",
+                "properties": [
+                    {
+                        "name": "dialSectionColor",
+                        "displayName": "区间色",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "section",
+                                "displayName": "区间号",
+                                "type": "Integer", 
+                                "min": 1
+                            },
+                            {
+                                "name": "sectionMax",
+                                "displayName": "区间上限值",
+                                "type": "Integer",
+                                "defaultValue": 100
+                            },
+                            {
+                                "name": "color",
+                                "displayName": "区间颜色",
+                                "type": "Color",
+                                "defaultValue": "#509dea"
+                            }
+                        ],
+                        "defaultValue": [{
+                            "section": 1,
+                            "sectionMax": 25,
+                            "color": "#f84d4d"
+                        },
+                        {
+                            "section": 2,
+                            "sectionMax": 50,
+                            "color": "#f5ba1a"
+                        },{
+                            "section": 3,
+                            "sectionMax": 75,
+                            "color": "#509dea"
+                        },{
+                            "section": 4,
+                            "sectionMax": 100,
+                            "color": "#08bc9b"
+                        }]
+                    },
+                    {
+                        "name": "dialColorUseToProgress",
+                        "type": "Boolean",
+                        "displayName": "作用到进度条",
+                        "defaultValue": false
+                    }, 
+                    {
+                        "name": "dialColorUseToLabel1",
+                        "type": "Boolean",
+                        "displayName": "作用到标签1",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "dialColorUseToLabel2",
+                        "type": "Boolean",
+                        "displayName": "作用到标签2",
+                        "defaultValue": false
+                    }
+                ]
             },
             {
                 "displayName": "进度条样式",
@@ -320,6 +414,12 @@
                         "type": "Boolean",
                         "displayName": "显示分隔线",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "splitLineNumber",
+                        "type": "Integer",
+                        "displayName": "分割数量",
+                        "defaultValue": 15
                     },
                     {
                         "name": "splitLineWidth",
