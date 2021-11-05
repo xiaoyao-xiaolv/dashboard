@@ -1,0 +1,90 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "actual_value",
+                "displayNameKey": "实际值",
+                "kind": "value"
+            },
+            {
+                "name": "reduced_value",
+                "displayNameKey": "对比值",
+                "kind": "value"
+            },
+            {
+                "name": "series",
+                "displayNameKey": "系列",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "actual_value": {
+                                "min": 1
+                            },
+                            "reduced_value": {
+                                "min": 0
+                            },
+                            "series": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "appearance",
+                "properties": [
+                    {
+                        "name": "funnelStyle",
+                        "type": "Enum",
+                        "displayName": "图形样式",
+                        "defaultValue": "样式1",
+                        "items": [
+                            {
+                                "value": "样式1",
+                                "displayName": "样式1"
+                            },
+                            {
+                                "value": {
+                                    "style": "trapezoid",
+                                    "minSize": "20%",
+                                    "maxSize": "100%"
+                                },
+                                "displayName": "样式2"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "filter"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "focus"
+        }
+    ],
+    "analysis": []
+}
