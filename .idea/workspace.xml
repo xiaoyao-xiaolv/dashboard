@@ -12,6 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/水球图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/水球图/capabilities.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,19 +63,19 @@
     <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\pointMap2.0\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Wyn plugins code\dashboard\Cards" />
-      <recent name="D:\Wyn plugins code\dashboard" />
-      <recent name="D:\Wyn plugins code\dashboard\doubleColumnChart\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\pointMap2.0\assets" />
-      <recent name="D:\Wyn plugins code\dashboard\carouselPicture\assets" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Wyn plugins code\dashboard\3DMap\src" />
       <recent name="D:\Wyn plugins code\dashboard\pointMap2.0\src" />
       <recent name="D:\Wyn plugins code\dashboard\timeStatusBar\assets" />
       <recent name="D:\Wyn plugins code\dashboard\天气预报\src" />
       <recent name="D:\Wyn plugins code\dashboard\conditionAudio\assets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Wyn plugins code\dashboard\Cards" />
+      <recent name="D:\Wyn plugins code\dashboard" />
+      <recent name="D:\Wyn plugins code\dashboard\doubleColumnChart\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\pointMap2.0\assets" />
+      <recent name="D:\Wyn plugins code\dashboard\carouselPicture\assets" />
     </key>
   </component>
   <component name="SvnConfiguration">
