@@ -142,25 +142,55 @@
                         "type": "Enum",
                         "items": [
                             {
-                              "value": "default",
-                              "displayNameKey": "默认"
-                            },
-                            {
                               "value": "style1",
                               "displayNameKey": "样式1"
                             },
                             {
                                 "value": "style2",
                                 "displayNameKey": "样式2"
-                              }
+                            },
+                            {
+                                "value": "style3",
+                                "displayNameKey": "样式3"
+                            },
+                            {
+                                "value": "style4",
+                                "displayNameKey": "样式4"
+                            },
+                            {
+                                "value": "style5",
+                                "displayNameKey": "样式5"
+                            },
+                            {
+                            "value": "style6",
+                            "displayNameKey": "样式6"
+                            },
+                            {
+                                "value": "style7",
+                                "displayNameKey": "样式7"
+                            },
+                            {
+                            "value": "style8",
+                            "displayNameKey": "样式8"
+                            },
+                            {
+                            "value": "style9",
+                            "displayNameKey": "样式9"
+                            }
                           ],
-                          "defaultValue": "default"
+                          "defaultValue": "style1"
                     },
                     {
                         "name": "initStyleName",
                         "type": "Hidden",
                         "displayName": "默认样式值",
                         "defaultValue": "default"
+                    },
+                    {
+                        "name": "diffOption",
+                        "type": "Hidden",
+                        "displayName": "打印不同的options",
+                        "defaultValue": false
                     },
                     {
                         "name": "gaugeR",
@@ -173,7 +203,7 @@
                         "name": "gaugeWidth",
                         "type": "Integer",
                         "displayName": "表盘宽度",
-                        "defaultValue": 50
+                        "defaultValue": 25
                     },
                     {
                         "name": "gaugeXPosition",
@@ -265,6 +295,12 @@
                         "defaultValue": false
                     }, 
                     {
+                        "name": "dialColorUseToCircle",
+                        "type": "Boolean",
+                        "displayName": "作用到内圆环",
+                        "defaultValue": false
+                    }, 
+                    {
                         "name": "dialColorUseToLabel1",
                         "type": "Boolean",
                         "displayName": "作用到标签1",
@@ -279,7 +315,7 @@
                 ]
             },
             {
-                "displayName": "背景样式",
+                "displayName": "背景图片样式",
                 "properties": [
                     {
                         "name": "showBgImage",
@@ -298,7 +334,7 @@
                         "type": "Integer",
                         "min": 0,
                         "displayName": "旋转时间",
-                        "defaultValue": 5
+                        "defaultValue": 10
                     },
                     {
                         "displayName": "旋转方向",
@@ -316,45 +352,78 @@
                           ],
                           "defaultValue": "Positive"
                     },
+                   
+                    {
+                        "displayName": "图片设置",
+                        "name": "bgImageSet",
+                        "type": "Enum",
+                        "items": [
+                            {
+                              "value": "bgImage1",
+                              "displayNameKey": "背景图一"
+                            },
+                            {
+                              "value": "bgImage2",
+                              "displayNameKey": "背景图二"
+                            },
+                            {
+                                "value": "bgImage",
+                                "displayNameKey": "自定义"
+                              }
+                          ],
+                          "defaultValue": "bgImage1"
+                    },
                     {
                         "name": "bgImage",
                         "type": "Image",
                         "displayName": "背景图片",
                         "defaultValue": ""
+                    },
+                    {
+                        "name": "bgImageSize",
+                        "type": "Percentage",
+                        "displayName": "图片大小",
+                        "defaultValue": 100
                     }
                 ]
             },
             {
-                "displayName": "圆环样式",
+                "displayName": "内圆环样式",
                 "properties": [
                     {
                         "name": "gaugeCircle",
                         "type": "Boolean",
-                        "displayName": "显示圆环",
+                        "displayName": "显示内圆环",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "gaugeCircleDge",
+                        "type": "Boolean",
+                        "displayName": "角度跟随仪表盘",
                         "defaultValue": true
                     },
                     {
                         "name": "gaugeCircleStartColor",
                         "type": "Color",
-                        "displayName": "圆环开始颜色",
-                        "defaultValue": "#0ff"
+                        "displayName": "内圆环开始颜色",
+                        "defaultValue": "#08c7df"
                     },
                     {
                         "name": "gaugeCircleEndColor",
-                        "type": "Color",
-                        "displayName": "圆环结束颜色",
-                        "defaultValue": "#060f20"
+                        "type": "Hidden",
+                        "displayName": "内圆环结束颜色",
+                        "defaultValue": "#000"
                     },
                     {
                         "name": "gaugeCircleInsideR",
                         "type": "Integer",
-                        "displayName": "圆环内径",
+                        "displayName": "内圆环内径",
                         "defaultValue": 0
                     },
                     {
                         "name": "gaugeCircleOutsideR",
                         "type": "Integer",
-                        "displayName": "圆环外径",
+                        "displayName": "内圆环外径",
                         "defaultValue": 50
                     }
                 ]
@@ -425,13 +494,25 @@
                         "name": "progressRoundCapWidth",
                         "type": "Integer",
                         "displayName": "进度条宽度",
-                        "defaultValue": 50
+                        "defaultValue": 25
+                    },
+                    {
+                        "name": "progressOffset",
+                        "type": "Integer",
+                        "displayName": "进度条偏移量",
+                        "defaultValue": 0
                     },
                     {
                         "name": "progressRoundColor",
                         "type": "Color",
                         "displayName": "进度条颜色",
                         "defaultValue": "#509dea"
+                    },
+                    {
+                        "name": "progressRoundColorTest",
+                        "type": "Color",
+                        "displayName": "进度条渐变颜色",
+                        "defaultValue": "#fff"
                     }
                 ]
             },
@@ -560,7 +641,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue" : {
-                            "fontSize": "2.0X"
+                            "fontSize": "3.0X"
                         }
                     },
                     {
