@@ -12,7 +12,14 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/水球图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/水球图/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conditionAudio/音频预警.viz" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/音频预警.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timeStatusBar/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timeStatusBar/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timeStatusBar/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

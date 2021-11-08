@@ -15,31 +15,59 @@ export default class Visual extends WynVisual {
     statusData: [
       {
         name: '正常',
-        value: ['2021-01-04T8:31:56', '2021-01-04T11:01:59']
+        value: [0, '2021-01-04T8:31:56', '2021-01-04T11:01:59']
       },
       {
         name: '故障',
-        value: ['2021-01-04T11:01:59', '2021-01-04T12:02:18']
+        value: [0, '2021-01-04T11:01:59', '2021-01-04T12:02:18']
       },
       {
         name: '正常',
-        value: ['2021-01-04T12:02:18', '2021-01-04T12:40:54']
+        value: [0, '2021-01-04T12:02:18', '2021-01-04T12:40:54']
       },
       {
         name: '故障',
-        value: ['2021-01-04T12:40:54', '2021-01-04T14:03:59']
+        value: [0,'2021-01-04T12:40:54', '2021-01-04T14:03:59']
       },
       {
         name: '正常',
-        value: ['2021-01-04T14:03:59', '2021-01-04T14:05:32']
+        value: [0, '2021-01-04T14:03:59', '2021-01-04T14:05:32']
       },
       {
         name: '故障',
-        value: ['2021-01-04T14:05:32', '2021-01-04T14:17:23']
+        value: [0, '2021-01-04T14:05:32', '2021-01-04T14:17:23']
       },
       {
         name: '正常',
-        value: ['2021-01-04T14:17:23', '2021-01-04T15:17:23']
+        value: [0, '2021-01-04T14:17:23', '2021-01-04T15:17:23']
+      },
+      {
+        name: '正常',
+        value: [1, '2021-01-04T8:31:56', '2021-01-04T11:01:59']
+      },
+      {
+        name: '故障',
+        value: [1, '2021-01-04T11:01:59', '2021-01-04T12:02:18']
+      },
+      {
+        name: '正常',
+        value: [1, '2021-01-04T12:02:18', '2021-01-04T12:40:54']
+      },
+      {
+        name: '故障',
+        value: [1,'2021-01-04T12:40:54', '2021-01-04T14:03:59']
+      },
+      {
+        name: '正常',
+        value: [1, '2021-01-04T14:03:59', '2021-01-04T14:05:32']
+      },
+      {
+        name: '故障',
+        value: [1, '2021-01-04T14:05:32', '2021-01-04T14:17:23']
+      },
+      {
+        name: '正常',
+        value: [1, '2021-01-04T14:17:23', '2021-01-04T15:17:23']
       }
     ]
   };
@@ -90,7 +118,7 @@ export default class Visual extends WynVisual {
   private render() {
     this.myChart.clear();
     this.container.style.opacity = this.isMock ? '0.5' : '1';
-    let data = this.isMock ? this.mockData : this.data;1234
+    let data = this.isMock ? this.mockData : this.data;
     data.statusData.forEach((item) => {
       let index = data.statusList.indexOf(item.name);
       item['itemStyle'] = {
@@ -101,8 +129,9 @@ export default class Visual extends WynVisual {
     })
 
     let renderCustomItem = (params, api) => {
-      let start = api.coord([api.value(0), 0]);
-      let end = api.coord([api.value(1), 0]);
+      let categoryIndex = api.value(0);
+      let start = api.coord([api.value(1), categoryIndex]);
+      let end = api.coord([api.value(2), categoryIndex]);
       let height = this.properties.height;
       return {
         type: 'rect',
@@ -152,14 +181,17 @@ export default class Visual extends WynVisual {
         }
       },
       yAxis: {
-        show: false
+        show: true,
+        interval: 15,
+        data: ['周一','周二']
       },
       series: [
         {
           type: 'custom',
           renderItem : renderCustomItem,
           encode: {
-            x: [0, 1],
+            x: [1, 2],
+            y: [0]
           },
           data: data.statusData
         },
@@ -176,7 +208,15 @@ export default class Visual extends WynVisual {
                   color: '#fafafa'
                 }
               },
-              value: [data.workTime, data.offTime]
+              value: [0, data.workTime, data.offTime]
+            },
+            {
+              itemStyle: {
+                normal: {
+                  color: '#fafafa'
+                }
+              },
+              value: [1, data.workTime, data.offTime]
             }
           ],
           zlevel: -1
