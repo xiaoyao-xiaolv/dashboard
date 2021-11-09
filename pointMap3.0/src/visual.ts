@@ -7,7 +7,7 @@ import mapAdCodeId from './mapname.json';
 import $ from 'jquery';
 (window as any).jQuery = $;
 let myChart;
-const locationReg = /(省|市|自治区|自治州|县|区)/g;
+const locationReg = /(省|市|自治区|自治州|县|区|特别行政区)/g;
 export default class Visual extends WynVisual {
 
   private container: HTMLDivElement;
@@ -33,7 +33,7 @@ export default class Visual extends WynVisual {
   private getMapJson = (_mapName: string) => {
     if (_mapName == 'china' || _mapName == '陕西省') {
       this.mapJsonData = ChainJson;
-      echarts.registerMap('3DMap', JSON.parse(JSON.stringify(_mapName === 'china' ? ChainJson : ShanXiJson)))
+      echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(_mapName === 'china' ? ChainJson : ShanXiJson)))
     } else {
     
       const _name = _mapName.replace(locationReg, '');
@@ -54,14 +54,14 @@ export default class Visual extends WynVisual {
         mapJson = geoJson
       })
       this.mapJsonData = mapJson
-      echarts.registerMap('3DMap', JSON.parse(JSON.stringify(mapJson)))
+      echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
     }
     this.render();
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     // registerMap
-    this.mapAdCodeId = options.properties.MapId;
+    this.mapAdCodeId = options.properties.MapId || 'china';
     this.getMapJson('china' ||  this.mapAdCodeId)
     
   }
@@ -70,7 +70,7 @@ export default class Visual extends WynVisual {
     
     // this.container.addEventListener('mousedown', (e: any) => {
     //   console.log('dianjiquxiao')
-    //   // echarts.registerMap('3DMap', JSON.parse(JSON.stringify(ChainJson)))
+    //   // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(ChainJson)))
     // })
 
     myChart.on('click',(params)=> {
@@ -89,17 +89,24 @@ export default class Visual extends WynVisual {
   private render() {
     const _data = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => {
       return {
-        name: item.properties.name,
+        name: item.properties.name || '',
+        centroid: item.properties.centroid
       }
     });
 
+    const _barData = _data.map((item: any) => {
+      return {
+        name: item.name,
+        value: item.centroid ? [item.centroid[0] ,item.centroid[1] ,10] : [10,10,10]
+      }
+    })
     myChart.setOption({
       geo3D: {
-        map: '3DMap',
+        map: '3DMapCustom',
         show: false,
         zlevel: -10,
         boxWidth: 200,
-        boxHeight: 4, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
+        boxHeight: 30, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
         regionHeight: 3,
         shading: 'lambert',
         viewControl: {
@@ -112,7 +119,7 @@ export default class Visual extends WynVisual {
             panSensitivity: 2, //平移操作的灵敏度
             panMouseButton: 'right', //平移操作使用的鼠标按键
 
-            distance: 110, //默认视角距离主体的距离
+            distance: 220, //默认视角距离主体的距离
             center: [0, 0, 0],
 
             animation: true,
@@ -120,10 +127,11 @@ export default class Visual extends WynVisual {
             animationEasingUpdate: 'cubicInOut'
         },
       },
-      series: [{
+      series: [
+        {
           type: 'map3D',
-          map: '3DMap',
-          name: 'Custom',
+          map: '3DMapCustom',
+          name: '3DMapCustom',
           // viewControl: {
           //   distance: 110, //地图视角 控制初始大小
           //   rotateSensitivity: [1, 1],
@@ -176,6 +184,31 @@ export default class Visual extends WynVisual {
         data: _data,
         zlevel:1,
       },
+      {
+        type: 'bar3D',
+        zlevel: 2,
+        coordinateSystem: 'geo3D',
+        shading: 'lambert',
+        data: _barData,
+        barSize: 0.1,
+        minHeight: 0.2,
+        silent: true,
+        itemStyle: {
+          color: 'orange'
+          // opacity: 0.8
+        },
+        label: {
+          show: true, //是否显示市
+          textStyle: {
+              color: 'red', //文字颜色
+              fontSize: 20, //文字大小
+        },
+          formatter: (label: any,) => {
+            const _label = label.name || ' '
+          return _label;
+        }
+      },
+      }
     //   {
     //     type: 'scatter3D',
     //     // type: 'bar3D',
