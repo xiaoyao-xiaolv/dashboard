@@ -104,6 +104,157 @@
                 }]
             },
             {
+                "displayName": "数据标签",
+                "properties": [
+                    {
+                        "name": "showLabel",
+                        "type": "Boolean",
+                        "displayName": "是否显示",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showLocation",
+                        "type": "Boolean",
+                        "displayName": "显示位置名称",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "tooltipBackgroundType",
+                        "type": "Enum",
+                        "displayName": "背景填充",
+                        "items": [
+                            {
+                                "value": "color",
+                                "displayNameKey": "背景颜色"
+                            },
+                            {
+                                "value": "image",
+                                "displayNameKey": "背景图片"
+                            }
+                        ],
+                        "defaultValue": "color"
+                    },
+                    {
+                        "name": "labelBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "name": "tooltipBackgroundImage",
+                        "type": "Image",
+                        "displayName": "背景图片"
+                    },
+                    {
+                        "name": "tooltipDistance",
+                        "type": "Integer",
+                        "displayName": "底部距离",
+                        "defaultValue": 55
+                    },
+                    {
+                        "name": "labelBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "name": "tooltipBgBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "transparent"
+                    },
+                    {
+                        "name": "tooltipBorderRadius",
+                        "type": "Integer",
+                        "displayName": "边框圆角",
+                        "defaultValue": 3
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "labelPadding",
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 5,
+                            "bottom": 5,
+                            "left": 5,
+                            "right": 5
+                        }
+                    },
+                    {
+                        "name": "labelTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "15px"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "showTooltip",
+                        "type": "Boolean",
+                        "displayName": "显示提示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "tooltipBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "displayNameKey": "宽度",
+                        "name": "tooltipWidth",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 200
+                    },
+                    {
+                        "displayNameKey": "高度",
+                        "name": "tooltipHeight",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 80
+                    },
+                    {
+                        "name": "tooltipBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "tooltipPadding",
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 10,
+                            "bottom": 10,
+                            "left": 10,
+                            "right": 10
+                        }
+                    },
+                    {
+                        "name": "tooltipTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
                 "type": "title"
             },
             {
