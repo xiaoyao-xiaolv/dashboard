@@ -95,6 +95,15 @@
     "options": {
         "visual": [
             {
+                "displayName": "地图设置",
+                "properties": [{
+                    "displayNameKey": "自定义地图",
+                    "name": "MapId",
+                    "type": "Hidden",
+                    "defaultValue": "china"
+                }]
+            },
+            {
                 "type": "title"
             },
             {
