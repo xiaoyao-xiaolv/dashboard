@@ -8,6 +8,8 @@ import $ from 'jquery';
 import { myTooltipC } from './myTooltip.js';
 (window as any).jQuery = $;
 let myChart;
+const clickLeftMouse = 0;
+const clickRightMouse = 2;
 const locationReg = /(省|市|自治区|自治州|县|区|特别行政区)/g;
 export default class Visual extends WynVisual {
 
@@ -23,7 +25,7 @@ export default class Visual extends WynVisual {
   private config: any;
   private myTooltip: any;
   private properties: any;
-  
+  private provinceNameData: any;
   
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -54,7 +56,7 @@ export default class Visual extends WynVisual {
     this.myTooltip = new myTooltipC(dom, this.config);
   }
   private getMapJson = (_mapName: string) => {
-    if (_mapName == 'china') {
+    if (_mapName == 'china' || _mapName == '陕西省') {
       this.mapJsonData = ChainJson;
       echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(_mapName === 'china' ? ChainJson : ShanXiJson)))
     } else {
@@ -85,10 +87,10 @@ export default class Visual extends WynVisual {
   public update(options: VisualNS.IVisualUpdateOptions) {
     // registerMap
     this.mapAdCodeId = options.properties.MapId || 'china';
+    this.provinceNameData = JSON.parse(JSON.stringify(ChainJson)).features.map((item: any) =>  item.properties.name).filter((_item: any) => _item)
     this.properties = options.properties;
     this.getMapJson('china' ||  this.mapAdCodeId)
    
-    console.log( this.properties, '=== this.properties', options)
   }
 
   public bindEvents = () => {
@@ -98,8 +100,39 @@ export default class Visual extends WynVisual {
     //   // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(ChainJson)))
     // })
 
-    myChart.on('click',(params)=> {
+    myChart.on('mouseup', (params) => {
       this.getMapJson(params.name)
+      // click province to drilling
+      // if (this.provinceNameData.includes(params.name)) {
+      //   this.getMapJson(params.name)
+      // } else {
+      //   // click city to jump
+    
+      //   const clickMouse = params.event.event.button;
+      //   if (params.componentType !== 'series') return;
+      //   params.event.event.seriesClick = true;
+      //   if (clickMouse === clickLeftMouse) {
+      //     // show data jump
+      //     if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
+      //       return
+      //     } else {
+      //       this.getMapJson(params.name)
+      //       // if (isTooltipModelShown) return;
+      //       this.host.commandService.execute([{
+      //         name: this.properties.clickLeftMouse,
+      //         payload: {
+      //           position: {
+      //             x: params.event.event.x,
+      //             y: params.event.event.y,
+      //             },
+      //         }
+      //       }])
+      //     }
+      //   } else if (clickMouse === clickRightMouse) {  
+      //     params.event.event.preventDefault();
+      //   }
+      // }
+      
     })
 
     myChart.on('mouseout', (params) => {
@@ -139,8 +172,8 @@ export default class Visual extends WynVisual {
         name: item.properties.name || '',
         centroid: item.properties.center
       }
-    });
-
+    }).filter((_item: any) => _item.name);
+    
     const _barData = _data.map((item: any) => {
       return {
         name: item.name,
