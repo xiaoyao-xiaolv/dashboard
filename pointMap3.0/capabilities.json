@@ -104,6 +104,44 @@
                 }]
             },
             {
+                "displayName": "柱子样式",
+                "properties": [
+                    {
+                    "name": "showBar",
+                    "type": "Boolean",
+                    "displayName": "显示柱子",
+                    "defaultValue": true
+                    },
+                    {
+                        "name": "barColor",
+                        "type": "Color",
+                        "displayName": "柱子颜色",
+                        "defaultValue": "#fff"
+                    },
+                    {
+                        "name": "barSize",
+                        "type": "Integer",
+                        "displayName": "柱子尺寸",
+                        "defaultValue": 20,
+                        "min": 0
+                    },
+                    {
+                        "name": "barBevelSmoothness",
+                        "type": "Integer",
+                        "displayName": "柱子圆角",
+                        "defaultValue": 100,
+                        "min": 0
+                    },
+                    {
+                        "name": "barMinHeight",
+                        "type": "Integer",
+                        "displayName": "柱子最小高度",
+                        "defaultValue": 10,
+                        "min": 0
+                    }
+            ]
+            },
+            {
                 "displayName": "数据标签",
                 "properties": [
                     {
@@ -123,6 +161,12 @@
                         "type": "Boolean",
                         "displayName": "显示数值",
                         "defaultValue": true
+                    },
+                    {
+                        "name": "labelDistance",
+                        "type": "Integer",
+                        "displayName": "标签距离",
+                        "defaultValue": 2
                     },
                     {
                         "name": "tooltipBackgroundType",
@@ -147,15 +191,9 @@
                         "defaultValue": "rgba(66, 125, 249, 0.3)"
                     },
                     {
-                        "name": "tooltipBackgroundImage",
+                        "name": "labelBackgroundImage",
                         "type": "Image",
                         "displayName": "背景图片"
-                    },
-                    {
-                        "name": "tooltipDistance",
-                        "type": "Integer",
-                        "displayName": "底部距离",
-                        "defaultValue": 55
                     },
                     {
                         "name": "labelBorderColor",
@@ -163,27 +201,16 @@
                         "displayName": "边框颜色",
                         "defaultValue": "rgba(115, 216, 255, 0.88)"
                     },
-                    {
-                        "name": "tooltipBgBorderColor",
-                        "type": "Color",
-                        "displayName": "边框颜色",
-                        "defaultValue": "transparent"
-                    },
-                    {
-                        "name": "tooltipBorderRadius",
-                        "type": "Integer",
-                        "displayName": "边框圆角",
-                        "defaultValue": 3
-                    },
+                  
                     {
                         "displayNameKey": "边框内边距",
                         "name": "labelPadding",
                         "type": "Position",
                         "defaultValue": {
-                            "top": 5,
-                            "bottom": 5,
-                            "left": 5,
-                            "right": 5
+                            "top": 15,
+                            "bottom": 15,
+                            "left": 15,
+                            "right": 15
                         }
                     },
                     {
@@ -244,6 +271,18 @@
                         }
                     },
                     {
+                        "name": "tooltipBgBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "transparent"
+                    },
+                    {
+                        "name": "tooltipBorderRadius",
+                        "type": "Integer",
+                        "displayName": "边框圆角",
+                        "defaultValue": 3
+                    },
+                    {
                         "name": "tooltipTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -251,6 +290,77 @@
                         "defaultValue": {
                             "fontSize": "14px"
                         }
+                    }
+                ]
+            }, 
+            {
+                "displayName": "条件格式化",
+                "properties": [
+                    {
+                        "name": "useToBar",
+                        "type": "Boolean",
+                        "displayName": "作用到柱子",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "useToLabel",
+                        "type": "Boolean",
+                        "displayName": "作用到标签",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "mapCollection",
+                        "displayName": "地图条件列表",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "minFormatValue",
+                                "displayName": "下限值",
+                                "type": "number"
+                            },
+                            {
+                                "name": "minRank",
+                                "displayName": "区间范围",
+                                "type": "Enum",
+                                "items": [
+                                    {
+                                        "value": "(",
+                                        "displayName": "大于"
+                                    },
+                                    {
+                                        "value": "[",
+                                        "displayName": "大于等于"
+                                    }
+                                ],
+                                "defaultValue": "["
+                            },
+                            {
+                                "name": "maxFormatValue",
+                                "displayName": "上限值",
+                                "type": "number"
+                            }, {
+                                "name": "maxRank",
+                                "displayName": "上限范围",
+                                "type": "Enum",
+                                "items": [ 
+                                    {
+                                        "value": ")",
+                                        "displayName": "小于"
+                                    },
+                                    {
+                                        "value": "]",
+                                        "displayName": "小于等于"
+                                    }
+                                ],
+                                "defaultValue": "]"
+                            },
+                            {
+                                "name": "formatColor",
+                                "displayName": "条件颜色",
+                                "type": "Color"
+                            }
+                        ],
+                        "defaultValue": []
                     }
                 ]
             },

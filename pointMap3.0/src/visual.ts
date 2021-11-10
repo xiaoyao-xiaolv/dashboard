@@ -1,11 +1,14 @@
 import '../style/visual.less';
 import * as echarts from 'echarts';
 import 'echarts-gl';
+import $ from 'jquery';
+
 import ChainJson from './china.json';
 import ShanXiJson from './shanxi.json'
 import mapAdCodeId from './mapname.json';
-import $ from 'jquery';
+import geoCoordMap from './geoCoordMap.json';
 import { myTooltipC } from './myTooltip.js';
+
 (window as any).jQuery = $;
 let myChart;
 const clickLeftMouse = 0;
@@ -17,6 +20,12 @@ export default class Visual extends WynVisual {
   private host: any;
   private isMock: boolean;
   private bindCoords: boolean;
+  private items: any;
+  private valuesName: string;
+  private locationName: string;
+  private toolTipName: string [];
+  private longitudeName: string;
+  private latitudeName: string;
   private preview: boolean;
   private selectionManager: any;
   private selection: any[] = [];
@@ -26,7 +35,42 @@ export default class Visual extends WynVisual {
   private myTooltip: any;
   private properties: any;
   private provinceNameData: any;
-  
+  private resultData: any;
+  private locationArr: any;
+  private format: any;
+  private displayUnit: any;
+  static mockItems =  [
+    {
+      name: '北京',
+      value: [116.405285, 39.904989],
+      datas: 1354,
+    },
+    {
+      name: '陕西省',
+      value: [108.948024, 34.263161],
+      datas: 1402,
+    },
+    {
+      name: '上海',
+      value: [121.472644, 31.231706],
+      datas: 2468,
+    },
+    {
+      name: '成都市',
+      value: [104.065735, 30.659462],
+      datas: 768,
+    },
+    {
+      name: '武汉市',
+      value: [114.298572, 30.584355],
+      datas: 589,
+    },
+    {
+      name: '福州市',
+      value: [119.306239, 26.075302],
+      datas: 1500,
+    }
+  ];
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
@@ -55,6 +99,8 @@ export default class Visual extends WynVisual {
     }
     this.myTooltip = new myTooltipC(dom, this.config);
   }
+  createSelectionId = (sid?) => this.host.selectionService.createSelectionId(sid);
+
   private getMapJson = (_mapName: string) => {
     if (_mapName == 'china' || _mapName == '陕西省') {
       this.mapJsonData = ChainJson;
@@ -84,10 +130,59 @@ export default class Visual extends WynVisual {
     this.render();
   }
 
+  private getCoords = (keyWord: string) => {
+    let reg = new RegExp(keyWord);
+    for (let i = 0; i < geoCoordMap.length; i++) {
+      if (reg.test(geoCoordMap[i].name)) {
+        return [geoCoordMap[i].lng, geoCoordMap[i].lat];
+      }
+    }
+
+  }
+  private getSelectionId = (_item, dimension) => {
+    const selectionId = this.createSelectionId();
+    // profile.location.values[0]
+    this.locationName && selectionId.withDimension(dimension , _item);
+    return selectionId
+  }
+  private prepareData(data: any, profile: any) {
+    return data.map((item, index) => {
+      let geoCoord = this.bindCoords ? [item[this.longitudeName], item[this.latitudeName]] : this.getCoords(item[this.locationName]);
+      const toolTip = this.toolTipName.map((_item: string) => { return { [_item]: item[_item]}});
+      return {
+          name: item[this.locationName],
+          value: geoCoord,
+          datas: item[this.valuesName],
+          toolTip: toolTip,
+          selectionId:  this.getSelectionId(item, profile.location.values[0])
+      }
+    })
+  }
+
   public update(options: VisualNS.IVisualUpdateOptions) {
+    this.locationArr = [];
+    this.preview = options.isViewer
+    this.isMock = !options.dataViews.length;
+    
+    if (!this.isMock) {
+      let profile = options.dataViews[0].plain.profile;
+      let bindData = options.dataViews[0].plain.data;
+      this.valuesName = profile.values.values[0].display;
+      this.locationName = profile.location.values[0].display;
+      this.toolTipName = profile.tooltipFields.values.map((_item) => _item.display);
+      this.bindCoords = !!(profile.longitude.values.length && profile.latitude.values.length);
+      if(this.bindCoords) {
+        this.longitudeName = profile.longitude.values[0].display;
+        this.latitudeName = profile.latitude.values[0].display;
+      }
+      this.items = this.prepareData(bindData, profile);
+      // data format and display unit
+      this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
+      this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit;
+    }
     // registerMap
     this.mapAdCodeId = options.properties.MapId || 'china';
-    this.provinceNameData = JSON.parse(JSON.stringify(ChainJson)).features.map((item: any) =>  item.properties.name).filter((_item: any) => _item)
+
     this.properties = options.properties;
     this.getMapJson('china' ||  this.mapAdCodeId)
    
@@ -146,7 +241,8 @@ export default class Visual extends WynVisual {
  
   private render() {
    
-    // this.container.style.opacity = this.isMock ? '0.5' : '1';
+    this.container.style.opacity = this.isMock ? '0.5' : '1';
+    const items = this.isMock ? Visual.mockItems : this.items;
     let myTooltip = this.myTooltip;
     myChart.clear();
   
@@ -170,90 +266,150 @@ export default class Visual extends WynVisual {
     const _data = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => {
       return {
         name: item.properties.name || '',
-        centroid: item.properties.center
+        centroid: item.properties.center,
       }
     }).filter((_item: any) => _item.name);
     
-    const _barData = _data.map((item: any) => {
+    const _barData = items.map((item: any) => {
       return {
         name: item.name,
-        value: item.centroid ? [item.centroid[0] ,item.centroid[1] ,10] : [10,10,10]
+        value: [item.value[0], item.value[1], 50],
+        datas: item.datas,
       }
     })
 
     const lineMaxHeight = (type?: string) => {
-      // const maxValue = Math.max(...this.items.map(item => item.datas))
-      const maxValue = 1;
+      const maxValue = Math.max(...items.map(item => item.datas))
       return type ? 14/maxValue : 10/maxValue
     }
 
-    const _line3DData = _data.map((item: any) => {
+    const _line3DData = items.map((item: any, index: number) => {
       return {
-        name: item.name ||　" ada",
-        coords:item.centroid ?  [item.centroid, [item.centroid[0], item.centroid[1] + 10 * lineMaxHeight()]] : [ [10,10], [10,20]]
+        name: item.name || " ada",
+        value: item.datas,
+        coords:[item.value, [items[index ? index -1 : index].value[0], items[index ? index -1 : index].value[1] + 10]]
       }
     })
-    
+
+    const formatList = options.mapCollection;
+
+    const formatColor = (_formatColor, value) => {
+      if (formatList.length > 0) {
+        formatList.map((_item: any) => {
+            if (value >= Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+              if (_item.minRank === '[' && _item.maxRank === ']') {
+                // _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                _formatColor = _item.formatColor
+              }
+            }
+            if (value >= Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+              if (_item.minRank === '[' && _item.maxRank === ')') {
+                _formatColor = _item.formatColor
+              }
+            }
+            if (value > Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+              if (_item.minRank === '(' && _item.maxRank === ']') {
+                _formatColor = _item.formatColor
+              }
+            }
+            if (value > Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+              if (_item.minRank === '(' && _item.maxRank === ')') {
+                _formatColor = _item.formatColor
+              }
+            }
+        })
+      }
+      return _formatColor;
+    }
+    const hexToRgba = (hex, opacity?: number, isLine?: boolean) => {
+      const isHex = hex.slice(0, 1) === '#';
+      const _opacity = isLine ? 0.1 : opacity;
+      if (isHex) {
+        return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
+              + parseInt('0x' + hex.slice(5, 7)) + ',' + _opacity + ')';
+      } else {
+        // fixed rgba to rgba
+        var rgb = hex.split(',');
+        var r = parseInt(rgb[0].split('(')[1]);
+        var g = parseInt(rgb[1]);
+        var b = parseInt(rgb[2].split(')')[0]);
+        var a = isLine ? (Number(rgb[3].split(')')[0]) + 0.2) : Number(rgb[3].split(')')[0])
+        return `rgba(${r}, ${g}, ${b}, ${a})`
+      }
+    }
+    const formatLabelColor = () => {
+      const _richStyle = {};
+      formatList && formatList.map((_item, _index) => {
+        _richStyle[`${_item.minFormatValue}To${_item.maxFormatValue}`] = {
+          align: 'center',
+          verticalAlign: 'middle',
+          color: _item.formatColor,
+          fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2)),
+          padding: [options.labelPadding.top, options.labelPadding.bottom,options.labelPadding.left,options.labelPadding.right],
+          backgroundColor: options.tooltipBackgroundType === 'color' ? options.labelBackgroundColor : { image: options.labelBackgroundImage },
+        }
+      })
+      return _richStyle;
+    }
 
     const labelOptions = () => {
       return {
         show: options.showLabel,
+        distance: options.labelDistance,
         textStyle: {
           ...options.labelTextStyle,
           fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2)),
-          borderWidth: 1,
-          borderColor: options.tooltipBackgroundType === 'color' ? options.labelBorderColor : options.tooltipBgBorderColor,
+          borderWidth: options.tooltipBackgroundType === 'color' ? 1 : 0,
+          borderColor: options.tooltipBackgroundType === 'color' ? options.labelBorderColor : 'rgba(0,0,0,0)',
         },
         formatter: (params: any) => {
-          console.log(params, '===params')
-          return `{name|${params.name || ' '}}`;
-            // return params.name || 'ada'
-            // let _text = [];
-            // let value = params.data.datas;
-            // const _formatRichName = formatList.map((_item: any) => {
-            //   let _name = '';
-            //   if (value >= Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
-            //     if (_item.minRank === '[' && _item.maxRank === ']') {
-            //       _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
-            //     }
-            //   }
-            //   if (value >= Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
-            //     if (_item.minRank === '[' && _item.maxRank === ')') {
-            //       _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
-            //     }
-            //   }
-            //   if (value > Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
-            //     if (_item.minRank === '(' && _item.maxRank === ']') {
-            //       _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
-            //     }
-            //   }
-            //   if (value > Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
-            //     if (_item.minRank === '(' && _item.maxRank === ')') {
-            //       _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
-            //     }
-            //   }
-            //   return _name;
-            // }).filter(_item => _item)[0] || 'name';
-            // const _formatTarget = options.useToLabel ? _formatRichName: 'name';
-            // if (options.showLocation) {
-            //   let name = params.name;
-            //   _text.push(name)
-            // }
-            // if (options.showValue) {
-            //   if (this.isMock) {
-            //     value = value;
-            //   } else {
-            //     let realDisplayUnit = this.displayUnit;
-            //     const formatService = this.host.formatService;
-            //     if (formatService.isAutoDisplayUnit(this.displayUnit)) {
-            //       realDisplayUnit = formatService.getAutoDisplayUnit(value);
-            //     }
-            //     value = formatService.format(this.format, value, realDisplayUnit)
-            //   }
-            //   _text.push(value)
-            // }
-            // const _result = _text.join('\n');
-            // return `{${_formatTarget}|${_result}}`;
+            let _text = [];
+            let value = params.data.datas;
+            const _formatRichName = formatList.map((_item: any) => {
+              let _name = '';
+              if (value >= Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+                if (_item.minRank === '[' && _item.maxRank === ']') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                }
+              }
+              if (value >= Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+                if (_item.minRank === '[' && _item.maxRank === ')') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                }
+              }
+              if (value > Number(_item.minFormatValue) && value <= Number(_item.maxFormatValue)) {
+                if (_item.minRank === '(' && _item.maxRank === ']') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                }
+              }
+              if (value > Number(_item.minFormatValue) && value < Number(_item.maxFormatValue)) {
+                if (_item.minRank === '(' && _item.maxRank === ')') {
+                  _name = `${_item.minFormatValue}To${_item.maxFormatValue}`
+                }
+              }
+              return _name;
+            }).filter(_item => _item)[0] || 'name';
+            const _formatTarget = options.useToLabel ? _formatRichName: 'name';
+            // const _formatTarget = 'name';
+            if (options.showLocation) {
+              let name = params.name;
+              _text.push(name)
+            }
+            if (options.showValue) {
+              if (this.isMock) {
+                value = value;
+              } else {
+                let realDisplayUnit = this.displayUnit;
+                const formatService = this.host.formatService;
+                if (formatService.isAutoDisplayUnit(this.displayUnit)) {
+                  realDisplayUnit = formatService.getAutoDisplayUnit(value);
+                }
+                value = formatService.format(this.format, value, realDisplayUnit)
+              }
+              _text.push(value)
+            }
+          let _result = _text.join(':');
+            return `{${_formatTarget}|${_result}}`;
           },
           rich:{
             name:{
@@ -261,11 +417,10 @@ export default class Visual extends WynVisual {
               verticalAlign: 'middle',
               color: options.labelTextStyle.color,
               fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2)),
-              borderRadius: options.tooltipBorderRadius,
-              padding: [options.labelPadding.top, options.labelPadding.right],
-              backgroundColor: options.tooltipBackgroundType === 'color' ? options.labelBackgroundColor : { image: options.tooltipBackgroundImage },
+              padding: [options.labelPadding.top, options.labelPadding.bottom,options.labelPadding.left,options.labelPadding.right],
+              backgroundColor: options.tooltipBackgroundType === 'color' ? options.labelBackgroundColor : { image: options.labelBackgroundImage },
             },
-            // ...formatLabelColor(),
+            ...formatLabelColor(),
           }
         
         }
@@ -281,18 +436,18 @@ export default class Visual extends WynVisual {
           return myTooltip.getPosOrSize('pos', pos);
         },
         formatter: (params) => {
-          return myTooltip.getTooltipDom(params.name || ' ')
-          // const _toolTip = this.items.find((_item) => {
-          //   const name = _item.name.replace(locationReg, '');
-          //   return name === params.name && _item;
-          // });
-          // if (!this.isMock && _toolTip) {
-          //   let _addToolTipText = `${this.locationName}: ${_toolTip.name} \n${this.valuesName}: ${_toolTip.datas}`
-          //   _toolTip.toolTip.map((_text: any, index: number) => {
-          //     _addToolTipText += `\n${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`
-          //   })
-          //   return myTooltip.getTooltipDom(_addToolTipText)
-          // }
+          const _toolTip = items.find((_item) => {
+            const name = _item.name.replace(locationReg, '');
+            return name === params.name.replace(locationReg, '') && _item;
+          });
+
+          if (!this.isMock && _toolTip) {
+            let _addToolTipText = `${this.locationName}: ${_toolTip.name} \n${this.valuesName}: ${_toolTip.datas}`
+            _toolTip.toolTip.map((_text: any, index: number) => {
+              _addToolTipText += `\n${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`
+            })
+            return myTooltip.getTooltipDom(_addToolTipText)
+          }
         },
       },
       geo3D: {
@@ -395,124 +550,28 @@ export default class Visual extends WynVisual {
           },
         data: _data,
         zlevel:1,
-      },
-      {
-          type: 'bar3D',
-          zlevel: 2,
-          coordinateSystem: 'geo3D',
-          shading: 'lambert',
-          data: _barData,
-          barSize: 0.1,
-          minHeight: 0.2,
-          silent: true,
-          itemStyle: {
-            color: 'orange'
-            // opacity: 0.8
         },
-          label: labelOptions(),
-          // label: {
-          //   show: options.showLabel, //是否显示市
-          //   textStyle: {
-          //       color: '#fff', //文字颜色
-          //     fontSize: 20, //文字大小
-                
-          //   },
-          //     formatter: (label: any,) => {
-          //       const _label = label.name || ' '
-          //     return _label === '河北省' ? '      12121' : _label;
-          //   }
-          // },
+        {
+            type: 'bar3D',
+            zlevel: 2,
+            coordinateSystem: 'geo3D',
+            shading: 'lambert',
+            data: _barData,
+            barSize:options.showBar ?  [options.barSize * 0.1, options.barSize * 0.1]: [0,0],
+            bevelSize: options.barBevelSmoothness / 100,
+            bevelSmoothness: options.barBevelSmoothness,
+            minHeight: options.barMinHeight,
+            silent: true,
+            itemStyle: {
+              color: (params: any) => {
+
+                const _value = params.data.datas;
+                const _color = options.useToBar ? formatColor(options.barColor, _value) : options.barColor;
+                return _color
+              },
+            },
+            label: labelOptions(),
         },
-        // {
-        //   type: 'lines3D',
-        //   coordinateSystem: 'geo3D',
-        //   effect: {
-        //     show: true,
-        //     trailWidth: 1,
-        //     trailOpacity: 0.5,
-        //     trailLength: 0.2,
-        //     constantSpeed: 5
-        //   },
-        //   blendMode: 'lighter',
-        //   lineStyle: {
-        //     width: 20,
-        //     opacity: 1,
-        //     color: 'red'
-        //   },
-        //   data: _line3DData
-        // }
-    //   {
-    //     type: 'scatter3D',
-    //     // type: 'bar3D',
-    //     coordinateSystem: 'geo3D',
-    //     zlevel: 0,
-    //     symbol: 'path://m232.99844,160.209511l15.863519,0l0,-14.211071l16.27296,0l0,14.211071l15.863521,0l0,14.577861l-15.863521,0l0,14.211069l-16.27296,0l0,-14.211069l-15.863519,0l0,-14.577861z',
-    //     // symbol: 'circle',
-    //     // symbol: 'path://M658.059636 187.826424a31.030303 31.030303 0 0 1 0 43.876849l-288.364606 288.364606 288.364606 288.364606a31.030303 31.030303 0 0 1-43.876848 43.876848l-310.30303-310.30303a31.030303 31.030303 0 0 1 0-43.876848l310.30303-310.303031a31.030303 31.030303 0 0 1 43.876848 0z'
-    //     symbolSize: 16,
-
-    //     label: {
-    //         normal: {
-    //             show: true,
-    //             position: 'right',
-    //             formatter: '{b}',
-
-    //             textStyle: {
-    //                 color: '#fff',
-    //                 fontSize: 14,
-    //                 backgroundColor: 'transparent' // 字体背景色
-    //             },
-
-    //         }
-    //     },
-
-    //     // data: mapData,
-    //     itemStyle: { //坐标点颜色
-    //         color: '#2681cf',
-    //         shadowBlur: 20,
-    //         shadowColor: '#fff'
-    //     },
-    //     emphasis: {
-    //         itemStyle: { //坐标点颜色
-    //             color: '#1ca1d2',
-    //         },
-    //     }
-    // }, {
-    //   type: 'scatter3D',
-    //   // type: 'bar3D',
-    //   coordinateSystem: 'geo3D',
-    //   zlevel: 0,
-    //   // symbol: 'path://m232.99844,160.209511l15.863519,0l0,-14.211071l16.27296,0l0,14.211071l15.863521,0l0,14.577861l-15.863521,0l0,14.211069l-16.27296,0l0,-14.211069l-15.863519,0l0,-14.577861z',
-    //   symbol: 'circle',
-    //   // symbol: 'path://M658.059636 187.826424a31.030303 31.030303 0 0 1 0 43.876849l-288.364606 288.364606 288.364606 288.364606a31.030303 31.030303 0 0 1-43.876848 43.876848l-310.30303-310.30303a31.030303 31.030303 0 0 1 0-43.876848l310.30303-310.303031a31.030303 31.030303 0 0 1 43.876848 0z'
-    //   symbolSize: 5,
-    //     label: {
-    //       show: false,
-    //       normal: {
-    //           show: true,
-    //           position: 'right',
-    //           formatter: '{b}',
-
-    //           textStyle: {
-    //               color: '#fff',
-    //               fontSize: 14,
-    //               backgroundColor: 'transparent' // 字体背景色
-    //           },
-
-    //       }
-    //   },
-    //   // data: mapData2,
-    //   itemStyle: { //坐标点颜色
-    //       color: '#fff',
-    //       shadowBlur: 20,
-    //       shadowColor: '#fff'
-    //   },
-    //   emphasis: {
-    //       itemStyle: { //坐标点颜色
-    //           color: '#1ca1d2',
-    //       },
-    //   }
-    //     }
       ]
   });
   }
@@ -527,7 +586,28 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    return null;
+    let properties = options.properties;
+    let hiddenStates = [];
+    // bar
+    if (!properties.showBar ) {
+      hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize'])
+    }
+    // showLabel
+    if (!properties.showLabel ) {
+      hiddenStates = hiddenStates.concat(['showLocation', 'showValue', 'tooltipBackgroundType', 'labelBackgroundColor', 'labelBackgroundImage' ,'labelBorderColor', 'labelPadding', 'labelTextStyle', 'labelDistance'])
+    } else {
+      if (properties.tooltipBackgroundType === 'color') {
+        hiddenStates = hiddenStates.concat(['labelBackgroundImage'])
+      } else {
+        hiddenStates = hiddenStates.concat(['labelBackgroundColor'])
+      }
+    }
+
+    // showTooltip
+    if (!properties.showTooltip ) {
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipTextStyle'])
+    }
+    return hiddenStates;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
