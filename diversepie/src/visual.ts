@@ -2,11 +2,11 @@ import '../style/visual.less';
 import _ = require('lodash');
 import * as echarts from 'echarts/core';
 import { PieChart } from 'echarts/charts';
-import { GraphicComponent ,AriaComponent , TooltipComponent, LegendComponent, GridComponent   } from 'echarts/components';
-import {CanvasRenderer} from 'echarts/renderers';
+import { GraphicComponent, AriaComponent, TooltipComponent, LegendComponent, GridComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
 
 echarts.use(
-  [ PieChart, GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
+  [PieChart, GraphicComponent, AriaComponent, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer]
 );
 
 let isTooltipModelShown = false;
@@ -37,13 +37,13 @@ export default class Visual extends WynVisual {
   private selection: any[] = [];
   private dimension: string;
   private value: string;
-  private _total : any;
-  private timeInterval : any;
-  private preview : boolean;
+  private _total: any;
+  private timeInterval: any;
+  private preview: boolean;
   private payWay: any;
   private allItems: any;
 
-  
+
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
     this.container = dom;
@@ -63,8 +63,8 @@ export default class Visual extends WynVisual {
     if (asModel) isTooltipModelShown = true;
     this.host.contextMenuService.show({
       position: {
-      x: params.event.event.x,
-      y: params.event.event.y,
+        x: params.event.event.x,
+        y: params.event.event.y,
       },
       menu: true
     }, 10)
@@ -79,31 +79,31 @@ export default class Visual extends WynVisual {
 
   private dispatch = (type, payload) => this.chart.dispatchAction({ ...payload, type });
 
-  public timer = () => {
-    let index = -1
-    let dataLength = this.items[2].length 
-    this.timeInterval =  setInterval(() => {
+  public timer = () => {
+    let index = -1
+    let dataLength = this.items[2].length
+    this.timeInterval = setInterval(() => {
       const autoStopInfo = {
         seriesIndex: 0,
         dataIndex: index,
       };
-      this.dispatch('downplay', autoStopInfo)
-      index = (index + 1) % dataLength
+      this.dispatch('downplay', autoStopInfo)
+      index = (index + 1) % dataLength
       const autoInfo = {
         seriesIndex: 0,
-        dataIndex: index ,
+        dataIndex: index,
       };
-      this.dispatch('highlight',autoInfo)
-      if (index > dataLength) {
-        index = 0
-      }
-    }, Number(this.properties.rotationInterval)*1000)
+      this.dispatch('highlight', autoInfo)
+      if (index > dataLength) {
+        index = 0
+      }
+    }, Number(this.properties.rotationInterval) * 1000)
   }
-    
+
 
   public bindEvents = () => {
     this.container.addEventListener('mousedown', (e: any) => {
-      document.oncontextmenu = function () { return false; }; 
+      document.oncontextmenu = function () { return false; };
       if (!e.seriesClick) {
         // clear tooltip
         this.hideTooltip();
@@ -128,12 +128,12 @@ export default class Visual extends WynVisual {
     })
 
 
-    this.chart.on('mouseover',(params)=> {
+    this.chart.on('mouseover', (params) => {
       const selectInfo = {
         seriesIndex: params.seriesIndex,
         dataIndex: params.dataIndex,
       };
-      this.dispatch('highlight',selectInfo)
+      this.dispatch('highlight', selectInfo)
     })
 
     this.chart.on('mouseout', (params) => {
@@ -141,7 +141,7 @@ export default class Visual extends WynVisual {
         seriesIndex: params.seriesIndex,
         dataIndex: params.dataIndex,
       };
-      this.dispatch('downplay',selectInfo)
+      this.dispatch('downplay', selectInfo)
     })
 
     this.chart.on('mouseup', (params) => {
@@ -159,7 +159,7 @@ export default class Visual extends WynVisual {
       this.dispatch('highlight', selectInfo);
       this.selection.push(selectInfo);
       if (clickMouse === clickLeftMouse) {
-        dataIndex = (params.dataIndex === dataIndex)?'':params.dataIndex
+        dataIndex = (params.dataIndex === dataIndex) ? '' : params.dataIndex
         // show data jump
         if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
           return
@@ -174,11 +174,11 @@ export default class Visual extends WynVisual {
               position: {
                 x: params.event.event.x,
                 y: params.event.event.y,
-                },
+              },
             }
           }])
         }
-      } else if (clickMouse === clickRightMouse) {  
+      } else if (clickMouse === clickRightMouse) {
         params.event.event.preventDefault();
         this.showTooltip(params, true);
       }
@@ -186,12 +186,12 @@ export default class Visual extends WynVisual {
   }
 
   public clearOperation = () => {
-    this.items[2] && this.items[2].forEach((element,index) => {
+    this.items[2] && this.items[2].forEach((element, index) => {
       const selectInfo = {
         seriesIndex: 0,
         dataIndex: index,
       };
-      this.dispatch('downplay',selectInfo)
+      this.dispatch('downplay', selectInfo)
     });
     clearInterval(this.timeInterval)
   }
@@ -207,20 +207,20 @@ export default class Visual extends WynVisual {
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
       this.value = plainData.profile.value.values[0].display;
-      this.payWay = plainData.profile.tooltipFields.values.length?plainData.profile.tooltipFields.values.map((value,index) => {
+      this.payWay = plainData.profile.tooltipFields.values.length ? plainData.profile.tooltipFields.values.map((value, index) => {
         return value.display
-      }):''
+      }) : ''
       let items = plainData.data;
       // const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
       // data sort 
       const sortFlags = plainData.sort[this.dimension].order;
-        let newItems: any = sortFlags.map((flags) => {
-          return newItems = items.find((item) => item[this.dimension] === flags && item)
-        })
-        items = newItems.filter((item) => item)
+      let newItems: any = sortFlags.map((flags) => {
+        return newItems = items.find((item) => item[this.dimension] === flags && item)
+      })
+      items = newItems.filter((item) => item)
       this.allItems = items;
       this.items[0] = items.map((item) => item[this.dimension]);
-      this.items[1] = items.map((item) => {return { name: item[this.dimension], value: item[this.value]}});
+      this.items[1] = items.map((item) => { return { name: item[this.dimension], value: item[this.value] } });
       // get data
       const getSelectionId = (item) => {
         const selectionId = this.createSelectionId();
@@ -229,7 +229,7 @@ export default class Visual extends WynVisual {
       }
       this.items[2] = items.map((item) => getSelectionId(item));
       this.format = options.dataViews[0].plain.profile.value.values[0].format;
-      
+
     } else {
       this.isMock = true;
     }
@@ -240,18 +240,18 @@ export default class Visual extends WynVisual {
 
   public formatData = (number, dataUnit, dataType) => {
     let format = number
-    if(dataUnit === 'auto'){
-      const formatService = this.host.formatService;
+    if (dataUnit === 'auto') {
+      const formatService = this.host.formatService;
       let realDisplayUnit = dataUnit;
-      if (formatService.isAutoDisplayUnit(dataUnit)) {
-          realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+      if (formatService.isAutoDisplayUnit(dataUnit)) {
+        realDisplayUnit = formatService.getAutoDisplayUnit([number]);
       }
       return format = formatService.format(this.format, number, realDisplayUnit);
     } else {
       const units = [{
         value: 1,
         unit: ''
-      },{
+      }, {
         value: 100,
         unit: '百'
       }, {
@@ -289,9 +289,9 @@ export default class Visual extends WynVisual {
         format = Number(format).toFixed(0)
       } else if (dataType === ',') {
         let integer = format.split('.')
-        format = integer[0].replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
+        format = integer[0].replace(/(\d{1,3})(?=(\d{3})+$)/g, '$1,');
       } else if (dataType === 'custom') {
-        
+
       } else {
         format = dataType + format
       }
@@ -309,48 +309,50 @@ export default class Visual extends WynVisual {
 
     let data: any = this.isMock ? Visual.mockItems : this.items[1];
     this._total = data.map((item) => item.value).reduce((prev, next) => prev + next, 0);
-    
+
     let finalAngle = 360;
-      let drawingStartAngle = options.startAngle%360
-      let drawingEndAngle = options.endAngle%360
-      if (drawingStartAngle && drawingEndAngle) {
-        finalAngle = drawingStartAngle + (drawingEndAngle-drawingStartAngle)
-      } else if (drawingStartAngle && !drawingEndAngle) {
-        finalAngle = 360
-      } else if (!drawingStartAngle && drawingEndAngle) {
-        finalAngle = drawingEndAngle
-      }  
-      let ratio = finalAngle/360
-      data = [...data,{
-        value:this._total/ratio*(1-ratio), 
-        name:'',
-        label: {
-          show:false,
-        },
-        itemStyle:{normal:{color:'rgba(0,0,0,0)'}}
-      }]
-    
+    let drawingStartAngle = options.startAngle % 360
+    let drawingEndAngle = options.endAngle % 360
+    if (drawingStartAngle && drawingEndAngle) {
+      finalAngle = drawingStartAngle + (drawingEndAngle - drawingStartAngle)
+    } else if (drawingStartAngle && !drawingEndAngle) {
+      finalAngle = 360
+    } else if (!drawingStartAngle && drawingEndAngle) {
+      finalAngle = drawingEndAngle
+    }
+    let ratio = finalAngle / 360
+    data = [...data, {
+      value: this._total / ratio * (1 - ratio),
+      name: '',
+      label: {
+        show: false,
+      },
+      itemStyle: { normal: { color: 'rgba(0,0,0,0)' } }
+    }]
+
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
-    
+
     const hexToRgba = (hex, opacity) => {
       return 'rgba(' + parseInt('0x' + hex.slice(1, 3)) + ',' + parseInt('0x' + hex.slice(3, 5)) + ','
-              + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
+        + parseInt('0x' + hex.slice(5, 7)) + ',' + opacity + ')';
     }
-     
+
     const getColors = (index, position: number) => {
       let backgroundColor = ''
       const pieColor: [{
         colorStops: [] | any
       }] = options.pieColor && options.pieColor || [];
+      
       if (index < pieColor.length) {
         backgroundColor = pieColor[index].colorStops ? pieColor[index].colorStops[position] : pieColor[index]
       } else {
         backgroundColor = pieColor[Math.floor((Math.random() * pieColor.length))].colorStops
           ? pieColor[Math.floor((Math.random() * pieColor.length))].colorStops[position]
-          : pieColor[index%(pieColor.length)]
+          : pieColor[index % (pieColor.length)]
       }
       return backgroundColor
     }
+
     const getSeries = () => {
       const seriesData = this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0];
       return seriesData.map((item, index) => {
@@ -392,43 +394,43 @@ export default class Visual extends WynVisual {
             name: '',
             type: 'pie',
             selectedMode: true,
-            selectedOffset:20,
+            selectedOffset: 20,
             radius: options.labelPosition === 'inside' ? [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outer}%`] : [`${options.breakPointNumber && !options.inner ? Visual.minInner : options.inner}%`, `${options.outerOutside}%`],
             center: [`${options.centerX}%`, `${options.centerY}%`],
-            data: data, 
+            data: data,
             startAngle: options.startAngle,
             minAngle: options.minAngle,
             roseType: options.pieRoseType === 'pie' ? '' : options.pieRoseType,
             label: {
-              show: options.labelPosition === 'center' ? false: options.showLabel,
+              show: options.labelPosition === 'center' ? false : options.showLabel,
               position: options.labelPosition,
               formatter: (params) => {
                 let name = options.showLabelName ? params.name : ''
                 let value = options.showLabelValue && !this.isMock ? this.formatData(params.value, options.labelDataUnit, options.labelDataType) : '';
-                let percent = options.showLabelPercent ? `${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
-                let lineFeed = options.showLabelTwoLine ? '\n':''
+                let percent = options.showLabelPercent ? `${(params.value / this._total * 100).toFixed(options.LabelPercentDecimalPlaces)}%` : '';
+                let lineFeed = options.showLabelTwoLine ? '\n' : ''
 
-                if(!options.showLabelTwoLine){
+                if (!options.showLabelTwoLine) {
                   return `{b|${name} ${value} ${percent}}`
-                }else{
-                  if(name && !value && !percent){
+                } else {
+                  if (name && !value && !percent) {
                     return `{b|${name}}`
-                  }else if(!name && value && !percent){
+                  } else if (!name && value && !percent) {
                     return `{b|${value}}`
-                  }else if(!name && !value && percent){
+                  } else if (!name && !value && percent) {
                     return `{b|${percent}}`
-                  }else if(name && value && !percent){
+                  } else if (name && value && !percent) {
                     return `{b|${name}${lineFeed}${value}}`
-                  }else if(name && !value && percent){
+                  } else if (name && !value && percent) {
                     return `{b|${name}${lineFeed}${percent}}`
-                  }else if(!name && value && percent){
+                  } else if (!name && value && percent) {
                     return `{b|${value}${lineFeed}${percent}}`
-                  }else {
+                  } else {
                     return `{b|${name} ${lineFeed}${value}${'/'}${percent}}`
                   }
                 }
               },
-              rich:{
+              rich: {
                 b: {
                   lineHeight: 20,
                   ...options.labelTextStyle,
@@ -441,12 +443,12 @@ export default class Visual extends WynVisual {
                   height: 10,
                   padding: [3, -7, 0, -7],
                 }
-              }   
+              }
             },
             emphasis: {
               label: {
-                  show: true,
-                  ...options.labelTextStyle,
+                show: true,
+                ...options.labelTextStyle,
                 fontSize: parseInt(options.labelTextStyle.fontSize)
               },
               scale: true,
@@ -454,18 +456,18 @@ export default class Visual extends WynVisual {
             },
             labelLine: {
               show: options.showLabelLine,
-              length:options.labelLineFirst,
-              length2:options.labelLineSecond,
+              length: options.labelLineFirst,
+              length2: options.labelLineSecond,
               smooth: `${options.labelLineSmooth * 0.01}`,
-              lineStyle:{
-                color:null,
-                width:options.labelLineWidth
+              lineStyle: {
+                color: null,
+                width: options.labelLineWidth
               }
             },
             itemStyle: {
               normal: {
                 color: (params) => {
-                  return options.showGradient?{
+                  return options.showGradient ? {
                     type: 'linear',
                     x: 0,
                     y: 0,
@@ -473,15 +475,15 @@ export default class Visual extends WynVisual {
                     y2: 1,
                     colorStops: [{
                       offset: 0,
-                      color: options.showGradient ? hexToRgba(getColors(params.dataIndex, 0), 0.2) : getColors(params.dataIndex, 0), 
+                      color: options.showGradient ? hexToRgba(getColors(params.dataIndex, 0), 0.2) : getColors(params.dataIndex, 0),
                     },
                     {
                       offset: 1,
-                      color: options.showGradient ? hexToRgba(getColors(params.dataIndex, 0), 1) : getColors(params.dataIndex, 1), 
+                      color: options.showGradient ? hexToRgba(getColors(params.dataIndex, 0), 1) : getColors(params.dataIndex, 1),
                     }
                     ],
                     global: false
-                  }:getColors(params.dataIndex, 1)
+                  } : getColors(params.dataIndex, 1)
                 },
                 borderRadius: options.borderRadius,
                 borderColor: options.breakPointColor,
@@ -504,23 +506,23 @@ export default class Visual extends WynVisual {
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
-          let eachSector = this.allItems.find((ele)=> ele[this.dimension] === params.name)
+          let eachSector = this.allItems.find((ele) => ele[this.dimension] === params.name)
           let toolTips = ''
           let lineWrap = '<br/>'
-          this.payWay && this.payWay.forEach((element,index) => {
+          this.payWay && this.payWay.forEach((element, index) => {
             toolTips += `${lineWrap}${element}${': '}${eachSector[this.payWay[index]]}`
           });
-          
+
           return `${this.isMock ? '访问量' : this.dimension} ${lineWrap}${params.name}
            :${this.formatData(params.value, options.labelDataUnit, options.labelDataType)}
-            (${(params.value/this._total*100).toFixed(options.LabelPercentDecimalPlaces)}%)
+            (${(params.value / this._total * 100).toFixed(options.LabelPercentDecimalPlaces)}%)
             ${toolTips}`
         }
       },
       legend: {
         data: this.isMock ? ['一月', '二月', '三月', '四月', '五月', '六月'] : this.items[0].map((_item) => `${_item}`),
         show: options.showLegend,
-        type: options.openLegendPage ?  'scroll' : 'plain',
+        type: options.openLegendPage ? 'scroll' : 'plain',
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
         align: 'left',
@@ -533,21 +535,21 @@ export default class Visual extends WynVisual {
               align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width:options.legendSeriesWidth,
+              width: options.legendSeriesWidth,
               padding: [0, 15, 0, 0]
             },
             b: {
               align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width:options.showLegendPercent,
+              width: options.showLegendPercent,
               padding: [0, 15, 0, 0]
             },
             c: {
               align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width:options.legendValueWidth,
+              width: options.legendValueWidth,
               padding: [0, 15, 0, 0]
             }
           }
@@ -578,9 +580,9 @@ export default class Visual extends WynVisual {
             _title += `{c|占比}`
           }
           _title += '\n'
-          return _firstLegendText ? `${_legendText}`: _legendText;
+          return _firstLegendText ? `${_legendText}` : _legendText;
         },
-        
+
       },
       // graphic: {
       //   type: "text",
@@ -616,11 +618,11 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[] {
     let hiddenOptions: Array<string> = [''];
-    
+
     // legend
     if (!updateOptions.properties.showLegend) {
       hiddenOptions = hiddenOptions.concat(['legendPosition', 'legendIcon', 'legendVerticalPosition', 'legendHorizontalPosition', 'legendTextStyle', 'legendArea', 'legendWidth', 'legendHeight'
-      , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'openLegendPage', 'legendSeriesWidth', 'legendPercentWidth', 'legendValueWidth'])
+        , 'showLegendSeries', 'showLegendPercent', 'showLegendValue', 'openLegendPage', 'legendSeriesWidth', 'legendPercentWidth', 'legendValueWidth'])
     }
     if (updateOptions.properties.legendPosition === 'left' || updateOptions.properties.legendPosition === 'right') {
       hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
@@ -643,7 +645,7 @@ export default class Visual extends WynVisual {
     // label
     if (!updateOptions.properties.showLabel) {
       hiddenOptions = hiddenOptions.concat(['showLabelLine', 'showLabelValue', 'showLabelPercent', 'labelPosition', 'labelDataType', 'labelDataUnit', 'labelTextStyle', 'showLabelTwoLine',
-       'showLabelName', 'labelTextColor', 'setLabelTextColor', 'LabelPercentDecimalPlaces', 'showLabelLine'])
+        'showLabelName', 'labelTextColor', 'setLabelTextColor', 'LabelPercentDecimalPlaces', 'showLabelLine'])
     }
 
     if (updateOptions.properties.labelPosition === 'inside') {
@@ -652,7 +654,7 @@ export default class Visual extends WynVisual {
     if (updateOptions.properties.labelPosition === 'outside') {
       hiddenOptions = hiddenOptions.concat(['outer'])
     }
-    if (!updateOptions.properties.showLabelLine || !updateOptions.properties.showLabel){
+    if (!updateOptions.properties.showLabelLine || !updateOptions.properties.showLabel) {
       hiddenOptions = hiddenOptions.concat(['labelLineFirst', 'labelLineSecond', 'labelLineWidth', 'labelLineSmooth'])
     }
     if (!updateOptions.properties.showLabelValue) {
