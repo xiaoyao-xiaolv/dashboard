@@ -5,7 +5,7 @@ export default class Visual extends WynVisual {
 
   private myEcharts: any;
   private selectionManager: any;
-  private visualHost: any;
+  private host: any;
   private selectionIds: any;
   private dom: any;
   private selectionIdsArray: Array<any>;
@@ -19,11 +19,15 @@ export default class Visual extends WynVisual {
     super(dom, host, options);
     this.myEcharts = echarts.init(dom);
     this.dom = dom;
-    this.visualHost = host;
+    this.host = host;
     this.selectionManager = host.selectionService.createSelectionManager();
     this.selectEvent();
     this.selectionIdsArray = new Array<any>();
-    // console.log(options)
+  }
+
+  public onResize() {
+    this.myEcharts.resize();
+    this.render();
   }
 
   private selectEvent() {
@@ -31,55 +35,103 @@ export default class Visual extends WynVisual {
     this.dom.addEventListener("click", () => {
       this.selectionManager.clear();
       this.selectionIdsArray = new Array<any>();
-      this.visualHost.toolTipService.hide();
+      this.host.toolTipService.hide();
+      this.host.contextMenuService.hide();
       return;
     })
 
-    this.myEcharts.on("click", (params) => {
 
-      console.log(params);
-      console.log(this.selectionIds);
-      // console.log(this.selectionManager);
-
-
+    //鼠标左键
+    this.myEcharts.on('click', (params) => {
       params.event.event.stopPropagation();
-      if (this.selectionManager.isEmpty()) {
-        this.selectionIdsArray.push((this.selectionIds[(params.dataIndex * 2) + params.seriesIndex]));
-        this.selectionManager.select(this.selectionIdsArray, true);
-        return
+      // console.log(params);
+
+      //鼠标左键功能
+      let leftMouseButton = this.properties.properties.leftMouseButton;
+      switch (leftMouseButton) {
+        //鼠标联动设置    
+        case "none": {
+          if (this.selectionManager.isEmpty()) {
+            this.selectionIdsArray.push(this.selectionIds[params.dataIndex]);
+            this.selectionManager.select(this.selectionIdsArray, true);
+            return
+          }
+
+          if (!this.selectionManager.contains(this.selectionIds[params.dataIndex])) {
+            this.selectionIdsArray.push(this.selectionIds[params.dataIndex]);
+          } else {
+            this.selectionIdsArray.splice(this.selectionIdsArray.indexOf(this.selectionIds[params.dataIndex]), 1);
+            this.selectionManager.clear(this.selectionIds[params.dataIndex])
+          }
+          if (this.selectionIdsArray.length == this.selectionIds.length) {
+            this.selectionManager.clear();
+            this.selectionIdsArray = new Array<any>();
+            this.host.toolTipService.hide();
+            return;
+          }
+          this.selectionManager.select(this.selectionIdsArray, true);
+          break;
+        }
+        default: {
+          const selectionIds = this.selectionIds[params.dataIndex];
+          this.host.commandService.execute([{
+            name: leftMouseButton,
+            payload: {
+              selectionIds,
+              position: {
+                x: params.event.event.x,
+                y: params.event.event.y,
+              },
+            }
+          }])
+        }
       }
 
-      if (!this.selectionManager.contains(this.selectionIds[params.dataIndex])) {
-        this.selectionIdsArray.push(this.selectionIds[(params.dataIndex * 2) + params.seriesIndex]);
-      } else {
-        this.selectionIdsArray.splice(this.selectionIdsArray.indexOf(this.selectionIds[params.dataIndex]), 1);
-        this.selectionManager.clear(this.selectionIds[params.dataIndex])
-      }
-      if (this.selectionIdsArray.length == this.selectionIds.length) {
-        this.selectionManager.clear();
-        this.selectionIdsArray = new Array<any>();
-        this.visualHost.toolTipService.hide();
+    })
+
+    //鼠标右键
+    this.myEcharts.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+          menu: true
+        }, 10)
         return;
       }
-      this.selectionManager.select(this.selectionIdsArray, true);
-
     })
 
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
-    this.properties = options;
+
     // console.log(options);
-    this.getfunnelPairData();
-    this.render();
+    this.getFunnelPairData();
+    this.onResize()
   }
 
   public onDestroy(): void {
 
   }
 
+  //属性隐藏设置
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    return null;
+    this.properties = options;
+    //是否是对比图
+    this.isDoubleFunnel = (this.properties.dataViews[0].plain.profile.reduced_value.values.length == 0) ? false : true;
+
+    let hiddenOptions: Array<string> = [''];
+    if (options.properties.funnelStyle === 'style2' || this.isDoubleFunnel) {
+      hiddenOptions = hiddenOptions.concat(['maxSize', 'minSize']);
+    }
+    if (!this.isDoubleFunnel) {
+      hiddenOptions = hiddenOptions.concat(['actualMaxSize', 'actualMinSize', 'reducedMaxSize', 'reducedMinSize']);
+    }
+    return hiddenOptions;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
@@ -101,10 +153,8 @@ export default class Visual extends WynVisual {
   }
 
   //获取数据集所有数据，并保存在funnelDate
-  public getfunnelPairData() {
+  public getFunnelPairData() {
 
-    //是否是对比图
-    this.isDoubleFunnel = (this.properties.dataViews[0].plain.profile.reduced_value.values.length == 0) ? false : true;
     // console.log(this.isDoubleFunnel)
     let allData;
 
@@ -121,12 +171,13 @@ export default class Visual extends WynVisual {
     }
 
     if (dataView) {
+      dataView.data.sort((a, b) => { return b[actualDisplay] - a[actualDisplay] })
       dataView.data.forEach((dataPoint) => {
         //数据共享
-        const actual_selectionId = this.visualHost.selectionService.createSelectionId();
-        actual_selectionId.withDimension(dataView.profile.actual_value.values[0], dataPoint);
-        actual_selectionId.withDimension(dataView.profile.series.values[0], dataPoint);
-        this.selectionIds.push(actual_selectionId);
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(dataView.profile.series.values[0], dataPoint);
+        selectionId.withDimension(dataView.profile.actual_value.values[0], dataPoint);
+
 
         allData = {
           series: dataPoint[seriesDisplay],
@@ -135,67 +186,65 @@ export default class Visual extends WynVisual {
         }
 
         if (this.isDoubleFunnel) {
+          selectionId.withDimension(dataView.profile.reduced_value.values[0], dataPoint);
           allData.reduced_value = dataPoint[reducedDisplay];
-          const rerduced_selectionId = this.visualHost.selectionService.createSelectionId();
-          rerduced_selectionId.withDimension(dataView.profile.series.values[0], dataPoint);
-          rerduced_selectionId.withDimension(dataView.profile.reduced_value.values[0], dataPoint);
-          this.selectionIds.push(rerduced_selectionId);
         }
-        this.funnelData.push(allData)
-
+        this.selectionIds.push(selectionId);
+        this.funnelData.push(allData);
       })
-      //漏斗图排序
-      this.funnelData.sort((a, b) => (b.actual_value - a.actual_value));
-      for (let i = 0; i < this.selectionIds.length-2; i = +2) {
-        if(this.selectionIds[i] < this.selectionIds[i+2]){
-          let a = this.selectionIds[i];
-          let b = this.selectionIds[i+1]
-          this.selectionIds[i] = this.selectionIds[i+2];
-          this.selectionIds[i+1] = this.selectionIds[i+3];
-          this.selectionIds[i+2] = a;
-          this.selectionIds[i+3] = b;
-        }
-      }
     };
   }
 
   //单个漏斗图显示options
   getOptionForOnce() {
-
-    // console.log(this.funnelData)
-
-    var colors = [];
-
+    //样式属性设置
+    let styleValue = {
+      minSize: "0%",
+      maxSize: "100%"
+    }
+    if (this.properties.properties.funnelStyle == "style1") {
+      styleValue.minSize = this.properties.properties.minSize + "%";
+      styleValue.maxSize = this.properties.properties.maxSize + "%"
+    }
+    let addActualValue = 0;
     var showData = [];
-    //渐变颜色设置
     var showData2 = [];
     var ySize = 10;
     let rgb = [255, 0, 255]
-    this.funnelData.forEach((data) => {
+    this.funnelData.forEach((data, index, arr) => {
+      addActualValue = addActualValue + Number(data.actual_value);
+      let name, value;
+      name = data.series;
+      if (this.properties.properties.funnelStyle === "style2") {
+        value = arr.length - index;
+      } else {
+        value = data.actual_value;
+      }
 
-
-      let colorRadom = "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2];
+      //上下比例
       var myData1 = {
-        name: data.series,
-        value: data.actual_value,
+        name: name,
+        value: value,
         x: 400,
         y: ySize,
         itemStyle: {
-          color: colorRadom
+          color: this.getColors(index, 1)
         }
       };
+      //背景百分比
       ySize = ySize + 10;
       var myData2 = {
-        name: data.series,
-        value: data.actual_value,
+        name: name,
+        value: value,
+        actual_value: data.actual_value,
         itemStyle: {
           normal: {
             color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
               offset: 0,
-              color: colorRadom + ",0.2)"
+              color: this.getColors(index, 1) + "33"
             }, {
               offset: 1,
-              color: colorRadom + ",0.7)"
+              color: this.getColors(index, 1)
             }]),
             borderWidth: 0,
             opacity: 1
@@ -205,46 +254,7 @@ export default class Visual extends WynVisual {
       showData.push(myData1);
       showData2.push(myData2);
 
-      //颜色渐变
-      if (rgb[0] == 0) {
-        rgb[1] = rgb[1] - 100;
-        rgb[2] = rgb[1] - 150;
-        if (rgb[2] < 0) {
-          rgb[2] = 255;
-        }
-        if (rgb[1] < 0) {
-          rgb[0] = 255;
-          rgb[1] = 0;
-          rgb[2] = 255;
-        }
-      }
-      if (rgb[1] == 0) {
-        rgb[0] = rgb[0] - 100;
-        rgb[2] = rgb[2] - 150;
-        if (rgb[2] < 0) {
-          rgb[2] = 255;
-        }
-        if (rgb[0] < 0) {
-          rgb[0] = 255;
-          rgb[1] = 255;
-          rgb[2] = 0;
-        }
-      }
-      if (rgb[2] == 0) {
-        rgb[0] = rgb[0] - 100;
-        rgb[1] = rgb[1] - 150;
-        if (rgb[1] < 0) {
-          rgb[1] = 255;
-        }
-        if (rgb[0] < 0) {
-          rgb[0] = 0;
-          rgb[1] = 255;
-          rgb[2] = 255;
-        }
-      }
     })
-
-    // console.log(showData)
 
     //指向线设置
     var links = [];
@@ -259,7 +269,6 @@ export default class Visual extends WynVisual {
       };
       links.push(data);
     }
-    // console.log(links) 
 
 
     var option = {
@@ -267,49 +276,63 @@ export default class Visual extends WynVisual {
         data: this.funnelData.forEach((data) => { return data.series }),
         textStyle: {
           color: '#fff',
-          fontSize: 16
+          fontSize: 10
         }
       },
-      grid: {
-        top: '-10',
-        left: "2%",
-        right: 20,
-        bottom: '0'
-      },
-      xAxis: {
-        show: false
-      },
-      yAxis: [{
-        show: false,
-        boundaryGap: false,
-        type: "category",
-        data: ["转化率", "转化率", "转化率", "转化率", "转化率", "转化率"],
-      }],
 
       series: [
+
+        // 数值显示
+        {
+          // color: colors,
+          z: 2,
+          //不触发响应事件
+          silent: false,
+          //开启动画
+          animation: false,
+          //联动亮度
+          legendHoverLink: false,
+          top: '10%',
+          bottom: 0,
+          type: 'funnel',
+          left: '20%',
+          right: '0%',
+          width: '60%',
+          minSize: styleValue.minSize,
+          maxSize: styleValue.maxSize,
+          // sort: 'descending',
+          gap: this.properties.properties.gapSize,
+          label: {
+            show: true,
+            position: 'inside'
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: showData
+        },
 
         //转换率计算
         {
           top: '10%',
           bottom: 0,
           type: 'funnel',
-          gap: 10,
-          minSize: (this.properties.properties.funnelStyle == "样式1") ? "0%" : this.properties.properties.funnelStyle.minSize,
-          maxSize: (this.properties.properties.funnelStyle == "样式1") ? "100%" : this.properties.properties.funnelStyle.maxSize,
+          gap: this.properties.properties.gapSize,
+          minSize: styleValue.minSize,
+          maxSize: styleValue.maxSize,
           left: '25%',
           width: '60%',
           right: "0",
-          z: 2,
+          z: 1,
           //不触发响应事件
           silent: true,
-          itemStyle: {
-            opacity: 1
-          },
           label: {
             overflow: 'break',
             borderColor: '#000',
             position: 'right',
-            formatter: ['{d|{d}%}'].join('\n'),
+            formatter: function (d) {
+              return '{d|' + (Math.round((d.data.actual_value / addActualValue) * 100 * 100) / 100).toFixed(2) + '}';
+            },
             rich: {
 
               d: {
@@ -321,44 +344,6 @@ export default class Visual extends WynVisual {
             }
           },
           data: showData2
-        },
-        // 数值显示
-        {
-          // color: colors,
-          //不触发响应事件
-          silent: false,
-          top: '10%',
-          bottom: 0,
-          name: 'Funnel',
-          type: 'funnel',
-          left: '20%',
-          right: '0%',
-          width: '60%',
-          minSize: (this.properties.properties.funnelStyle == "样式1") ? "0%" : this.properties.properties.funnelStyle.minSize,
-          maxSize: (this.properties.properties.funnelStyle == "样式1") ? "100%" : this.properties.properties.funnelStyle.maxSize,
-          sort: 'descending',
-          gap: 10,
-          label: {
-            show: true,
-            position: 'inside'
-          },
-          labelLine: {
-            length: 10,
-            lineStyle: {
-              width: 1,
-              type: 'solid'
-            }
-          },
-          itemStyle: {
-            borderColor: '#fff',
-            borderWidth: 1
-          },
-          emphasis: {
-            label: {
-              fontSize: 20
-            }
-          },
-          data: showData
         },
 
         //占上一位的百分比
@@ -416,10 +401,11 @@ export default class Visual extends WynVisual {
     };
     return option;
   }
+  
   //漏斗对比图的options
   getOptionForDouble() {
 
-    var option = (this.properties.properties.funnelStyle == '样式1') ? this.getStyleOption1() : this.getStyleOption2();
+    var option = (this.properties.properties.funnelStyle == 'style1') ? this.getStyleOption1() : this.getStyleOption2();
     return option
   }
 
@@ -451,8 +437,6 @@ export default class Visual extends WynVisual {
       reduced_links.push(data2);
     }
 
-
-
     var option = {
 
       legend: {
@@ -465,25 +449,13 @@ export default class Visual extends WynVisual {
       tooltip: {
         formatter: "{a} <br/>{b} : {c}",
       },
-      xAxis: {
-        show: false
-      },
-      yAxis: [{
-        show: false,
-        boundaryGap: false,
-        type: "category",
-      }],
-      grid: {
-        top: '-10',
-        left: "2%",
-        right: 20,
-        bottom: '0'
-      },
 
       series: [
 
         {     //实际数值
           name: this.properties.dataViews[0].plain.profile.actual_value.values[0].display,
+          //相应鼠标时间
+          silent: false,
           // color: colors,
           top: '10%',
           bottom: 0,
@@ -493,10 +465,10 @@ export default class Visual extends WynVisual {
           width: '40%',
           x: '10%',
           funnelAlign: 'right',
-          minSize: "10%",
-          maxSize: '100%',
+          maxSize: this.properties.properties.actualMaxSize + "%",
+          minSize: this.properties.properties.actualMinSize + "%",
           sort: 'descending',
-          // gap: 10,
+          gap: this.properties.properties.gapSize,
           label: {
             show: true,
             formatter: '{b}:{c|{c}}\n{d|{d}}%',
@@ -521,17 +493,21 @@ export default class Visual extends WynVisual {
             borderColor: '#fff',
             borderWidth: 1
           },
-          emphasis: {
-            label: {
-              fontSize: 20
-            }
-          },
-          data: this.funnelData.map((data) => { return Object.assign({}, { name: data.series, value: data.actual_value }) })
+          // emphasis: {
+          //   label: {
+          //     fontSize: 20
+          //   }
+          // },
+          data: this.funnelData.map((data, index) => {
+            return Object.assign({}, {
+              name: data.series,
+              value: data.actual_value,
+              itemStyle: {
+                color: this.getColors(index, 1)
+              }
+            })
+          })
         },
-
-
-
-
 
         {     //对比数值
           name: this.properties.dataViews[0].plain.profile.reduced_value.values[0].display,
@@ -544,10 +520,10 @@ export default class Visual extends WynVisual {
           x: '50%',
           width: '40%',
           funnelAlign: 'left',
-          minSize: "10%",
-          maxSize: '100%',
+          maxSize: this.properties.properties.reducedMaxSize + "%",
+          minSize: this.properties.properties.reducedMinSize + "%",
           sort: 'descending',
-          // gap: 10,
+          gap: this.properties.properties.gapSize,
           label: {
             show: true,
             formatter: '{b}:{c|{c}}\n{d|{d}}%',
@@ -577,7 +553,15 @@ export default class Visual extends WynVisual {
               fontSize: 20
             }
           },
-          data: this.funnelData.map((data => { return Object.assign({}, { name: data.series, value: data.reduced_value }) }))
+          data: this.funnelData.map((data,index) => {
+            return Object.assign({}, {
+              name: data.series,
+              value: data.reduced_value,
+              itemStyle: {
+                color: this.getColors(index, 1)
+              }
+            })
+          })
         },
 
         //实际数占上一位的百分比
@@ -694,8 +678,6 @@ export default class Visual extends WynVisual {
   getStyleOption2() {
     //console.log( this.funnelData.map((data)=>{ return {name: data.series, value: data.actual_value, com: (Math.round((data.actual_value / data.reduced_value) * 100 * 100) / 100).toFixed(2)}}))
 
-
-
     var option = {
       tooltip: {
         trigger: 'item',
@@ -717,6 +699,8 @@ export default class Visual extends WynVisual {
           type: 'funnel',
           left: '10%',
           width: '80%',
+          maxSize: this.properties.properties.reducedMaxSize + "%",
+          minSize: this.properties.properties.reducedMinSize + "%",
           label: {
             show: false
           },
@@ -732,7 +716,7 @@ export default class Visual extends WynVisual {
               formatter: '{b}Expected: {c}%'
             }
           },
-          data: this.funnelData.map((data) => { return { name: data.series, value: data.reduced_value } })
+          data: this.funnelData.map((data,index) => { return { name: data.series, value: data.reduced_value ,itemStyle: {color: this.getColors(index, 1)}} })
         },
         //实际值
         {
@@ -740,7 +724,8 @@ export default class Visual extends WynVisual {
           type: 'funnel',
           left: '10%',
           width: '80%',
-          maxSize: '80%',
+          maxSize: this.properties.properties.actualMaxSize + "%",
+          minSize: this.properties.properties.actualMinSize + "%",
           label: {
             position: 'inside',
             formatter: function (d) {
@@ -753,13 +738,28 @@ export default class Visual extends WynVisual {
             borderColor: '#fff',
             borderWidth: 2
           },
-          data: this.funnelData.map((data) => { return { name: data.series, value: data.actual_value, com: (Math.round((data.actual_value / data.reduced_value) * 100 * 100) / 100).toFixed(2) } }),
+          data: this.funnelData.map((data,index) => { return { name: data.series, value: data.actual_value, com: (Math.round((data.actual_value / data.reduced_value) * 100 * 100) / 100).toFixed(2),itemStyle: {color: this.getColors(index, 1)} } }),
           // Ensure outer shape will not be over inner shape when hover.
           z: 2
         }
       ]
     };
     return option;
+  }
+
+  private getColors(index, position: number) {
+    let backgroundColor = ''
+    const pieColor: [{
+      colorStops: [] | any
+    }] = this.properties.properties.pallet && this.properties.properties.pallet || [];
+    if (index < pieColor.length) {
+      backgroundColor = pieColor[index].colorStops ? pieColor[index].colorStops[position] : pieColor[index]
+    } else {
+      backgroundColor = pieColor[Math.floor((Math.random() * pieColor.length))].colorStops
+        ? pieColor[Math.floor((Math.random() * pieColor.length))].colorStops[position]
+        : pieColor[index % (pieColor.length)]
+    }
+    return backgroundColor
   }
 }
 
