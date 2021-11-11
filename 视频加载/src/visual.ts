@@ -18,7 +18,7 @@ export default class Visual {
     this.container.innerHTML = "";
     const options = this.properties;
     let video: any = document.createElement("video");
-    video.muted = true;
+    video.muted = false;
     video.setAttribute("controls", "controls");
     video.setAttribute("autoplay", "autoplay");
     video.setAttribute("loop", "loop");

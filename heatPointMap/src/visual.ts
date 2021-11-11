@@ -2,6 +2,8 @@ import '../style/visual.less';
 import _ = require('lodash');
 import * as echarts from 'echarts'
 
+import jslinq = require("jslinq");
+
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
@@ -14,6 +16,8 @@ export default class Visual extends WynVisual {
   private dimension: string
   private ActualValue: string
   private Series: string
+
+  private r_data:any;
 
   static mockItems = [
     ['周一', '周二', '周三',
@@ -121,6 +125,8 @@ export default class Visual extends WynVisual {
       this.items[1] = plainData.data.map((item) => item[this.Series]);
       this.items[2] = plainData.data.map((item) => item[this.ActualValue]);
 
+      this.r_data=plainData.data;
+
       const getSelectionId = (item) => {
         const selectionId = this.createSelectionId();
 
@@ -148,22 +154,33 @@ export default class Visual extends WynVisual {
       values.push(i);
     }
     let data: any = [];
-    const dx = isMock ? Visual.mockItems[0] : Array.from(new Set(this.items[0]));
-    const dy = isMock ? Visual.mockItems[1] : Array.from(new Set(this.items[1]));
+    const dx = (isMock ? Visual.mockItems[0] : Array.from(new Set(this.items[0]))).sort();
+    const dy = (isMock ? Visual.mockItems[1] : Array.from(new Set(this.items[1]))).sort();
+
+
     let initData = isMock ? values : this.items[2];
+
     const maxData = Math.max(...initData);
 
     const visualMapColor = options.heatType === 'heatmap' ? options.customColor : (options.heatFillType === 'single' ? options.pointColorSingle : options.pointColorMultiple)
+    var th=this;
     for (let i = 0; i < dy.length; i++) {
       for (let j = 0; j < dx.length; j++) {
         const item: any = []
         item[0] = j;
         item[1] = i;
-        data.push([item[0], item[1]])
+        const items=jslinq(th.r_data).where(x=>x[th.Series]==dy[i] && x[th.dimension]==dx[j])["items"];
+        let valuc="0";
+        if (items.length>0){
+          valuc=items[0][th.ActualValue];
+        }
+        data.push([item[0], item[1],valuc])
       }
     }
 
-    initData.map((value: any, index: any) => data[index][2] = value || '-')
+    //这种方式赋值,会导致data中有些值空缺
+    //initData.map((value: any, index: any) => data[index][2] = value || '-');
+
 
     const max3 = data.sort((a, b) => b[2] - a[2]).slice(0, options.effectNumber);
     const min3 = data.sort((a, b) => a[2] - b[2]).slice(0, options.effectNumber);
@@ -172,6 +189,7 @@ export default class Visual extends WynVisual {
     if (options.heatType === 'scatter' && options.openEffect) {
       legendName = options.effectType === 'max' ? '最大值' : '最小值'
     }
+
     const option = {
       tooltip: {
         position: 'top'
