@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand />
     <select>
@@ -12,14 +15,12 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conditionAudio/音频预警.viz" beforeDir="false" afterPath="$PROJECT_DIR$/conditionAudio/音频预警.viz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/heatPointMap/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/dist/visual.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/heatPointMap/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/dist/visual.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/heatPointMap/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/heatPointMap/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/heatPointMap/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/heatPointMap/热力散点图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/heatPointMap/热力散点图.viz" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +59,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../code/Algorithm" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -67,7 +68,8 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
-    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\pointMap2.0\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="F:\GitHub\dashboard\heatPointMap\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -85,6 +87,7 @@
       <recent name="D:\Wyn plugins code\dashboard\carouselPicture\assets" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -157,11 +160,12 @@
       <workItem from="1632275327814" duration="11205000" />
       <workItem from="1632391691984" duration="15703000" />
       <workItem from="1632643712075" duration="6798000" />
+      <workItem from="1636596524720" duration="6716000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -220,83 +224,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1628490376333">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628490376333" />
-    <state x="-13" y="0" width="1280" height="680" key="DiffContextDialog" timestamp="1632644989792">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="61" y="60" key="DiffContextDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602467853" />
-    <state x="-13" y="0" width="1280" height="680" key="DiffContextDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632644989792" />
-    <state x="29" y="-1011" width="1951" height="1036" key="DiffContextDialog/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1631958997255" />
-    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1631697892005">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624420536733" />
-    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631697892005" />
-    <state width="1259" height="162" key="GridCell.Tab.0.bottom" timestamp="1632383358076">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1259" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
-    <state width="1259" height="162" key="GridCell.Tab.0.center" timestamp="1632383358076">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1259" height="162" key="GridCell.Tab.0.center/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
-    <state width="1259" height="162" key="GridCell.Tab.0.left" timestamp="1632383358076">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1259" height="162" key="GridCell.Tab.0.left/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
-    <state width="1259" height="162" key="GridCell.Tab.0.right" timestamp="1632383358076">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1259" height="162" key="GridCell.Tab.0.right/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632383358076" />
-    <state x="695" y="-1016" key="RollbackChangesDialog" timestamp="1631956985831">
-      <screen x="5" y="-1080" width="1920" height="1040" />
-    </state>
-    <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602468942" />
-    <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631929040771" />
-    <state x="695" y="-1016" key="RollbackChangesDialog/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1631956985831" />
-    <state width="498" height="398" key="SwitcherDM" timestamp="1632648604790">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624602130265" />
-    <state width="498" height="398" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632648604790" />
-    <state width="747" height="609" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1632456713434" />
-    <state x="479" y="37" key="VCS.ChangeListViewerDialog" timestamp="1632644957934">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="479" y="37" key="VCS.ChangeListViewerDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632644957934" />
-    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1625733640829">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="93" y="93" width="1095" height="495" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1625733640829" />
-    <state x="128" y="25" width="747" height="602" key="find.popup" timestamp="1632646587764">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="662" y="-828" width="816" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.-1080.1920.1040" timestamp="1624501873130" />
-    <state x="289" y="112" width="891" height="536" key="find.popup/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624431300103" />
-    <state x="128" y="25" width="747" height="602" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632646587764" />
-    <state x="836" y="-961" width="1089" height="921" key="find.popup/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1632456661258" />
-    <state x="361" y="111" key="refactoring.ChangeSignatureDialog" timestamp="1628492788235">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/0.-1080.1920.1040@0.0.1280.680" timestamp="1624336170325" />
-    <state x="361" y="111" key="refactoring.ChangeSignatureDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1628492788235" />
-    <state x="297" y="151" key="run.anything.popup" timestamp="1632389370141">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="297" y="151" key="run.anything.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632389370141" />
-    <state x="451" y="-849" key="run.anything.popup/0.0.1280.680/5.-1080.1920.1040@5.-1080.1920.1040" timestamp="1632381537473" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1632454412147">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1632454412147" />
-    <state x="363" y="304" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1631672413782">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="363" y="304" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1631672413782" />
   </component>
 </project>
