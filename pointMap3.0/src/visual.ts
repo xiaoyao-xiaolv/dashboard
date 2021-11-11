@@ -44,6 +44,8 @@ export default class Visual extends WynVisual {
   private displayUnit: any;
   private profile: any;
   private bindData: any;
+  private linelen: any;
+  private graphic: any;
   static mockItems =  [
     {
       name: '北京',
@@ -230,7 +232,6 @@ export default class Visual extends WynVisual {
     }
     // registerMap
     this.mapAdCodeId = options.properties.MapId || 'china';
-
     this.properties = options.properties;
     this.getMapJson(this.mapAdCodeId)
    
@@ -321,17 +322,19 @@ export default class Visual extends WynVisual {
          
     }
     myChart.on('mouseup', (params) => {
+      console.log('2222')
       if (this.properties.MapId !== params.name) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
           this.getMapJson(params.name);
+          toDrilling(params)
         } else {
           this.host.propertyService.setProperty('mapLevel', 0);
           this.host.propertyService.setProperty('MapId', 'china');
           this.getMapJson('china')
         }
-        toDrilling(params)
+      
 
       } else {
         // this.getMapJson(params.name)
@@ -347,9 +350,139 @@ export default class Visual extends WynVisual {
       // this.dispatch('downplay',selectInfo)
     })
   }
- 
+  private createBreadcrumb = (name: any, left: any, index: any) => {
+    let line = [
+      [0, 0],
+      [5, 5],
+      [0, 10],
+    ];
+    let breadcrumb = {
+      type: "group",
+      id: name,
+      left: left,
+      top: 20,
+      children: [{
+        type: "polyline",
+        left: 20,
+        top: 0,
+        shape: {
+          points: line,
+        },
+        style: {
+          stroke: "#0ab7ff",
+          key: name,
+        }
+      },
+      {
+        type: "text",
+        left: 45,
+        top: 0,
+        style: {
+          text: name,
+          textAlign: "center",
+          fill: "#0ab7ff",
+          font: '12px "Microsoft YaHei", sans-serif',
+        },
+        onclick: () => {
+          switch (index) {
+            case 1:
+              this.items = this.provincedata;
+              this.provincegraphic.pop();
+              this.graphic = this.provincegraphic;
+              this.graphic[0].children[0].shape.x2 -= name.length * 20;
+              this.graphic[0].children[1].shape.x2 -= name.length * 20;
+              this.getGeoJson(name);
+              this.getPieces(this.properties.citypieces);
+              this.drilldown = true;
+              this.render();
+              break;
+            case 2:
+              this.render();
+              break;
+          }
+        },
+      }
+      ]
+    };
+    return breadcrumb;
+  }
+
+  private getgraphic(mapName: any) {
+    let namelen = mapName.length * 20;
+    this.linelen = namelen;
+    let arr = [{
+      //标题的线
+      type: "group",
+      left: 15,
+      top: 10,
+      children: [{
+        type: "line",
+        left: 0,
+        top: -15,
+        shape: {
+          x1: 0,
+          y1: 0,
+          x2: namelen,
+          y2: 0,
+        },
+        style: {
+          stroke: "rgba(147, 235, 248, 0.5)",
+        },
+      },
+      {
+        type: "line",
+        left: 0,
+        top: 10,
+        shape: {
+          x1: 0,
+          y1: 0,
+          x2: namelen,
+          y2: 0,
+        },
+        style: {
+          stroke: "rgba(147, 235, 248, 0.5)",
+        },
+      },
+      ],
+    },
+    {
+      //省级标题样式
+      id: mapName,
+      type: "group",
+      left: 20,
+      top: 20,
+      children: [
+        {
+          type: "text",
+          left: 0,
+          top: 0,
+          style: {
+            text: mapName,
+            textAlign: "center",
+            fill: "#0ab7ff",
+            font: '12px "Microsoft YaHei", sans-serif',
+          },
+          onclick: () => {
+            // this.getGeoJson(mapName);
+            // this.drilldown = true;
+            // this.items = this.data[0];
+            // this.selection = [];
+            // this.selectionManager.clear();
+            // this.getgraphic(mapName);
+            // if (this.flag) {
+            //   this.getPieces(this.properties.citypieces);
+            // } else {
+            //   this.getPieces(this.properties.provincepieces);
+            // }
+            // this.sid = [];
+            // this.render();
+          },
+        }
+      ]
+    }]
+    this.graphic = arr;
+  }
   private render() {
-   
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     const items = this.isMock ? Visual.mockItems : this.items;
     let myTooltip = this.myTooltip;
@@ -521,7 +654,7 @@ export default class Visual extends WynVisual {
         
         }
     }
-    
+    const _textTitle = ['中国', `${options.MapId === 'china' ? '': options.MapId}`].filter((item) => item).join('/')
     myChart.setOption({
       tooltip: {
         trigger: 'item',
