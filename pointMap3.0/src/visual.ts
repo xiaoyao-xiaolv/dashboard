@@ -21,6 +21,7 @@ export default class Visual extends WynVisual {
   private isMock: boolean;
   private bindCoords: boolean;
   private items: any;
+  private cityItems: any;
   private valuesName: string;
   private locationName: string;
   private toolTipName: string [];
@@ -39,6 +40,8 @@ export default class Visual extends WynVisual {
   private locationArr: any;
   private format: any;
   private displayUnit: any;
+  private profile: any;
+  private bindData: any;
   static mockItems =  [
     {
       name: '北京',
@@ -98,16 +101,17 @@ export default class Visual extends WynVisual {
       }
     }
     this.myTooltip = new myTooltipC(dom, this.config);
+    this.provinceNameData = JSON.parse(JSON.stringify(ChainJson)).features.map((item: any) => item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+    
   }
   createSelectionId = (sid?) => this.host.selectionService.createSelectionId(sid);
 
   private getMapJson = (_mapName: string) => {
+    const _name = _mapName.replace(locationReg, '');
     if (_mapName == 'china' || _mapName == '陕西省') {
-      this.mapJsonData = ChainJson;
+      this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
       echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(_mapName === 'china' ? ChainJson : ShanXiJson)))
     } else {
-    
-      const _name = _mapName.replace(locationReg, '');
       let _adCodeId = '100000'
       let mapJson = ChainJson;
       mapAdCodeId.map((_map: any) => {
@@ -127,6 +131,42 @@ export default class Visual extends WynVisual {
       this.mapJsonData = mapJson
       echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
     }
+    if (Number(this.properties.mapLevel)) {
+      const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
+        item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+      if (this.locationArr.length > 1) {
+        this.bindData.filter((_data: any) => {
+          this.locationArr.map((_location) => {
+            if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
+              this.locationName = _location;
+            }
+          })
+        })
+        this.items = this.prepareData(this.bindData, this.profile);
+        this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
+      } else {
+        this.items = this.items.filter((_item: any) => {
+          if (_filterCity.includes(_item.name.replace(locationReg, '')) || _item.name.replace(locationReg, '') === _name ) {
+            return _item;
+          }
+        });
+      }
+    }
+    const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
+    this.items = _dataNames.map((_dataName: any) => {
+      const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
+      if (_target) {
+        if (_target.length > 1) {
+          return {
+            ..._target[0],
+            datas: _target.reduce((_init, _target) => _init +_target.datas, 0)
+          }
+        } else {
+          return _target[0]
+        }
+      }
+  
+    })
     this.render();
   }
 
@@ -167,14 +207,20 @@ export default class Visual extends WynVisual {
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
       let bindData = options.dataViews[0].plain.data;
+      this.profile = profile;
+      this.bindData = bindData;
       this.valuesName = profile.values.values[0].display;
+      //  default show first location
       this.locationName = profile.location.values[0].display;
+      this.locationArr = profile.location.values.map((_item: any) => _item.display);
       this.toolTipName = profile.tooltipFields.values.map((_item) => _item.display);
       this.bindCoords = !!(profile.longitude.values.length && profile.latitude.values.length);
       if(this.bindCoords) {
         this.longitudeName = profile.longitude.values[0].display;
         this.latitudeName = profile.latitude.values[0].display;
       }
+     
+      bindData.push({'客户省份': '陕西省', '客户城市':'渭南市', '标准价格': 666})
       this.items = this.prepareData(bindData, profile);
       // data format and display unit
       this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
@@ -184,7 +230,7 @@ export default class Visual extends WynVisual {
     this.mapAdCodeId = options.properties.MapId || 'china';
 
     this.properties = options.properties;
-    this.getMapJson('china' ||  this.mapAdCodeId)
+    this.getMapJson(this.mapAdCodeId)
    
   }
 
@@ -196,7 +242,20 @@ export default class Visual extends WynVisual {
     // })
 
     myChart.on('mouseup', (params) => {
-      this.getMapJson(params.name)
+      if (this.properties.MapId !== params.name) {
+        if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
+          this.host.propertyService.setProperty('mapLevel', 1);
+          this.host.propertyService.setProperty('MapId', params.name);
+          this.getMapJson(params.name);
+         
+        } else {
+          this.host.propertyService.setProperty('mapLevel', 0);
+          this.host.propertyService.setProperty('MapId', 'china');
+          this.getMapJson('china')
+        }
+      } else {
+        // this.getMapJson(params.name)
+      }
       // click province to drilling
       // if (this.provinceNameData.includes(params.name)) {
       //   this.getMapJson(params.name)
@@ -269,7 +328,6 @@ export default class Visual extends WynVisual {
         centroid: item.properties.center,
       }
     }).filter((_item: any) => _item.name);
-    
     const _barData = items.map((item: any) => {
       return {
         name: item.name,
@@ -278,18 +336,6 @@ export default class Visual extends WynVisual {
       }
     })
 
-    const lineMaxHeight = (type?: string) => {
-      const maxValue = Math.max(...items.map(item => item.datas))
-      return type ? 14/maxValue : 10/maxValue
-    }
-
-    const _line3DData = items.map((item: any, index: number) => {
-      return {
-        name: item.name || " ada",
-        value: item.datas,
-        coords:[item.value, [items[index ? index -1 : index].value[0], items[index ? index -1 : index].value[1] + 10]]
-      }
-    })
 
     const formatList = options.mapCollection;
 
@@ -573,7 +619,7 @@ export default class Visual extends WynVisual {
             label: labelOptions(),
         },
       ]
-  });
+    });
   }
 
   public onDestroy(): void {
