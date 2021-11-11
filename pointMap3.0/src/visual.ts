@@ -46,6 +46,8 @@ export default class Visual extends WynVisual {
   private bindData: any;
   private linelen: any;
   private graphic: any;
+  private timeInterval: any;
+
   static mockItems =  [
     {
       name: '北京',
@@ -112,7 +114,7 @@ export default class Visual extends WynVisual {
 
   private getMapJson = (_mapName: string) => {
     const _name = _mapName.replace(locationReg, '');
-    if (_mapName == 'china' || _mapName == '陕西省') {
+    if (_mapName == 'china') {
       this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
       echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(_mapName === 'china' ? ChainJson : ShanXiJson)))
     } else {
@@ -233,10 +235,16 @@ export default class Visual extends WynVisual {
     // registerMap
     this.mapAdCodeId = options.properties.MapId || 'china';
     this.properties = options.properties;
+    this.getgraphic(this.mapAdCodeId);
+    if (this.mapAdCodeId !== 'china') {
+      this.linelen = this.mapAdCodeId.length * 20;
+      this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
+    }
+    
     this.getMapJson(this.mapAdCodeId)
    
   }
-  // private dispatch = (type, payload) => myChart.dispatchAction({ ...payload, type });
+  private dispatch = (type, payload) => myChart.dispatchAction({ ...payload, type });
   private hideTooltip = () => {
     this.host.contextMenuService.hide();
     isTooltipModelShown = false;
@@ -263,7 +271,71 @@ export default class Visual extends WynVisual {
     })
     return _target && _target.selectionId || {}
   }
+  
+  public autoPlayTimer = () => {
+    let timer;
+    this.timeInterval = [];
+    const timerPlay = () => {
+      let index = 0;
+      let dataLength = this.items.length;
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (timer !==  this.timeInterval[this.timeInterval.length - 1]) {
+          return clearInterval(timer);
+        }
+        const name = this.items[index].name.replace(locationReg,'')
+        const autoStopInfo = {
+          seriesIndex: 0,
+          // dataIndex: index,
+          name,
+        };
+       
+        this.dispatch('downplay', autoStopInfo)
+        index++;
+        if (index >= dataLength) {
+          index = 0;
+          // this.timeInterval.map(_timer => clearInterval(_timer))
+          clearInterval(timer)
+        }
+        const nameText = this.items[index].name.replace(locationReg, '')
+        const autoInfo = {
+          seriesIndex: 0,
+          // dataIndex: index,
+          name: nameText,
+        };
+        this.dispatch('highlight', autoInfo)
+        this.dispatch('showTip', autoInfo)
+      }, (Number(this.properties.rotationInterval) * 1000));
+      this.timeInterval.push(timer);
+    }
 
+    myChart.on('mousemove', (e) => {
+        clearInterval(timer);
+        myChart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: e.dataIndex
+      });
+    })
+
+    timerPlay();
+    this.container.addEventListener('mouseenter', (e: any) => {
+      clearInterval(timer)
+      this.items.forEach((element, index) => {
+        const name = element.name.replace(locationReg,'')
+        const selectInfo = {
+          seriesIndex: 0,
+          // dataIndex: index,
+          name: name,
+        };
+        this.dispatch('downplay',selectInfo)
+      });
+    })
+    this.container.addEventListener('mouseleave', (e: any) => {
+      if (timer) clearInterval(timer);
+      timerPlay();
+    })
+  }
   public bindEvents = () => {
     
     this.container.addEventListener('mousedown', (e: any) => {
@@ -283,7 +355,6 @@ export default class Visual extends WynVisual {
           if (params.componentType !== 'series') return;
           params.event.event.seriesClick = true;
           const selectionId = this.getNodeSelectionId(params.name);
-          console.log(this.getNodeSelectionId(params.name), '=====')
           const selectInfo = {
             seriesIndex: params.seriesIndex,
             dataIndex: params.dataIndex,
@@ -322,24 +393,14 @@ export default class Visual extends WynVisual {
          
     }
     myChart.on('mouseup', (params) => {
-      console.log('2222')
       if (this.properties.MapId !== params.name) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
           this.getMapJson(params.name);
-          toDrilling(params)
-        } else {
-          this.host.propertyService.setProperty('mapLevel', 0);
-          this.host.propertyService.setProperty('MapId', 'china');
-          this.getMapJson('china')
-        }
-      
-
-      } else {
-        // this.getMapJson(params.name)
-      }
-      
+          toDrilling(params);
+        } 
+      } 
     })
 
     myChart.on('mouseout', (params) => {
@@ -359,7 +420,7 @@ export default class Visual extends WynVisual {
     let breadcrumb = {
       type: "group",
       id: name,
-      left: left,
+      left: 55,
       top: 20,
       children: [{
         type: "polyline",
@@ -382,32 +443,15 @@ export default class Visual extends WynVisual {
           textAlign: "center",
           fill: "#0ab7ff",
           font: '12px "Microsoft YaHei", sans-serif',
-        },
-        onclick: () => {
-          switch (index) {
-            case 1:
-              this.items = this.provincedata;
-              this.provincegraphic.pop();
-              this.graphic = this.provincegraphic;
-              this.graphic[0].children[0].shape.x2 -= name.length * 20;
-              this.graphic[0].children[1].shape.x2 -= name.length * 20;
-              this.getGeoJson(name);
-              this.getPieces(this.properties.citypieces);
-              this.drilldown = true;
-              this.render();
-              break;
-            case 2:
-              this.render();
-              break;
-          }
-        },
+        }
       }
       ]
     };
-    return breadcrumb;
+    return this.graphic.push(breadcrumb);
   }
 
   private getgraphic(mapName: any) {
+    mapName = '中国'
     let namelen = mapName.length * 20;
     this.linelen = namelen;
     let arr = [{
@@ -447,7 +491,7 @@ export default class Visual extends WynVisual {
     },
     {
       //省级标题样式
-      id: mapName,
+      id: '中国',
       type: "group",
       left: 20,
       top: 20,
@@ -457,25 +501,15 @@ export default class Visual extends WynVisual {
           left: 0,
           top: 0,
           style: {
-            text: mapName,
+            text: '中国',
             textAlign: "center",
             fill: "#0ab7ff",
             font: '12px "Microsoft YaHei", sans-serif',
           },
           onclick: () => {
-            // this.getGeoJson(mapName);
-            // this.drilldown = true;
-            // this.items = this.data[0];
-            // this.selection = [];
-            // this.selectionManager.clear();
-            // this.getgraphic(mapName);
-            // if (this.flag) {
-            //   this.getPieces(this.properties.citypieces);
-            // } else {
-            //   this.getPieces(this.properties.provincepieces);
-            // }
-            // this.sid = [];
-            // this.render();
+            this.host.propertyService.setProperty('mapLevel', 0);
+            this.host.propertyService.setProperty('MapId', 'china');
+            this.getMapJson('china')
           },
         }
       ]
@@ -489,6 +523,9 @@ export default class Visual extends WynVisual {
     myChart.clear();
   
     let options = this.properties;
+
+    // options.automaticRotation && this.preview && this.autoPlayTimer();
+    
     myTooltip.config['text'] = {
       time: 0.3,
       font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
@@ -654,13 +691,14 @@ export default class Visual extends WynVisual {
         
         }
     }
-    const _textTitle = ['中国', `${options.MapId === 'china' ? '': options.MapId}`].filter((item) => item).join('/')
     myChart.setOption({
+      graphic: this.graphic,
       tooltip: {
         trigger: 'item',
         // padding: [15, 15],
         show: options.showTooltip,
         backgroundColor: 'transparent',
+        borderColor:'transparent',
         position(pos) { 
           return myTooltip.getPosOrSize('pos', pos);
         },
@@ -685,7 +723,7 @@ export default class Visual extends WynVisual {
         zlevel: -10,
         boxWidth: 200,
         boxHeight: 15, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
-        regionHeight: 0.5,
+        regionHeight: 3,
         shading: 'lambert',
         viewControl: {
             projection: 'perspective',
@@ -697,7 +735,7 @@ export default class Visual extends WynVisual {
             panSensitivity: 2, //平移操作的灵敏度
             panMouseButton: 'right', //平移操作使用的鼠标按键
 
-            distance: 220, //默认视角距离主体的距离
+            distance: options.mapAdCodeId === 'china'?  220 : options.mapDistance, //默认视角距离主体的距离
             center: [0, 0, 0],
 
             animation: true,

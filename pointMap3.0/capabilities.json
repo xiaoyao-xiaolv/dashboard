@@ -106,6 +106,13 @@
                     "name": "mapLevel",
                     "type": "Text",
                     "defaultValue": "0"
+                },
+                {
+                    "name": "mapDistance",
+                    "type": "Hidden",
+                    "displayName": "距离",
+                    "defaultValue": 220,
+                    "min": 0
                 }]
             },
             {
@@ -127,7 +134,7 @@
                         "name": "barSize",
                         "type": "Integer",
                         "displayName": "柱子尺寸",
-                        "defaultValue": 20,
+                        "defaultValue": 10,
                         "min": 0
                     },
                     {
@@ -297,7 +304,25 @@
                         }
                     }
                 ]
-            }, 
+            },
+            {
+                "displayName": "轮播设置",
+                "properties": [
+                    {
+                    "name": "automaticRotation",
+                    "type": "Boolean",
+                    "displayName": "自动轮播",
+                    "defaultValue": false
+                    },
+                    {
+                        "name": "rotationInterval",
+                        "type": "Integer",
+                        "displayName": "轮播间隔",
+                        "defaultValue": 3,
+                        "min": 1
+                    }
+                ]
+            },
             {
                 "displayName": "条件格式化",
                 "properties": [
