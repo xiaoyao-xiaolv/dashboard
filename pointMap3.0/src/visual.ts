@@ -8,9 +8,11 @@ import ShanXiJson from './shanxi.json'
 import mapAdCodeId from './mapname.json';
 import geoCoordMap from './geoCoordMap.json';
 import { myTooltipC } from './myTooltip.js';
-
+var _ = require('lodash');
 (window as any).jQuery = $;
 let myChart;
+
+let isTooltipModelShown = false;
 const clickLeftMouse = 0;
 const clickRightMouse = 2;
 const locationReg = /(省|市|自治区|自治州|县|区|特别行政区)/g;
@@ -220,7 +222,7 @@ export default class Visual extends WynVisual {
         this.latitudeName = profile.latitude.values[0].display;
       }
      
-      bindData.push({'客户省份': '陕西省', '客户城市':'渭南市', '标准价格': 666})
+      // bindData.push({'客户省份': '陕西省', '客户城市':'渭南市', '标准价格': 666})
       this.items = this.prepareData(bindData, profile);
       // data format and display unit
       this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
@@ -233,59 +235,107 @@ export default class Visual extends WynVisual {
     this.getMapJson(this.mapAdCodeId)
    
   }
+  // private dispatch = (type, payload) => myChart.dispatchAction({ ...payload, type });
+  private hideTooltip = () => {
+    this.host.contextMenuService.hide();
+    isTooltipModelShown = false;
+  }
+
+  private showTooltip = _.debounce((params, asModel = false) => {
+    if (asModel) isTooltipModelShown = true;
+    this.host.contextMenuService.show({
+      position: {
+        x: params.clientX,
+        y: params.clientY,
+      }
+    })
+  });
+
+  public getNodeSelectionId = (label: any) => {
+    const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
+        item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+    const _target = this.items.find((_item: any) => {
+      const name = _item.name.replace(locationReg, '');
+      if (_filterCity.includes(name) || name === label.replace(locationReg, '')) {
+        return _item
+      }
+    })
+    return _target && _target.selectionId || {}
+  }
 
   public bindEvents = () => {
     
-    // this.container.addEventListener('mousedown', (e: any) => {
-    //   console.log('dianjiquxiao')
-    //   // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(ChainJson)))
-    // })
-
+    this.container.addEventListener('mousedown', (e: any) => {
+      document.oncontextmenu = function () { return false; }; 
+      if (!e.seriesClick) {
+        // clear tooltip
+        this.hideTooltip();
+        // clear selection
+        this.selection = [];
+        this.selectionManager.clear();
+        return;
+      }
+    })
+    myChart.off('mouseup')
+    const toDrilling = (params: any) => {
+          const clickMouse = params.event.event.button;
+          if (params.componentType !== 'series') return;
+          params.event.event.seriesClick = true;
+          const selectionId = this.getNodeSelectionId(params.name);
+          console.log(this.getNodeSelectionId(params.name), '=====')
+          const selectInfo = {
+            seriesIndex: params.seriesIndex,
+            dataIndex: params.dataIndex,
+          }; 
+          if (selectionId) {
+            if (!this.selectionManager.contains(selectionId)) {
+              this.selectionManager.select(selectionId, true);
+              // this.dispatch('highlight', selectInfo);
+              this.selection.push(selectInfo);
+            } else {
+              this.selectionManager.clear(selectionId);
+            }
+            if (clickMouse === clickLeftMouse) {
+              if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
+                return
+              } else {
+                if (isTooltipModelShown) return;
+                this.hideTooltip();
+                const selectionIds = this.selectionManager.getSelectionIds();
+                this.host.commandService.execute([{
+                  name: this.properties.clickLeftMouse,
+                  payload: {
+                    selectionIds,
+                    position: {
+                      x: params.event.event.clientX,
+                      y: params.event.event.clientY,
+                      },
+                  }
+                }])
+              }
+            } else if (clickMouse === clickRightMouse) {  
+              params.event.event.preventDefault();
+              this.showTooltip(params.event.event, true);
+            }
+          }
+         
+    }
     myChart.on('mouseup', (params) => {
       if (this.properties.MapId !== params.name) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
           this.getMapJson(params.name);
-         
         } else {
           this.host.propertyService.setProperty('mapLevel', 0);
           this.host.propertyService.setProperty('MapId', 'china');
           this.getMapJson('china')
         }
+        toDrilling(params)
+
       } else {
         // this.getMapJson(params.name)
       }
-      // click province to drilling
-      // if (this.provinceNameData.includes(params.name)) {
-      //   this.getMapJson(params.name)
-      // } else {
-      //   // click city to jump
-    
-      //   const clickMouse = params.event.event.button;
-      //   if (params.componentType !== 'series') return;
-      //   params.event.event.seriesClick = true;
-      //   if (clickMouse === clickLeftMouse) {
-      //     // show data jump
-      //     if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
-      //       return
-      //     } else {
-      //       this.getMapJson(params.name)
-      //       // if (isTooltipModelShown) return;
-      //       this.host.commandService.execute([{
-      //         name: this.properties.clickLeftMouse,
-      //         payload: {
-      //           position: {
-      //             x: params.event.event.x,
-      //             y: params.event.event.y,
-      //             },
-      //         }
-      //       }])
-      //     }
-      //   } else if (clickMouse === clickRightMouse) {  
-      //     params.event.event.preventDefault();
-      //   }
-      // }
       
     })
 
