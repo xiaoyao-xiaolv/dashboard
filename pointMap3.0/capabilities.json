@@ -178,7 +178,7 @@
                         "name": "labelDistance",
                         "type": "Integer",
                         "displayName": "标签距离",
-                        "defaultValue": 2
+                        "defaultValue": 1
                     },
                     {
                         "name": "tooltipBackgroundType",
@@ -219,10 +219,10 @@
                         "name": "labelPadding",
                         "type": "Position",
                         "defaultValue": {
-                            "top": 15,
-                            "bottom": 15,
-                            "left": 15,
-                            "right": 15
+                            "top": 5,
+                            "bottom": 5,
+                            "left": 5,
+                            "right": 5
                         }
                     },
                     {
@@ -231,7 +231,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "15px"
+                            "fontSize": "1.0X"
                         }
                     }
                 ]
@@ -243,7 +243,7 @@
                         "name": "showTooltip",
                         "type": "Boolean",
                         "displayName": "显示提示标签",
-                        "defaultValue": true
+                        "defaultValue": false
                     },
                     {
                         "name": "tooltipBackgroundColor",
