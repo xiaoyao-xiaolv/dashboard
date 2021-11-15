@@ -101,7 +101,20 @@
                     "name": "MapId",
                     "type": "Text",
                     "defaultValue": "china"
-                },{
+                },
+                {
+                    "displayNameKey": "省份名字",
+                    "name": "provinceName",
+                    "type": "Hidden",
+                    "defaultValue": ""
+                },
+                {
+                    "displayNameKey": "市区名字",
+                    "name": "cityName",
+                    "type": "Hidden",
+                    "defaultValue": ""
+                },
+                {
                     "displayNameKey": "地图深度",
                     "name": "mapLevel",
                     "type": "Text",

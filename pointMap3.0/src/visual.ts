@@ -23,7 +23,7 @@ export default class Visual extends WynVisual {
   private bindCoords: boolean;
   private items: any;
   private initItems: any;
-  private cityItems: any;
+  
   private valuesName: string;
   private locationName: string;
   private toolTipName: string [];
@@ -38,6 +38,7 @@ export default class Visual extends WynVisual {
   private myTooltip: any;
   private properties: any;
   private provinceNameData: any;
+  private cityNameData: any;
   private resultData: any;
   private locationArr: any;
   private format: any;
@@ -209,7 +210,7 @@ export default class Visual extends WynVisual {
     this.locationArr = [];
     this.preview = options.isViewer
     this.isMock = !options.dataViews.length;
-    this.host.propertyService.setProperty('mapLevel', options.properties.MapId !== 'china' ? 1: 0);
+    // this.host.propertyService.setProperty('mapLevel', options.properties.MapId !== 'china' ? 1: 0);
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
       let bindData = options.dataViews[0].plain.data;
@@ -234,11 +235,16 @@ export default class Visual extends WynVisual {
       this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit;
        // registerMap
       this.mapAdCodeId = options.properties.MapId || 'china';
+      const provinceName = options.properties.provinceName;
+      const cityName = options.properties.cityName;
       this.properties = options.properties;
       this.getgraphic(this.mapAdCodeId);
       if (this.mapAdCodeId !== 'china') {
+        
         this.linelen = this.mapAdCodeId.length * 20;
-        this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
+        provinceName && this.createBreadcrumb(provinceName, this.linelen, 1)
+        this.linelen += provinceName.length * 20;
+        cityName && this.createBreadcrumb(cityName,  this.linelen, 2)
       }
       
       this.getMapJson(this.mapAdCodeId);
@@ -254,6 +260,7 @@ export default class Visual extends WynVisual {
         }
        
     }
+    this.cityNameData = this.mapAdCodeId === 'china' ?  [] : JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
     echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(this.mapJsonData)));
     myChart.clear();
     this.render();
@@ -284,7 +291,7 @@ export default class Visual extends WynVisual {
         return _item
       }
     })
-    return _target && _target.selectionId || {}
+    return _target && _target.selectionId || ''
   }
   
   public autoPlayTimer = () => {
@@ -412,9 +419,20 @@ export default class Visual extends WynVisual {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
+          this.host.propertyService.setProperty('provinceName', params.name);
+          this.host.propertyService.setProperty('cityName', '');
+          this.getMapJson(params.name);
+          toDrilling(params);
+        }
+
+        if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
+          this.host.propertyService.setProperty('mapLevel', 2);
+          this.host.propertyService.setProperty('MapId', params.name);
+          this.host.propertyService.setProperty('cityName', params.name);
           this.getMapJson(params.name);
           toDrilling(params);
         } 
+       
       } 
     })
 
@@ -434,8 +452,8 @@ export default class Visual extends WynVisual {
     ];
     let breadcrumb = {
       type: "group",
-      id: name,
-      left: 55,
+      id: index,
+      left: left,
       top: 20,
       children: [{
         type: "polyline",
@@ -446,20 +464,33 @@ export default class Visual extends WynVisual {
         },
         style: {
           stroke: "#0ab7ff",
-          key: name,
+          key: `${name}`,
         }
       },
       {
         type: "text",
-        left: 45,
+        left: 35,
         top: 0,
         style: {
-          text: name,
+          text: `${name}`,
           textAlign: "center",
           fill: "#0ab7ff",
           font: '12px "Microsoft YaHei", sans-serif',
-        }
-      }
+        },
+        onclick: () => {
+          switch (index) {
+            case 1:
+              this.host.propertyService.setProperty('mapLevel', 1);
+              this.host.propertyService.setProperty('MapId', name);
+              this.host.propertyService.setProperty('cityName', '');
+              this.getMapJson(name);
+              break;
+            case 2:
+              break;
+          }
+        },
+        },
+      
       ]
     };
     return this.graphic.push(breadcrumb);
@@ -524,6 +555,7 @@ export default class Visual extends WynVisual {
           onclick: () => {
             this.host.propertyService.setProperty('mapLevel', 0);
             this.host.propertyService.setProperty('MapId', 'china');
+            this.host.propertyService.setProperty('provinceName', '');
             this.getMapJson('china');
           },
         }
@@ -535,11 +567,10 @@ export default class Visual extends WynVisual {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     const items = this.isMock ? Visual.mockItems : this.items;
     let myTooltip = this.myTooltip;
-    let options = this.properties;
+    let options: any= this.properties;
     // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(options.MapId === 'china' ? ChainJson : ShanXiJson)));
     
     // options.automaticRotation && this.preview && this.autoPlayTimer();
-    
     myTooltip.config['text'] = {
       time: 0.3,
       font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
