@@ -12,6 +12,8 @@ export default class Visual extends WynVisual {
   private funnelData: any[];
   private isDoubleFunnel: boolean;
   private properties: any;
+  private actualValueTotal: number;
+  private reducedValueTotal: number;
 
 
 
@@ -44,7 +46,6 @@ export default class Visual extends WynVisual {
     //鼠标左键
     this.myEcharts.on('click', (params) => {
       params.event.event.stopPropagation();
-      // console.log(params);
 
       //鼠标左键功能
       let leftMouseButton = this.properties.properties.leftMouseButton;
@@ -108,10 +109,8 @@ export default class Visual extends WynVisual {
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
-
-    // console.log(options);
     this.getFunnelPairData();
-    this.onResize()
+    this.render();
   }
 
   public onDestroy(): void {
@@ -124,13 +123,76 @@ export default class Visual extends WynVisual {
     //是否是对比图
     this.isDoubleFunnel = (this.properties.dataViews[0].plain.profile.reduced_value.values.length == 0) ? false : true;
 
+
     let hiddenOptions: Array<string> = [''];
+    hiddenOptions = hiddenOptions.concat(['legendHorizontalPosition']);
+
+    //图例宽高自定义
+    if (options.properties.legendArea === 'auto') {
+      hiddenOptions = hiddenOptions.concat(['legendWidth', 'legendHeight']);
+    }
+
     if (options.properties.funnelStyle === 'style2' || this.isDoubleFunnel) {
       hiddenOptions = hiddenOptions.concat(['maxSize', 'minSize']);
     }
+    //样式切换  漏斗样式
     if (!this.isDoubleFunnel) {
       hiddenOptions = hiddenOptions.concat(['actualMaxSize', 'actualMinSize', 'reducedMaxSize', 'reducedMinSize']);
     }
+
+    //标签
+    //单漏斗  标签显示
+    if (!this.isDoubleFunnel) {
+      hiddenOptions = hiddenOptions.concat(['labelWidth']);
+    }
+    if (!this.properties.properties.showLabelName || !this.properties.properties.showLabelValue) {
+      hiddenOptions = hiddenOptions.concat(['showTwoRow']);
+    }
+    if (!this.properties.properties.showLabelName && !this.properties.properties.showLabelValue) {
+      hiddenOptions = hiddenOptions.concat(['LabelPosition', 'showTextStyle']);
+    }
+    //单漏斗  实际占比
+    if (!this.properties.properties.showActualPro) {
+      hiddenOptions = hiddenOptions.concat(['guideLineLength', 'guideLineWidth', 'showActualTextStyle']);
+    }
+    //单漏斗  上下占比
+    if (!this.properties.properties.showConPro) {
+      hiddenOptions = hiddenOptions.concat(['showComTextStyle']);
+    }
+    //对比漏斗
+    //隐藏
+    if (this.isDoubleFunnel) {
+      hiddenOptions = hiddenOptions.concat(['showTwoRow', 'LabelPosition', 'guideLineLength', 'guideLineWidth', 'showActualTextStyle']);
+    }
+    if (this.isDoubleFunnel && options.properties.funnelStyle == 'style2') {
+      hiddenOptions = hiddenOptions.concat(['showConPro'])
+    }
+
+    //图例
+    //显示图例
+    if (!options.properties.showLegend) {
+      hiddenOptions = hiddenOptions.concat(['itemGap', 'showLegendName', "legendSeriesWidth", "showLegendValue", "legendValueWidth", "showLegendCom", "legendIcon", "legendPosition", "legendVerticalPosition", "legendHorizontalPosition", "legendArea", "legendTextStyle"]);
+    }
+    //图例显示之间宽度
+    if (!options.properties.showLegendName) {
+      hiddenOptions = hiddenOptions.concat(['legendSeriesWidth']);
+    }
+    //图例字体隐藏
+    if ((!options.properties.showLegendValue && !options.properties.showLegendCom && !options.properties.showLegendName)) {
+      hiddenOptions = hiddenOptions.concat(['legendTextStyle']);
+    }
+    //图例字体
+    if ((!options.properties.showLegendValue && !options.properties.showLegendCom)) {
+      hiddenOptions = hiddenOptions.concat(['legendSeriesWidth']);
+    }
+    if (!options.properties.showLegendValue || !options.properties.showLegendCom) {
+      hiddenOptions = hiddenOptions.concat(['legendValueWidth']);
+    }
+    //对比图
+    if (this.isDoubleFunnel) {
+      hiddenOptions = hiddenOptions.concat(['showLegendValue', 'showLegendCom']);
+    }
+
     return hiddenOptions;
   }
 
@@ -143,6 +205,7 @@ export default class Visual extends WynVisual {
   }
 
   private render() {
+    this.myEcharts.clear();
     let option = null;
     if (this.isDoubleFunnel) {
       option = this.getOptionForDouble()
@@ -154,8 +217,8 @@ export default class Visual extends WynVisual {
 
   //获取数据集所有数据，并保存在funnelDate
   public getFunnelPairData() {
-
-    // console.log(this.isDoubleFunnel)
+    this.actualValueTotal = 0;
+    this.reducedValueTotal = 0;
     let allData;
 
     this.funnelData = [];
@@ -178,16 +241,17 @@ export default class Visual extends WynVisual {
         selectionId.withDimension(dataView.profile.series.values[0], dataPoint);
         selectionId.withDimension(dataView.profile.actual_value.values[0], dataPoint);
 
-
         allData = {
           series: dataPoint[seriesDisplay],
           actual_value: Number(dataPoint[actualDisplay]),
           reduced_value: Number,
         }
+        this.actualValueTotal += Number(dataPoint[actualDisplay]);
 
         if (this.isDoubleFunnel) {
           selectionId.withDimension(dataView.profile.reduced_value.values[0], dataPoint);
           allData.reduced_value = dataPoint[reducedDisplay];
+          this.reducedValueTotal += Number(dataPoint[reducedDisplay]);
         }
         this.selectionIds.push(selectionId);
         this.funnelData.push(allData);
@@ -197,6 +261,53 @@ export default class Visual extends WynVisual {
 
   //单个漏斗图显示options
   getOptionForOnce() {
+
+    //漏斗边框
+    let funnelWin = {
+      top: '10%',
+      left: '20%',
+      bottom: 0,
+      width: this.dom.clientWidth * 0.6,
+      height: this.dom.clientWidth * 0.9
+    }
+
+    const typeValue = (data) => {
+      if (this.properties.properties.funnelStyle == "style1") {
+        return data.data.value;
+      } else {
+        return data.data.actualValue
+      }
+    }
+
+    //数据标签显示
+    let showLabel = (data) => {
+      let showTwoRow = this.properties.properties.showTwoRow ? '\n' : ':'
+      if (this.properties.properties.showLabelName && this.properties.properties.showLabelValue) {
+        return data.data.name + showTwoRow + typeValue(data);
+      } else {
+        if (this.properties.properties.showLabelName) {
+          return data.data.name;
+        }
+        if (this.properties.properties.showLabelValue) {
+          return typeValue(data);
+        }
+      }
+      return ""
+    }
+
+
+    //grape位置窗口设置
+    let grapeDomWidth, grapeDomHeight;
+    let grapeDomLeft, grapeDomTop;
+
+    grapeDomLeft = this.dom.clientWidth * 0.2;  //+ ?
+    grapeDomTop = this.dom.clientHeight * 0.1;
+    grapeDomWidth = (this.dom.clientWidth * 0.6) / 2;  //- ?
+    grapeDomHeight = ((this.dom.clientHeight * 0.9) / this.funnelData.length) * (this.funnelData.length - 1);
+    let colorIndex = 0;
+    grapeDomLeft += (this.properties.properties.funnelStyle == "style1") ? ((100 - this.properties.properties.maxSize) / 100) * (this.dom.clientWidth * 0.3) : 0;
+
+
     //样式属性设置
     let styleValue = {
       minSize: "0%",
@@ -209,9 +320,12 @@ export default class Visual extends WynVisual {
     let addActualValue = 0;
     var showData = [];
     var showData2 = [];
-    var ySize = 10;
-    let rgb = [255, 0, 255]
+    var ySize = 1;
+
+    let widthXMath = this.funnelData[0].actual_value - this.funnelData[this.funnelData.length - 1].actual_value;
+    let x = 0;
     this.funnelData.forEach((data, index, arr) => {
+
       addActualValue = addActualValue + Number(data.actual_value);
       let name, value;
       name = data.series;
@@ -221,11 +335,16 @@ export default class Visual extends WynVisual {
         value = data.actual_value;
       }
 
+      if (index != 0) {
+        x = x + ((arr[index - 1].actual_value - data.actual_value) / widthXMath * 10)
+      }
+
       //上下比例
       var myData1 = {
         name: name,
         value: value,
-        x: 400,
+        actualValue: data.actual_value,
+        x: x,
         y: ySize,
         itemStyle: {
           color: this.getColors(index, 1)
@@ -254,6 +373,10 @@ export default class Visual extends WynVisual {
       showData.push(myData1);
       showData2.push(myData2);
 
+      if (index == this.funnelData.length - 2) {
+        grapeDomWidth = grapeDomWidth * (addActualValue / this.actualValueTotal)
+      }
+
     })
 
     //指向线设置
@@ -264,19 +387,87 @@ export default class Visual extends WynVisual {
         target: showData[i + 1].name,
         value: (Math.round((showData[i + 1].value / showData[i].value) * 100 * 100) / 100).toFixed(2),
         lineStyle: {
-          curveness: -(showData.length + 2 - i)
+          curveness: -1 - (this.properties.properties.minSize * 0.04),
+          color: {
+            colorStops: [{
+              offset: 0,
+              color: this.getColors(colorIndex++, 0) // 0% 处的颜色
+            }, {
+              offset: 1,
+              color: this.getColors(colorIndex, 0) // 100% 处的颜色
+            }],
+            // global: false // 缺省为 false
+          }
         }
       };
       links.push(data);
     }
 
+    const orient = this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? 'vertical' : 'horizontal';
+
 
     var option = {
+      //图例
       legend: {
-        data: this.funnelData.forEach((data) => { return data.series }),
+        left: this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? this.properties.properties.legendPosition : this.properties.properties.legendVerticalPosition,
+        top: this.properties.properties.legendPosition === 'top' || this.properties.properties.legendPosition === 'bottom' ? this.properties.properties.legendPosition : this.properties.properties.legendHorizontalPosition,
+        // orient: "orient",
+        width: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendWidth}%` : 'auto',
+        height: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendHeight}%` : 'auto',
+        //图例间距
+        itemGap: this.properties.properties.itemGap,
+        //图例形状
+        icon: this.properties.properties.legendIcon === 'none' ? '' : this.properties.properties.legendIcon,
+        show: this.properties.properties.showLegend,
+        data: this.funnelData.map((data) => { return { name: data.series } }),
+        // data: this.funnelData.forEach((data) => { return data.series }),
+        formatter: (name) => {
+          let legendText = ""
+          if (this.properties.properties.showLegendName) {
+            legendText = '{a|' + name + '}'
+          }
+          this.funnelData.forEach((data, index) => {
+            if (data.series == name) {
+              //显示数值
+              if (this.properties.properties.showLegendValue) {
+                legendText += '{b|' + data.actual_value + '}';
+              }
+              //显示比值
+              if (this.properties.properties.showLegendCom) {
+                legendText += " " + (Math.round((data.actual_value / addActualValue) * 100 * 100) / 100).toFixed(2) + "%"
+              }
+            }
+          })
+
+          //显示
+          if (this.properties.properties.showLegend) {
+            return legendText;
+          } else {
+            return "";
+          }
+        },
         textStyle: {
-          color: '#fff',
-          fontSize: 10
+          color: this.properties.properties.legendTextStyle.color,
+          fontFamily: this.properties.properties.legendTextStyle.fontFamily,
+          fontSize: this.properties.properties.legendTextStyle.fontSize.replace("pt", ""),
+          fontStyle: this.properties.properties.legendTextStyle.fontStyle,
+          fontWeight: this.properties.properties.legendTextStyle.fontWeight,
+          rich: {
+            a: {
+              align: 'left',
+              fontSize: 14,
+              // color: legendTextStyle.color,
+              width: this.properties.properties.legendSeriesWidth,
+              padding: [0, 15, 0, 0]
+            },
+            b: {
+              align: 'left',
+              fontSize: 14,
+              // color: legendTextStyle.color,
+              width: this.properties.properties.legendValueWidth,
+              padding: [0, 15, 0, 0]
+            },
+          }
         }
       },
 
@@ -284,6 +475,7 @@ export default class Visual extends WynVisual {
 
         // 数值显示
         {
+          type: 'funnel',
           // color: colors,
           z: 2,
           //不触发响应事件
@@ -292,19 +484,27 @@ export default class Visual extends WynVisual {
           animation: false,
           //联动亮度
           legendHoverLink: false,
-          top: '10%',
-          bottom: 0,
-          type: 'funnel',
-          left: '20%',
-          right: '0%',
-          width: '60%',
+          top: funnelWin.top,
+          left: funnelWin.left,
+          bottom: funnelWin.bottom,
+          width: funnelWin.width,
           minSize: styleValue.minSize,
           maxSize: styleValue.maxSize,
           // sort: 'descending',
           gap: this.properties.properties.gapSize,
           label: {
             show: true,
-            position: 'inside'
+            position: 'inside',
+            formatter: function (data) {
+              return showLabel(data);
+            },
+            padding: [0, 0, 0, this.properties.properties.LabelPosition],
+            color: this.properties.properties.showTextStyle.color,
+            fontFamily: this.properties.properties.showTextStyle.fontFamily,
+            fontSize: this.properties.properties.showTextStyle.fontSize.replace("pt", ""),
+            fontStyle: this.properties.properties.showTextStyle.fontStyle,
+            fontWeight: this.properties.properties.showTextStyle.fontWeight
+
           },
           emphasis: {
             focus: 'series'
@@ -334,31 +534,40 @@ export default class Visual extends WynVisual {
               return '{d|' + (Math.round((d.data.actual_value / addActualValue) * 100 * 100) / 100).toFixed(2) + '}';
             },
             rich: {
-
               d: {
                 align: 'center',
-                color: '#fff',
-                fontSize: '15',
-                lineHeight: '30'
+                color: this.properties.properties.showActualTextStyle.color,
+                fontSize: this.properties.properties.showActualTextStyle.fontSize.replace("pt", ""),
+                fontStyle: this.properties.properties.showActualTextStyle.fontStyle,
+                fontWeight: this.properties.properties.showActualTextStyle.fontWeight
               }
             }
           },
-          data: showData2
+          labelLine: {
+            show: true,
+            length: this.properties.properties.guideLineLength,
+            lineStyle: {
+              width: this.properties.properties.guideLineWidth,
+              type: 'solid'
+            }
+          },
+          data: this.properties.properties.showActualPro ? showData2 : null
         },
 
         //占上一位的百分比
         {
           z: 1,
-          top: '10%',
-          bottom: '0%',
-          // height: 400,
+          // bottom: 0,
+          top: grapeDomTop,
+          height: grapeDomHeight,
+          left: grapeDomLeft,
+          width: grapeDomWidth,
           type: 'graph',
           layout: 'none',
           symbolSize: 0,
           roam: false,
           edgeSymbol: ['circle', 'arrow'],
-          //不触发响应事件
-          silent: true,
+          edgeSymbolSize: [0, 20],
           lineStyle: {
             normal: {
               width: 2,
@@ -367,15 +576,11 @@ export default class Visual extends WynVisual {
           edgeLabel: {
             normal: {
               show: true,
-              rotate: 40,
+              rotate: 0,
               position: 'middle',
-              backgroundColor: '#e4f5da',
-              borderRadius: 4,
-              color: '#333',
               verticalAlign: 'middle',
-              fontSize: 14,
-              legendHoverLink: true,
-              padding: [3, 10, 5, 10],
+              align: 'center',
+              // fontSize: 20,
               formatter: function (d) {
                 if (d.value) {
                   var ins = '{words|' + d.value + '%}';
@@ -384,16 +589,16 @@ export default class Visual extends WynVisual {
               },
               rich: {
                 words: {
-                  color: '#333',
-                  position: 'right',
-                  fontSize: 14,
-                  lineHeight: 20,
-                  padding: [0, 0, 5, 0],
+                  color: this.properties.properties.showComTextStyle.color,
+                  fontFamily: this.properties.properties.showComTextStyle.fontFamily,
+                  fontSize: this.properties.properties.showComTextStyle.fontSize.replace("pt", ""),
+                  fontStyle: this.properties.properties.showComTextStyle.fontStyle,
+                  fontWeight: this.properties.properties.showComTextStyle.fontWeight
                 }
               }
             }
           },
-          data: showData,
+          data: this.properties.properties.showConPro ? showData : null,
           links: links,
 
         }
@@ -401,7 +606,7 @@ export default class Visual extends WynVisual {
     };
     return option;
   }
-  
+
   //漏斗对比图的options
   getOptionForDouble() {
 
@@ -412,11 +617,15 @@ export default class Visual extends WynVisual {
 
   //对比图样式1
   getStyleOption1() {
-    // console.log(this.funnelData)
+    let properties = this.properties.properties;
+    let addActualValue = 0;
+    let addReducedValue = 0;
     var actual_links = [];
     var reduced_links = [];
     let ySize = 0;
     for (var i = 0; i < this.funnelData.length - 1; i++) {
+      addActualValue += this.funnelData[i].actual_value;
+      addReducedValue += this.funnelData[i].reduced_value;
       var data1 = {
         source: this.funnelData[i].series,
         target: this.funnelData[i + 1].series,
@@ -437,15 +646,39 @@ export default class Visual extends WynVisual {
       reduced_links.push(data2);
     }
 
+    const orient = this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? 'vertical' : 'horizontal';
+
     var option = {
 
       legend: {
+        left: this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? this.properties.properties.legendPosition : this.properties.properties.legendVerticalPosition,
+        top: this.properties.properties.legendPosition === 'top' || this.properties.properties.legendPosition === 'bottom' ? this.properties.properties.legendPosition : this.properties.properties.legendHorizontalPosition,
+        // orient: "orient",
+        width: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendWidth}%` : 'auto',
+        height: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendHeight}%` : 'auto',
+        //图例间距
+        itemGap: this.properties.properties.itemGap,
+        //图例形状
+        icon: this.properties.properties.legendIcon === 'none' ? '' : this.properties.properties.legendIcon,
+        show: this.properties.properties.showLegend,
         data: this.funnelData.map((data) => { return data.series }),
+        formatter: (data) => {
+          let legendText = "";
+          if (properties.showLegendName) {
+            legendText += data
+          }
+          return legendText
+        },
         textStyle: {
-          color: '#fff',
-          fontSize: 16
+          color: this.properties.properties.legendTextStyle.color,
+          fontFamily: this.properties.properties.legendTextStyle.fontFamily,
+          fontSize: this.properties.properties.legendTextStyle.fontSize.replace("pt", ""),
+          fontStyle: this.properties.properties.legendTextStyle.fontStyle,
+          fontWeight: this.properties.properties.legendTextStyle.fontWeight,
         }
       },
+
+
       tooltip: {
         formatter: "{a} <br/>{b} : {c}",
       },
@@ -460,10 +693,8 @@ export default class Visual extends WynVisual {
           top: '10%',
           bottom: 0,
           type: 'funnel',
-          // left: '20%',
-          // right: '0',
+          left: '10%',
           width: '40%',
-          x: '10%',
           funnelAlign: 'right',
           maxSize: this.properties.properties.actualMaxSize + "%",
           minSize: this.properties.properties.actualMinSize + "%",
@@ -471,16 +702,34 @@ export default class Visual extends WynVisual {
           gap: this.properties.properties.gapSize,
           label: {
             show: true,
-            formatter: '{b}:{c|{c}}\n{d|{d}}%',
-            position: 'insideLeft',
-            rich: {
-              c: {
-                fontSize: 18,
-              },
-              d: {
-                fontSize: 18,
+            //超出宽度是否换行  设置width时有效   
+            overflow: 'break',
+            width: properties.labelWidth,
+            color: this.properties.properties.showTextStyle.color,
+            fontFamily: this.properties.properties.showTextStyle.fontFamily,
+            fontSize: this.properties.properties.showTextStyle.fontSize.replace("pt", ""),
+            fontStyle: this.properties.properties.showTextStyle.fontStyle,
+            fontWeight: this.properties.properties.showTextStyle.fontWeight,
+            formatter: (data) => {
+              let labelText = "";
+              if (properties.showLabelName) {
+                labelText += `${data.data.name}`
               }
-            }
+              if (properties.showLabelName && properties.showLabelValue) {
+                labelText += `: `
+              }
+              if (properties.showLabelValue) {
+                labelText += `${data.data.value}`
+              }
+              if (properties.showActualPro && properties.showLabelValue) {
+                labelText += ` `
+              }
+              if (properties.showActualPro) {
+                labelText += `${data.data.percent}%`
+              }
+              return labelText
+            },
+            position: 'insideLeft',
           },
           labelLine: {
             length: 10,
@@ -502,6 +751,7 @@ export default class Visual extends WynVisual {
             return Object.assign({}, {
               name: data.series,
               value: data.actual_value,
+              percent: (Math.round((data.actual_value / addActualValue) * 100 * 100) / 100).toFixed(2),
               itemStyle: {
                 color: this.getColors(index, 1)
               }
@@ -511,6 +761,8 @@ export default class Visual extends WynVisual {
 
         {     //对比数值
           name: this.properties.dataViews[0].plain.profile.reduced_value.values[0].display,
+          //相应鼠标时间
+          silent: false,
           // color: colors,
           top: '10%',
           bottom: 0,
@@ -526,16 +778,34 @@ export default class Visual extends WynVisual {
           gap: this.properties.properties.gapSize,
           label: {
             show: true,
-            formatter: '{b}:{c|{c}}\n{d|{d}}%',
-            position: 'insideRight',
-            rich: {
-              c: {
-                fontSize: 18,
-              },
-              d: {
-                fontSize: 18,
+            //超出宽度是否换行  设置width时有效   
+            overflow: 'break',
+            width: properties.labelWidth,
+            color: properties.showTextStyle.color,
+            fontFamily: properties.showTextStyle.fontFamily,
+            fontSize: properties.showTextStyle.fontSize.replace("pt", ""),
+            fontStyle: properties.showTextStyle.fontStyle,
+            fontWeight: properties.showTextStyle.fontWeight,
+            formatter: (data) => {
+              let labelText = "";
+              if (properties.showLabelName) {
+                labelText += `${data.data.name}`
               }
-            }
+              if (properties.showLabelName && properties.showLabelValue) {
+                labelText += `: `
+              }
+              if (properties.showLabelValue) {
+                labelText += `${data.data.value}`
+              }
+              if (properties.showActualPro && properties.showLabelValue) {
+                labelText += ` `
+              }
+              if (properties.showActualPro) {
+                labelText += `${data.data.percent}%`
+              }
+              return labelText
+            },
+            position: 'insideRight',
           },
           labelLine: {
             length: 10,
@@ -553,10 +823,11 @@ export default class Visual extends WynVisual {
               fontSize: 20
             }
           },
-          data: this.funnelData.map((data,index) => {
+          data: this.funnelData.map((data, index) => {
             return Object.assign({}, {
               name: data.series,
               value: data.reduced_value,
+              percent: (Math.round((data.reduced_value / addReducedValue) * 100 * 100) / 100).toFixed(2),
               itemStyle: {
                 color: this.getColors(index, 1)
               }
@@ -603,16 +874,16 @@ export default class Visual extends WynVisual {
               },
               rich: {
                 words: {
-                  color: '#333',
-                  position: 'right',
-                  fontSize: 14,
-                  lineHeight: 20,
-                  padding: [0, 0, 5, 0],
+                  color: this.properties.properties.showComTextStyle.color,
+                  fontFamily: this.properties.properties.showComTextStyle.fontFamily,
+                  fontSize: this.properties.properties.showComTextStyle.fontSize.replace("pt", ""),
+                  fontStyle: this.properties.properties.showComTextStyle.fontStyle,
+                  fontWeight: this.properties.properties.showComTextStyle.fontWeight
                 }
               }
             }
           },
-          data: this.funnelData.map((data) => { return Object.assign({}, { name: data.series, x: 400, y: ySize++ }) }),
+          data: properties.showConPro ? this.funnelData.map((data) => { return Object.assign({}, { name: data.series, x: 400, y: ySize++ }) }) : null,
           links: actual_links
 
         },
@@ -655,18 +926,17 @@ export default class Visual extends WynVisual {
               },
               rich: {
                 words: {
-                  color: '#333',
-                  position: 'right',
-                  fontSize: 14,
-                  lineHeight: 20,
-                  padding: [0, 0, 5, 0],
+                  color: this.properties.properties.showComTextStyle.color,
+                  fontFamily: this.properties.properties.showComTextStyle.fontFamily,
+                  fontSize: this.properties.properties.showComTextStyle.fontSize.replace("pt", ""),
+                  fontStyle: this.properties.properties.showComTextStyle.fontStyle,
+                  fontWeight: this.properties.properties.showComTextStyle.fontWeight
                 }
               }
             }
           },
-          data: this.funnelData.map((data) => { return Object.assign({}, { name: data.series, x: 400, y: ySize++ }) }),
+          data: properties.showConPro ? this.funnelData.map((data) => { return Object.assign({}, { name: data.series, x: 400, y: ySize++ }) }) : null,
           links: reduced_links,
-
         }
 
       ]
@@ -676,7 +946,6 @@ export default class Visual extends WynVisual {
 
   //对比图样式2
   getStyleOption2() {
-    //console.log( this.funnelData.map((data)=>{ return {name: data.series, value: data.actual_value, com: (Math.round((data.actual_value / data.reduced_value) * 100 * 100) / 100).toFixed(2)}}))
 
     var option = {
       tooltip: {
@@ -684,63 +953,121 @@ export default class Visual extends WynVisual {
         formatter: '{a} <br/>{b} : {c}%'
       },
       legend: {
+        left: this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? this.properties.properties.legendPosition : this.properties.properties.legendVerticalPosition,
+        top: this.properties.properties.legendPosition === 'top' || this.properties.properties.legendPosition === 'bottom' ? this.properties.properties.legendPosition : this.properties.properties.legendHorizontalPosition,
+        // orient: "orient",
+        width: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendWidth}%` : 'auto',
+        height: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendHeight}%` : 'auto',
+        //图例间距
+        itemGap: this.properties.properties.itemGap,
+        //图例形状
+        icon: this.properties.properties.legendIcon === 'none' ? '' : this.properties.properties.legendIcon,
+        show: this.properties.properties.showLegend,
         data: this.funnelData.map((data) => { return data.series }),
+        formatter: (data) => {
+          let legendText = "";
+          if (this.properties.properties.showLegendName) {
+            legendText += data
+          }
+          return legendText
+        },
         textStyle: {
-          color: '#fff',
-          fontSize: 16
+          color: this.properties.properties.legendTextStyle.color,
+          fontFamily: this.properties.properties.legendTextStyle.fontFamily,
+          fontSize: this.properties.properties.legendTextStyle.fontSize.replace("pt", ""),
+          fontStyle: this.properties.properties.legendTextStyle.fontStyle,
+          fontWeight: this.properties.properties.legendTextStyle.fontWeight,
         }
       },
 
       series: [
-        //对比值
-        {
-          z: 1,
-          name: this.properties.dataViews[0].plain.profile.reduced_value.values[0].display,
-          type: 'funnel',
-          left: '10%',
-          width: '80%',
-          maxSize: this.properties.properties.reducedMaxSize + "%",
-          minSize: this.properties.properties.reducedMinSize + "%",
-          label: {
-            show: false
-          },
-          labelLine: {
-            show: false
-          },
-          itemStyle: {
-            opacity: 0.7
-          },
-          emphasis: {
-            label: {
-              position: 'inside',
-              formatter: '{b}Expected: {c}%'
-            }
-          },
-          data: this.funnelData.map((data,index) => { return { name: data.series, value: data.reduced_value ,itemStyle: {color: this.getColors(index, 1)}} })
-        },
+
         //实际值
         {
           name: this.properties.dataViews[0].plain.profile.actual_value.values[0].display,
           type: 'funnel',
+          top: '10%',
           left: '10%',
-          width: '80%',
+          height: '90%',
+          width: '70%',
           maxSize: this.properties.properties.actualMaxSize + "%",
           minSize: this.properties.properties.actualMinSize + "%",
           label: {
+            width: this.properties.properties.labelWidth,
+            overflow: 'break',
             position: 'inside',
-            formatter: function (d) {
-              return d.data.name + ':' + d.data.com + '%'
+            formatter: (data) => {
+              let labelText = "";
+              if (this.properties.properties.showLabelName) {
+                labelText += `${data.data.name}`
+              }
+              if (this.properties.properties.showLabelName && this.properties.properties.showLabelValue) {
+                labelText += `: `
+              }
+              if (this.properties.properties.showLabelValue) {
+                labelText += `${data.data.value}`
+              }
+              if (this.properties.properties.showActualPro && this.properties.properties.showLabelValue) {
+                labelText += ` `
+              }
+              if (this.properties.properties.showActualPro) {
+                labelText += `${data.data.com}%`
+              }
+              return labelText
             },
-            color: '#fff',
+            color: this.properties.properties.showTextStyle.color,
+            fontFamily: this.properties.properties.showTextStyle.fontFamily,
+            fontSize: this.properties.properties.showTextStyle.fontSize.replace("pt", ""),
+            fontStyle: this.properties.properties.showTextStyle.fontStyle,
+            fontWeight: this.properties.properties.showTextStyle.fontWeight
           },
           itemStyle: {
             opacity: 1,
             borderColor: '#fff',
             borderWidth: 2
           },
-          data: this.funnelData.map((data,index) => { return { name: data.series, value: data.actual_value, com: (Math.round((data.actual_value / data.reduced_value) * 100 * 100) / 100).toFixed(2),itemStyle: {color: this.getColors(index, 1)} } }),
+          data: this.funnelData.map((data, index) => { return { name: data.series, value: data.actual_value, com: (Math.round((data.actual_value / data.reduced_value) * 100 * 100) / 100).toFixed(2), itemStyle: { color: this.getColors(index, 1) } } }),
           // Ensure outer shape will not be over inner shape when hover.
           z: 2
+        },
+
+        //对比值
+        {
+          z: 1,
+          name: this.properties.dataViews[0].plain.profile.reduced_value.values[0].display,
+          type: 'funnel',
+          top: '10%',
+          left: '10%',
+          height: '90%',
+          width: '70%',
+          maxSize: this.properties.properties.reducedMaxSize + "%",
+          minSize: this.properties.properties.reducedMinSize + "%",
+          label: {
+            width: this.properties.properties.labelWidth,
+            overflow: 'break',
+            position: 'right',
+            formatter: function (d) {
+              return d.data.name + ':' + d.data.value
+            },
+            color: this.properties.properties.showTextStyle.color,
+            fontFamily: this.properties.properties.showTextStyle.fontFamily,
+            fontSize: this.properties.properties.showTextStyle.fontSize.replace("pt", ""),
+            fontStyle: this.properties.properties.showTextStyle.fontStyle,
+            fontWeight: this.properties.properties.showTextStyle.fontWeight
+          },
+          labelLine: {
+            show: false
+          },
+          itemStyle: {
+            opacity: 0.3
+          },
+          // emphasis: {
+          //   label: {
+          //     position: 'inside',
+          //     formatter: '{b}: {c}%'
+          //   }
+          // },
+          data: this.funnelData.map((data, index) => { return { name: data.series, value: data.reduced_value, com: (Math.round((data.actual_value / data.reduced_value) * 100 * 100) / 100).toFixed(2), itemStyle: { color: this.getColors(index, 1) + "99" } } })
         }
       ]
     };

@@ -40,9 +40,6 @@
     "options": {
         "visual": [
             {
-                "type": "title"
-            },
-            {
                 "name": "chartStyle",
                 "displayName": "图表样式",
                 "properties": [
@@ -123,7 +120,290 @@
                         "min": 0,
                         "defaultValue": 0
                     }
-                    
+                ]
+            },
+            {
+                "displayName": "数据标注",
+                "properties": [
+                    {
+                        "type": "Boolean",
+                        "name": "showLabelName",
+                        "displayName": "系列名",
+                        "defaultValue": true
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showLabelValue",
+                        "displayName": "系列值",
+                        "defaultValue": false
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showTwoRow",
+                        "displayName": "两行显示",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "LabelPosition",
+                        "type": "Integer",
+                        "displayName": "标签位置"
+                        
+                    },
+                    {
+                        "name": "showTextStyle",
+                        "displayName": "显示标签字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "10pt",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showActualPro",
+                        "displayName": "实际占比显示",
+                        "defaultValue": false
+                    },
+                    {
+                        "type": "Integer",
+                        "name": "labelWidth",
+                        "displayName": "标签宽度",
+                        "defaultValue": 100
+                    },
+                    {
+                        "type": "Integer",
+                        "name": "guideLineLength",
+                        "displayName": "引导线长度",
+                        "defaultValue": "10",
+                        "min": 0
+                    },
+                    {
+                        "type": "Integer",
+                        "name": "guideLineWidth",
+                        "displayName": "引导线宽度",
+                        "defaultValue": "1",
+                        "min": 0
+                    },
+                    {
+                        "name": "showActualTextStyle",
+                        "displayName": "实际占比字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "10pt",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    },
+                    {
+                        "displayName": "占比标签字体设置"
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showConPro",
+                        "displayName": "上下占比显示",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showComTextStyle",
+                        "displayName": "上下占比字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f84d4d",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "10pt",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    }                    
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "displayName": "显示图例",
+                        "name": "showLegend" ,
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "itemGap",
+                        "type": "Integer",
+                        "displayName": "图例间距",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "showLegendName" ,
+                        "displayName": "显示系列名",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "legendSeriesWidth",
+                        "type": "Integer",
+                        "displayName": "系列名宽度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "showLegendValue" ,
+                        "displayName": "显示数值",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "legendValueWidth",
+                        "type": "Integer",
+                        "displayName": "数值宽度",
+                        "defaultValue": 40
+                    },
+                    {
+                        "name": "showLegendCom",
+                        "displayName": "显示比值",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "legendIcon",
+                        "type": "Enum",
+                        "displayName": "图例形状",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "默认"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "rect",
+                                "displayNameKey": "方形"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "圆角方形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            }
+                        ],
+                        "defaultValue": "circle"
+                    },
+                    {
+                        "name": "legendPosition",
+                        "type": "Enum",
+                        "displayName": "水平位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "左侧"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "右侧"
+                            },
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "right"
+                    },
+                    {
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },
+                    {
+                        "name": "legendHorizontalPosition",
+                        "type": "Enum",
+                        "displayName": "垂直位置",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "顶部"
+                            },
+                            {
+                                "value": "middle",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "底部"
+                            }
+                        ],
+                        "defaultValue": "middle"
+                    },
+                    {
+                        "name": "legendArea",
+                        "type": "Enum",
+                        "displayName": "图例宽高",
+                        "items": [
+                            {
+                                "value": "auto",
+                                "displayNameKey": "默认"
+                            },
+                            {
+                                "value": "custom",
+                                "displayNameKey": "自定义"
+                            }
+                        ],
+                        "defaultValue": "auto"
+                    },
+                    {
+                        "name": "legendWidth",
+                        "type": "Percentage",
+                        "displayName": "图例宽度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "legendHeight",
+                        "type": "Percentage",
+                        "displayName": "图例高度",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "legendTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "14pt",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    }
                 ]
             },
             {
@@ -150,7 +430,6 @@
                                 "value": "Exclude",
                                 "displayName": "排除"
                             },
-                            
                             {
                                 "value": "Jump",
                                 "displayName": "跳转"
@@ -158,8 +437,10 @@
                         ]
                     }
                 ]
+            },
+            {
+                "type": "title"
             }
-            
         ]
     },
     "actions": [
