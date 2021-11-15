@@ -5,7 +5,10 @@
     "displayNameKey": "",
     "icon": "visualIcon",
     "description": "",
-    "externalJs": [],
+    "externalJs": [
+        "https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js",
+        "https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"
+    ],
     "externalCss": [],
     "assets": {
         "images": {

@@ -1,6 +1,6 @@
 {
   "name": "pointmap3.0",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -30,12 +30,10 @@
     "webpack-dev-server": "3.10.3"
   },
   "dependencies": {
-    "echarts": "^5.2.1",
-    "echarts-gl": "^2.0.8",
-    "jquery": "^3.6.0",
     "@babel/preset-env": "^7.12.11",
     "createjs-module": "^0.8.3",
     "gsap": "^3.6.0",
+    "jquery": "^3.6.0",
     "lodash": "^4.17.20"
   }
 }

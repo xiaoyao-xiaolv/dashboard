@@ -109,9 +109,9 @@
                 },
                 {
                     "name": "mapDistance",
-                    "type": "Hidden",
+                    "type": "Integer",
                     "displayName": "距离",
-                    "defaultValue": 220,
+                    "defaultValue": 350,
                     "min": 0
                 }]
             },

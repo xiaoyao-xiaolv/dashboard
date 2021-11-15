@@ -1,11 +1,9 @@
 import '../style/visual.less';
-import * as echarts from 'echarts';
-import 'echarts-gl';
+declare const echarts: any;
 import $ from 'jquery';
-
 import ChainJson from './china.json';
 import ShanXiJson from './shanxi.json'
-import mapAdCodeId from './mapname.json';
+import mapAdCodeIds from './mapname.json';
 import geoCoordMap from './geoCoordMap.json';
 import { myTooltipC } from './myTooltip.js';
 var _ = require('lodash');
@@ -16,6 +14,7 @@ let isTooltipModelShown = false;
 const clickLeftMouse = 0;
 const clickRightMouse = 2;
 const locationReg = /(省|市|自治区|自治州|县|区|特别行政区)/g;
+let _locationMapName = '';
 export default class Visual extends WynVisual {
 
   private container: HTMLDivElement;
@@ -23,6 +22,7 @@ export default class Visual extends WynVisual {
   private isMock: boolean;
   private bindCoords: boolean;
   private items: any;
+  private initItems: any;
   private cityItems: any;
   private valuesName: string;
   private locationName: string;
@@ -114,13 +114,12 @@ export default class Visual extends WynVisual {
 
   private getMapJson = (_mapName: string) => {
     const _name = _mapName.replace(locationReg, '');
-    if (_mapName == 'china') {
+    if (_mapName == 'china' ||_mapName == '陕西省' ) {
       this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
-      echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(_mapName === 'china' ? ChainJson : ShanXiJson)))
     } else {
       let _adCodeId = '100000'
       let mapJson = ChainJson;
-      mapAdCodeId.map((_map: any) => {
+      mapAdCodeIds.map((_map: any) => {
         const _mapName = _map.city.replace(locationReg, '');
         if (_mapName === _name) {
             _adCodeId = _map.cityid;
@@ -135,9 +134,9 @@ export default class Visual extends WynVisual {
         mapJson = geoJson
       })
       this.mapJsonData = mapJson
-      echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
+      // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
     }
-    if (Number(this.properties.mapLevel)) {
+    if (_mapName !== 'china') {
       const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
         item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
       if (this.locationArr.length > 1) {
@@ -157,6 +156,8 @@ export default class Visual extends WynVisual {
           }
         });
       }
+    } else {
+      this.items = this.initItems;
     }
     const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
     this.items = _dataNames.map((_dataName: any) => {
@@ -165,15 +166,14 @@ export default class Visual extends WynVisual {
         if (_target.length > 1) {
           return {
             ..._target[0],
-            datas: _target.reduce((_init, _target) => _init +_target.datas, 0)
+            datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
           }
         } else {
           return _target[0]
         }
       }
   
-    })
-    this.render();
+    });
   }
 
   private getCoords = (keyWord: string) => {
@@ -209,7 +209,7 @@ export default class Visual extends WynVisual {
     this.locationArr = [];
     this.preview = options.isViewer
     this.isMock = !options.dataViews.length;
-    
+    this.host.propertyService.setProperty('mapLevel', options.properties.MapId !== 'china' ? 1: 0);
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
       let bindData = options.dataViews[0].plain.data;
@@ -228,21 +228,36 @@ export default class Visual extends WynVisual {
      
       // bindData.push({'客户省份': '陕西省', '客户城市':'渭南市', '标准价格': 666})
       this.items = this.prepareData(bindData, profile);
+      this.initItems = this.prepareData(bindData, profile);
       // data format and display unit
       this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
       this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit;
+       // registerMap
+      this.mapAdCodeId = options.properties.MapId || 'china';
+      this.properties = options.properties;
+      this.getgraphic(this.mapAdCodeId);
+      if (this.mapAdCodeId !== 'china') {
+        this.linelen = this.mapAdCodeId.length * 20;
+        this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
+      }
+      
+      this.getMapJson(this.mapAdCodeId);
+    } else {
+       // registerMap
+      this.mapAdCodeId = 'china';
+      this.mapJsonData = ChainJson;
+      this.properties = options.properties;
+      this.getgraphic(this.mapAdCodeId);
+      if (this.mapAdCodeId !== 'china') {
+        this.linelen = this.mapAdCodeId.length * 20;
+        this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
+        }
+       
     }
-    // registerMap
-    this.mapAdCodeId = options.properties.MapId || 'china';
-    this.properties = options.properties;
-    this.getgraphic(this.mapAdCodeId);
-    if (this.mapAdCodeId !== 'china') {
-      this.linelen = this.mapAdCodeId.length * 20;
-      this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
-    }
+    echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(this.mapJsonData)));
+    myChart.clear();
+    this.render();
     
-    this.getMapJson(this.mapAdCodeId)
-   
   }
   private dispatch = (type, payload) => myChart.dispatchAction({ ...payload, type });
   private hideTooltip = () => {
@@ -392,7 +407,7 @@ export default class Visual extends WynVisual {
           }
          
     }
-    myChart.on('mouseup', (params) => {
+    myChart.on('click', (params) => {
       if (this.properties.MapId !== params.name) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 1);
@@ -509,7 +524,7 @@ export default class Visual extends WynVisual {
           onclick: () => {
             this.host.propertyService.setProperty('mapLevel', 0);
             this.host.propertyService.setProperty('MapId', 'china');
-            this.getMapJson('china')
+            this.getMapJson('china');
           },
         }
       ]
@@ -520,10 +535,9 @@ export default class Visual extends WynVisual {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     const items = this.isMock ? Visual.mockItems : this.items;
     let myTooltip = this.myTooltip;
-    myChart.clear();
-  
     let options = this.properties;
-
+    // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(options.MapId === 'china' ? ChainJson : ShanXiJson)));
+    
     // options.automaticRotation && this.preview && this.autoPlayTimer();
     
     myTooltip.config['text'] = {
@@ -734,24 +748,40 @@ export default class Visual extends WynVisual {
             zoomSensitivity: 2, //缩放操作的灵敏度
             panSensitivity: 2, //平移操作的灵敏度
             panMouseButton: 'right', //平移操作使用的鼠标按键
-
-            distance: options.mapAdCodeId === 'china'?  220 : options.mapDistance, //默认视角距离主体的距离
+            
+            distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
             center: [0, 0, 0],
 
             animation: true,
             animationDurationUpdate: 1000,
             animationEasingUpdate: 'cubicInOut'
         },
+            itemStyle: {
+              color: 'red', //地图颜色
+              borderWidth: 3, //分界线wdith
+              distance: 5,
+              borderColor: 'green', //分界线颜色
+        },
+
+          emphasis: {
+              label: {
+                  show: true, //是否显示高亮
+                  textStyle: {
+                      color: '#fff', //高亮文字颜色
+                  },
+              },
+              itemStyle: {
+                  color: '#0489d6', //地图高亮颜色
+              },
+          },
       },
       series: [
         {
           type: 'map3D',
           map: '3DMapCustom',
           name: '3DMapCustom',
-          // viewControl: {
-          //   distance: 110, //地图视角 控制初始大小
-          //   rotateSensitivity: [1, 1],
-          // },
+          boxWidth: 200,
+            boxHeight: 15,
           viewControl: {
             projection: 'perspective',
             autoRotate: false,
@@ -762,7 +792,7 @@ export default class Visual extends WynVisual {
             panSensitivity: 2, //平移操作的灵敏度
             panMouseButton: 'right', //平移操作使用的鼠标按键
 
-            distance: 110, //默认视角距离主体的距离
+            distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
             center: [0, 0, 0],
             animation: true,
             animationDurationUpdate: 1000,
@@ -815,8 +845,9 @@ export default class Visual extends WynVisual {
                   color: '#0489d6', //地图高亮颜色
               },
           },
-        data: _data,
-        zlevel:1,
+          data: _data,
+          zlevel: 1,
+          // silent: true,
         },
         {
             type: 'bar3D',
