@@ -1,0 +1,17 @@
+{
+    "id": "72d5b710-3e05-11ec-ba33-c364c436c652",
+    "name": "funnel_diagram",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "5.0.1"
+}

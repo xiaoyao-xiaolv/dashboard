@@ -189,6 +189,12 @@
                         "defaultValue": false
                     },
                     {
+                        "name": "itemGap",
+                        "type": "Integer",
+                        "displayName": "图例间距",
+                        "defaultValue": 20
+                    },
+                    {
                         "name": "showLegendSeries",
                         "type": "Boolean",
                         "displayName": "显示系列名",
@@ -198,18 +204,6 @@
                         "name": "legendSeriesWidth",
                         "type": "Integer",
                         "displayName": "系列名宽度",
-                        "defaultValue": 50
-                    },
-                    {
-                        "name": "showLegendPercent",
-                        "type": "Boolean",
-                        "displayName": "显示比值",
-                        "defaultValue": false
-                    },
-                    {
-                        "name": "legendPercentWidth",
-                        "type": "Integer",
-                        "displayName": "比值宽度",
                         "defaultValue": 50
                     },
                     {
@@ -223,6 +217,12 @@
                         "type": "Integer",
                         "displayName": "数值宽度",
                         "defaultValue": 40
+                    },
+                    {
+                        "name": "showLegendPercent",
+                        "type": "Boolean",
+                        "displayName": "显示比值",
+                        "defaultValue": false
                     },
                     {
                         "name": "legendIcon",

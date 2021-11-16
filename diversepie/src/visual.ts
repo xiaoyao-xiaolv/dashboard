@@ -526,6 +526,7 @@ export default class Visual extends WynVisual {
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
         top: options.legendPosition === 'top' || options.legendPosition === 'bottom' ? options.legendPosition : options.legendHorizontalPosition,
         align: 'left',
+        itemGap: options.itemGap,
         icon: options.legendIcon === 'none' ? '' : options.legendIcon,
         textStyle: {
           ...legendTextStyle,
@@ -542,14 +543,15 @@ export default class Visual extends WynVisual {
               align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width: options.showLegendPercent,
+              // width: options.showLegendPercent,
+              width: options.legendValueWidth,
               padding: [0, 15, 0, 0]
             },
             c: {
               align: 'left',
               fontSize: 14,
               color: legendTextStyle.color,
-              width: options.legendValueWidth,
+              // width: options.legendPercentWidth,
               padding: [0, 15, 0, 0]
             }
           }
