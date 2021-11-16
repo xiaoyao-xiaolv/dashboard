@@ -113,7 +113,7 @@ export default class Visual extends WynVisual {
   }
   createSelectionId = (sid?) => this.host.selectionService.createSelectionId(sid);
 
-  private getMapJson = (_mapName: string) => {
+  private getMapJson = (_mapName: string, isENd?: boolean) => {
     const _name = _mapName.replace(locationReg, '');
     if (_mapName == 'china' ||_mapName == '陕西省' ) {
       this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
@@ -134,6 +134,7 @@ export default class Visual extends WynVisual {
       $.getJSON(url, function (geoJson) {
         mapJson = geoJson
       })
+
       this.mapJsonData = mapJson
       // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
     }
@@ -240,8 +241,7 @@ export default class Visual extends WynVisual {
       this.properties = options.properties;
       this.getgraphic(this.mapAdCodeId);
       if (this.mapAdCodeId !== 'china') {
-        
-        this.linelen = this.mapAdCodeId.length * 20;
+        this.linelen = 60;
         provinceName && this.createBreadcrumb(provinceName, this.linelen, 1)
         this.linelen += provinceName.length * 20;
         cityName && this.createBreadcrumb(cityName,  this.linelen, 2)
@@ -372,50 +372,50 @@ export default class Visual extends WynVisual {
       }
     })
     myChart.off('mouseup')
-    const toDrilling = (params: any) => {
-          const clickMouse = params.event.event.button;
-          if (params.componentType !== 'series') return;
-          params.event.event.seriesClick = true;
-          const selectionId = this.getNodeSelectionId(params.name);
-          const selectInfo = {
-            seriesIndex: params.seriesIndex,
-            dataIndex: params.dataIndex,
-          }; 
-          if (selectionId) {
-            if (!this.selectionManager.contains(selectionId)) {
-              this.selectionManager.select(selectionId, true);
-              // this.dispatch('highlight', selectInfo);
-              this.selection.push(selectInfo);
-            } else {
-              this.selectionManager.clear(selectionId);
-            }
-            if (clickMouse === clickLeftMouse) {
-              if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
-                return
-              } else {
-                if (isTooltipModelShown) return;
-                this.hideTooltip();
-                const selectionIds = this.selectionManager.getSelectionIds();
-                this.host.commandService.execute([{
-                  name: this.properties.clickLeftMouse,
-                  payload: {
-                    selectionIds,
-                    position: {
-                      x: params.event.event.clientX,
-                      y: params.event.event.clientY,
-                      },
-                  }
-                }])
-              }
-            } else if (clickMouse === clickRightMouse) {  
-              params.event.event.preventDefault();
-              this.showTooltip(params.event.event, true);
-            }
+    const toDrilling = (params: any, isJump?: boolean) => {
+        const clickMouse = params.event.event.button;
+        if (params.componentType !== 'series') return;
+        params.event.event.seriesClick = true;
+        const selectionId = this.getNodeSelectionId(params.name);
+        const selectInfo = {
+          seriesIndex: params.seriesIndex,
+          dataIndex: params.dataIndex,
+        }; 
+        if (selectionId) {
+          if (!this.selectionManager.contains(selectionId)) {
+            this.selectionManager.select(selectionId, true);
+            // this.dispatch('highlight', selectInfo);
+            this.selection.push(selectInfo);
+          } else {
+            this.selectionManager.clear(selectionId);
           }
+          if (clickMouse === clickLeftMouse) {
+            if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
+              return
+            } else {
+              // if (isTooltipModelShown) return;
+              // this.hideTooltip();
+              const selectionIds = this.selectionManager.getSelectionIds();
+              this.host.commandService.execute([{
+                name: isJump ? 'Jump' : this.properties.clickLeftMouse,
+                payload: {
+                  selectionIds,
+                  position: {
+                    x: params.event.event.clientX,
+                    y: params.event.event.clientY,
+                    },
+                }
+              }])
+            }
+          } else if (clickMouse === clickRightMouse) {  
+            params.event.event.preventDefault();
+            this.showTooltip(params.event.event, true);
+          }
+        }
          
     }
-    myChart.on('click', (params) => {
-      if (this.properties.MapId !== params.name) {
+    myChart.on('mouseup', (params) => {
+      if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
@@ -423,17 +423,15 @@ export default class Visual extends WynVisual {
           this.host.propertyService.setProperty('cityName', '');
           this.getMapJson(params.name);
           toDrilling(params);
-        }
-
-        if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
+        }else if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 2);
           this.host.propertyService.setProperty('MapId', params.name);
           this.host.propertyService.setProperty('cityName', params.name);
           this.getMapJson(params.name);
-          toDrilling(params);
         } 
-       
-      } 
+      } else {
+        toDrilling(params, true);
+      }
     })
 
     myChart.on('mouseout', (params) => {
