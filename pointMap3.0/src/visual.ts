@@ -241,7 +241,7 @@ export default class Visual extends WynVisual {
       this.properties = options.properties;
       this.getgraphic(this.mapAdCodeId);
       if (this.mapAdCodeId !== 'china') {
-        this.linelen = 60;
+        this.linelen = 40;
         provinceName && this.createBreadcrumb(provinceName, this.linelen, 1)
         this.linelen += provinceName.length * 20;
         cityName && this.createBreadcrumb(cityName,  this.linelen, 2)
@@ -254,10 +254,10 @@ export default class Visual extends WynVisual {
       this.mapJsonData = ChainJson;
       this.properties = options.properties;
       this.getgraphic(this.mapAdCodeId);
-      if (this.mapAdCodeId !== 'china') {
-        this.linelen = this.mapAdCodeId.length * 20;
-        this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
-        }
+      // if (this.mapAdCodeId !== 'china') {
+      //   this.linelen = this.mapAdCodeId.length * 20;
+      //   this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
+      //   }
        
     }
     this.cityNameData = this.mapAdCodeId === 'china' ?  [] : JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
@@ -451,8 +451,10 @@ export default class Visual extends WynVisual {
     let breadcrumb = {
       type: "group",
       id: index,
-      left: left,
-      top: 20,
+      // left: left,
+      // top: 20,
+      left: Number(this.properties.mapLevelNameX + left), // 20
+      top:  Number(this.properties.mapLevelNameY + 10), // 20
       children: [{
         type: "polyline",
         left: 20,
@@ -461,7 +463,7 @@ export default class Visual extends WynVisual {
           points: line,
         },
         style: {
-          stroke: "#0ab7ff",
+          stroke: this.properties.mapLevelNameColor,
           key: `${name}`,
         }
       },
@@ -472,7 +474,7 @@ export default class Visual extends WynVisual {
         style: {
           text: `${name}`,
           textAlign: "center",
-          fill: "#0ab7ff",
+          fill: this.properties.mapLevelNameColor,
           font: '12px "Microsoft YaHei", sans-serif',
         },
         onclick: () => {
@@ -501,8 +503,9 @@ export default class Visual extends WynVisual {
     let arr = [{
       //标题的线
       type: "group",
-      left: 15,
-      top: 10,
+      left: this.properties.mapLevelNameX, // 15
+      top: this.properties.mapLevelNameY, // 10
+      zlevel: 10,
       children: [{
         type: "line",
         left: 0,
@@ -514,7 +517,7 @@ export default class Visual extends WynVisual {
           y2: 0,
         },
         style: {
-          stroke: "rgba(147, 235, 248, 0.5)",
+          stroke: this.properties.mapLevelNameColor,
         },
       },
       {
@@ -528,7 +531,7 @@ export default class Visual extends WynVisual {
           y2: 0,
         },
         style: {
-          stroke: "rgba(147, 235, 248, 0.5)",
+          stroke: this.properties.mapLevelNameColor,
         },
       },
       ],
@@ -537,8 +540,8 @@ export default class Visual extends WynVisual {
       //省级标题样式
       id: '中国',
       type: "group",
-      left: 20,
-      top: 20,
+      left: this.properties.mapLevelNameX + 5, // 20
+      top: this.properties.mapLevelNameY + 10, // 20
       children: [
         {
           type: "text",
@@ -547,7 +550,7 @@ export default class Visual extends WynVisual {
           style: {
             text: '中国',
             textAlign: "center",
-            fill: "#0ab7ff",
+            fill: this.properties.mapLevelNameColor,
             font: '12px "Microsoft YaHei", sans-serif',
           },
           onclick: () => {
@@ -561,6 +564,7 @@ export default class Visual extends WynVisual {
     }]
     this.graphic = arr;
   }
+
   private render() {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     const items = this.isMock ? Visual.mockItems : this.items;
@@ -764,9 +768,9 @@ export default class Visual extends WynVisual {
         map: '3DMapCustom',
         show: false,
         zlevel: -10,
-        boxWidth: 200,
-        boxHeight: 15, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
-        regionHeight: 3,
+        boxWidth: options.mapBoxWidth,
+        boxHeight: options.mapBoxHeight, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
+        regionHeight: options.mapBoxDepth,
         shading: 'lambert',
         viewControl: {
             projection: 'perspective',
@@ -785,97 +789,97 @@ export default class Visual extends WynVisual {
             animationDurationUpdate: 1000,
             animationEasingUpdate: 'cubicInOut'
         },
-            itemStyle: {
-              color: 'red', //地图颜色
-              borderWidth: 3, //分界线wdith
-              distance: 5,
-              borderColor: 'green', //分界线颜色
+        itemStyle: {
+        color: 'red', //地图颜色
+        borderWidth: 3, //分界线wdith
+        distance: 5,
+        borderColor: 'green', //分界线颜色
         },
-
-          emphasis: {
-              label: {
-                  show: true, //是否显示高亮
-                  textStyle: {
-                      color: '#fff', //高亮文字颜色
-                  },
-              },
-              itemStyle: {
-                  color: '#0489d6', //地图高亮颜色
-              },
-          },
+        emphasis: {
+            label: {
+                show: true, //是否显示高亮
+                textStyle: {
+                    color: '#fff', //高亮文字颜色
+                },
+            },
+            itemStyle: {
+                color: '#0489d6', //地图高亮颜色
+            },
+        },
       },
       series: [
         {
-          type: 'map3D',
-          map: '3DMapCustom',
-          name: '3DMapCustom',
-          boxWidth: 200,
-            boxHeight: 15,
-          viewControl: {
-            projection: 'perspective',
-            autoRotate: false,
-            damping: 0,
-            rotateSensitivity: 2, //旋转操作的灵敏度
-            rotateMouseButton: 'left', //旋转操作使用的鼠标按键
-            zoomSensitivity: 2, //缩放操作的灵敏度
-            panSensitivity: 2, //平移操作的灵敏度
-            panMouseButton: 'right', //平移操作使用的鼠标按键
+            type: 'map3D',
+            map: '3DMapCustom',
+            name: '3DMapCustom',
+            boxWidth: options.mapBoxWidth,
+            boxHeight: options.mapBoxHeight,
+            regionHeight: options.mapBoxDepth,
+            viewControl: {
+              projection: 'perspective',
+              autoRotate: false,
+              damping: 0,
+              rotateSensitivity: 2, //旋转操作的灵敏度
+              rotateMouseButton: 'left', //旋转操作使用的鼠标按键
+              zoomSensitivity: 2, //缩放操作的灵敏度
+              panSensitivity: 2, //平移操作的灵敏度
+              panMouseButton: 'right', //平移操作使用的鼠标按键
 
-            distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
-            center: [0, 0, 0],
-            animation: true,
-            animationDurationUpdate: 1000,
-            animationEasingUpdate: 'cubicInOut'
-          },
-          realisticMaterial: {
-            roughness: 0.8,
-            metalness: 0
-          },
-          postEffect: {
-            enable: true
-          },
-          groundPlane: {
-            show: false
-          },
-          light: {
-            main: {
-              intensity: 1,
-              alpha: 30
+              distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
+              center: [0, 0, 0],
+              animation: true,
+              animationDurationUpdate: 1000,
+              animationEasingUpdate: 'cubicInOut'
             },
-            ambient: {
-              intensity: 0
-            }
-          },
-          label: {
-              show: false, //是否显示市
-              textStyle: {
-                  color: '#fff', //文字颜色
-                  fontSize: 20, //文字大小
+            realisticMaterial: {
+              roughness: 0.8,
+              metalness: 0
             },
-            formatter: (test: any,) => {
-              const _label = test.data.name || ' '
-              return _label
-            }
-          },
-          itemStyle: {
-              color: '#2B5890', //地图颜色
-              borderWidth: 3, //分界线wdith
-              distance: 5,
-              borderColor: '#5578A5', //分界线颜色
-          },
-          emphasis: {
-              label: {
-                  show: true, //是否显示高亮
-                  textStyle: {
-                      color: '#fff', //高亮文字颜色
-                  },
+            postEffect: {
+              enable: true
+            },
+            groundPlane: {
+              show: false
+            },
+            light: {
+              main: {
+                intensity: 1,
+                alpha: 30
               },
-              itemStyle: {
-                  color: '#0489d6', //地图高亮颜色
+              ambient: {
+                intensity: 0
+              }
+            },
+            label: {
+                show: false, //是否显示市
+                textStyle: {
+                    color: '#fff', //文字颜色
+                    fontSize: 20, //文字大小
               },
-          },
-          data: _data,
-          zlevel: 1,
+              formatter: (test: any,) => {
+                const _label = test.data.name || ' '
+                return _label
+              }
+            },
+            itemStyle: {
+                color: options.mapColor, //地图颜色
+                borderWidth: options.mapDemarcationBorder, //分界线wdith
+                distance: 5,
+                borderColor: options.mapDemarcationColor, //分界线颜色
+            },
+            emphasis: {
+                label: {
+                    show: true, //是否显示高亮
+                    textStyle: {
+                        color: '#fff', //高亮文字颜色
+                    },
+                },
+                itemStyle: {
+                    color: options.mapHoverColor, //地图高亮颜色
+                },
+            },
+            data: _data,
+            zlevel: 1,
           // silent: true,
         },
         {
