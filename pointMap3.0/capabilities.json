@@ -332,6 +332,24 @@
                         "defaultValue": false
                     },
                     {
+                        "name": "showTooltipValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showTooltipLocation",
+                        "type": "Boolean",
+                        "displayName": "显示位置名称",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showTooltipText",
+                        "type": "Boolean",
+                        "displayName": "显示提示信息",
+                        "defaultValue": true
+                    },
+                    {
                         "name": "tooltipBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",

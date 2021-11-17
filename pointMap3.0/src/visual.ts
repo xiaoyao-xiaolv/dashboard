@@ -212,7 +212,6 @@ export default class Visual extends WynVisual {
     this.locationArr = [];
     this.preview = options.isViewer
     this.isMock = !options.dataViews.length;
-    // this.host.propertyService.setProperty('mapLevel', options.properties.MapId !== 'china' ? 1: 0);
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
       let bindData = options.dataViews[0].plain.data;
@@ -264,6 +263,7 @@ export default class Visual extends WynVisual {
     this.cityNameData = this.mapAdCodeId === 'china' ?  [] : JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
     echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(this.mapJsonData)));
     myChart.clear();
+    
     this.render();
     
   }
@@ -383,25 +383,18 @@ export default class Visual extends WynVisual {
           dataIndex: params.dataIndex,
         }; 
         if (selectionId) {
-          if (!this.selectionManager.contains(selectionId)) {
-            this.selectionManager.select(selectionId, true);
-            // this.dispatch('highlight', selectInfo);
-            this.selection.push(selectInfo);
-          } else {
-            this.selectionManager.clear(selectionId);
-          }
-          
+         
           if (clickMouse === clickLeftMouse) {
             if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
               return
             } else {
               // if (isTooltipModelShown) return;
               // this.hideTooltip();
-              const selectionIds = this.selectionManager.getSelectionIds();
+              // const selectionIds = this.selectionManager.getSelectionIds();
               this.host.commandService.execute([{
                 name: 'Drill' || this.properties.clickLeftMouse,
                 payload: {
-                  selectionIds,
+                  selectionIds: [selectionId],
                   position: {
                     x: params.event.event.clientX,
                     y: params.event.event.clientY,
@@ -412,6 +405,14 @@ export default class Visual extends WynVisual {
           } else if (clickMouse === clickRightMouse) {  
             params.event.event.preventDefault();
             this.showTooltip(params.event.event, true);
+          }
+         
+          if (!this.selectionManager.contains(selectionId)) {
+            this.selectionManager.select(selectionId, true);
+            // this.dispatch('highlight', selectInfo);
+            this.selection.push(selectInfo);
+          } else {
+            this.selectionManager.clear(selectionId);
           }
         }
          
@@ -430,6 +431,7 @@ export default class Visual extends WynVisual {
           this.host.propertyService.setProperty('MapId', params.name);
           this.host.propertyService.setProperty('cityName', params.name);
           this.getMapJson(params.name);
+          toDrilling(params);
         } 
       } else {
         toDrilling(params, true);
@@ -756,13 +758,21 @@ export default class Visual extends WynVisual {
             const name = _item.name.replace(locationReg, '');
             return name === params.name.replace(locationReg, '') && _item;
           });
-
+          
           if (!this.isMock && _toolTip) {
-            let _addToolTipText = `${this.locationName}: ${_toolTip.name} \n${this.valuesName}: ${_toolTip.datas}`
-            _toolTip.toolTip.map((_text: any, index: number) => {
-              _addToolTipText += `\n${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`
-            })
-            return myTooltip.getTooltipDom(_addToolTipText)
+            let _textArr = []
+            if (options.showTooltipValue) {
+              _textArr.push(`${this.valuesName}: ${_toolTip.datas}`)
+            }
+            if (options.showTooltipLocation) {
+              _textArr.push(`${this.locationName}: ${_toolTip.name}`)
+            }
+            if (options.showTooltipText) {
+              _toolTip.toolTip.map((_text: any, index: number) => {
+                _textArr.push(`${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`)
+              })
+            }
+            return myTooltip.getTooltipDom(_textArr.join('\n'))
           }
         },
       },
@@ -938,7 +948,7 @@ export default class Visual extends WynVisual {
 
     // showTooltip
     if (!properties.showTooltip ) {
-      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipTextStyle'])
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipTextStyle' , 'showTooltipValue', 'showTooltipLocation', 'showTooltipText'])
     }
     return hiddenStates;
   }
