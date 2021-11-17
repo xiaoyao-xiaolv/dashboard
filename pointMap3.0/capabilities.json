@@ -515,7 +515,7 @@
                             "displayNameKey": "跳转"
                         }
                     ],
-                    "defaultValue": "Jump"
+                    "defaultValue": "Drill"
                 }]
             }
         ]
@@ -538,5 +538,13 @@
         }
 
     ],
-    "analysis": []
+    "analysis": [{
+        "type": "drill",
+        "rule":
+        {
+            "roles": [
+                "location"
+            ]
+        }
+    }]
 }

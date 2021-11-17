@@ -115,7 +115,7 @@ export default class Visual extends WynVisual {
 
   private getMapJson = (_mapName: string, isENd?: boolean) => {
     const _name = _mapName.replace(locationReg, '');
-    if (_mapName == 'china' ||_mapName == '陕西省' ) {
+    if (_mapName == 'china' || _mapName == '陕西省' ) {
       this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
     } else {
       let _adCodeId = '100000'
@@ -131,6 +131,7 @@ export default class Visual extends WynVisual {
 
       let url = href.substring(0, href.indexOf(port) + port.length + 1) + "data/" + _adCodeId + ".json"
       $.ajaxSettings.async = false;
+      // let _dataVURL = `https://geo.datav.aliyun.com/areas_v3/bound/geojson?code=${_adCodeId}_full`
       $.getJSON(url, function (geoJson) {
         mapJson = geoJson
       })
@@ -138,44 +139,44 @@ export default class Visual extends WynVisual {
       this.mapJsonData = mapJson
       // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
     }
-    if (_mapName !== 'china') {
-      const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
-        item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
-      if (this.locationArr.length > 1) {
-        this.bindData.filter((_data: any) => {
-          this.locationArr.map((_location) => {
-            if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
-              this.locationName = _location;
-            }
-          })
-        })
-        this.items = this.prepareData(this.bindData, this.profile);
-        this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
-      } else {
-        this.items = this.items.filter((_item: any) => {
-          if (_filterCity.includes(_item.name.replace(locationReg, '')) || _item.name.replace(locationReg, '') === _name ) {
-            return _item;
-          }
-        });
-      }
-    } else {
-      this.items = this.initItems;
-    }
-    const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
-    this.items = _dataNames.map((_dataName: any) => {
-      const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
-      if (_target) {
-        if (_target.length > 1) {
-          return {
-            ..._target[0],
-            datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
-          }
-        } else {
-          return _target[0]
-        }
-      }
+    // if (_mapName !== 'china') {
+    //   const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
+    //     item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+    //   if (this.locationArr.length > 1) {
+    //     this.bindData.filter((_data: any) => {
+    //       this.locationArr.map((_location) => {
+    //         if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
+    //           this.locationName = _location;
+    //         }
+    //       })
+    //     })
+    //     this.items = this.prepareData(this.bindData, this.profile);
+    //     this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
+    //   } else {
+    //     this.items = this.items.filter((_item: any) => {
+    //       if (_filterCity.includes(_item.name.replace(locationReg, '')) || _item.name.replace(locationReg, '') === _name ) {
+    //         return _item;
+    //       }
+    //     });
+    //   }
+    // } else {
+    //   this.items = this.initItems;
+    // }
+    // const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
+    // this.items = _dataNames.map((_dataName: any) => {
+    //   const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
+    //   if (_target) {
+    //     if (_target.length > 1) {
+    //       return {
+    //         ..._target[0],
+    //         datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
+    //       }
+    //     } else {
+    //       return _target[0]
+    //     }
+    //   }
   
-    });
+    // });
   }
 
   private getCoords = (keyWord: string) => {
@@ -364,10 +365,10 @@ export default class Visual extends WynVisual {
       document.oncontextmenu = function () { return false; }; 
       if (!e.seriesClick) {
         // clear tooltip
-        this.hideTooltip();
+        // this.hideTooltip();
         // clear selection
-        this.selection = [];
-        this.selectionManager.clear();
+        // this.selection = [];
+        // this.selectionManager.clear();
         return;
       }
     })
@@ -389,6 +390,7 @@ export default class Visual extends WynVisual {
           } else {
             this.selectionManager.clear(selectionId);
           }
+          
           if (clickMouse === clickLeftMouse) {
             if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
               return
@@ -397,7 +399,7 @@ export default class Visual extends WynVisual {
               // this.hideTooltip();
               const selectionIds = this.selectionManager.getSelectionIds();
               this.host.commandService.execute([{
-                name: isJump ? 'Jump' : this.properties.clickLeftMouse,
+                name: 'Drill' || this.properties.clickLeftMouse,
                 payload: {
                   selectionIds,
                   position: {
