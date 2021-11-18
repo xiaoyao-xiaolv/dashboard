@@ -215,61 +215,26 @@ export default class Visual extends WynVisual {
     this.myEcharts.setOption(option);
   }
 
-  //获取数据集所有数据，并保存在funnelDate
-  public getFunnelPairData() {
-    this.actualValueTotal = 0;
-    this.reducedValueTotal = 0;
-    let allData;
-
-    this.funnelData = [];
-    this.selectionIds = [];
-
-    const dataView = this.properties.dataViews[0] && this.properties.dataViews[0].plain;
-
-    const seriesDisplay = dataView.profile.series.values[0].display;
-    const actualDisplay = dataView.profile.actual_value.values[0].display
-    let reducedDisplay: string
-    if (this.isDoubleFunnel) {
-      reducedDisplay = dataView.profile.reduced_value.values[0].display;
-    }
-
-    if (dataView) {
-      dataView.data.sort((a, b) => { return b[actualDisplay] - a[actualDisplay] })
-      dataView.data.forEach((dataPoint) => {
-        //数据共享
-        const selectionId = this.host.selectionService.createSelectionId();
-        selectionId.withDimension(dataView.profile.series.values[0], dataPoint);
-        selectionId.withDimension(dataView.profile.actual_value.values[0], dataPoint);
-
-        allData = {
-          series: dataPoint[seriesDisplay],
-          actual_value: Number(dataPoint[actualDisplay]),
-          reduced_value: Number,
-        }
-        this.actualValueTotal += Number(dataPoint[actualDisplay]);
-
-        if (this.isDoubleFunnel) {
-          selectionId.withDimension(dataView.profile.reduced_value.values[0], dataPoint);
-          allData.reduced_value = dataPoint[reducedDisplay];
-          this.reducedValueTotal += Number(dataPoint[reducedDisplay]);
-        }
-        this.selectionIds.push(selectionId);
-        this.funnelData.push(allData);
-      })
-    };
-  }
-
   //单个漏斗图显示options
   getOptionForOnce() {
 
     //漏斗边框
     let funnelWin = {
-      top: '10%',
-      left: '20%',
+      top: this.dom.clientHeight * 0.1,
+      left: this.dom.clientWidth * 0.2,
       bottom: 0,
       width: this.dom.clientWidth * 0.6,
-      height: this.dom.clientWidth * 0.9
+      height: this.dom.clientHeight * 0.8
     }
+
+    //grape边框
+    let grapeWin = {
+      top: funnelWin.top + (funnelWin.height / this.funnelData.length) / 2,
+      height: (funnelWin.height / this.funnelData.length) * (this.funnelData.length - 1)
+    }
+
+    let curvenessValues = this.getCurveness(funnelWin.width, this.funnelData.map((data) => { return data.actual_value }), this.properties.properties.maxSize, this.properties.properties.minSize);
+
 
     const typeValue = (data) => {
       if (this.properties.properties.funnelStyle == "style1") {
@@ -296,17 +261,7 @@ export default class Visual extends WynVisual {
     }
 
 
-    //grape位置窗口设置
-    let grapeDomWidth, grapeDomHeight;
-    let grapeDomLeft, grapeDomTop;
-
-    grapeDomLeft = this.dom.clientWidth * 0.2;  //+ ?
-    grapeDomTop = this.dom.clientHeight * 0.1;
-    grapeDomWidth = (this.dom.clientWidth * 0.6) / 2;  //- ?
-    grapeDomHeight = ((this.dom.clientHeight * 0.9) / this.funnelData.length) * (this.funnelData.length - 1);
     let colorIndex = 0;
-    grapeDomLeft += (this.properties.properties.funnelStyle == "style1") ? ((100 - this.properties.properties.maxSize) / 100) * (this.dom.clientWidth * 0.3) : 0;
-
 
     //样式属性设置
     let styleValue = {
@@ -335,16 +290,12 @@ export default class Visual extends WynVisual {
         value = data.actual_value;
       }
 
-      if (index != 0) {
-        x = x + ((arr[index - 1].actual_value - data.actual_value) / widthXMath * 10)
-      }
-
       //上下比例
       var myData1 = {
         name: name,
         value: value,
         actualValue: data.actual_value,
-        x: x,
+        x: 10,
         y: ySize,
         itemStyle: {
           color: this.getColors(index, 1)
@@ -373,9 +324,6 @@ export default class Visual extends WynVisual {
       showData.push(myData1);
       showData2.push(myData2);
 
-      if (index == this.funnelData.length - 2) {
-        grapeDomWidth = grapeDomWidth * (addActualValue / this.actualValueTotal)
-      }
 
     })
 
@@ -387,7 +335,8 @@ export default class Visual extends WynVisual {
         target: showData[i + 1].name,
         value: (Math.round((showData[i + 1].value / showData[i].value) * 100 * 100) / 100).toFixed(2),
         lineStyle: {
-          curveness: -1 - (this.properties.properties.minSize * 0.04),
+          // curveness: -1 - (this.properties.properties.minSize * 0.04),
+          curveness: -curvenessValues[i],
           color: {
             colorStops: [{
               offset: 0,
@@ -411,7 +360,7 @@ export default class Visual extends WynVisual {
       legend: {
         left: this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? this.properties.properties.legendPosition : this.properties.properties.legendVerticalPosition,
         top: this.properties.properties.legendPosition === 'top' || this.properties.properties.legendPosition === 'bottom' ? this.properties.properties.legendPosition : this.properties.properties.legendHorizontalPosition,
-        // orient: "orient",
+        orient: orient,
         width: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendWidth}%` : 'auto',
         height: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendHeight}%` : 'auto',
         //图例间距
@@ -475,6 +424,9 @@ export default class Visual extends WynVisual {
 
         // 数值显示
         {
+          itemStyle: {
+            opacity: 1
+          },
           type: 'funnel',
           // color: colors,
           z: 2,
@@ -486,7 +438,8 @@ export default class Visual extends WynVisual {
           legendHoverLink: false,
           top: funnelWin.top,
           left: funnelWin.left,
-          bottom: funnelWin.bottom,
+          // bottom: funnelWin.bottom,
+          height: funnelWin.height,
           width: funnelWin.width,
           minSize: styleValue.minSize,
           maxSize: styleValue.maxSize,
@@ -514,15 +467,14 @@ export default class Visual extends WynVisual {
 
         //转换率计算
         {
-          top: '10%',
-          bottom: 0,
           type: 'funnel',
           gap: this.properties.properties.gapSize,
           minSize: styleValue.minSize,
           maxSize: styleValue.maxSize,
           left: '25%',
-          width: '60%',
-          right: "0",
+          top: funnelWin.top,
+          height: funnelWin.height,
+          width: funnelWin.width,
           z: 1,
           //不触发响应事件
           silent: true,
@@ -557,17 +509,14 @@ export default class Visual extends WynVisual {
         //占上一位的百分比
         {
           z: 1,
-          // bottom: 0,
-          top: grapeDomTop,
-          height: grapeDomHeight,
-          left: grapeDomLeft,
-          width: grapeDomWidth,
+          top: grapeWin.top,
+          height: grapeWin.height,
           type: 'graph',
           layout: 'none',
           symbolSize: 0,
           roam: false,
           edgeSymbol: ['circle', 'arrow'],
-          edgeSymbolSize: [0, 20],
+          edgeSymbolSize: [0, 10],
           lineStyle: {
             normal: {
               width: 2,
@@ -577,9 +526,9 @@ export default class Visual extends WynVisual {
             normal: {
               show: true,
               rotate: 0,
-              position: 'middle',
-              verticalAlign: 'middle',
-              align: 'center',
+              position: 'end',
+              verticalAlign: 'bottom',
+              align: 'right',
               // fontSize: 20,
               formatter: function (d) {
                 if (d.value) {
@@ -617,6 +566,38 @@ export default class Visual extends WynVisual {
 
   //对比图样式1
   getStyleOption1() {
+
+
+    //漏斗边框
+    let leftFunnelWin = {
+      top: this.dom.clientHeight * 0.1,
+      left: this.dom.clientWidth * 0.2,
+      width: this.dom.clientWidth * 0.3,
+      height: this.dom.clientHeight * 0.8
+    }
+
+    let rightFunnelWin = {
+      top: this.dom.clientHeight * 0.1,
+      right: this.dom.clientWidth * 0.1,
+      width: this.dom.clientWidth * 0.3,
+      height: this.dom.clientHeight * 0.8
+    }
+
+    //grape边框
+    let leftGrapeWin = {
+      top: leftFunnelWin.top + (leftFunnelWin.height / this.funnelData.length) / 2,
+      height: (leftFunnelWin.height / this.funnelData.length) * (this.funnelData.length - 1)
+    }
+    let rightGrapeWin = {
+      top: rightFunnelWin.top + (rightFunnelWin.height / this.funnelData.length) / 2,
+      height: (rightFunnelWin.height / this.funnelData.length) * (this.funnelData.length - 1)
+    }
+
+    let leftCurvenessValues = this.getCurveness(leftFunnelWin.width * 2, this.funnelData.map((data) => { return data.actual_value }), this.properties.properties.actualMaxSize, this.properties.properties.actualMinSize);
+    let rightCurvenessValues = this.getCurveness(rightFunnelWin.width * 2, this.funnelData.map((data) => { return data.reduced_value }), this.properties.properties.reducedMaxSize, this.properties.properties.reducedMinSize);
+
+
+
     let properties = this.properties.properties;
     let addActualValue = 0;
     let addReducedValue = 0;
@@ -631,7 +612,7 @@ export default class Visual extends WynVisual {
         target: this.funnelData[i + 1].series,
         value: (Math.round((this.funnelData[i + 1].actual_value / this.funnelData[i].actual_value) * 100 * 100) / 100).toFixed(2),
         lineStyle: {
-          curveness: -(this.funnelData.length + 3 - i - 0.5)
+          curveness: -leftCurvenessValues[i]
         }
       };
       actual_links.push(data1);
@@ -640,7 +621,7 @@ export default class Visual extends WynVisual {
         target: this.funnelData[i + 1].series,
         value: (Math.round((this.funnelData[i + 1].reduced_value / this.funnelData[i].reduced_value) * 100 * 100) / 100).toFixed(2),
         lineStyle: {
-          curveness: (this.funnelData.length + 3 - i - 0.5)
+          curveness: rightCurvenessValues[i]
         }
       };
       reduced_links.push(data2);
@@ -653,7 +634,7 @@ export default class Visual extends WynVisual {
       legend: {
         left: this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? this.properties.properties.legendPosition : this.properties.properties.legendVerticalPosition,
         top: this.properties.properties.legendPosition === 'top' || this.properties.properties.legendPosition === 'bottom' ? this.properties.properties.legendPosition : this.properties.properties.legendHorizontalPosition,
-        // orient: "orient",
+        orient: orient,
         width: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendWidth}%` : 'auto',
         height: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendHeight}%` : 'auto',
         //图例间距
@@ -685,16 +666,18 @@ export default class Visual extends WynVisual {
 
       series: [
 
-        {     //实际数值
+        {
+
+          //实际数值
           name: this.properties.dataViews[0].plain.profile.actual_value.values[0].display,
           //相应鼠标时间
           silent: false,
           // color: colors,
-          top: '10%',
-          bottom: 0,
+          top: leftFunnelWin.top,
+          left: leftFunnelWin.left,
+          width: leftFunnelWin.width,
+          height: leftFunnelWin.height,
           type: 'funnel',
-          left: '10%',
-          width: '40%',
           funnelAlign: 'right',
           maxSize: this.properties.properties.actualMaxSize + "%",
           minSize: this.properties.properties.actualMinSize + "%",
@@ -740,13 +723,9 @@ export default class Visual extends WynVisual {
           },
           itemStyle: {
             borderColor: '#fff',
-            borderWidth: 1
+            borderWidth: 1,
+            opacity: 1
           },
-          // emphasis: {
-          //   label: {
-          //     fontSize: 20
-          //   }
-          // },
           data: this.funnelData.map((data, index) => {
             return Object.assign({}, {
               name: data.series,
@@ -759,18 +738,17 @@ export default class Visual extends WynVisual {
           })
         },
 
-        {     //对比数值
+        {
+          //对比数值
           name: this.properties.dataViews[0].plain.profile.reduced_value.values[0].display,
           //相应鼠标时间
           silent: false,
-          // color: colors,
-          top: '10%',
-          bottom: 0,
+          top: rightFunnelWin.top,
+          // right: rightFunnelWin.right,
+          width: rightFunnelWin.width,
+          height: rightFunnelWin.height,
           type: 'funnel',
-          // left: '20%',
-          // right: '0',
           x: '50%',
-          width: '40%',
           funnelAlign: 'left',
           maxSize: this.properties.properties.reducedMaxSize + "%",
           minSize: this.properties.properties.reducedMinSize + "%",
@@ -816,7 +794,8 @@ export default class Visual extends WynVisual {
           },
           itemStyle: {
             borderColor: '#fff',
-            borderWidth: 1
+            borderWidth: 1,
+            opacity: 1
           },
           emphasis: {
             label: {
@@ -837,11 +816,9 @@ export default class Visual extends WynVisual {
 
         //实际数占上一位的百分比
         {
-          x: '35%',
           z: 1,
-          top: '10%',
-          bottom: '0%',
-          // height: 400,
+          top: leftGrapeWin.top,
+          height: leftGrapeWin.height,
           type: 'graph',
           layout: 'none',
           symbolSize: 0,
@@ -857,12 +834,13 @@ export default class Visual extends WynVisual {
           edgeLabel: {
             normal: {
               show: true,
-              rotate: 45,
-              position: 'middle',
+              rotate: 0,
+              position: 'end',
+              verticalAlign: 'bottom',
+              align: 'right',
               backgroundColor: '#e4f5da',
               borderRadius: 4,
               color: '#333',
-              verticalAlign: 'bottom',
               fontSize: 14,
               legendHoverLink: true,
               padding: [3, 10, 5, 10],
@@ -889,11 +867,9 @@ export default class Visual extends WynVisual {
         },
         //对比值占上一位的百分比
         {
-          x: '48%',
           z: 1,
-          top: '10%',
-          bottom: '0%',
-          // height: 400,
+          top: rightGrapeWin.top,
+          height: rightGrapeWin.height,
           type: 'graph',
           layout: 'none',
           symbolSize: 0,
@@ -909,12 +885,13 @@ export default class Visual extends WynVisual {
           edgeLabel: {
             normal: {
               show: true,
-              rotate: -45,
-              position: 'middle',
+              rotate: 0,
+              position: 'end',
+              verticalAlign: 'bottom',
+              align: 'left',
               backgroundColor: '#e4f5da',
               borderRadius: 4,
               color: '#333',
-              verticalAlign: 'bottom',
               fontSize: 14,
               legendHoverLink: true,
               padding: [3, 10, 5, 10],
@@ -947,6 +924,8 @@ export default class Visual extends WynVisual {
   //对比图样式2
   getStyleOption2() {
 
+    const orient = this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? 'vertical' : 'horizontal';
+
     var option = {
       tooltip: {
         trigger: 'item',
@@ -955,7 +934,7 @@ export default class Visual extends WynVisual {
       legend: {
         left: this.properties.properties.legendPosition === 'left' || this.properties.properties.legendPosition === 'right' ? this.properties.properties.legendPosition : this.properties.properties.legendVerticalPosition,
         top: this.properties.properties.legendPosition === 'top' || this.properties.properties.legendPosition === 'bottom' ? this.properties.properties.legendPosition : this.properties.properties.legendHorizontalPosition,
-        // orient: "orient",
+        orient: orient,
         width: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendWidth}%` : 'auto',
         height: this.properties.properties.legendArea === 'custom' ? `${this.properties.properties.legendHeight}%` : 'auto',
         //图例间距
@@ -1072,6 +1051,84 @@ export default class Visual extends WynVisual {
       ]
     };
     return option;
+  }
+
+  //获取数据集所有数据，并保存在funnelDate
+  public getFunnelPairData() {
+    this.actualValueTotal = 0;
+    this.reducedValueTotal = 0;
+    let allData;
+
+    this.funnelData = [];
+    this.selectionIds = [];
+
+    const dataView = this.properties.dataViews[0] && this.properties.dataViews[0].plain;
+
+    const seriesDisplay = dataView.profile.series.values[0].display;
+    const actualDisplay = dataView.profile.actual_value.values[0].display
+    let reducedDisplay: string
+    if (this.isDoubleFunnel) {
+      reducedDisplay = dataView.profile.reduced_value.values[0].display;
+    }
+
+    if (dataView) {
+      dataView.data.sort((a, b) => { return b[actualDisplay] - a[actualDisplay] })
+      dataView.data.forEach((dataPoint) => {
+        //数据共享
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(dataView.profile.series.values[0], dataPoint);
+        selectionId.withDimension(dataView.profile.actual_value.values[0], dataPoint);
+
+        allData = {
+          series: dataPoint[seriesDisplay],
+          actual_value: Number(dataPoint[actualDisplay]),
+          reduced_value: Number,
+        }
+        this.actualValueTotal += Number(dataPoint[actualDisplay]);
+
+        if (this.isDoubleFunnel) {
+          selectionId.withDimension(dataView.profile.reduced_value.values[0], dataPoint);
+          allData.reduced_value = dataPoint[reducedDisplay];
+          this.reducedValueTotal += Number(dataPoint[reducedDisplay]);
+        }
+        this.selectionIds.push(selectionId);
+        this.funnelData.push(allData);
+      })
+    };
+  }
+
+  //获取曲率指数
+  private getCurveness(funnelWidth, data, maxSize, minSize) {
+    let curvenessValues = [];
+    let maxValue = data[0];
+    let topWidth
+    //高合曲率
+    let cors = ((this.dom.clientHeight * 0.8) / this.funnelData.length) / 1.6
+    let minWidth
+    let width
+    let nedSize
+
+    if (maxSize >= minSize) {
+      topWidth = funnelWidth * (maxSize / 100)
+      minWidth = (minSize / 100) * funnelWidth;
+      width = topWidth - minWidth;
+      nedSize = funnelWidth * (minSize / 100);
+      for (let i = 1; i < data.length; i++) {
+        curvenessValues.push((width * (data[i] / maxValue) + nedSize) / cors);
+      }
+    } else {
+      topWidth = funnelWidth * (minSize / 100)
+      minWidth = (maxSize / 100) * funnelWidth;
+      width = topWidth - minWidth;
+      nedSize = funnelWidth * (maxSize / 100);
+      for (let i = 1; i < data.length; i++) {
+        curvenessValues.push((width * (data[i] / maxValue) + nedSize) / cors+1);
+      }
+
+      curvenessValues.reverse()
+    }
+  
+    return curvenessValues;
   }
 
   private getColors(index, position: number) {
