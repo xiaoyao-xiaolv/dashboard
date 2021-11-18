@@ -139,44 +139,44 @@ export default class Visual extends WynVisual {
       this.mapJsonData = mapJson
       // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
     }
-    // if (_mapName !== 'china') {
-    //   const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
-    //     item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
-    //   if (this.locationArr.length > 1) {
-    //     this.bindData.filter((_data: any) => {
-    //       this.locationArr.map((_location) => {
-    //         if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
-    //           this.locationName = _location;
-    //         }
-    //       })
-    //     })
-    //     this.items = this.prepareData(this.bindData, this.profile);
-    //     this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
-    //   } else {
-    //     this.items = this.items.filter((_item: any) => {
-    //       if (_filterCity.includes(_item.name.replace(locationReg, '')) || _item.name.replace(locationReg, '') === _name ) {
-    //         return _item;
-    //       }
-    //     });
-    //   }
-    // } else {
-    //   this.items = this.initItems;
-    // }
-    // const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
-    // this.items = _dataNames.map((_dataName: any) => {
-    //   const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
-    //   if (_target) {
-    //     if (_target.length > 1) {
-    //       return {
-    //         ..._target[0],
-    //         datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
-    //       }
-    //     } else {
-    //       return _target[0]
-    //     }
-    //   }
+    if (_mapName !== 'china') {
+      const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
+        item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+      if (this.locationArr.length > 1) {
+        this.bindData.filter((_data: any) => {
+          this.locationArr.map((_location) => {
+            if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
+              this.locationName = _location;
+            }
+          })
+        })
+        this.items = this.prepareData(this.bindData, this.profile);
+        this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
+      } else {
+        this.items = this.items.filter((_item: any) => {
+          if (_filterCity.includes(_item.name.replace(locationReg, '')) || _item.name.replace(locationReg, '') === _name ) {
+            return _item;
+          }
+        });
+      }
+    } else {
+      this.items = this.initItems;
+    }
+    const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
+    this.items = _dataNames.map((_dataName: any) => {
+      const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
+      if (_target) {
+        if (_target.length > 1) {
+          return {
+            ..._target[0],
+            datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
+          }
+        } else {
+          return _target[0]
+        }
+      }
   
-    // });
+    });
   }
 
   private getCoords = (keyWord: string) => {
@@ -243,7 +243,8 @@ export default class Visual extends WynVisual {
       if (this.mapAdCodeId !== 'china') {
         this.linelen = 40;
         provinceName && this.createBreadcrumb(provinceName, this.linelen, 1)
-        this.linelen += provinceName.length * 20;
+        const _provinceNameLength = provinceName.length < 5 ? provinceName.length * 20 : provinceName.length * 15;
+        this.linelen += _provinceNameLength;
         cityName && this.createBreadcrumb(cityName,  this.linelen, 2)
       }
       
@@ -359,6 +360,46 @@ export default class Visual extends WynVisual {
       timerPlay();
     })
   }
+  public toDrilling = (params: any, isJump?: boolean) => {
+    const clickMouse = params.event.event.button;
+    if (params.componentType !== 'series') return;
+    params.event.event.seriesClick = true;
+    const selectionId = this.getNodeSelectionId(params.name);
+    const selectInfo = {
+      seriesIndex: params.seriesIndex,
+      dataIndex: params.dataIndex,
+    }; 
+    if (selectionId) {
+     
+      if (clickMouse === clickLeftMouse) {
+        // if (isTooltipModelShown) return;
+          // this.hideTooltip();
+          // const selectionIds = this.selectionManager.getSelectionIds();
+        this.host.commandService.execute([{
+          name: isJump ? 'Jump' :  this.properties.clickLeftMouse,
+          payload: {
+            selectionIds: [selectionId],
+            position: {
+              x: params.event.event.clientX,
+              y: params.event.event.clientY,
+              },
+          }
+        }])
+      } else if (clickMouse === clickRightMouse) {  
+        params.event.event.preventDefault();
+        this.showTooltip(params.event.event, true);
+      }
+     
+      if (!this.selectionManager.contains(selectionId)) {
+        this.selectionManager.select([selectionId], true);
+        // this.dispatch('highlight', selectInfo);
+        this.selection.push(selectInfo);
+      } else {
+        this.selectionManager.clear([selectionId]);
+      }
+    }
+     
+  }
   public bindEvents = () => {
     
     this.container.addEventListener('mousedown', (e: any) => {
@@ -373,68 +414,27 @@ export default class Visual extends WynVisual {
       }
     })
     myChart.off('mouseup')
-    const toDrilling = (params: any, isJump?: boolean) => {
-        const clickMouse = params.event.event.button;
-        if (params.componentType !== 'series') return;
-        params.event.event.seriesClick = true;
-        const selectionId = this.getNodeSelectionId(params.name);
-        const selectInfo = {
-          seriesIndex: params.seriesIndex,
-          dataIndex: params.dataIndex,
-        }; 
-        if (selectionId) {
-         
-          if (clickMouse === clickLeftMouse) {
-            if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
-              return
-            } else {
-              // if (isTooltipModelShown) return;
-              // this.hideTooltip();
-              // const selectionIds = this.selectionManager.getSelectionIds();
-              this.host.commandService.execute([{
-                name: 'Drill' || this.properties.clickLeftMouse,
-                payload: {
-                  selectionIds: [selectionId],
-                  position: {
-                    x: params.event.event.clientX,
-                    y: params.event.event.clientY,
-                    },
-                }
-              }])
-            }
-          } else if (clickMouse === clickRightMouse) {  
-            params.event.event.preventDefault();
-            this.showTooltip(params.event.event, true);
-          }
-         
-          if (!this.selectionManager.contains(selectionId)) {
-            this.selectionManager.select(selectionId, true);
-            // this.dispatch('highlight', selectInfo);
-            this.selection.push(selectInfo);
-          } else {
-            this.selectionManager.clear(selectionId);
-          }
-        }
-         
-    }
-    myChart.on('mouseup', (params) => {
+    
+    myChart.on('click', (params) => {
+      
       if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
+          // this.host.propertyService.setProperty('mapParams', JSON.stringify(params));
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
           this.host.propertyService.setProperty('provinceName', params.name);
           this.host.propertyService.setProperty('cityName', '');
           this.getMapJson(params.name);
-          toDrilling(params);
+          this.toDrilling(params);
         }else if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 2);
           this.host.propertyService.setProperty('MapId', params.name);
           this.host.propertyService.setProperty('cityName', params.name);
           this.getMapJson(params.name);
-          toDrilling(params);
+          this.toDrilling(params);
         } 
       } else {
-        toDrilling(params, true);
+        this.toDrilling(params, true);
       }
     })
 
@@ -481,9 +481,11 @@ export default class Visual extends WynVisual {
           fill: this.properties.mapLevelNameColor,
           font: '12px "Microsoft YaHei", sans-serif',
         },
-        onclick: () => {
+        onclick: (e: any) => {
           switch (index) {
             case 1:
+              // 省份drilling
+              // this.toDrilling(JSON.parse(this.properties.mapParams));
               this.host.propertyService.setProperty('mapLevel', 1);
               this.host.propertyService.setProperty('MapId', name);
               this.host.propertyService.setProperty('cityName', '');
@@ -558,10 +560,14 @@ export default class Visual extends WynVisual {
             font: '12px "Microsoft YaHei", sans-serif',
           },
           onclick: () => {
+            // clear 
+            const selectionId = this.getNodeSelectionId('中国');
+            this.selectionManager.clear(selectionId);
             this.host.propertyService.setProperty('mapLevel', 0);
             this.host.propertyService.setProperty('MapId', 'china');
             this.host.propertyService.setProperty('provinceName', '');
             this.getMapJson('china');
+            this.render()
           },
         }
       ]

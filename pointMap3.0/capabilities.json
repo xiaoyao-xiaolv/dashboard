@@ -173,6 +173,12 @@
                         "name": "cityName",
                         "type": "Hidden",
                         "defaultValue": ""
+                    },
+                    {
+                        "displayNameKey": "mapParams",
+                        "name": "mapParams",
+                        "type": "Hidden",
+                        "defaultValue": ""
                     }
                 ]
             },
@@ -533,7 +539,7 @@
                             "displayNameKey": "跳转"
                         }
                     ],
-                    "defaultValue": "Drill"
+                    "defaultValue": "none"
                 }]
             }
         ]
@@ -556,13 +562,5 @@
         }
 
     ],
-    "analysis": [{
-        "type": "drill",
-        "rule":
-        {
-            "roles": [
-                "location"
-            ]
-        }
-    }]
+    "analysis": []
 }
