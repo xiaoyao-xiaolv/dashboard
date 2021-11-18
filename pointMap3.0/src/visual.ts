@@ -113,9 +113,9 @@ export default class Visual extends WynVisual {
   }
   createSelectionId = (sid?) => this.host.selectionService.createSelectionId(sid);
 
-  private getMapJson = (_mapName: string) => {
+  private getMapJson = (_mapName: string, isENd?: boolean) => {
     const _name = _mapName.replace(locationReg, '');
-    if (_mapName == 'china' ||_mapName == '陕西省' ) {
+    if (_mapName == 'china' || _mapName == '陕西省' ) {
       this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
     } else {
       let _adCodeId = '100000'
@@ -131,50 +131,52 @@ export default class Visual extends WynVisual {
 
       let url = href.substring(0, href.indexOf(port) + port.length + 1) + "data/" + _adCodeId + ".json"
       $.ajaxSettings.async = false;
+      // let _dataVURL = `https://geo.datav.aliyun.com/areas_v3/bound/geojson?code=${_adCodeId}_full`
       $.getJSON(url, function (geoJson) {
         mapJson = geoJson
       })
+
       this.mapJsonData = mapJson
       // echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(mapJson)))
     }
-    if (_mapName !== 'china') {
-      const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
-        item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
-      if (this.locationArr.length > 1) {
-        this.bindData.filter((_data: any) => {
-          this.locationArr.map((_location) => {
-            if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
-              this.locationName = _location;
-            }
-          })
-        })
-        this.items = this.prepareData(this.bindData, this.profile);
-        this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
-      } else {
-        this.items = this.items.filter((_item: any) => {
-          if (_filterCity.includes(_item.name.replace(locationReg, '')) || _item.name.replace(locationReg, '') === _name ) {
-            return _item;
-          }
-        });
-      }
-    } else {
-      this.items = this.initItems;
-    }
-    const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
-    this.items = _dataNames.map((_dataName: any) => {
-      const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
-      if (_target) {
-        if (_target.length > 1) {
-          return {
-            ..._target[0],
-            datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
-          }
-        } else {
-          return _target[0]
-        }
-      }
+    // if (_mapName !== 'china') {
+    //   const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
+    //     item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+    //   if (this.locationArr.length > 1) {
+    //     this.bindData.filter((_data: any) => {
+    //       this.locationArr.map((_location) => {
+    //         if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
+    //           this.locationName = _location;
+    //         }
+    //       })
+    //     })
+    //     this.items = this.prepareData(this.bindData, this.profile);
+    //     this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
+    //   } else {
+    //     this.items = this.items.filter((_item: any) => {
+    //       if (_filterCity.includes(_item.name.replace(locationReg, '')) || _item.name.replace(locationReg, '') === _name ) {
+    //         return _item;
+    //       }
+    //     });
+    //   }
+    // } else {
+    //   this.items = this.initItems;
+    // }
+    // const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
+    // this.items = _dataNames.map((_dataName: any) => {
+    //   const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
+    //   if (_target) {
+    //     if (_target.length > 1) {
+    //       return {
+    //         ..._target[0],
+    //         datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
+    //       }
+    //     } else {
+    //       return _target[0]
+    //     }
+    //   }
   
-    });
+    // });
   }
 
   private getCoords = (keyWord: string) => {
@@ -210,7 +212,6 @@ export default class Visual extends WynVisual {
     this.locationArr = [];
     this.preview = options.isViewer
     this.isMock = !options.dataViews.length;
-    // this.host.propertyService.setProperty('mapLevel', options.properties.MapId !== 'china' ? 1: 0);
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
       let bindData = options.dataViews[0].plain.data;
@@ -240,8 +241,7 @@ export default class Visual extends WynVisual {
       this.properties = options.properties;
       this.getgraphic(this.mapAdCodeId);
       if (this.mapAdCodeId !== 'china') {
-        
-        this.linelen = this.mapAdCodeId.length * 20;
+        this.linelen = 40;
         provinceName && this.createBreadcrumb(provinceName, this.linelen, 1)
         this.linelen += provinceName.length * 20;
         cityName && this.createBreadcrumb(cityName,  this.linelen, 2)
@@ -254,15 +254,16 @@ export default class Visual extends WynVisual {
       this.mapJsonData = ChainJson;
       this.properties = options.properties;
       this.getgraphic(this.mapAdCodeId);
-      if (this.mapAdCodeId !== 'china') {
-        this.linelen = this.mapAdCodeId.length * 20;
-        this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
-        }
+      // if (this.mapAdCodeId !== 'china') {
+      //   this.linelen = this.mapAdCodeId.length * 20;
+      //   this.createBreadcrumb(this.mapAdCodeId, this.linelen, 2)
+      //   }
        
     }
     this.cityNameData = this.mapAdCodeId === 'china' ?  [] : JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
     echarts.registerMap('3DMapCustom', JSON.parse(JSON.stringify(this.mapJsonData)));
     myChart.clear();
+    
     this.render();
     
   }
@@ -364,58 +365,60 @@ export default class Visual extends WynVisual {
       document.oncontextmenu = function () { return false; }; 
       if (!e.seriesClick) {
         // clear tooltip
-        this.hideTooltip();
+        // this.hideTooltip();
         // clear selection
-        this.selection = [];
-        this.selectionManager.clear();
+        // this.selection = [];
+        // this.selectionManager.clear();
         return;
       }
     })
     myChart.off('mouseup')
-    const toDrilling = (params: any) => {
-          const clickMouse = params.event.event.button;
-          if (params.componentType !== 'series') return;
-          params.event.event.seriesClick = true;
-          const selectionId = this.getNodeSelectionId(params.name);
-          const selectInfo = {
-            seriesIndex: params.seriesIndex,
-            dataIndex: params.dataIndex,
-          }; 
-          if (selectionId) {
-            if (!this.selectionManager.contains(selectionId)) {
-              this.selectionManager.select(selectionId, true);
-              // this.dispatch('highlight', selectInfo);
-              this.selection.push(selectInfo);
+    const toDrilling = (params: any, isJump?: boolean) => {
+        const clickMouse = params.event.event.button;
+        if (params.componentType !== 'series') return;
+        params.event.event.seriesClick = true;
+        const selectionId = this.getNodeSelectionId(params.name);
+        const selectInfo = {
+          seriesIndex: params.seriesIndex,
+          dataIndex: params.dataIndex,
+        }; 
+        if (selectionId) {
+         
+          if (clickMouse === clickLeftMouse) {
+            if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
+              return
             } else {
-              this.selectionManager.clear(selectionId);
+              // if (isTooltipModelShown) return;
+              // this.hideTooltip();
+              // const selectionIds = this.selectionManager.getSelectionIds();
+              this.host.commandService.execute([{
+                name: 'Drill' || this.properties.clickLeftMouse,
+                payload: {
+                  selectionIds: [selectionId],
+                  position: {
+                    x: params.event.event.clientX,
+                    y: params.event.event.clientY,
+                    },
+                }
+              }])
             }
-            if (clickMouse === clickLeftMouse) {
-              if (this.properties.clickLeftMouse === 'none' || this.properties.clickLeftMouse === 'showToolTip') {
-                return
-              } else {
-                if (isTooltipModelShown) return;
-                this.hideTooltip();
-                const selectionIds = this.selectionManager.getSelectionIds();
-                this.host.commandService.execute([{
-                  name: this.properties.clickLeftMouse,
-                  payload: {
-                    selectionIds,
-                    position: {
-                      x: params.event.event.clientX,
-                      y: params.event.event.clientY,
-                      },
-                  }
-                }])
-              }
-            } else if (clickMouse === clickRightMouse) {  
-              params.event.event.preventDefault();
-              this.showTooltip(params.event.event, true);
-            }
+          } else if (clickMouse === clickRightMouse) {  
+            params.event.event.preventDefault();
+            this.showTooltip(params.event.event, true);
           }
          
+          if (!this.selectionManager.contains(selectionId)) {
+            this.selectionManager.select(selectionId, true);
+            // this.dispatch('highlight', selectInfo);
+            this.selection.push(selectInfo);
+          } else {
+            this.selectionManager.clear(selectionId);
+          }
+        }
+         
     }
-    myChart.on('click', (params) => {
-      if (this.properties.MapId !== params.name) {
+    myChart.on('mouseup', (params) => {
+      if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
@@ -423,17 +426,16 @@ export default class Visual extends WynVisual {
           this.host.propertyService.setProperty('cityName', '');
           this.getMapJson(params.name);
           toDrilling(params);
-        }
-
-        if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
+        }else if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
           this.host.propertyService.setProperty('mapLevel', 2);
           this.host.propertyService.setProperty('MapId', params.name);
           this.host.propertyService.setProperty('cityName', params.name);
           this.getMapJson(params.name);
           toDrilling(params);
         } 
-       
-      } 
+      } else {
+        toDrilling(params, true);
+      }
     })
 
     myChart.on('mouseout', (params) => {
@@ -453,8 +455,10 @@ export default class Visual extends WynVisual {
     let breadcrumb = {
       type: "group",
       id: index,
-      left: left,
-      top: 20,
+      // left: left,
+      // top: 20,
+      left: Number(this.properties.mapLevelNameX + left), // 20
+      top:  Number(this.properties.mapLevelNameY + 10), // 20
       children: [{
         type: "polyline",
         left: 20,
@@ -463,7 +467,7 @@ export default class Visual extends WynVisual {
           points: line,
         },
         style: {
-          stroke: "#0ab7ff",
+          stroke: this.properties.mapLevelNameColor,
           key: `${name}`,
         }
       },
@@ -474,7 +478,7 @@ export default class Visual extends WynVisual {
         style: {
           text: `${name}`,
           textAlign: "center",
-          fill: "#0ab7ff",
+          fill: this.properties.mapLevelNameColor,
           font: '12px "Microsoft YaHei", sans-serif',
         },
         onclick: () => {
@@ -503,8 +507,9 @@ export default class Visual extends WynVisual {
     let arr = [{
       //标题的线
       type: "group",
-      left: 15,
-      top: 10,
+      left: this.properties.mapLevelNameX, // 15
+      top: this.properties.mapLevelNameY, // 10
+      zlevel: 10,
       children: [{
         type: "line",
         left: 0,
@@ -516,7 +521,7 @@ export default class Visual extends WynVisual {
           y2: 0,
         },
         style: {
-          stroke: "rgba(147, 235, 248, 0.5)",
+          stroke: this.properties.mapLevelNameColor,
         },
       },
       {
@@ -530,7 +535,7 @@ export default class Visual extends WynVisual {
           y2: 0,
         },
         style: {
-          stroke: "rgba(147, 235, 248, 0.5)",
+          stroke: this.properties.mapLevelNameColor,
         },
       },
       ],
@@ -539,8 +544,8 @@ export default class Visual extends WynVisual {
       //省级标题样式
       id: '中国',
       type: "group",
-      left: 20,
-      top: 20,
+      left: this.properties.mapLevelNameX + 5, // 20
+      top: this.properties.mapLevelNameY + 10, // 20
       children: [
         {
           type: "text",
@@ -549,7 +554,7 @@ export default class Visual extends WynVisual {
           style: {
             text: '中国',
             textAlign: "center",
-            fill: "#0ab7ff",
+            fill: this.properties.mapLevelNameColor,
             font: '12px "Microsoft YaHei", sans-serif',
           },
           onclick: () => {
@@ -563,6 +568,7 @@ export default class Visual extends WynVisual {
     }]
     this.graphic = arr;
   }
+
   private render() {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     const items = this.isMock ? Visual.mockItems : this.items;
@@ -752,13 +758,21 @@ export default class Visual extends WynVisual {
             const name = _item.name.replace(locationReg, '');
             return name === params.name.replace(locationReg, '') && _item;
           });
-
+          
           if (!this.isMock && _toolTip) {
-            let _addToolTipText = `${this.locationName}: ${_toolTip.name} \n${this.valuesName}: ${_toolTip.datas}`
-            _toolTip.toolTip.map((_text: any, index: number) => {
-              _addToolTipText += `\n${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`
-            })
-            return myTooltip.getTooltipDom(_addToolTipText)
+            let _textArr = []
+            if (options.showTooltipValue) {
+              _textArr.push(`${this.valuesName}: ${_toolTip.datas}`)
+            }
+            if (options.showTooltipLocation) {
+              _textArr.push(`${this.locationName}: ${_toolTip.name}`)
+            }
+            if (options.showTooltipText) {
+              _toolTip.toolTip.map((_text: any, index: number) => {
+                _textArr.push(`${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`)
+              })
+            }
+            return myTooltip.getTooltipDom(_textArr.join('\n'))
           }
         },
       },
@@ -766,9 +780,9 @@ export default class Visual extends WynVisual {
         map: '3DMapCustom',
         show: false,
         zlevel: -10,
-        boxWidth: 200,
-        boxHeight: 15, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
-        regionHeight: 3,
+        boxWidth: options.mapBoxWidth,
+        boxHeight: options.mapBoxHeight, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
+        regionHeight: options.mapBoxDepth,
         shading: 'lambert',
         viewControl: {
             projection: 'perspective',
@@ -787,97 +801,97 @@ export default class Visual extends WynVisual {
             animationDurationUpdate: 1000,
             animationEasingUpdate: 'cubicInOut'
         },
-            itemStyle: {
-              color: 'red', //地图颜色
-              borderWidth: 3, //分界线wdith
-              distance: 5,
-              borderColor: 'green', //分界线颜色
+        itemStyle: {
+        color: 'red', //地图颜色
+        borderWidth: 3, //分界线wdith
+        distance: 5,
+        borderColor: 'green', //分界线颜色
         },
-
-          emphasis: {
-              label: {
-                  show: true, //是否显示高亮
-                  textStyle: {
-                      color: '#fff', //高亮文字颜色
-                  },
-              },
-              itemStyle: {
-                  color: '#0489d6', //地图高亮颜色
-              },
-          },
+        emphasis: {
+            label: {
+                show: true, //是否显示高亮
+                textStyle: {
+                    color: '#fff', //高亮文字颜色
+                },
+            },
+            itemStyle: {
+                color: '#0489d6', //地图高亮颜色
+            },
+        },
       },
       series: [
         {
-          type: 'map3D',
-          map: '3DMapCustom',
-          name: '3DMapCustom',
-          boxWidth: 200,
-            boxHeight: 15,
-          viewControl: {
-            projection: 'perspective',
-            autoRotate: false,
-            damping: 0,
-            rotateSensitivity: 2, //旋转操作的灵敏度
-            rotateMouseButton: 'left', //旋转操作使用的鼠标按键
-            zoomSensitivity: 2, //缩放操作的灵敏度
-            panSensitivity: 2, //平移操作的灵敏度
-            panMouseButton: 'right', //平移操作使用的鼠标按键
+            type: 'map3D',
+            map: '3DMapCustom',
+            name: '3DMapCustom',
+            boxWidth: options.mapBoxWidth,
+            boxHeight: options.mapBoxHeight,
+            regionHeight: options.mapBoxDepth,
+            viewControl: {
+              projection: 'perspective',
+              autoRotate: false,
+              damping: 0,
+              rotateSensitivity: 2, //旋转操作的灵敏度
+              rotateMouseButton: 'left', //旋转操作使用的鼠标按键
+              zoomSensitivity: 2, //缩放操作的灵敏度
+              panSensitivity: 2, //平移操作的灵敏度
+              panMouseButton: 'right', //平移操作使用的鼠标按键
 
-            distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
-            center: [0, 0, 0],
-            animation: true,
-            animationDurationUpdate: 1000,
-            animationEasingUpdate: 'cubicInOut'
-          },
-          realisticMaterial: {
-            roughness: 0.8,
-            metalness: 0
-          },
-          postEffect: {
-            enable: true
-          },
-          groundPlane: {
-            show: false
-          },
-          light: {
-            main: {
-              intensity: 1,
-              alpha: 30
+              distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
+              center: [0, 0, 0],
+              animation: true,
+              animationDurationUpdate: 1000,
+              animationEasingUpdate: 'cubicInOut'
             },
-            ambient: {
-              intensity: 0
-            }
-          },
-          label: {
-              show: false, //是否显示市
-              textStyle: {
-                  color: '#fff', //文字颜色
-                  fontSize: 20, //文字大小
+            realisticMaterial: {
+              roughness: 0.8,
+              metalness: 0
             },
-            formatter: (test: any,) => {
-              const _label = test.data.name || ' '
-              return _label
-            }
-          },
-          itemStyle: {
-              color: '#2B5890', //地图颜色
-              borderWidth: 3, //分界线wdith
-              distance: 5,
-              borderColor: '#5578A5', //分界线颜色
-          },
-          emphasis: {
-              label: {
-                  show: true, //是否显示高亮
-                  textStyle: {
-                      color: '#fff', //高亮文字颜色
-                  },
+            postEffect: {
+              enable: true
+            },
+            groundPlane: {
+              show: false
+            },
+            light: {
+              main: {
+                intensity: 1,
+                alpha: 30
               },
-              itemStyle: {
-                  color: '#0489d6', //地图高亮颜色
+              ambient: {
+                intensity: 0
+              }
+            },
+            label: {
+                show: false, //是否显示市
+                textStyle: {
+                    color: '#fff', //文字颜色
+                    fontSize: 20, //文字大小
               },
-          },
-          data: _data,
-          zlevel: 1,
+              formatter: (test: any,) => {
+                const _label = test.data.name || ' '
+                return _label
+              }
+            },
+            itemStyle: {
+                color: options.mapColor, //地图颜色
+                borderWidth: options.mapDemarcationBorder, //分界线wdith
+                distance: 5,
+                borderColor: options.mapDemarcationColor, //分界线颜色
+            },
+            emphasis: {
+                label: {
+                    show: true, //是否显示高亮
+                    textStyle: {
+                        color: '#fff', //高亮文字颜色
+                    },
+                },
+                itemStyle: {
+                    color: options.mapHoverColor, //地图高亮颜色
+                },
+            },
+            data: _data,
+            zlevel: 1,
           // silent: true,
         },
         {
@@ -934,7 +948,7 @@ export default class Visual extends WynVisual {
 
     // showTooltip
     if (!properties.showTooltip ) {
-      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipTextStyle'])
+      hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipTextStyle' , 'showTooltipValue', 'showTooltipLocation', 'showTooltipText'])
     }
     return hiddenStates;
   }

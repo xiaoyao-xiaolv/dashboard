@@ -96,37 +96,110 @@
         "visual": [
             {
                 "displayName": "地图设置",
-                "properties": [{
-                    "displayNameKey": "自定义地图",
+                "properties": [
+                    {
+                    "displayNameKey": "当前地图",
                     "name": "MapId",
                     "type": "Text",
-                    "defaultValue": "china"
-                },
-                {
-                    "displayNameKey": "省份名字",
-                    "name": "provinceName",
-                    "type": "Hidden",
-                    "defaultValue": ""
-                },
-                {
-                    "displayNameKey": "市区名字",
-                    "name": "cityName",
-                    "type": "Hidden",
-                    "defaultValue": ""
-                },
-                {
-                    "displayNameKey": "地图深度",
-                    "name": "mapLevel",
-                    "type": "Text",
-                    "defaultValue": "0"
-                },
-                {
-                    "name": "mapDistance",
-                    "type": "Integer",
-                    "displayName": "距离",
-                    "defaultValue": 350,
-                    "min": 0
-                }]
+                        "defaultValue": "china"
+                    },
+                    {
+                        "displayNameKey": "地图深度",
+                        "name": "mapLevel",
+                        "type": "Text",
+                        "defaultValue": "0"
+                    },
+                    {
+                        "name": "mapDistance",
+                        "type": "Integer",
+                        "displayName": "地图距离",
+                        "defaultValue": 350,
+                        "min": 0
+                    },
+                    {
+                        "name": "mapBoxWidth",
+                        "type": "Integer",
+                        "displayName": "地图宽度",
+                        "defaultValue": 200,
+                        "min": 0
+                    },
+                    {
+                        "name": "mapBoxHeight",
+                        "type": "Integer",
+                        "displayName": "地图高度",
+                        "defaultValue": 15,
+                        "min": 0
+                    },
+                    {
+                        "name": "mapBoxDepth",
+                        "type": "Integer",
+                        "displayName": "地图厚度",
+                        "defaultValue": 15,
+                        "min": 0
+                    },
+                    {
+                        "name": "mapColor",
+                        "type": "Color",
+                        "displayName": "地图颜色",
+                        "defaultValue": "#2B5890"
+                    },
+                    {
+                        "name": "mapHoverColor",
+                        "type": "Color",
+                        "displayName": "地图高亮颜色",
+                        "defaultValue": "#0489d6"
+                    },
+                    {
+                        "name": "mapDemarcationBorder",
+                        "type": "Integer",
+                        "displayName": "地图分界线宽",
+                        "defaultValue": 3,
+                        "min": 0
+                    },
+                    {
+                        "name": "mapDemarcationColor",
+                        "type": "Color",
+                        "displayName": "地图分界颜色",
+                        "defaultValue": "#5578A5"
+                    },
+                    {
+                        "displayNameKey": "省份名字",
+                        "name": "provinceName",
+                        "type": "Hidden",
+                        "defaultValue": ""
+                    },
+                    {
+                        "displayNameKey": "市区名字",
+                        "name": "cityName",
+                        "type": "Hidden",
+                        "defaultValue": ""
+                    }
+                ]
+            },
+            {
+                "displayName": "导航样式",
+                "properties": [
+                    {
+                        "name": "mapLevelNameX",
+                        "type": "Integer",
+                        "displayName": "地图导航X",
+                        "defaultValue": 15,
+                        "min": 0
+                    },
+                    {
+                        "name": "mapLevelNameY",
+                        "type": "Integer",
+                        "displayName": "地图导航Y",
+                        "defaultValue": 10,
+                        "min": 0
+                    },
+                    {
+                        "name": "mapLevelNameColor",
+                        "type": "Color",
+                        "displayName": "地图导航X",
+                        "defaultValue": "#0ab7ff"
+                    }
+                ]
             },
             {
                 "displayName": "柱子样式",
@@ -257,6 +330,24 @@
                         "type": "Boolean",
                         "displayName": "显示提示标签",
                         "defaultValue": false
+                    },
+                    {
+                        "name": "showTooltipValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showTooltipLocation",
+                        "type": "Boolean",
+                        "displayName": "显示位置名称",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "showTooltipText",
+                        "type": "Boolean",
+                        "displayName": "显示提示信息",
+                        "defaultValue": true
                     },
                     {
                         "name": "tooltipBackgroundColor",
@@ -442,7 +533,7 @@
                             "displayNameKey": "跳转"
                         }
                     ],
-                    "defaultValue": "Jump"
+                    "defaultValue": "Drill"
                 }]
             }
         ]
@@ -465,5 +556,13 @@
         }
 
     ],
-    "analysis": []
+    "analysis": [{
+        "type": "drill",
+        "rule":
+        {
+            "roles": [
+                "location"
+            ]
+        }
+    }]
 }
