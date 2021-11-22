@@ -179,7 +179,7 @@ export default class Visual extends WynVisual {
         show: true,
         type: 'time',
         axisLabel: {
-          formatter: this.properties.timeFormat,
+          formatter: this.properties.startCustom ? this.properties.customTimeFormat : this.properties.timeFormat,
           textStyle: {
             ...this.properties.aAxisTextStyle,
             fontSize: parseFloat(this.properties.aAxisTextStyle.fontSize),
@@ -290,7 +290,11 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    return null;
+    if (options.properties.startCustom) {
+      return [ 'timeFormat'];
+    } else {
+      return [ 'customTimeFormat' ];
+    }
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
