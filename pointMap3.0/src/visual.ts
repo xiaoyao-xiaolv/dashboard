@@ -391,11 +391,11 @@ export default class Visual extends WynVisual {
       }
      
       if (!this.selectionManager.contains(selectionId)) {
-        this.selectionManager.select([selectionId], true);
+        this.selectionManager.select(selectionId, true);
         // this.dispatch('highlight', selectInfo);
         this.selection.push(selectInfo);
       } else {
-        this.selectionManager.clear([selectionId]);
+        this.selectionManager.clear(selectionId);
       }
     }
      
@@ -416,10 +416,13 @@ export default class Visual extends WynVisual {
     myChart.off('mouseup')
     
     myChart.on('click', (params) => {
-      
+
       if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           // this.host.propertyService.setProperty('mapParams', JSON.stringify(params));
+          if (this.properties.mapLevel === 1) {
+            this.selectionManager.clear();
+          }
           this.host.propertyService.setProperty('mapLevel', 1);
           this.host.propertyService.setProperty('MapId', params.name);
           this.host.propertyService.setProperty('provinceName', params.name);
@@ -435,6 +438,7 @@ export default class Visual extends WynVisual {
         } 
       } else {
         this.toDrilling(params, true);
+        
       }
     })
 
@@ -489,7 +493,8 @@ export default class Visual extends WynVisual {
               this.host.propertyService.setProperty('mapLevel', 1);
               this.host.propertyService.setProperty('MapId', name);
               this.host.propertyService.setProperty('cityName', '');
-              this.getMapJson(name);
+              // this.getMapJson(name);
+              
               break;
             case 2:
               break;
@@ -561,13 +566,12 @@ export default class Visual extends WynVisual {
           },
           onclick: () => {
             // clear 
-            const selectionId = this.getNodeSelectionId('中国');
-            this.selectionManager.clear(selectionId);
+            this.selectionManager.clear();
             this.host.propertyService.setProperty('mapLevel', 0);
             this.host.propertyService.setProperty('MapId', 'china');
             this.host.propertyService.setProperty('provinceName', '');
-            this.getMapJson('china');
-            this.render()
+            // this.getMapJson('china');
+            // this.render()
           },
         }
       ]
@@ -785,7 +789,7 @@ export default class Visual extends WynVisual {
       geo3D: {
         map: '3DMapCustom',
         show: false,
-        zlevel: -10,
+        zlevel: -1,
         boxWidth: options.mapBoxWidth,
         boxHeight: options.mapBoxHeight, //4:没有bar. 30:有bar,bar最高度30，按比例分配高度
         regionHeight: options.mapBoxDepth,
@@ -824,6 +828,7 @@ export default class Visual extends WynVisual {
                 color: '#0489d6', //地图高亮颜色
             },
         },
+        instancing: true,
       },
       series: [
         {
