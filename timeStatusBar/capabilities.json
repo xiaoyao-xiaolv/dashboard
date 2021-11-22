@@ -33,6 +33,11 @@
                 "kind": "grouping",
                 "_noHierarchy": true,
                 "acceptedTypes": ["datetime"]
+            },
+            {
+                "name": "categories",
+                "displayNameKey": "分类",
+                "kind": "grouping"
             }
         ],
         "dataViewMappings": [
@@ -76,6 +81,9 @@
                 },
                 "offTime": {
                     "max": 1
+                },
+                "category": {
+                    "max": 1
                 }
             }
         ]
@@ -91,11 +99,119 @@
                         "displayName": "状态颜色"
                     },
                     {
+                        "name": "statusBgColors",
+                        "type": "Color",
+                        "displayName": "状态背景颜色",
+                        "defaultValue": "rgba(255, 255, 255, 0.2)"
+                    },
+                    {
                         "name": "height",
                         "type": "Float",
                         "displayName": "柱子高度",
                         "defaultValue": 50.0,
                         "min": 10.0
+                    }
+                ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+                    {
+                        "name": "showAxisLabel",
+                        "type": "Boolean",
+                        "displayName": "显示分类轴标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "yAxisTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "分类轴字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.2x"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "时间轴",
+                "properties": [
+                    {
+                        "name": "startCustom",
+                        "type": "Boolean",
+                        "displayName": "开启自定义时间格式",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "customTimeFormat",
+                        "type": "Text",
+                        "displayName": "自定义时间格式",
+                        "defaultValue": "{HH}:{mm}"
+                    },
+                    {
+                        "name": "timeFormat",
+                        "type": "Enum",
+                        "displayName": "时间格式",
+                        "items": [
+                            {
+                                "value": "{yyyy}-{MM}-{dd} {hh}:{mm}:{ss}",
+                                "displayNameKey": "精确日期"
+                            },
+                            {
+                                "value": "{HH}:{mm}",
+                                "displayNameKey": "时分"
+                            },
+                            {
+                                "value": "{HH}:{mm}:{ss}",
+                                "displayNameKey": "时分秒"
+                            },
+                            {
+                                "value": "{yyyy}-{MM}-{dd}",
+                                "displayNameKey": "年-月-日"
+                            },
+                            {
+                                "value": "{yyyy}-{MM}",
+                                "displayNameKey": "年-月"
+                            },
+                            {
+                                "value": "{MM}-{dd}",
+                                "displayNameKey": "月-日"
+                            },
+                            {
+                                "value": "{eeee}",
+                                "displayNameKey": "星期"
+                            },
+                            {
+                                "value": "{yyyy}",
+                                "displayNameKey": "年份"
+                            },
+                            {
+                                "value": "{MMM}",
+                                "displayNameKey": "月份"
+                            },
+                            {
+                                "value": "{H}",
+                                "displayNameKey": "时"
+                            },
+                            {
+                                "value": "{m}",
+                                "displayNameKey": "分"
+                            },
+                            {
+                                "value": "{s}",
+                                "displayNameKey": "秒"
+                            }
+                        ],
+                        "defaultValue": "{HH}:{mm}"
+                    },
+                    {
+                        "name": "aAxisTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "时间轴字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "1.2x"
+                        }
                     }
                 ]
             },
@@ -198,7 +314,7 @@
                         "displayName": "字体设置",
                         "inheritFrom": "dashboard.textStyle",
                         "defaultValue": {
-                            "fontSize": "14px"
+                            "fontSize": "1.2x"
                         }
                     }
                 ]
