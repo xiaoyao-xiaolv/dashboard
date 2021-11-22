@@ -110,10 +110,16 @@
                         "defaultValue": "0"
                     },
                     {
+                        "displayNameKey": "地图SelectId",
+                        "name": "mapSelectId",
+                        "type": "Hidden",
+                        "defaultValue": ""
+                    },
+                    {
                         "name": "mapDistance",
                         "type": "Integer",
                         "displayName": "地图距离",
-                        "defaultValue": 350,
+                        "defaultValue": 400,
                         "min": 0
                     },
                     {

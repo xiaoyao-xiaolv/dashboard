@@ -142,14 +142,25 @@ export default class Visual extends WynVisual {
     if (_mapName !== 'china') {
       const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
         item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+      let _findLocation = [];
       if (this.locationArr.length > 1) {
         this.bindData.filter((_data: any) => {
           this.locationArr.map((_location) => {
             if (_filterCity.includes(_data[_location].replace(locationReg, ''))) {
               this.locationName = _location;
             }
+           JSON.parse(JSON.stringify(this.mapJsonData)).features.filter((_mapItem: any) => {
+              if (_mapItem.properties.name.replace(locationReg, '') == _data[_location].replace(locationReg, '')) {
+                _findLocation.push({
+                  ..._data,
+                  value: _mapItem.properties.centroid,
+                })
+              }
+            })
           })
+          
         })
+        this.bindData = _findLocation;
         this.items = this.prepareData(this.bindData, this.profile);
         this.items = this.items.filter((_item: any) => _filterCity.includes(_item.name.replace(locationReg, '')))
       } else {
@@ -194,16 +205,16 @@ export default class Visual extends WynVisual {
     this.locationName && selectionId.withDimension(dimension , _item);
     return selectionId
   }
-  private prepareData(data: any, profile: any) {
+  private prepareData(data: any, profile: any,) {
     return data.map((item, index) => {
       let geoCoord = this.bindCoords ? [item[this.longitudeName], item[this.latitudeName]] : this.getCoords(item[this.locationName]);
       const toolTip = this.toolTipName.map((_item: string) => { return { [_item]: item[_item]}});
       return {
           name: item[this.locationName],
-          value: geoCoord,
+          value: item.value ? item.value: geoCoord,
           datas: item[this.valuesName],
           toolTip: toolTip,
-          selectionId:  this.getSelectionId(item, profile.location.values[0])
+          selectionId:  this.getSelectionId(item, profile.location.values[this.properties.mapLevel])
       }
     })
   }
@@ -212,6 +223,7 @@ export default class Visual extends WynVisual {
     this.locationArr = [];
     this.preview = options.isViewer
     this.isMock = !options.dataViews.length;
+    this.properties = options.properties;
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
       let bindData = options.dataViews[0].plain.data;
@@ -238,7 +250,7 @@ export default class Visual extends WynVisual {
       this.mapAdCodeId = options.properties.MapId || 'china';
       const provinceName = options.properties.provinceName;
       const cityName = options.properties.cityName;
-      this.properties = options.properties;
+      
       this.getgraphic(this.mapAdCodeId);
       if (this.mapAdCodeId !== 'china') {
         this.linelen = 40;
@@ -253,7 +265,6 @@ export default class Visual extends WynVisual {
        // registerMap
       this.mapAdCodeId = 'china';
       this.mapJsonData = ChainJson;
-      this.properties = options.properties;
       this.getgraphic(this.mapAdCodeId);
       // if (this.mapAdCodeId !== 'china') {
       //   this.linelen = this.mapAdCodeId.length * 20;
@@ -286,12 +297,19 @@ export default class Visual extends WynVisual {
 
   public getNodeSelectionId = (label: any) => {
     const _filterCity = JSON.parse(JSON.stringify(this.mapJsonData)).features.map((item: any) => 
-        item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
+      item.properties.name.replace(locationReg, '')).filter((_item: any) => _item);
     const _target = this.items.find((_item: any) => {
       const name = _item.name.replace(locationReg, '');
-      if (_filterCity.includes(name) || name === label.replace(locationReg, '')) {
-        return _item
+      if (this.properties.mapLevel > 1) {
+        if (name === label.replace(locationReg, '') ) {
+          return _item
+        }
+      } else {
+        if (name === label.replace(locationReg, '') || _filterCity.includes(name) ) {
+          return _item
+        }
       }
+     
     })
     return _target && _target.selectionId || ''
   }
@@ -360,7 +378,7 @@ export default class Visual extends WynVisual {
       timerPlay();
     })
   }
-  public toDrilling = (params: any, isJump?: boolean) => {
+  public toDrilling = async (params: any, isJump?: boolean) => {
     const clickMouse = params.event.event.button;
     if (params.componentType !== 'series') return;
     params.event.event.seriesClick = true;
@@ -368,9 +386,22 @@ export default class Visual extends WynVisual {
     const selectInfo = {
       seriesIndex: params.seriesIndex,
       dataIndex: params.dataIndex,
-    }; 
+    };
+    let _selectionIds: any = [];
     if (selectionId) {
-     
+      // save
+      if (this.properties.mapSelectId.length) {
+        _selectionIds = JSON.parse(this.properties.mapSelectId);
+        if (this.properties.mapLevel > 1) {
+          _selectionIds[2] = selectionId
+        } else {
+          _selectionIds = _selectionIds.concat([selectionId]);
+        }
+        
+      } else {
+        _selectionIds = [selectionId];
+      }
+      this.host.propertyService.setProperty('mapSelectId', JSON.stringify(_selectionIds));
       if (clickMouse === clickLeftMouse) {
         // if (isTooltipModelShown) return;
           // this.hideTooltip();
@@ -378,7 +409,7 @@ export default class Visual extends WynVisual {
         this.host.commandService.execute([{
           name: isJump ? 'Jump' :  this.properties.clickLeftMouse,
           payload: {
-            selectionIds: [selectionId],
+            selectionIds: _selectionIds.concat([selectionId]),
             position: {
               x: params.event.event.clientX,
               y: params.event.event.clientY,
@@ -438,7 +469,6 @@ export default class Visual extends WynVisual {
         } 
       } else {
         this.toDrilling(params, true);
-        
       }
     })
 
@@ -493,6 +523,12 @@ export default class Visual extends WynVisual {
               this.host.propertyService.setProperty('mapLevel', 1);
               this.host.propertyService.setProperty('MapId', name);
               this.host.propertyService.setProperty('cityName', '');
+              
+              if (this.properties.mapSelectId.length) {
+                const _selectionIds = JSON.parse(this.properties.mapSelectId);
+                _selectionIds.length > 2 &&  this.host.propertyService.setProperty('mapSelectId', _selectionIds.splice(2));
+              }
+              
               // this.getMapJson(name);
               
               break;
@@ -570,6 +606,7 @@ export default class Visual extends WynVisual {
             this.host.propertyService.setProperty('mapLevel', 0);
             this.host.propertyService.setProperty('MapId', 'china');
             this.host.propertyService.setProperty('provinceName', '');
+            this.host.propertyService.setProperty('mapSelectId', '');
             // this.getMapJson('china');
             // this.render()
           },
@@ -804,7 +841,7 @@ export default class Visual extends WynVisual {
             panSensitivity: 2, //平移操作的灵敏度
             panMouseButton: 'right', //平移操作使用的鼠标按键
             
-            distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
+            distance: options.mapAdCodeId == 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
             center: [0, 0, 0],
 
             animation: true,
