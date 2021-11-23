@@ -1,0 +1,23 @@
+{
+    "id": "0c123050-53d9-11ec-b15e-cfdbf96e3667",
+    "name": "高德地图",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [
+        "https://webapi.amap.com/maps?v=1.4.15&key={{高德地图API}}",
+        "https://webapi.amap.com/ui/1.1/main.js?v=1.1.1"
+    ],
+    "externalCss": [
+    ],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {
+        "高德地图API": "a5e3195903211f0282e5d9c8e77ec3fd"
+    },
+    "cliVersion": "5.0.1"
+}

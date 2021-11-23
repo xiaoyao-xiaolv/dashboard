@@ -1,0 +1,295 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "numeric",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "address",
+                "displayNameKey": "位置",
+                "kind": "grouping"
+            },
+            {
+                "name": "lng",
+                "displayNameKey": "经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "lat",
+                "displayNameKey": "纬度",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain":
+                {
+                    "required": [
+                        {
+                            "numeric":
+                            {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [{
+            "numeric": { "max": 1 },
+            "address": { "max": 3 },
+            "lng": { "max": 1 },
+            "lat": { "max": 1 }
+        }]
+    },
+    "options": {
+        "visual":[
+            {
+                "displayName": "地图设置",
+                "properties":[
+                    {
+                        "name": "pitch",
+                        "displayName": "倾斜角度",
+                        "type": "Integer",
+                        "defaultValue": 30,
+                        "max": 90,
+                        "min": 0
+                    },
+                    {
+                        "name": "centerText",
+                        "displayName": "地图中心点",
+                        "type": "Text",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "zoom",
+                        "displayName": "缩放级别",
+                        "type": "Integer",
+                        "defaultValue": 4,
+                        "max": 20,
+                        "min": 1
+                    },
+                    {
+                        "name": "def_color",
+                        "displayName": "默认填充色",
+                        "type": "Color",
+                        "defaultValue": "#3366cc"
+                    },
+                    {
+                        "name": "def_stroke",
+                        "displayName": "默认边框颜色",
+                        "type": "Color",
+                        "defaultValue": "#000"
+                    },
+                    {
+                        "name": "map_colors",
+                        "displayName": "填充配色",
+                        "type": "Palette",
+                        "defaultValue": "dashboard.palette"
+                    },
+                    {
+                        "name": "mapStyle",
+                        "displayName": "地图样式",
+                        "type": "Enum",
+                        "items": [{
+                            "value": "normal",
+                            "displayName": "标准"
+                        }, {
+                            "value": "dark",
+                            "displayName": "幻影黑"
+                        },{
+                            "value": "light",
+                            "displayName": "月光银"
+                        },{
+                            "value": "whitesmoke",
+                            "displayName": "远山黛"
+                        },{
+                            "value": "fresh",
+                            "displayName": "草色青"
+                        },{
+                            "value": "grey",
+                            "displayName": "雅士灰"
+                        },{
+                            "value": "graffiti",
+                            "displayName": "涂鸦"
+                        },{
+                            "value": "macaron",
+                            "displayName": "马卡龙"
+                        },{
+                            "value": "blue",
+                            "displayName": "靛青蓝"
+                        },{
+                            "value": "darkblue",
+                            "displayName": "极夜蓝"
+                        },{
+                            "value": "wine",
+                            "displayName": "酱籽"
+                        },{
+                            "value": "e920b982b9cb4912eac9a59389234abd",
+                            "displayName": "暗夜黑"
+                        }
+                        ],
+                        "defaultValue": "e920b982b9cb4912eac9a59389234abd"
+                    },
+                    {
+                        "name": "show_title",
+                        "displayName": "提示标签",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "tc_opacity",
+                        "displayName": "填充透明度",
+                        "type": "Integer",
+                        "defaultValue": 35,
+                        "max": 100,
+                        "min": 0
+                    },
+                    {
+                        "name": "gl_opacity",
+                        "displayName": "高亮透明度",
+                        "type": "Integer",
+                        "defaultValue": 50,
+                        "max": 100,
+                        "min": 0
+                    },
+                    {
+                        "name": "strokeOpacity",
+                        "displayName": "边线透明度",
+                        "type": "Integer",
+                        "defaultValue": 0,
+                        "max": 100,
+                        "min": 0
+                    },
+                    {
+                        "name": "strokeWeight",
+                        "displayName": "边线宽度",
+                        "type": "Integer",
+                        "defaultValue": 1,
+                        "max": 10,
+                        "min": 0
+                    },
+                    {
+                        "name": "bt_top",
+                        "displayName": "标签上边距",
+                        "type": "Integer",
+                        "defaultValue": 1,
+                        "max": 100,
+                        "min": 0
+                    },
+                    {
+                        "name": "bt_left",
+                        "displayName": "标签左边距",
+                        "type": "Integer",
+                        "defaultValue": 1,
+                        "max": 100,
+                        "min": 0
+                    }
+                ]
+            },
+            {
+                "displayName": "底图元素",
+                "properties":[
+                    {
+                        "name": "v_wx",
+                        "displayName": "卫星视图",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "v_dl",
+                        "displayName": "路线网",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "v_bg",
+                        "displayName": "区域面",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },{
+                        "name": "v_road",
+                        "displayName": "道路",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },{
+                        "name": "v_building",
+                        "displayName": "建筑物",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },{
+                        "name": "v_point",
+                        "displayName": "标注",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },{
+                        "name": "v_title",
+                        "displayName": "文字标注",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "lang",
+                        "displayName": "地图语言",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "zh_cn",
+                                "displayName": "中文"
+                            },
+                            {
+                                "value": "en",
+                                "displayName": "英文"
+                            },
+                            {
+                                "value": "zh_cn",
+                                "displayName": "英文"
+                            }
+                        ],
+                        "defaultValue": "zh_cn"
+                    },
+                    {
+                        "name": "lang",
+                        "displayName": "鼠标手势",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "zh_cn",
+                                "displayName": ""
+                            },
+                            {
+                                "value": "en",
+                                "displayName": "英文"
+                            },
+                            {
+                                "value": "zh_cn",
+                                "displayName": "英文"
+                            }
+                        ],
+                        "defaultValue": "zh_cn"
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        }
+    ],
+    "analysis": []
+}

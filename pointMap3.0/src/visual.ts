@@ -401,11 +401,13 @@ export default class Visual extends WynVisual {
       } else {
         _selectionIds = [selectionId];
       }
-      this.host.propertyService.setProperty('mapSelectId', JSON.stringify(_selectionIds));
+      //this.host.propertyService.setProperty('mapSelectId', JSON.stringify(_selectionIds));
       if (clickMouse === clickLeftMouse) {
         // if (isTooltipModelShown) return;
           // this.hideTooltip();
           // const selectionIds = this.selectionManager.getSelectionIds();
+        console.log(selectionId);
+        console.log(selectionId);
         this.host.commandService.execute([{
           name: isJump ? 'Jump' :  this.properties.clickLeftMouse,
           payload: {
@@ -416,7 +418,7 @@ export default class Visual extends WynVisual {
               },
           }
         }])
-      } else if (clickMouse === clickRightMouse) {  
+      } else if (clickMouse === clickRightMouse) {
         params.event.event.preventDefault();
         this.showTooltip(params.event.event, true);
       }
