@@ -147,26 +147,26 @@
                         "name": "mapColor",
                         "type": "Color",
                         "displayName": "地图颜色",
-                        "defaultValue": "#2B5890"
+                        "defaultValue": "rgba(2, 43, 155, 0.6)"
                     },
                     {
                         "name": "mapHoverColor",
                         "type": "Color",
                         "displayName": "地图高亮颜色",
-                        "defaultValue": "#0489d6"
+                        "defaultValue": "rgba(0, 191, 255, 0.6)"
                     },
                     {
                         "name": "mapDemarcationBorder",
                         "type": "Integer",
                         "displayName": "地图分界线宽",
-                        "defaultValue": 3,
+                        "defaultValue": 1,
                         "min": 0
                     },
                     {
                         "name": "mapDemarcationColor",
                         "type": "Color",
                         "displayName": "地图分界颜色",
-                        "defaultValue": "#5578A5"
+                        "defaultValue": "#185bd2"
                     },
                     {
                         "displayNameKey": "省份名字",
@@ -226,7 +226,7 @@
                         "name": "barColor",
                         "type": "Color",
                         "displayName": "柱子颜色",
-                        "defaultValue": "#fff"
+                        "defaultValue": "rgba(149, 255, 253, 0.7)"
                     },
                     {
                         "name": "barSize",
