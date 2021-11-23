@@ -115,8 +115,9 @@ export default class Visual extends WynVisual {
 
   private getMapJson = (_mapName: string, isENd?: boolean) => {
     const _name = _mapName.replace(locationReg, '');
-    if (_mapName == 'china' || _mapName == '陕西省' ) {
-      this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
+    if (_mapName == 'china'  ) {
+      this.mapJsonData = ChainJson;
+      this.host.propertyService.setProperty('mapSelectId', '');
     } else {
       let _adCodeId = '100000'
       let mapJson = ChainJson;
@@ -390,9 +391,9 @@ export default class Visual extends WynVisual {
     let _selectionIds: any = [];
     if (selectionId) {
       // save
-      if (this.properties.mapSelectId.length) {
+      if (this.properties.mapSelectId.length ) {
         _selectionIds = JSON.parse(this.properties.mapSelectId);
-        if (this.properties.mapLevel > 1) {
+        if (_selectionIds.length > 2) {
           _selectionIds[2] = selectionId
         } else {
           _selectionIds = _selectionIds.concat([selectionId]);
@@ -523,14 +524,15 @@ export default class Visual extends WynVisual {
               this.host.propertyService.setProperty('mapLevel', 1);
               this.host.propertyService.setProperty('MapId', name);
               this.host.propertyService.setProperty('cityName', '');
-              
               if (this.properties.mapSelectId.length) {
-                const _selectionIds = JSON.parse(this.properties.mapSelectId);
-                _selectionIds.length > 2 &&  this.host.propertyService.setProperty('mapSelectId', _selectionIds.splice(2));
-              }
-              
-              // this.getMapJson(name);
-              
+                let _selectionIds = JSON.parse(this.properties.mapSelectId);
+                if (_selectionIds.length > 2) {
+                  const _newSelection: [] = _selectionIds.slice(0, 2);
+                  this.host.propertyService.setProperty('mapSelectId', JSON.stringify(_newSelection));
+                } else {
+                  this.host.propertyService.setProperty('mapSelectId', JSON.stringify(_selectionIds));
+                }
+              }             
               break;
             case 2:
               break;
