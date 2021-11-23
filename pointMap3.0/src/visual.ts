@@ -117,7 +117,10 @@ export default class Visual extends WynVisual {
     const _name = _mapName.replace(locationReg, '');
     if (_mapName == 'china'  ) {
       this.mapJsonData = ChainJson;
-      this.host.propertyService.setProperty('mapSelectId', '');
+      if (this.properties.mapSelectId.length) {
+        this.host.propertyService.setProperty('mapSelectId', '');
+      }
+      
     } else {
       let _adCodeId = '100000'
       let mapJson = ChainJson;
@@ -174,13 +177,17 @@ export default class Visual extends WynVisual {
     } else {
       this.items = this.initItems;
     }
-    const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
+    const _dataNames: any = Array.from(new Set(this.items.map((_item: any) => _item.name.replace(locationReg, ''))))
+   
     this.items = _dataNames.map((_dataName: any) => {
       const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
+      let _toolTips: any = [];
+      _target.map((_tooltipText: any) => _toolTips.push(..._tooltipText.toolTip))
       if (_target) {
         if (_target.length > 1) {
           return {
             ..._target[0],
+            toolTip: _toolTips,
             datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
           }
         } else {
@@ -206,16 +213,16 @@ export default class Visual extends WynVisual {
     this.locationName && selectionId.withDimension(dimension , _item);
     return selectionId
   }
-  private prepareData(data: any, profile: any,) {
+  private prepareData(data: any, profile: any, mapLevel?: number) {
     return data.map((item, index) => {
       let geoCoord = this.bindCoords ? [item[this.longitudeName], item[this.latitudeName]] : this.getCoords(item[this.locationName]);
-      const toolTip = this.toolTipName.map((_item: string) => { return { [_item]: item[_item]}});
+      const toolTip = this.toolTipName.map((_item: string) => { return { [_item]: item[_item] } });
       return {
           name: item[this.locationName],
           value: item.value ? item.value: geoCoord,
           datas: item[this.valuesName],
           toolTip: toolTip,
-          selectionId:  this.getSelectionId(item, profile.location.values[this.properties.mapLevel])
+          selectionId:  this.getSelectionId(item, profile.location.values[mapLevel ? mapLevel - 1 : this.properties.mapLevel])
       }
     })
   }
@@ -241,9 +248,8 @@ export default class Visual extends WynVisual {
         this.latitudeName = profile.latitude.values[0].display;
       }
      
-      // bindData.push({'客户省份': '陕西省', '客户城市':'渭南市', '标准价格': 666})
       this.items = this.prepareData(bindData, profile);
-      this.initItems = this.prepareData(bindData, profile);
+      this.initItems = this.prepareData(bindData, profile, 1);
       // data format and display unit
       this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
       this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit;
@@ -448,7 +454,6 @@ export default class Visual extends WynVisual {
     myChart.off('mouseup')
     
     myChart.on('click', (params) => {
-
       if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
         if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
           // this.host.propertyService.setProperty('mapParams', JSON.stringify(params));
@@ -524,6 +529,9 @@ export default class Visual extends WynVisual {
               this.host.propertyService.setProperty('mapLevel', 1);
               this.host.propertyService.setProperty('MapId', name);
               this.host.propertyService.setProperty('cityName', '');
+              
+              const _target = this.initItems.find((_item: any) => _item.name.replace(locationReg, '') === name.replace(locationReg, ''))
+              this.selectionManager.select(_target.selectionId, true);
               if (this.properties.mapSelectId.length) {
                 let _selectionIds = JSON.parse(this.properties.mapSelectId);
                 if (_selectionIds.length > 2) {
@@ -807,7 +815,8 @@ export default class Visual extends WynVisual {
             const name = _item.name.replace(locationReg, '');
             return name === params.name.replace(locationReg, '') && _item;
           });
-          
+          let _toolTips = _toolTip.toolTip;
+
           if (!this.isMock && _toolTip) {
             let _textArr = []
             if (options.showTooltipValue) {
@@ -816,9 +825,12 @@ export default class Visual extends WynVisual {
             if (options.showTooltipLocation) {
               _textArr.push(`${this.locationName}: ${_toolTip.name}`)
             }
-            if (options.showTooltipText) {
-              _toolTip.toolTip.map((_text: any, index: number) => {
-                _textArr.push(`${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`)
+            if (options.showTooltipText && _toolTips.length) {
+              let _tooltipText: any;
+              this.toolTipName.map((_textName: any) => {
+                _tooltipText = _toolTips.map((_item: any) => _item[_textName]).filter((_text)=> _text);
+                const _tooltip = typeof(_tooltipText[0]) == 'string' ? _tooltipText.join('\\') : _tooltipText.reduce((_init, _target) => _init + _target, 0)
+                return _textArr.push(`${_textName}: ${_tooltip || ''}`)
               })
             }
             return myTooltip.getTooltipDom(_textArr.join('\n'))

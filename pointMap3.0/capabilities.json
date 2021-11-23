@@ -426,13 +426,13 @@
                 "properties": [
                     {
                     "name": "automaticRotation",
-                    "type": "Boolean",
+                    "type": "Hidden",
                     "displayName": "自动轮播",
                     "defaultValue": false
                     },
                     {
                         "name": "rotationInterval",
-                        "type": "Integer",
+                        "type": "Hidden",
                         "displayName": "轮播间隔",
                         "defaultValue": 3,
                         "min": 1
