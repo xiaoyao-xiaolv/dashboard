@@ -427,7 +427,7 @@ export default class Visual extends WynVisual {
         params.event.event.preventDefault();
         this.showTooltip(params.event.event, true);
       }
-     
+  
       if (!this.selectionManager.contains(selectionId)) {
         this.selectionManager.select(selectionId, true);
         // this.dispatch('highlight', selectInfo);
@@ -799,13 +799,14 @@ export default class Visual extends WynVisual {
         
         }
     }
+
     myChart.setOption({
       graphic: this.graphic,
       tooltip: {
         trigger: 'item',
         // padding: [15, 15],
         show: options.showTooltip,
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(0,0,0,0)',
         borderColor:'transparent',
         position(pos) { 
           return myTooltip.getPosOrSize('pos', pos);
@@ -815,21 +816,21 @@ export default class Visual extends WynVisual {
             const name = _item.name.replace(locationReg, '');
             return name === params.name.replace(locationReg, '') && _item;
           });
-          let _toolTips = _toolTip.toolTip;
+          let _toolTips = _toolTip && _toolTip.toolTip && _toolTip.toolTip || [];
 
           if (!this.isMock && _toolTip) {
             let _textArr = []
-            if (options.showTooltipValue) {
-              _textArr.push(`${this.valuesName}: ${_toolTip.datas}`)
-            }
             if (options.showTooltipLocation) {
               _textArr.push(`${this.locationName}: ${_toolTip.name}`)
+            }
+            if (options.showTooltipValue) {
+              _textArr.push(`${this.valuesName}: ${_toolTip.datas}`)
             }
             if (options.showTooltipText && _toolTips.length) {
               let _tooltipText: any;
               this.toolTipName.map((_textName: any) => {
-                _tooltipText = _toolTips.map((_item: any) => _item[_textName]).filter((_text)=> _text);
-                const _tooltip = typeof(_tooltipText[0]) == 'string' ? _tooltipText.join('\\') : _tooltipText.reduce((_init, _target) => _init + _target, 0)
+                _tooltipText = _toolTips.map((_item: any) => _item[_textName]).filter((_text) => _text);
+                const _tooltip = $.type(_tooltipText[0]) == 'number' ?  _tooltipText.reduce((_init, _target) => _init + _target, 0) :_tooltipText[0]
                 return _textArr.push(`${_textName}: ${_tooltip || ''}`)
               })
             }

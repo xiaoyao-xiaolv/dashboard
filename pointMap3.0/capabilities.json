@@ -335,7 +335,7 @@
                 ]
             },
             {
-                "displayName": "提示标签",
+                "displayName": "鼠标提示标签",
                 "properties": [
                     {
                         "name": "showTooltip",
@@ -344,15 +344,15 @@
                         "defaultValue": false
                     },
                     {
-                        "name": "showTooltipValue",
-                        "type": "Boolean",
-                        "displayName": "显示数值",
-                        "defaultValue": true
-                    },
-                    {
                         "name": "showTooltipLocation",
                         "type": "Boolean",
                         "displayName": "显示位置名称",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showTooltipValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
                         "defaultValue": true
                     },
                     {
@@ -379,7 +379,7 @@
                         "name": "tooltipHeight",
                         "type": "Integer",
                         "min": 10,
-                        "defaultValue": 80
+                        "defaultValue": 120
                     },
                     {
                         "name": "tooltipBorderColor",
