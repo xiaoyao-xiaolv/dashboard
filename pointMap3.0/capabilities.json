@@ -181,9 +181,15 @@
                         "defaultValue": ""
                     },
                     {
-                        "displayNameKey": "mapParams",
-                        "name": "mapParams",
-                        "type": "Hidden",
+                        "displayNameKey": "省级Params",
+                        "name": "provinceNameId",
+                        "type": "Text",
+                        "defaultValue": ""
+                    },
+                    {
+                        "displayNameKey": "市级Params",
+                        "name": "cityNameId",
+                        "type": "Text",
                         "defaultValue": ""
                     }
                 ]

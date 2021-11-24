@@ -48,7 +48,7 @@ export default class Visual extends WynVisual {
   private linelen: any;
   private graphic: any;
   private timeInterval: any;
-
+  private initBindData:any
   static mockItems =  [
     {
       name: '北京',
@@ -237,6 +237,7 @@ export default class Visual extends WynVisual {
       let bindData = options.dataViews[0].plain.data;
       this.profile = profile;
       this.bindData = bindData;
+      this.initBindData = bindData;
       this.valuesName = profile.values.values[0].display;
       //  default show first location
       this.locationName = profile.location.values[0].display;
@@ -427,14 +428,17 @@ export default class Visual extends WynVisual {
         params.event.event.preventDefault();
         this.showTooltip(params.event.event, true);
       }
-  
+
       if (!this.selectionManager.contains(selectionId)) {
-        this.selectionManager.select(selectionId, true);
-        // this.dispatch('highlight', selectInfo);
+        this.selectionManager.select(selectionId, false);
         this.selection.push(selectInfo);
       } else {
         this.selectionManager.clear(selectionId);
       }
+    } else {
+      const items = this.prepareData(this.initBindData, this.profile, Number(this.properties.mapLevel + 1));
+      const _target = items.find((_item: any) => _item.name.replace(locationReg, '') === params.name.replace(locationReg, ''))
+      this.selectionManager.select(_target.selectionId, true);
     }
      
   }
@@ -454,27 +458,30 @@ export default class Visual extends WynVisual {
     myChart.off('mouseup')
     
     myChart.on('click', (params) => {
-      if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
-        if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
-          // this.host.propertyService.setProperty('mapParams', JSON.stringify(params));
-          if (this.properties.mapLevel === 1) {
-            this.selectionManager.clear();
-          }
-          this.host.propertyService.setProperty('mapLevel', 1);
-          this.host.propertyService.setProperty('MapId', params.name);
-          this.host.propertyService.setProperty('provinceName', params.name);
-          this.host.propertyService.setProperty('cityName', '');
-          this.getMapJson(params.name);
-          this.toDrilling(params);
-        }else if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
-          this.host.propertyService.setProperty('mapLevel', 2);
-          this.host.propertyService.setProperty('MapId', params.name);
-          this.host.propertyService.setProperty('cityName', params.name);
-          this.getMapJson(params.name);
-          this.toDrilling(params);
-        } 
-      } else {
-        this.toDrilling(params, true);
+      // no data cant click
+      const _existLocation = this.items.map((_item: any) => _item.name);
+      if (_existLocation.includes(params.name)) {
+        if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
+          if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
+            if (this.properties.mapLevel === 1) {
+              this.selectionManager.clear();
+            }
+            this.host.propertyService.setProperty('mapLevel', 1);
+            this.host.propertyService.setProperty('MapId', params.name);
+            this.host.propertyService.setProperty('provinceName', params.name);
+            this.host.propertyService.setProperty('cityName', '');
+            this.getMapJson(params.name);
+            this.toDrilling(params);
+          }else if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
+            this.host.propertyService.setProperty('mapLevel', 2);
+            this.host.propertyService.setProperty('MapId', params.name);
+            this.host.propertyService.setProperty('cityName', params.name);
+            this.getMapJson(params.name);
+            this.toDrilling(params);
+          } 
+        } else {
+          this.toDrilling(params, true);
+        }
       }
     })
 
@@ -525,7 +532,6 @@ export default class Visual extends WynVisual {
           switch (index) {
             case 1:
               // 省份drilling
-              // this.toDrilling(JSON.parse(this.properties.mapParams));
               this.host.propertyService.setProperty('mapLevel', 1);
               this.host.propertyService.setProperty('MapId', name);
               this.host.propertyService.setProperty('cityName', '');
