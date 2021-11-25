@@ -4,7 +4,14 @@
             {
                 "name": "values",
                 "displayNameKey": "数值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    }
+                  ]
             },
             {
                 "name": "dimensions",
