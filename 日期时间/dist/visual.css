@@ -1,1 +1,12 @@
-#visualDom{display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden}.p1{width:100%;text-align:center}
+.visual-date-time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.p1 {
+  width: 100%;
+  text-align: center;
+}
+

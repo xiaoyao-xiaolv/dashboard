@@ -4,7 +4,14 @@
             {
                 "name": "ActualValue",
                 "displayNameKey": "数值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    }
+                  ]
             },
             {
                 "name": "dimension",
@@ -370,7 +377,38 @@
                 ]
             },
             {
-                "type": "interaction"
+                "type": "interaction",
+                "properties": [
+                    {
+                        "type": "Enum",
+                        "name": "leftMouseButton",
+                        "displayName": "鼠标左键选项",
+                        "defaultValue": "none",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayName": "无"
+                            },
+                            {
+                                "value": "showTool",
+                                "displayName": "显示工具提示"
+                            },
+                            {
+                                "value": "Keep",
+                                "displayName": "保留"
+                            },
+                            {
+                                "value": "Exclude",
+                                "displayName": "排除"
+                            },
+                            {
+                                "value": "Jump",
+                                "displayName": "跳转"
+                            }
+                        ]
+                    }
+                ]
+                
             },
             {
                 "type": "title"

@@ -45,17 +45,17 @@ let bindCoords;
 let longitude;
 let latitude;
 let rawData = [
-  ["陕西",10,20,30],
-  ["四川",10,25,30],
-  ["北京",10,20,35],
-  ["广州",15,20,25],
-  ["福建",10,20,30],
-  ["浙江",10,20,30],
-  ["青海",10,25,35],
-  ["黑龙江",10,20,30],
-  ["新疆",15,20,35],
-  ["西藏",10,25,30],
-  ["云南",15,20,35]
+  ["陕西", 10, 20, 30],
+  ["四川", 10, 25, 30],
+  ["北京", 10, 20, 35],
+  ["广州", 15, 20, 25],
+  ["福建", 10, 20, 30],
+  ["浙江", 10, 20, 30],
+  ["青海", 10, 25, 35],
+  ["黑龙江", 10, 20, 30],
+  ["新疆", 15, 20, 35],
+  ["西藏", 10, 25, 30],
+  ["云南", 15, 20, 35]
 ];
 
 export default class Visual extends WynVisual {
@@ -68,11 +68,83 @@ export default class Visual extends WynVisual {
   private resultData: any;
   private series: any;
   private locationArr: any;
+  private host: any;
+  private dom: any;
+  private selectionManager: any;
+  private selectionIdsSeries: any;
+  private selectionIdsLocation: any;
+
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
     this.isMock = true;
     myChart = echarts.init(dom);
+    this.selectionManager = host.selectionService.createSelectionManager();
+    this.host = host;
+    this.dom = dom;
+    this.selectEvent();
+  }
+
+  private selectEvent() {
+    this.dom.addEventListener("click", () => {
+      this.selectionManager.clear();
+      this.host.toolTipService.hide();
+      this.host.contextMenuService.hide();
+      return;
+    })
+
+    myChart.on('click', (params) => {
+      console.log(params)
+      params.event.event.stopPropagation();
+      this.selectionManager.clear();
+      this.host.toolTipService.hide();
+      {
+        if (params.componentType == "geo") {
+          this.selectionIdsLocation.forEach((data,index) => {
+            if (params.name+"省" == Object.values(data.dimensions)[0]) {
+              this.selectionManager.select(this.selectionIdsLocation[index])
+            }
+          });
+         
+        }else{
+          this.selectionIdsSeries.forEach((data,index) => {
+            if (params.name == Object.values(data.dimensions)[0]) {
+              this.selectionManager.select(this.selectionIdsSeries[index])
+            }
+          });     
+        }
+        const selectionIds = this.selectionManager.getSelectionIds();
+        this.host.commandService.execute([{
+          name: "Jump",
+          payload: {
+            selectionIds,
+            position: {
+              x: params.event.event.x,
+              y: params.event.event.y,
+            },
+          }
+        }])
+      }
+    })
+
+    //鼠标右键
+    myChart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }
+    })
+
+    
+
   }
 
   private prepareData(dataArr: any) {
@@ -87,6 +159,7 @@ export default class Visual extends WynVisual {
         return tempObj[item] ? tempObj[item] : 0;
       });
       allSeriesData = allSeriesData.concat(seriesData);
+      console.log(seriesData)
       return [location].concat(seriesData);
     });
   }
@@ -95,6 +168,10 @@ export default class Visual extends WynVisual {
     this.series = [];
     this.locationArr = [];
     this.isMock = !options.dataViews.length;
+    this.selectionIdsLocation = [];
+    this.selectionIdsSeries = [];
+    const dataView = options.dataViews[0] && options.dataViews[0].plain;
+    console.log(options)
     if (!this.isMock) {
       let profile = options.dataViews[0].plain.profile;
       let bindData = options.dataViews[0].plain.data;
@@ -102,17 +179,23 @@ export default class Visual extends WynVisual {
       this.seriesName = profile.series.values[0].display;
       this.locationName = profile.location.values[0].display;
       bindCoords = !!(profile.longitude.values.length && profile.latitude.values.length);
-      if(profile.longitude.values.length && profile.latitude.values.length) {
+      if (profile.longitude.values.length && profile.latitude.values.length) {
         longitude = profile.longitude.values[0].display;
         latitude = profile.latitude.values[0].display;
       }
       bindData.forEach((data) => {
-        if(this.series.indexOf(data[this.seriesName]) < 0) {
+        if (this.series.indexOf(data[this.seriesName]) < 0) {
           this.series.push(data[this.seriesName]);
         }
+        const selectionId1 = this.host.selectionService.createSelectionId();
+        const selectionId2 = this.host.selectionService.createSelectionId();
+        selectionId1.withDimension(dataView.profile.series.values[0], data);
+        selectionId2.withDimension(dataView.profile.location.values[0], data);
+        this.selectionIdsSeries.push(selectionId1);
+        this.selectionIdsLocation.push(selectionId2);
       })
       bindData.forEach((data) => {
-        if(this.locationArr.indexOf(data[this.locationName]) < 0) {
+        if (this.locationArr.indexOf(data[this.locationName]) < 0) {
           this.locationArr.push(data[this.locationName]);
         }
       })
@@ -138,7 +221,7 @@ export default class Visual extends WynVisual {
         zoom: 1.2,
         itemStyle: {
           normal: {
-            areaColor:options.mapColor,
+            areaColor: options.mapColor,
             borderColor: options.mapBorderColor,
             borderWidth: 1,
             shadowColor: options.mapBorderShadowColor,
@@ -167,21 +250,21 @@ export default class Visual extends WynVisual {
           }
         }
       };
-      let areaData = this.isMock ? rawData: this.resultData;
-      let series = this.isMock ? ["学校","教师","学生"] : this.series;
+      let areaData = this.isMock ? rawData : this.resultData;
+      let series = this.isMock ? ["学校", "教师", "学生"] : this.series;
       let maxValue = this.isMock ? 50 : Math.max.apply(null, allSeriesData);
       let gridWidth = 10 * series.length;
       let totalSeriesDataList = [];
       areaData.forEach((item) => {
-        let total = item.slice(1).reduce((prev,current) => {
-          return prev+current;
+        let total = item.slice(1).reduce((prev, current) => {
+          return prev + current;
         }, 0)
         totalSeriesDataList.push(total);
       });
       let maxTotalSeriesData = Math.max.apply(null, totalSeriesDataList);
       let minTotalSeriesData = Math.min.apply(null, totalSeriesDataList);
       let option = {
-        legend:[],
+        legend: [],
         xAxis: [],
         yAxis: [],
         title: [],
@@ -190,20 +273,20 @@ export default class Visual extends WynVisual {
       };
       if (options.showLegend) {
         option.legend.push({
-          data : series,
+          data: series,
           icon: options.legendIcon,
           left: options.legendHorizontalPosition,
           top: options.legendVerticalPosition,
-          itemWidth:25,
-          itemHeight:15,
-          orient:options.legendOrient,
+          itemWidth: 25,
+          itemHeight: 15,
+          orient: options.legendOrient,
           textStyle: {
             ...options.legendTextStyle,
             fontSize: parseFloat(options.legendTextStyle.fontSize),
           },
         });
       }
-      echarts.util.each(areaData, function(dataItem, idx) {
+      echarts.util.each(areaData, function (dataItem, idx) {
         let locationName = dataItem[0];
         let geoCoords;
         if (bindCoords) {
@@ -213,6 +296,7 @@ export default class Visual extends WynVisual {
         }
         let pixel = myChart.convertToPixel('geo', geoCoords);
         let seriesData = dataItem.slice(1);
+
         let pieSeriesData = series.map((item, index) => {
           return {
             name: item,
@@ -243,12 +327,12 @@ export default class Visual extends WynVisual {
             axisLine: {
               show: false
             },
-            minInterval:10,
+            minInterval: 10,
             data: [locationName],
             z: 100
           };
           if (options.showLocationName) {
-            xAxis['name']= locationName;
+            xAxis['name'] = locationName;
           }
           option.xAxis.push(xAxis);
           option.yAxis.push({
@@ -268,25 +352,25 @@ export default class Visual extends WynVisual {
           });
           for (let i = 0; i < series.length; i++) {
             option.series.push({
-              name : series[i],
-              type : 'bar',
-              xAxisId : idx,
-              yAxisId : idx,
+              name: series[i],
+              type: 'bar',
+              xAxisId: idx,
+              yAxisId: idx,
               barWidth: 7,
-              itemStyle : {
-                normal : {
-                  color : colorList[i],
+              itemStyle: {
+                normal: {
+                  color: colorList[i],
                   opacity: options.chartOpacity * 0.01
                 }
               },
-              data : [ seriesData[i] ]
+              data: [seriesData[i]]
             });
           }
         } else {
-          let radius = 10 + 15 * (totalSeriesDataList[idx] - minTotalSeriesData)/(maxTotalSeriesData - minTotalSeriesData);
+          let radius = 10 + 15 * (totalSeriesDataList[idx] - minTotalSeriesData) / (maxTotalSeriesData - minTotalSeriesData);
           option.grid.push({
             id: idx,
-            gridId:idx,
+            gridId: idx,
             width: 30,
             height: 40,
             left: pixel[0] - 25,
@@ -297,7 +381,7 @@ export default class Visual extends WynVisual {
             show: options.showLocationName,
             subtext: locationName,
             left: pixel[0] - 20,
-            top: pixel[1]+ radius - 12,
+            top: pixel[1] + radius - 12,
             subtextStyle: {
               ...options.locationNameTextStyle,
               fontSize: parseFloat(options.locationNameTextStyle.fontSize)
@@ -306,7 +390,7 @@ export default class Visual extends WynVisual {
           let pieSeries = {
             id: idx,
             type: 'pie',
-            animationType : 'expansion',
+            animationType: 'expansion',
             tooltip: {
               trigger: "item",
               formatter: "{b} : {c} ({d}%)"
@@ -351,7 +435,7 @@ export default class Visual extends WynVisual {
         fn.apply(scope, args || []);
       }
 
-      let callRender = function() {
+      let callRender = function () {
         currCall = (new Date()).getTime();
         scope = this;
         args = arguments;
@@ -371,7 +455,7 @@ export default class Visual extends WynVisual {
       return callRender;
     };
     setTimeout(renderEachArea, 0);
-    let roamRenderEachCity = throttleRender(renderEachArea,0, 0);
+    let roamRenderEachCity = throttleRender(renderEachArea, 0, 0);
     myChart.on('geoRoam', roamRenderEachCity);
     myChart.setOption(mapOption);
   }

@@ -25,6 +25,7 @@ export default class Visual {
   private items: any;
   private bindCoords: boolean;
   private bindValues: boolean;
+  private host: any;
   private static mockItems = [
       { name: "太原", value: [119.306239, 26.075302, 13] }
     , { name: "福州", value: [112.549248, 37.857014, 71] }
@@ -47,8 +48,30 @@ export default class Visual {
     this.container = dom;
     this.bindCoords = false;
     this.bindValues = false;
+    this.host = host;
     ins = this;
+    this.selectEvent();
   }
+
+  private selectEvent() {
+    this.container.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.host.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
+    })
+  }
+
+
 
   init() {
     this.chart = echarts.init(this.container);

@@ -4,7 +4,14 @@
             {
                 "name": "dimensions",
                 "displayNameKey": "字段",
-                "kind": "grouping"
+                "kind": "grouping",
+                "options": [
+                    {
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    }
+                  ]
             }
         ],
         "dataViewMappings": [
