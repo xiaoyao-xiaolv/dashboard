@@ -805,7 +805,63 @@ export default class Visual extends WynVisual {
         
         }
     }
+    const _bottomLightMap = options.showBottomLight
+      ? {
+        type: 'map3D',
+        map: '3DMapCustom',
+        name: '3DMapCustom',
+        show: options.showBottomLight,
+        boxWidth: options.mapBoxWidth,
+        boxHeight: options.mapBoxHeight,
+        regionHeight: options.lightHeight,
+        viewControl: {
+          projection: 'perspective',
+          autoRotate: false,
+          damping: 0,
+          rotateSensitivity: 2, //旋转操作的灵敏度
+          rotateMouseButton: 'left', //旋转操作使用的鼠标按键
+          zoomSensitivity: 2, //缩放操作的灵敏度
+          panSensitivity: 2, //平移操作的灵敏度
+          panMouseButton: 'right', //平移操作使用的鼠标按键
 
+          distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
+          center: [0, options.lightHeight, 0],
+          animation: true,
+          animationDurationUpdate: 1000,
+          animationEasingUpdate: 'cubicInOut'
+        },
+        realisticMaterial: {
+          roughness: 0.8,
+          metalness: 0
+        },
+        postEffect: {
+          enable: true
+        },
+        groundPlane: {
+          show: false
+        },
+        light: {
+          main: {
+            intensity: 1,
+            alpha: 30
+          },
+          ambient: {
+            intensity: 0
+          }
+        },
+        label: {
+            show: false, //是否显示市
+        },
+        itemStyle: {
+            color: options.lightColor, //地图颜色
+            borderWidth: options.lightWidth, //分界线wdith
+            distance: 5,
+            borderColor: options.mapColor, //分界线颜色
+        },
+        data: _data,
+        zlevel: 1,
+        silent: true,
+      } : '';
     myChart.setOption({
       graphic: this.graphic,
       tooltip: {
@@ -960,12 +1016,12 @@ export default class Visual extends WynVisual {
                 },
             },
             data: _data,
-            zlevel: 1,
-          // silent: true,
+            zlevel: 2,
         },
+        _bottomLightMap,
         {
             type: 'bar3D',
-            zlevel: 2,
+            zlevel: 3,
             coordinateSystem: 'geo3D',
             shading: 'lambert',
             data: _barData,
@@ -1018,6 +1074,11 @@ export default class Visual extends WynVisual {
     // showTooltip
     if (!properties.showTooltip ) {
       hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipTextStyle' , 'showTooltipValue', 'showTooltipLocation', 'showTooltipText'])
+    }
+
+     // showBottomLight
+     if (!properties.showBottomLight ) {
+      hiddenStates = hiddenStates.concat(['lightColor', 'lightWidth'])
     }
     return hiddenStates;
   }

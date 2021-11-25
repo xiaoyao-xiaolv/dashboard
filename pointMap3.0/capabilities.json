@@ -220,6 +220,38 @@
                 ]
             },
             {
+                "displayName": "底部高亮样式",
+                "properties": [
+                    {
+                        "name": "showBottomLight",
+                        "type": "Boolean",
+                        "displayName": "显示高亮",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "lightColor",
+                        "type": "Color",
+                        "displayName": "高亮颜色",
+                        "defaultValue": "rgba(149, 255, 253, 0.7)"
+                    },
+                    {
+                        "name": "lightWidth",
+                        "type": "Integer",
+                        "displayName": "高亮宽度",
+                        "defaultValue": 10,
+                        "min": 0
+                    },
+                    {
+                        "name": "lightHeight",
+                        "type": "Integer",
+                        "displayName": "高亮高度",
+                        "defaultValue": 1,
+                        "min": 0
+                    }
+                    
+                ]
+            },
+            {
                 "displayName": "柱子样式",
                 "properties": [
                     {
