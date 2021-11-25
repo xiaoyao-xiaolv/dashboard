@@ -34,6 +34,8 @@ const STYLENAME = {
 
 export default class Visual extends WynVisual {
   private container: HTMLDivElement;
+  private swiperContainer: Element;
+  private visualHost: VisualNS.VisualHost;
   private isMock: boolean;
   private properties: any;
   private swiper: any;
@@ -43,10 +45,14 @@ export default class Visual extends WynVisual {
   private prevEffect: any;
   private firstRender: any;
   private MockData: any;
+  private selectionIds: any;
+  private selectionManager: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.container = dom;
+    this.visualHost = host;
+    this.selectionManager = host.selectionService.createSelectionManager();
     SwiperCore.use([Autoplay, Navigation, Pagination, EffectCoverflow, EffectFade, EffectCube, EffectFlip]);
     this.container.innerHTML = `
     <div class="swiper-container mySwiper">
@@ -85,6 +91,7 @@ export default class Visual extends WynVisual {
     this.prevEffect = 'fadeEffect';
     this.firstRender = true;
     this.MockData = Visual.prepareMockData(host);
+    this.swiperContainer = document.getElementsByClassName('swiper-container')[0];
   }
 
   private static prepareMockData(host) {
@@ -112,17 +119,21 @@ export default class Visual extends WynVisual {
     const dataViews = options.dataViews;
     this.properties = options.properties;
     this.isMock = !dataViews.length;
-    let bindData = [];
+    this.selectionIds = [];
+    const bindData = [];
     if (dataViews.length) {
       const plainData = dataViews[0].plain.data || [];
       const profileItems = dataViews[0].plain.profile;
       const imageProfileName = profileItems.image.values[0].name;
       const imageDescProfileName = profileItems.imageDescription.values[0] && profileItems.imageDescription.values[0].name;
-      bindData = plainData.map((data) => {
-        return {
+      plainData.forEach((data) => {
+        const selectionId = this.visualHost.selectionService.createSelectionId();
+        selectionId.withDimension(profileItems.image.values[0], data);
+        this.selectionIds.push(selectionId);
+        bindData.push({
           imageUrl: data[imageProfileName],
-          imageDescription : data[imageDescProfileName] || ''
-        }
+          imageDescription : data[imageDescProfileName] || '',
+        })
       })
     }
     const swiperData = this.isMock ? this.MockData : bindData;
@@ -140,9 +151,9 @@ export default class Visual extends WynVisual {
   private prepareSlides(swiperData) {
     let slides = [];
     let styleString = this.prepareStyle();
-    slides = swiperData.map((data) => {
+    slides = swiperData.map((data,index) => {
       return `<div class="swiper-slide">
-                <img src="${data.imageUrl}" />      
+                <img src="${data.imageUrl}" id="selection-${index}"/>      
                 <div class="swiper-desc" style="${styleString}">${data.imageDescription}</div>
             </div>`
     })
@@ -184,6 +195,41 @@ export default class Visual extends WynVisual {
     this.swiper.removeAllSlides();
     const slides = this.prepareSlides(swiperData);
     this.swiper.appendSlide(slides);
+    this.swiperContainer.addEventListener('click', (event) => {
+      this.selectionManager.clear();
+      // @ts-ignore
+      if(event.target.nodeName.toLowerCase() === "img" && /^selection-\d/.test(event.target.id)) {
+        // @ts-ignore
+        const sidIndex = parseInt(event.target.id.match(/\d+/g)[0]);
+        const sid = this.selectionIds[sidIndex];
+        this.selectionManager.select(sid);
+        if(this.properties.clickLeftMouse === "showToolTip") {
+          this.visualHost.toolTipService.show({
+            position: {
+              // @ts-ignore
+              x: event.x,
+              // @ts-ignore
+              y: event.y,
+            },
+            selected: this.selectionManager.getSelectionIds(),
+            menu: true
+          });
+        } else {
+          this.visualHost.commandService.execute([{
+            name: this.properties.clickLeftMouse,
+            payload: {
+              selectionIds: sid,
+              position: {
+                // @ts-ignore
+                x: event.x,
+                // @ts-ignore
+                y: event.y,
+              }
+            }
+          }])
+        }
+      }
+    });
     this.configButton()
     this.configAutoPlay()
     this.swiper.update();
