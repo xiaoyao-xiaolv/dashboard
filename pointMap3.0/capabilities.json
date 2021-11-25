@@ -110,10 +110,16 @@
                         "defaultValue": "0"
                     },
                     {
+                        "displayNameKey": "地图SelectId",
+                        "name": "mapSelectId",
+                        "type": "Hidden",
+                        "defaultValue": ""
+                    },
+                    {
                         "name": "mapDistance",
                         "type": "Integer",
                         "displayName": "地图距离",
-                        "defaultValue": 350,
+                        "defaultValue": 400,
                         "min": 0
                     },
                     {
@@ -141,26 +147,26 @@
                         "name": "mapColor",
                         "type": "Color",
                         "displayName": "地图颜色",
-                        "defaultValue": "#2B5890"
+                        "defaultValue": "rgba(2, 43, 155, 0.6)"
                     },
                     {
                         "name": "mapHoverColor",
                         "type": "Color",
                         "displayName": "地图高亮颜色",
-                        "defaultValue": "#0489d6"
+                        "defaultValue": "rgba(0, 191, 255, 0.6)"
                     },
                     {
                         "name": "mapDemarcationBorder",
                         "type": "Integer",
                         "displayName": "地图分界线宽",
-                        "defaultValue": 3,
+                        "defaultValue": 1,
                         "min": 0
                     },
                     {
                         "name": "mapDemarcationColor",
                         "type": "Color",
                         "displayName": "地图分界颜色",
-                        "defaultValue": "#5578A5"
+                        "defaultValue": "#185bd2"
                     },
                     {
                         "displayNameKey": "省份名字",
@@ -175,9 +181,15 @@
                         "defaultValue": ""
                     },
                     {
-                        "displayNameKey": "mapParams",
-                        "name": "mapParams",
-                        "type": "Hidden",
+                        "displayNameKey": "省级Params",
+                        "name": "provinceNameId",
+                        "type": "Text",
+                        "defaultValue": ""
+                    },
+                    {
+                        "displayNameKey": "市级Params",
+                        "name": "cityNameId",
+                        "type": "Text",
                         "defaultValue": ""
                     }
                 ]
@@ -220,7 +232,7 @@
                         "name": "barColor",
                         "type": "Color",
                         "displayName": "柱子颜色",
-                        "defaultValue": "#fff"
+                        "defaultValue": "rgba(149, 255, 253, 0.7)"
                     },
                     {
                         "name": "barSize",
@@ -329,7 +341,7 @@
                 ]
             },
             {
-                "displayName": "提示标签",
+                "displayName": "鼠标提示标签",
                 "properties": [
                     {
                         "name": "showTooltip",
@@ -338,15 +350,15 @@
                         "defaultValue": false
                     },
                     {
-                        "name": "showTooltipValue",
-                        "type": "Boolean",
-                        "displayName": "显示数值",
-                        "defaultValue": true
-                    },
-                    {
                         "name": "showTooltipLocation",
                         "type": "Boolean",
                         "displayName": "显示位置名称",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showTooltipValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
                         "defaultValue": true
                     },
                     {
@@ -373,7 +385,7 @@
                         "name": "tooltipHeight",
                         "type": "Integer",
                         "min": 10,
-                        "defaultValue": 80
+                        "defaultValue": 120
                     },
                     {
                         "name": "tooltipBorderColor",
@@ -420,13 +432,13 @@
                 "properties": [
                     {
                     "name": "automaticRotation",
-                    "type": "Boolean",
+                    "type": "Hidden",
                     "displayName": "自动轮播",
                     "defaultValue": false
                     },
                     {
                         "name": "rotationInterval",
-                        "type": "Integer",
+                        "type": "Hidden",
                         "displayName": "轮播间隔",
                         "defaultValue": 3,
                         "min": 1

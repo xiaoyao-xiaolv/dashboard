@@ -1,10 +1,36 @@
 {
-    "dataBinding": {},
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "dimensions",
+                "displayNameKey": "视频地址",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {}
+            }
+        ],
+        "conditions": [
+            {
+                "dimensions": {
+                    "max": 1
+                }
+            }
+        ]
+    },
     "options": {
         "visual": [
             {
                 "displayName": "自定义属性",
                 "properties": [
+                    {
+                        "name": "custom",
+                        "type": "Boolean",
+                        "displayName": "使用内嵌视频",
+                        "defaultValue": true
+                    },
                     {
                         "name": "videoUrl",
                         "type": "Text",

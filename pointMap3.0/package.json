@@ -1,6 +1,6 @@
 {
   "name": "pointmap3.0",
-  "version": "1.0.22",
+  "version": "1.0.37",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -7,10 +7,12 @@ export default class Visual extends WynVisual {
   private isMock: boolean;
   private data: any;
   private properties: any;
+  private multiCategories: boolean;
   private mockData = {
     workTime : '2021-01-04T08:30:00',
     offTime : '2021-01-04T19:30:00',
     colors: ['#2ec7c9', '#D6737A'],
+    categories:['产线1','产线2'],
     statusList: ['正常', '故障'],
     statusData: [
       {
@@ -27,14 +29,14 @@ export default class Visual extends WynVisual {
       },
       {
         name: '故障',
-        value: [0,'2021-01-04T12:40:54', '2021-01-04T14:03:59']
+        value: [0, '2021-01-04T12:40:54', '2021-01-04T14:03:59']
       },
       {
         name: '正常',
         value: [0, '2021-01-04T14:03:59', '2021-01-04T14:05:32']
       },
       {
-        name: '故障',
+        name: '正常',
         value: [0, '2021-01-04T14:05:32', '2021-01-04T14:17:23']
       },
       {
@@ -54,19 +56,19 @@ export default class Visual extends WynVisual {
         value: [1, '2021-01-04T12:02:18', '2021-01-04T12:40:54']
       },
       {
-        name: '故障',
-        value: [1,'2021-01-04T12:40:54', '2021-01-04T14:03:59']
+        name: '正常',
+        value: [1, '2021-01-04T12:40:54', '2021-01-04T14:03:59']
       },
       {
         name: '正常',
         value: [1, '2021-01-04T14:03:59', '2021-01-04T14:05:32']
       },
       {
-        name: '故障',
+        name: '正常',
         value: [1, '2021-01-04T14:05:32', '2021-01-04T14:17:23']
       },
       {
-        name: '正常',
+        name: '故障',
         value: [1, '2021-01-04T14:17:23', '2021-01-04T15:17:23']
       }
     ]
@@ -77,17 +79,20 @@ export default class Visual extends WynVisual {
     this.container = dom;
     this.myChart = echarts.init(dom);
     this.isMock = true;
+    this.multiCategories = false;
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
     this.properties = options.properties;
     this.isMock = !options.dataViews.length;
+    this.multiCategories = !options.dataViews.length;
     if (!this.isMock) {
-      let plainData = options.dataViews[0].plain
+      let plainData = options.dataViews[0].plain;
+      this.multiCategories = !!(plainData.profile.categories && plainData.profile.categories.values.length);
       // 获取字段名称对象
       let filedName= {};
       for (let name in plainData.profile) {
-        filedName[name] = plainData.profile[name].values[0].display;
+        filedName[name] = plainData.profile[name].values[0] && plainData.profile[name].values[0].display;
       }
 
       this.data = {
@@ -95,6 +100,10 @@ export default class Visual extends WynVisual {
         offTime : plainData.data[0][filedName['offTime']],
         statusList : plainData.sort[filedName['status']].order
       };
+
+      if (this.multiCategories) {
+        this.data['categories'] = plainData.sort[filedName['categories']].order;
+      }
 
       let bindColorLength = this.properties.statusColors.length;
       if (this.data['statusList'].length > bindColorLength) {
@@ -106,10 +115,14 @@ export default class Visual extends WynVisual {
       }
 
       this.data['statusData'] = plainData.data.map((data) => {
-        return {
+        let resultData = {
           name: data[filedName['status']],
           value: [data[filedName['startTime']], data[filedName['endTime']]]
         }
+        if (this.multiCategories && this.data.categories.indexOf(data[filedName['categories']]) >= 0) {
+          resultData.value.unshift(this.data.categories.indexOf(data[filedName['categories']]));
+        }
+        return resultData;
       })
     }
     this.render();
@@ -129,32 +142,26 @@ export default class Visual extends WynVisual {
     })
 
     let renderCustomItem = (params, api) => {
-      let categoryIndex = api.value(0);
-      let start = api.coord([api.value(1), categoryIndex]);
-      let end = api.coord([api.value(2), categoryIndex]);
+      let categoryIndex = this.multiCategories ? api.value(0) : 0;
+      let startIndex = this.multiCategories ? 1 : 0;
+      let endIndex = this.multiCategories ? 2 : 1;
+      let start = api.coord([api.value(startIndex), categoryIndex]);
+      let end = api.coord([api.value(endIndex), categoryIndex]);
       let height = this.properties.height;
       return {
         type: 'rect',
-        shape: echarts.graphic.clipRectByRect({
+        shape: {
           x: start[0],
-          y: start[1] - height / 2 - 10,
+          y: start[1] - height/2,
           width: end[0] - start[0],
-          height: height
-        }, {
-          x: params.coordSys.x,
-          y: params.coordSys.y - 10,
-          width: params.coordSys.width,
-          height: params.coordSys.height
-        }),
+          height: this.multiCategories ? height : -height
+        },
         style: api.style()
       };
     }
 
     let option = {
       color: data.colors,
-      tooltip: {
-        formatter: function () {}
-      },
       legend: {
         show: this.properties.showLegend,
         data: data.statusList,
@@ -169,9 +176,22 @@ export default class Visual extends WynVisual {
         },
       },
       xAxis: {
+        show: true,
         type: 'time',
         axisLabel: {
-          formatter: '{HH}:{mm}'
+          formatter: this.properties.startCustom ? this.properties.customTimeFormat : this.properties.timeFormat,
+          textStyle: {
+            ...this.properties.aAxisTextStyle,
+            fontSize: parseFloat(this.properties.aAxisTextStyle.fontSize),
+          },
+
+        },
+        axisLine : {
+          show: true
+        },
+        axisTick : {
+          show: true,
+          alignWithLabel: true
         },
         min: function () {
           return new Date(data.workTime);
@@ -181,17 +201,14 @@ export default class Visual extends WynVisual {
         }
       },
       yAxis: {
-        show: true,
-        interval: 15,
-        data: ['周一','周二']
+        show: false
       },
       series: [
         {
           type: 'custom',
           renderItem : renderCustomItem,
           encode: {
-            x: [1, 2],
-            y: [0]
+            x: [0, 1],
           },
           data: data.statusData
         },
@@ -199,30 +216,57 @@ export default class Visual extends WynVisual {
           type: 'custom',
           renderItem: renderCustomItem,
           encode: {
-            x: [0, 1],
+            x: [0, 1]
           },
-          data: [
-            {
-              itemStyle: {
-                normal: {
-                  color: '#fafafa'
-                }
-              },
-              value: [0, data.workTime, data.offTime]
+          data: [{
+            itemStyle: {
+              normal: {
+                color: this.properties.statusBgColors
+              }
             },
-            {
-              itemStyle: {
-                normal: {
-                  color: '#fafafa'
-                }
-              },
-              value: [1, data.workTime, data.offTime]
-            }
-          ],
+            value: [ data.workTime, data.offTime]
+          }],
           zlevel: -1
-        },
+        }
       ]
     };
+
+    if (this.multiCategories) {
+      option.yAxis.show = true;
+      option.yAxis['data'] = data.categories;
+      option.yAxis['axisLine'] = {
+        show : false
+      };
+      option.yAxis['axisTick'] = {
+        show : false,
+        alignWithLabel: true
+      };
+      option.yAxis['axisLabel'] = {
+        show : this.properties.showAxisLabel,
+        textStyle: {
+          ...this.properties.yAxisTextStyle,
+          fontSize: parseFloat(this.properties.yAxisTextStyle.fontSize),
+        },
+      };
+      option.series.forEach((series) => {
+        series.encode['x'] = [1, 2];
+        series.encode['y'] = [0];
+      })
+      for (let i = 0; i < data.categories.length; i++) {
+        if (i === 0) {
+          option.series[1].data[0].value.unshift(i);
+        } else {
+          option.series[1].data.push({
+            itemStyle: {
+              normal: {
+                color: this.properties.statusBgColors
+              }
+            },
+            value: [ i, data.workTime, data.offTime]
+          })
+        }
+      }
+    }
 
     let seriesStatus = data.statusList.map((status) => {
       return {
@@ -237,7 +281,7 @@ export default class Visual extends WynVisual {
   }
 
   public onDestroy(): void {
-
+    this.myChart.dispose();
   }
 
   public onResize(): void {
@@ -246,7 +290,11 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
-    return null;
+    if (options.properties.startCustom) {
+      return [ 'timeFormat'];
+    } else {
+      return [ 'customTimeFormat' ];
+    }
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
