@@ -9,8 +9,10 @@ export default class Visual {
     private ActualValue: any;
     private ContrastValue: any;
     static mockItems = 0.5;
+    private host: any;
 
     constructor(dom: HTMLDivElement, host: any) {
+        this.host = host;
         this.container = dom;
         this.visualHost = host;
         this.chart = require('echarts').init(dom)
@@ -24,7 +26,33 @@ export default class Visual {
             fontColor: '#f44e3b',
             fontSize: 10,
         };
+        this.selectEvent();
     }
+
+    private selectEvent() {
+        this.container.addEventListener("click", () => {
+            this.host.contextMenuService.hide();
+            return;
+        })
+
+        this.container.addEventListener('mouseup', (params) => {
+            document.oncontextmenu = function () { return false; };
+            if (params.button === 2) {
+              this.host.contextMenuService.show({
+                position: {
+                  x: params.x,
+                  y: params.y,
+                },
+                menu: true
+              }, 10)
+              return;
+            }else{
+              this.host.contextMenuService.hide();	
+            }
+          })
+
+    }
+
 
     public update(options: any) {
         const dataView = options.dataViews[0];
@@ -75,8 +103,11 @@ export default class Visual {
                 x: 'center',
                 y: 'center',
                 textStyle: {
-                    color: options.fontColor,
-                    fontSize: options.fontSize,
+                    color: options.fontSet.color,
+                    fontFamily: options.fontSet.fontFamily,
+                    fontSize: options.fontSet.fontSize.replace("pt", ""),
+                    fontStyle: options.fontSet.fontStyle,
+                    fontWeight: options.fontSet.fontWeight
                 },
                 subtextStyle: {
                     color: options.fontColor,

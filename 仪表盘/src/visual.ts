@@ -8,7 +8,6 @@ export default class Visual {
     private valueField: any;
     private ActualValue: any;
     private ContrastValue: any;
-    private selectionManager: any;
     static mockItems = 0.5;
     private host: any;
 
@@ -18,7 +17,6 @@ export default class Visual {
         this.chart = require('echarts').init(dom)
         this.fitSize();
         this.items = [];
-        this.selectionManager = host.selectionService.createSelectionManager();
         this.properties = {
             showSubTitle: false,
             subtitle: '示例',
