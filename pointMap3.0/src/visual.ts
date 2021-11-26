@@ -670,9 +670,7 @@ export default class Visual extends WynVisual {
       }
     })
 
-
     const formatList = options.mapCollection;
-
     const formatColor = (_formatColor, value) => {
       if (formatList.length > 0) {
         formatList.map((_item: any) => {
@@ -805,6 +803,16 @@ export default class Visual extends WynVisual {
         
         }
     }
+    const _rotateXY = {
+      alpha: options.mapAlpha,
+      beta: options.mapBeta,
+      minAlpha: 0,
+      maxAlpha: 360,
+      minBeta: -80,
+      maxBeta: 280,
+      maxDistance: 800,
+    }
+
     const _bottomLightMap = options.showBottomLight
       ? {
         type: 'map3D',
@@ -823,7 +831,7 @@ export default class Visual extends WynVisual {
           zoomSensitivity: 2, //缩放操作的灵敏度
           panSensitivity: 2, //平移操作的灵敏度
           panMouseButton: 'right', //平移操作使用的鼠标按键
-
+          ..._rotateXY,
           distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
           center: [0, options.lightHeight, 0],
           animation: true,
@@ -917,7 +925,7 @@ export default class Visual extends WynVisual {
             zoomSensitivity: 2, //缩放操作的灵敏度
             panSensitivity: 2, //平移操作的灵敏度
             panMouseButton: 'right', //平移操作使用的鼠标按键
-            
+            ..._rotateXY,
             distance: options.mapAdCodeId == 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
             center: [0, 0, 0],
 
@@ -961,6 +969,7 @@ export default class Visual extends WynVisual {
               zoomSensitivity: 2, //缩放操作的灵敏度
               panSensitivity: 2, //平移操作的灵敏度
               panMouseButton: 'right', //平移操作使用的鼠标按键
+              ..._rotateXY,
 
               distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
               center: [0, 0, 0],
