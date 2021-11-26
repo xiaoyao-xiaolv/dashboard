@@ -77,24 +77,85 @@ export default class Visual extends WynVisual {
     })
 
     this.chart.on('click', (params) => {
-      if (params.componentType !== 'series') return;
-      this.showTooltip(params, true);
-      params.event.event.seriesClicked = true;
-      if (this.selectionItems[params.dataIndex]) {
-        const sid = this.selectionItems[params.dataIndex];
-        this.selectionManager.select(sid, true);
+      this.host.contextMenuService.hide();
+      params.event.event.stopPropagation();
+      if (params.event.event.button == 0) {
+        //鼠标左键功能
+        let leftMouseButton = this.properties.leftMouseButton;
+        console.log(leftMouseButton)
+        switch (leftMouseButton) {
+          //鼠标联动设置    
+          case "none": {
+            if (this.properties.onlySelect) {
+              if (!this.selectionManager.contains(this.selectionItems[params.dataIndex])) {
+                this.selection = [];
+                this.selectionManager.clear();
+                this.selection.push(this.selectionItems[params.dataIndex]);
+              } else {
+                this.selection = [];
+                this.selectionManager.clear();
+              }
+            } else {
+              if (!this.selectionManager.contains(this.selectionItems[params.dataIndex])) {
+                this.selection.push(this.selectionItems[params.dataIndex]);
+              } else {
+                this.selection.splice(this.selection.indexOf(this.selectionItems[params.dataIndex]), 1);
+                this.selectionManager.clear(this.selectionItems[params.dataIndex])
+                return
+              }
+            }
+            this.selectionManager.select(this.selection, true);
+            if (this.selection.length == this.selectionItems.length) {
+              this.selectionManager.clear(this.selection);
+              this.selection = [];
+            }
+            break;
+          }
+          case "showToolTip": {
+            this.showTooltip(params, true);
+            break;
+          }
+          default: {
+            const selectionIds = this.selectionItems[params.dataIndex];
+            this.host.commandService.execute([{
+              name: leftMouseButton,
+              payload: {
+                selectionIds,
+                position: {
+                  x: params.event.event.x,
+                  y: params.event.event.y,
+                },
+              }
+            }])
+          }
+        }
       }
-
-      const selectedInfo = {
-        seriesIndex: params.seriesIndex,
-        dataIndex: params.dataIndex,
-      };
-      this.dispatch('highlight', selectedInfo);
-      this.selection.push(selectedInfo)
     })
+
+    //tooltip	跳转保留等	鼠标起来
+    this.chart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {								//跳转的selectionsId(左键需要)
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
+    })
+
+
   }
 
   private render() {
+    console.log(this.selection)
+    console.log(this.selectionItems)
     const renderData = this.renderData;
     const options = {
       "grid": {
