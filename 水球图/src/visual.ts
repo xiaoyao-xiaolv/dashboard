@@ -10,15 +10,75 @@ export default class Visual {
     private properties: any;
     private ActualValue: any;
     private ContrastValue: any;
+    private selectionManager: any;
+    private host: any;
 
     static mockItems = 0.5;
 
     constructor(dom: HTMLDivElement, host: any) {
         this.container = dom;
         this.chart = echarts.init(dom);
+        this.selectionManager = host.selectionService.createSelectionManager();
+        this.host = host;
         this.items = [];
         this.properties = {
         };
+        this.selectEvent();
+    }
+
+    private selectEvent() {
+        this.container.addEventListener("click", () => {
+            this.host.toolTipService.hide();
+            return;
+        })
+
+        this.chart.on('mouseup', (params) => {
+            if (params.event.event.button === 2) {
+                document.oncontextmenu = function () { return false; };
+                params.event.event.preventDefault();
+                this.host.contextMenuService.show({
+                    position: {
+                        //跳转的selectionsId(左键需要)
+                        x: params.event.event.x,
+                        y: params.event.event.y,
+                    },
+                    menu: true
+                }, 10)
+                return;
+            } else {
+                this.host.contextMenuService.hide();
+            }
+        })
+
+        //鼠标左键
+    this.chart.on('click', (params) => {
+        let leftMouseButton = this.properties.leftMouseButton;
+        params.event.event.stopPropagation();
+        if (params.event.event.button == 0) {
+          switch (leftMouseButton) {
+            //鼠标联动设置    
+            case "none": {
+                return;
+              
+            }
+            default: {
+                const selectionIds = this.selectionManager.getSelectionIds();
+              this.host.commandService.execute([{
+                name: leftMouseButton,
+                payload: {
+                    selectionIds,
+                  position: {
+                    x: params.event.event.x,
+                    y: params.event.event.y,
+                  },
+                }
+              }])
+            }
+          }
+        }
+      })
+
+
     }
 
     public update(options: any) {
@@ -69,6 +129,38 @@ export default class Visual {
             fontWeight = options.textStyle.fontWeight
         }
         let color = !options.showColor ? options.piecesColor[0] : options.piecesColor[this.findInterval(options, items)];
+        console.log([color])
+        let backgroundStyle;
+        if(this.properties.showShade){
+            backgroundStyle = {
+                borderWidth: options.borderWidth,
+                color: {
+                    type: 'radial',
+                    x: 0.5,
+                    y: 0.5,
+                    r: 0.5,
+                    colorStops: [{
+                      offset: 0,
+                      color: 'rgba(0,24,55, 0)'
+                    },
+                    {
+                      offset: 0.75,
+                      color: 'rgba(0,24,55, 0)'
+                    },
+                    {
+                      offset: 1,
+                      color: options.borderColor
+                    }],
+                    globalCoord: false
+                  },
+            }
+        }else{
+            backgroundStyle = {
+                borderWidth: options.borderWidth,
+                borderColor: options.borderColor,
+                color: options.backgroundColor
+            }
+        }
         var option = {
             series: [{
                 type: 'liquidFill',
@@ -86,11 +178,7 @@ export default class Visual {
                         borderColor: options.outlineborderColor,
                     }
                 },
-                backgroundStyle: {
-                    borderWidth: options.borderWidth,
-                    borderColor: options.borderColor,
-                    color: options.backgroundColor
-                },
+                backgroundStyle: backgroundStyle,
                 label: {
                     show: options.showlabel,
                     formatter: function () {

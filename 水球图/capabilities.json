@@ -77,6 +77,12 @@
                         "defaultValue": "transparent"
                     },
                     {
+                        "name": "showShade",
+                        "type": "Boolean",
+                        "displayName": "背景阴影显示",
+                        "defaultValue": "false"
+                    },
+                    {
                         "name": "piecesColor",
                         "type": "Palette",
                         "displayName": "调色板",
@@ -206,7 +212,25 @@
                 ]
             },
             {
-                "type": "interaction"
+                "type": "interaction",
+                "properties": [
+                    {
+                        "type": "Enum",
+                        "name": "leftMouseButton",
+                        "displayName": "鼠标左键选项",
+                        "defaultValue": "none",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayName": "无"
+                            },
+                            {
+                                "value": "Jump",
+                                "displayName": "跳转"
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "type": "title"
