@@ -111,7 +111,7 @@ export default class Visual extends WynVisual {
             break;
           }
           default: {
-            const selectionIds = this.selectionManager.getSelectionIds();
+            const selectionIds = this.selection[params.dataIndex];
             this.host.commandService.execute([{
               name: leftMouseButton,
               payload: {

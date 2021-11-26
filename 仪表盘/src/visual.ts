@@ -9,8 +9,10 @@ export default class Visual {
     private ActualValue: any;
     private ContrastValue: any;
     static mockItems = 0.5;
+    private host: any;
 
     constructor(dom: HTMLDivElement, host: any) {
+        this.host = host;
         this.container = dom;
         this.chart = require('echarts').init(dom)
         this.fitSize();
@@ -27,10 +29,36 @@ export default class Visual {
             scaleFontSize: 10,
             pointerColor: '#5effea'
         };
+        this.selectEvent();
+    }
+
+    private selectEvent() {
+        this.container.addEventListener("click", () => {
+            this.host.contextMenuService.hide();
+            return;
+        })
+
+        this.container.addEventListener('mouseup', (params) => {
+            document.oncontextmenu = function () { return false; };
+            if (params.button === 2) {
+              this.host.contextMenuService.show({
+                position: {
+                  x: params.x,
+                  y: params.y,
+                },
+                menu: true
+              }, 10)
+              return;
+            }else{
+              this.host.contextMenuService.hide();	
+            }
+          })
+
     }
 
     public update(options: any) {
         const dataView = options.dataViews[0];
+        console.log(options)
         this.items = [];
         if ((dataView &&
             dataView.plain.profile.values.values.length) || (dataView &&
@@ -50,6 +78,7 @@ export default class Visual {
     };
 
     private render() {
+        console.log(this.items)
         this.chart.clear();
         const isMock = !this.items.length;
         const items = (isMock ? Visual.mockItems : this.items) * 100;
@@ -63,9 +92,11 @@ export default class Visual {
                 bottom: 10,
                 text: subtitle + items.toFixed(options.decimalsize) + '%',
                 textStyle: {
-                    fontWeight: 'normal',
-                    fontSize: options.fontSize,
-                    color: options.fontColor
+                    color: options.fontSet.color,
+                    fontFamily: options.fontSet.fontFamily,
+                    fontSize: options.fontSet.fontSize.replace("pt", ""),
+                    fontStyle: options.fontSet.fontStyle,
+                    fontWeight: options.fontSet.fontWeight
                 },
             },
             tooltip: {
