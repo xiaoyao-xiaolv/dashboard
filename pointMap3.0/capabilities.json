@@ -116,13 +116,6 @@
                         "defaultValue": ""
                     },
                     {
-                        "name": "mapDistance",
-                        "type": "Integer",
-                        "displayName": "地图距离",
-                        "defaultValue": 400,
-                        "min": 0
-                    },
-                    {
                         "name": "mapBoxWidth",
                         "type": "Integer",
                         "displayName": "地图宽度",
@@ -181,16 +174,23 @@
                         "defaultValue": ""
                     },
                     {
-                        "displayNameKey": "省级Params",
-                        "name": "provinceNameId",
-                        "type": "Text",
-                        "defaultValue": ""
+                        "displayNameKey": "X方向视角",
+                        "name": "mapAlpha",
+                        "type": "Integer",
+                        "defaultValue": 40
                     },
                     {
-                        "displayNameKey": "市级Params",
-                        "name": "cityNameId",
-                        "type": "Text",
-                        "defaultValue": ""
+                        "displayNameKey": "Y方向视角",
+                        "name": "mapBeta",
+                        "type": "Integer",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "mapDistance",
+                        "type": "Integer",
+                        "displayName": "Z方向视角",
+                        "defaultValue": 600,
+                        "min": 0
                     }
                 ]
             },
@@ -238,7 +238,7 @@
                         "name": "lightWidth",
                         "type": "Integer",
                         "displayName": "高亮宽度",
-                        "defaultValue": 10,
+                        "defaultValue": 0,
                         "min": 0
                     },
                     {
