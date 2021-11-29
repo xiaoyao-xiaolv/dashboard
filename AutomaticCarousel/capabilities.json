@@ -72,7 +72,32 @@
                 ]
             },
             {
-                "type": "interaction"
+                "type": "interaction",
+                "properties": [{
+                    "name": "leftMouseButton",
+                    "type": "Enum",
+                    "displayName": "鼠标左键选项",
+                    "items": [
+                        {
+                            "value": "none",
+                            "displayNameKey": "无"
+                        },
+                        {
+                            "value": "Keep",
+                            "displayNameKey": "保留"
+                        },
+                        {
+                            "value": "Exclude",
+                            "displayNameKey": "排除"
+                        },
+                        {
+                            "value": "Jump",
+                            "displayNameKey": "跳转"
+                        }
+                    ],
+                    "defaultValue": "none"
+                }
+            ]
             },
             {
                 "type": "title"

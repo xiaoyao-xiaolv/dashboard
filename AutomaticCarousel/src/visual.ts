@@ -27,6 +27,14 @@ export default class Visual extends WynVisual {
   }
 
   public bindEvents = () => {
+    this.container.addEventListener("click", () => {
+      this.selection = [];
+      this.selectionManager.clear();
+      this.host.toolTipService.hide();
+      this.host.contextMenuService.hide();
+      return;
+    })
+
     this.chart.on('timelinechanged', (params) => {
       let dataIndex = params.currentIndex;
       if (this.items.length) {
@@ -35,6 +43,54 @@ export default class Visual extends WynVisual {
         this.selectionManager.select(sid, true);
       }
     })
+
+    this.chart.on('click', (params) => {
+      this.host.contextMenuService.hide();
+      params.event.event.stopPropagation();
+      if (params.event.event.button == 0) {
+        let leftMouseButton = this.properties.leftMouseButton;
+        console.log(leftMouseButton)
+        switch (leftMouseButton) { 
+          case "none": {
+            this.selectionManager.clear();
+            this.selectionManager.select(this.selection[params.dataIndex], true);
+            break;
+          }
+          default: {
+            const selectionIds = this.selection[params.dataIndex];
+            this.host.commandService.execute([{
+              name: leftMouseButton,
+              payload: {
+                selectionIds,
+                position: {
+                  x: params.event.event.x,
+                  y: params.event.event.y,
+                },
+              }
+            }])
+          }
+        }
+      }
+    })
+
+    this.chart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      } else {
+        this.host.contextMenuService.hide();
+      }
+    })
+
+
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
@@ -48,6 +104,7 @@ export default class Visual extends WynVisual {
         const getSelectionId = (item) => {
           const selectionId = this.host.selectionService.createSelectionId();
           selectionId.withDimension(plainData.profile.dimensions.values[0], item);
+          this.selection.push(selectionId)
           return selectionId;
         }
         arr[1].push(getSelectionId(item));
