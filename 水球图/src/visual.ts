@@ -19,17 +19,18 @@ export default class Visual {
     constructor(dom: HTMLDivElement, host: any) {
         this.container = dom;
         this.chart = echarts.init(dom);
-        this.selectionManager = host.selectionService.createSelectionManager();
-        this.host = host;
         this.items = [];
         this.properties = {
         };
+        this.selectionManager = host.selectionService.createSelectionManager();
+        this.host = host;
         this.selectEvent();
     }
 
     private selectEvent() {
         this.container.addEventListener("click", () => {
             this.host.toolTipService.hide();
+            this.host.contextMenuService.hide();
             return;
         })
 
@@ -78,8 +79,6 @@ export default class Visual {
                 }
             }
         })
-
-
     }
 
     public update(options: any) {
@@ -119,6 +118,7 @@ export default class Visual {
         } else {
             fontWeight = options.textStyle.fontWeight
         }
+
         let color;
         if (this.properties.setShowColor.length == 0) {
             color = this.getColors(0, 1)
