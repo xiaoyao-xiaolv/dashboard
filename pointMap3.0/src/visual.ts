@@ -670,6 +670,14 @@ export default class Visual extends WynVisual {
       }
     })
 
+    const _scatterData = items.map((item: any) => {
+      return {
+        name: item.name,
+        value: [item.value[0], item.value[1], 2],
+        datas: item.datas,
+      }
+    })
+
     const formatList = options.mapCollection;
     const formatColor = (_formatColor, value) => {
       if (formatList.length > 0) {
@@ -812,7 +820,33 @@ export default class Visual extends WynVisual {
       maxBeta: 280,
       maxDistance: 800,
     }
+    const _barOptions = {
+      barSize:options.showBar ?  [options.barSize * 0.1, options.barSize * 0.1]: [0,0],
+      bevelSize: options.barBevelSmoothness / 100,
+      bevelSmoothness: options.barBevelSmoothness,
+      minHeight: options.barMinHeight,
+      itemStyle: {
+        color: (params: any) => {
 
+          const _value = params.data.datas;
+          const _color = options.useToBar ? formatColor(options.barColor, _value) : options.barColor;
+          return _color
+        },
+      },
+    }
+
+    const _scatterOptions = {
+      symbol: options.scatterSymbol === 'path' ? options.scatterImage : options.scatterSymbol,
+      // symbol: 'circle',
+      symbolSize: [options.symbolWidth, options.symbolHeight],
+    }
+    const _getTargetOptions = () => {
+      if (options.scatterSymbol === 'bar') {
+        return _barOptions;
+      } else {
+        return _scatterOptions;
+      }
+    }
     const _bottomLightMap = options.showBottomLight
       ? {
         type: 'map3D',
@@ -1029,15 +1063,15 @@ export default class Visual extends WynVisual {
         },
         _bottomLightMap,
         {
-            type: 'bar3D',
+            type: options.scatterSymbol === 'bar' ?   'bar3D' : 'scatter3D',
             zlevel: 3,
             coordinateSystem: 'geo3D',
             shading: 'lambert',
             data: _barData,
-            barSize:options.showBar ?  [options.barSize * 0.1, options.barSize * 0.1]: [0,0],
-            bevelSize: options.barBevelSmoothness / 100,
-            bevelSmoothness: options.barBevelSmoothness,
-            minHeight: options.barMinHeight,
+            // barSize:options.showBar ?  [options.barSize * 0.1, options.barSize * 0.1]: [0,0],
+            // bevelSize: options.barBevelSmoothness / 100,
+            // bevelSmoothness: options.barBevelSmoothness,
+            // minHeight: options.barMinHeight,
             silent: true,
             itemStyle: {
               color: (params: any) => {
@@ -1048,7 +1082,9 @@ export default class Visual extends WynVisual {
               },
             },
             label: labelOptions(),
+            ..._getTargetOptions(),
         },
+      
       ]
     });
   }
@@ -1067,7 +1103,13 @@ export default class Visual extends WynVisual {
     let hiddenStates = [];
     // bar
     if (!properties.showBar ) {
-      hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize'])
+      hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize', 'scatterSymbol', 'symbolWidth', 'symbolHeight', 'scatterImage'])
+    } else {
+      if (properties.scatterSymbol === 'bar') {
+        hiddenStates = hiddenStates.concat([ 'symbolWidth', 'symbolHeight', 'scatterImage'])
+      }else {
+        hiddenStates = hiddenStates.concat([ 'barSize', 'barBevelSmoothness', 'barMinHeight' , `${properties.scatterSymbol !== 'path'? 'scatterImage': ''}`])
+      }
     }
     // showLabel
     if (!properties.showLabel ) {
@@ -1089,6 +1131,7 @@ export default class Visual extends WynVisual {
      if (!properties.showBottomLight ) {
       hiddenStates = hiddenStates.concat(['lightColor', 'lightWidth'])
     }
+
     return hiddenStates;
   }
 

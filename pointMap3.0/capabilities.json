@@ -252,40 +252,96 @@
                 ]
             },
             {
-                "displayName": "柱子样式",
+                "displayName": "图标样式",
                 "properties": [
                     {
                     "name": "showBar",
                     "type": "Boolean",
-                    "displayName": "显示柱子",
+                    "displayName": "图标图标",
                     "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "图标样式",
+                        "name": "scatterSymbol",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "bar",
+                                "displayNameKey": "柱子"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            },
+                            {
+                                "value": "pin",
+                                "displayNameKey": "水滴"
+                            },
+                            {
+                                "value": "arrow",
+                                "displayNameKey": "箭头"
+                            },
+                            {
+                                "value": "path",
+                                "displayNameKey": "自定义"
+                            }
+                        ],
+                        "defaultValue": "circle"
                     },
                     {
                         "name": "barColor",
                         "type": "Color",
-                        "displayName": "柱子颜色",
+                        "displayName": "图标颜色",
                         "defaultValue": "rgba(149, 255, 253, 0.7)"
                     },
                     {
                         "name": "barSize",
                         "type": "Integer",
-                        "displayName": "柱子尺寸",
+                        "displayName": "图标尺寸",
                         "defaultValue": 10,
                         "min": 0
                     },
                     {
                         "name": "barBevelSmoothness",
                         "type": "Integer",
-                        "displayName": "柱子圆角",
+                        "displayName": "图标圆角",
                         "defaultValue": 100,
                         "min": 0
                     },
                     {
                         "name": "barMinHeight",
                         "type": "Integer",
-                        "displayName": "柱子最小高度",
+                        "displayName": "图标最小高度",
                         "defaultValue": 10,
                         "min": 0
+                    },
+                    {
+                        "name": "symbolWidth",
+                        "type": "Integer",
+                        "displayName": "图标宽度",
+                        "defaultValue": 16,
+                        "min": 0
+                    },
+                    {
+                        "name": "symbolHeight",
+                        "type": "Integer",
+                        "displayName": "图标高度",
+                        "defaultValue": 16,
+                        "min": 0
+                    },
+                    {
+                        "name": "scatterImage",
+                        "type": "LongText",
+                        "displayName": "自定义图标路径",
+                        "defaultValue": "path://m232.99844,160.209511l15.863519,0l0,-14.211071l16.27296,0l0,14.211071l15.863521,0l0,14.577861l-15.863521,0l0,14.211069l-16.27296,0l0,-14.211069l-15.863519,0l0,-14.577861z"
                     }
             ]
             },
