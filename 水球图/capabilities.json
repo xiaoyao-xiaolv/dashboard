@@ -80,7 +80,7 @@
                         "name": "showShade",
                         "type": "Boolean",
                         "displayName": "背景阴影显示",
-                        "defaultValue": "false"
+                        "defaultValue": false
                     },
                     {
                         "name": "piecesColor",
