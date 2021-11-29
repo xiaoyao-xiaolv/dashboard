@@ -15,11 +15,9 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/dist/visual.css" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/dist/visual.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/dist/visual.js" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/dist/visual.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timeStatusBar/状态时间图.viz" beforeDir="false" afterPath="$PROJECT_DIR$/timeStatusBar/状态时间图.viz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carouselPicture/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +65,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
-    <property name="ts.external.directory.path" value="F:\GitHub\dashboard\heatPointMap\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="D:\Wyn plugins code\dashboard\pointMap2.0\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -160,11 +158,12 @@
       <workItem from="1632391691984" duration="15703000" />
       <workItem from="1632643712075" duration="6798000" />
       <workItem from="1636596524720" duration="6716000" />
+      <workItem from="1637897990431" duration="991000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="2" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -225,13 +224,13 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="498" height="446" key="SwitcherDM" timestamp="1637316526631">
+    <state width="498" height="446" key="SwitcherDM" timestamp="1637898191459">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1637316526631" />
-    <state x="339" y="72" width="880" height="536" key="find.popup" timestamp="1637316947671">
+    <state width="498" height="446" key="SwitcherDM/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1637898191459" />
+    <state x="339" y="72" width="880" height="536" key="find.popup" timestamp="1637898121163">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="339" y="72" width="880" height="536" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1637316947671" />
+    <state x="339" y="72" width="880" height="536" key="find.popup/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1637898121163" />
   </component>
 </project>
