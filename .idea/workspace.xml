@@ -15,8 +15,6 @@
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carouselPicture/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/carouselPicture/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/carouselPicture/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/carouselPicture/src/visual.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -159,6 +157,7 @@
       <workItem from="1632643712075" duration="6798000" />
       <workItem from="1636596524720" duration="6716000" />
       <workItem from="1637897990431" duration="991000" />
+      <workItem from="1638148921164" duration="5048000" />
     </task>
     <servers />
   </component>
@@ -224,6 +223,14 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="121" y="50" key="DiffContextDialog" timestamp="1638169195625">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="121" y="50" key="DiffContextDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1638169195625" />
+    <state x="460" y="42" key="RollbackChangesDialog" timestamp="1638169196824">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="460" y="42" key="RollbackChangesDialog/0.0.1280.680/5.-1080.1920.1040@0.0.1280.680" timestamp="1638169196824" />
     <state width="498" height="446" key="SwitcherDM" timestamp="1637898191459">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

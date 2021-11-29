@@ -92,6 +92,45 @@ export default class Visual extends WynVisual {
     this.firstRender = true;
     this.MockData = Visual.prepareMockData(host);
     this.swiperContainer = document.getElementsByClassName('swiper-container')[0];
+    this.bindEvents();
+  }
+
+  private bindEvents() {
+    this.swiperContainer.addEventListener('click', (event) => {
+      this.selectionManager.clear();
+      // @ts-ignore
+      if(event.target.nodeName.toLowerCase() === "img" && /^selection-\d/.test(event.target.id)) {
+        // @ts-ignore
+        const sidIndex = parseInt(event.target.id.match(/\d+/g)[0]);
+        const sid = this.selectionIds[sidIndex];
+        this.selectionManager.select(sid);
+        if(this.properties.clickLeftMouse === "showToolTip") {
+          this.visualHost.toolTipService.show({
+            position: {
+              // @ts-ignore
+              x: event.x,
+              // @ts-ignore
+              y: event.y,
+            },
+            selected: this.selectionManager.getSelectionIds(),
+            menu: true
+          });
+        } else {
+          this.visualHost.commandService.execute([{
+            name: this.properties.clickLeftMouse,
+            payload: {
+              selectionIds: sid,
+              position: {
+                // @ts-ignore
+                x: event.x,
+                // @ts-ignore
+                y: event.y,
+              }
+            }
+          }])
+        }
+      }
+    });
   }
 
   private static prepareMockData(host) {
@@ -195,41 +234,6 @@ export default class Visual extends WynVisual {
     this.swiper.removeAllSlides();
     const slides = this.prepareSlides(swiperData);
     this.swiper.appendSlide(slides);
-    this.swiperContainer.addEventListener('click', (event) => {
-      this.selectionManager.clear();
-      // @ts-ignore
-      if(event.target.nodeName.toLowerCase() === "img" && /^selection-\d/.test(event.target.id)) {
-        // @ts-ignore
-        const sidIndex = parseInt(event.target.id.match(/\d+/g)[0]);
-        const sid = this.selectionIds[sidIndex];
-        this.selectionManager.select(sid);
-        if(this.properties.clickLeftMouse === "showToolTip") {
-          this.visualHost.toolTipService.show({
-            position: {
-              // @ts-ignore
-              x: event.x,
-              // @ts-ignore
-              y: event.y,
-            },
-            selected: this.selectionManager.getSelectionIds(),
-            menu: true
-          });
-        } else {
-          this.visualHost.commandService.execute([{
-            name: this.properties.clickLeftMouse,
-            payload: {
-              selectionIds: sid,
-              position: {
-                // @ts-ignore
-                x: event.x,
-                // @ts-ignore
-                y: event.y,
-              }
-            }
-          }])
-        }
-      }
-    });
     this.configButton()
     this.configAutoPlay()
     this.swiper.update();
