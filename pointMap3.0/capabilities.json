@@ -100,13 +100,13 @@
                     {
                     "displayNameKey": "当前地图",
                     "name": "MapId",
-                    "type": "Text",
+                    "type": "Hidden",
                         "defaultValue": "china"
                     },
                     {
                         "displayNameKey": "地图深度",
                         "name": "mapLevel",
-                        "type": "Text",
+                        "type": "Hidden",
                         "defaultValue": "0"
                     },
                     {
@@ -119,7 +119,7 @@
                         "name": "mapBoxWidth",
                         "type": "Integer",
                         "displayName": "地图宽度",
-                        "defaultValue": 200,
+                        "defaultValue": 600,
                         "min": 0
                     },
                     {
@@ -294,7 +294,7 @@
                                 "displayNameKey": "自定义"
                             }
                         ],
-                        "defaultValue": "circle"
+                        "defaultValue": "bar"
                     },
                     {
                         "name": "barColor",
@@ -387,6 +387,30 @@
                             }
                         ],
                         "defaultValue": "color"
+                    },
+                    {
+                        "name": "labelPosition",
+                        "type": "Enum",
+                        "displayName": "背景填充",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "居上"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "居下"
+                            }
+                        ],
+                        "defaultValue": "top"
                     },
                     {
                         "name": "labelBackgroundColor",

@@ -737,17 +737,20 @@ export default class Visual extends WynVisual {
       })
       return _richStyle;
     }
-
+    
+    const _position = options.scatterSymbol === 'bar' ? {} :{ position: options.labelPosition };
     const labelOptions = () => {
       return {
         show: options.showLabel,
         distance: options.labelDistance,
+       ... _position,
         textStyle: {
           ...options.labelTextStyle,
           fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2)),
           borderWidth: options.tooltipBackgroundType === 'color' ? 1 : 0,
           borderColor: options.tooltipBackgroundType === 'color' ? options.labelBorderColor : 'rgba(0,0,0,0)',
         },
+        
         formatter: (params: any) => {
             let _text = [];
             let value = params.data.datas;
@@ -968,10 +971,10 @@ export default class Visual extends WynVisual {
             animationEasingUpdate: 'cubicInOut'
         },
         itemStyle: {
-        color: 'red', //地图颜色
-        borderWidth: 3, //分界线wdith
-        distance: 5,
-        borderColor: 'green', //分界线颜色
+          color: 'red', //地图颜色
+          borderWidth: 3, //分界线wdith
+          distance: 5,
+          borderColor: 'green', //分界线颜色
         },
         emphasis: {
             label: {
@@ -1032,19 +1035,10 @@ export default class Visual extends WynVisual {
             },
             label: {
                 show: false, //是否显示市
-                textStyle: {
-                    color: '#fff', //文字颜色
-                    fontSize: 20, //文字大小
-              },
-              formatter: (test: any,) => {
-                const _label = test.data.name || ' '
-                return _label
-              }
             },
             itemStyle: {
                 color: options.mapColor, //地图颜色
                 borderWidth: options.mapDemarcationBorder, //分界线wdith
-                distance: 5,
                 borderColor: options.mapDemarcationColor, //分界线颜色
             },
             emphasis: {
@@ -1106,14 +1100,14 @@ export default class Visual extends WynVisual {
       hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize', 'scatterSymbol', 'symbolWidth', 'symbolHeight', 'scatterImage'])
     } else {
       if (properties.scatterSymbol === 'bar') {
-        hiddenStates = hiddenStates.concat([ 'symbolWidth', 'symbolHeight', 'scatterImage'])
+        hiddenStates = hiddenStates.concat([ 'symbolWidth', 'symbolHeight', 'scatterImage', 'labelPosition'])
       }else {
         hiddenStates = hiddenStates.concat([ 'barSize', 'barBevelSmoothness', 'barMinHeight' , `${properties.scatterSymbol !== 'path'? 'scatterImage': ''}`])
       }
     }
     // showLabel
     if (!properties.showLabel ) {
-      hiddenStates = hiddenStates.concat(['showLocation', 'showValue', 'tooltipBackgroundType', 'labelBackgroundColor', 'labelBackgroundImage' ,'labelBorderColor', 'labelPadding', 'labelTextStyle', 'labelDistance'])
+      hiddenStates = hiddenStates.concat(['showLocation', 'showValue', 'tooltipBackgroundType', 'labelBackgroundColor', 'labelBackgroundImage' ,'labelBorderColor', 'labelPadding', 'labelTextStyle', 'labelDistance', 'labelPosition'])
     } else {
       if (properties.tooltipBackgroundType === 'color') {
         hiddenStates = hiddenStates.concat(['labelBackgroundImage'])
