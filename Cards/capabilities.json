@@ -4,7 +4,14 @@
             {
                 "name": "kpi",
                 "displayNameKey": "dataBinding.kpi",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "category",
@@ -15,21 +22,25 @@
                 "name": "leftMeasures",
                 "displayNameKey": "dataBinding.leftMeasures",
                 "kind": "attributeOrValue",
-                "itemOptions": [{
-                    "name": "dataFormat",
-                    "type": "format",
-                    "displayNameKey": "dataBinding.dataFormat"
-                }]
+                "itemOptions": [
+                    {
+                        "name": "dataFormat",
+                        "type": "format",
+                        "displayNameKey": "dataBinding.dataFormat"
+                    }
+                ]
             },
             {
                 "name": "rightMeasures",
                 "displayNameKey": "dataBinding.rightMeasures",
                 "kind": "attributeOrValue",
-                "itemOptions": [{
-                    "name": "dataFormat",
-                    "type": "format",
-                    "displayNameKey": "dataBinding.dataFormat"
-                }]
+                "itemOptions": [
+                    {
+                        "name": "dataFormat",
+                        "type": "format",
+                        "displayNameKey": "dataBinding.dataFormat"
+                    }
+                ]
             },
             {
                 "kind": "collection",
@@ -48,7 +59,14 @@
                     {
                         "name": "value",
                         "displayNameKey": "dataBinding.value",
-                        "kind": "value"
+                        "kind": "value",
+                        "options": [
+                            {
+                                "displayNameKey": "数据格式",
+                                "type": "format",
+                                "name": "valueFormat"
+                            }
+                        ]
                     },
                     {
                         "name": "axis",
@@ -463,7 +481,31 @@
                 "type": "title"
             },
             {
-                "type": "interaction"
+                "type": "interaction",
+                "properties": [
+                    {
+                        "name": "leftMouseButton",
+                        "type": "Enum",
+                        "displayName": "鼠标左键选项",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "showToolTip",
+                                "displayNameKey": "显示工具提示"
+                            }
+                        ],
+                        "defaultValue": "none"
+                    },
+                    {
+                        "name": "onlySelect",
+                        "type": "Boolean",
+                        "displayName": "数据单选",
+                        "defaultValue": true
+                    }
+                ]
             }
         ]
     },

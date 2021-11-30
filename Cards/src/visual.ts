@@ -51,7 +51,7 @@ export default class Visual extends WynVisual {
   private styleConfig: any;
   private plainDataView: any;
   private dom: HTMLDivElement;
-  private host: VisualNS.VisualHost;
+  private host: any;
   private category: string[];
   private chartBoxes: HTMLDivElement[];
   private progressBoxes: HTMLDivElement[];
@@ -65,6 +65,7 @@ export default class Visual extends WynVisual {
   private cardWidth: number;
   private ps: PerfectScrollbar;
   private progressDataView: any;
+  private properties: any
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -79,6 +80,8 @@ export default class Visual extends WynVisual {
     this.chartValueDisplay = 'price';
     this.ps = new PerfectScrollbar(this.dom);
   }
+
+ 
 
   private reset() {
     this.host.toolTipService.hide();
@@ -98,7 +101,7 @@ export default class Visual extends WynVisual {
   }
 
   private setCommonCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: { rightTag: any[]; leftTag: any[] },
-                             categoryStyle: any, kpiStyle: any, measureStyle: any) {
+    categoryStyle: any, kpiStyle: any, measureStyle: any) {
     this.setAttribute(tagCategory, categoryStyle);
     this.setAttribute(tagKpi, kpiStyle);
     tagMeasures.leftTag.forEach(tagMeasure => this.setAttribute(tagMeasure, measureStyle));
@@ -106,7 +109,7 @@ export default class Visual extends WynVisual {
   }
 
   private setDifferentCardStyle(tagCategory: HTMLParagraphElement, tagKpi: HTMLParagraphElement, tagMeasures: { rightTag: any[]; leftTag: any[] },
-                                mainBox: HTMLDivElement, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement) {
+    mainBox: HTMLDivElement, measuresBox: HTMLDivElement, leftMeasuresBox: HTMLDivElement, rightMeasuresBox: HTMLDivElement) {
     measuresBox.style.marginTop = `${this.styleConfig.measureTopPosition}px`;
     measuresBox.style.marginLeft = `${this.styleConfig.measureLeftPosition}px`;
     measuresBox.style.display = 'flex';
@@ -176,7 +179,7 @@ export default class Visual extends WynVisual {
   }
 
   private getPalette = (category: string[], a: number) => {
-    const {cardsColor} = this.styleConfig;
+    const { cardsColor } = this.styleConfig;
     const hsl = [];
     this.palettes = [];
     for (let i = 0; i < category.length; i++) {
@@ -186,7 +189,7 @@ export default class Visual extends WynVisual {
   }
 
   private getBackgroundColor = (index: number) => {
-    const {cardsColor, maintainColorAssignment, cardTransparency} = this.styleConfig;
+    const { cardsColor, maintainColorAssignment, cardTransparency } = this.styleConfig;
     if (JSON.stringify(this.renderConfig) === JSON.stringify(Visual.defaultConfig) || this.palettes === undefined) {
       return this.colorRgba(cardsColor[index], cardTransparency * (0.01));
     } else if (maintainColorAssignment) {
@@ -239,7 +242,7 @@ export default class Visual extends WynVisual {
     chartBox.style.height = `calc((100% - (${this.styleConfig.cardPadding.top + this.styleConfig.cardPadding.bottom + 24}px)) * ${this.styleConfig.chartHeight / 100})`;
     chartBox.style.width = `calc(100% - (${this.styleConfig.cardPadding.left + this.styleConfig.cardPadding.right}px)`;
     chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom}px`;
-    if(this.renderConfig.actualValues.length && this.renderConfig.contrastValues.length) {
+    if (this.renderConfig.actualValues.length && this.renderConfig.contrastValues.length) {
       chartBox.style.bottom = `${this.styleConfig.cardPadding.bottom + 34}px`;
       cardBox.appendChild(progressBox);
       progressBox.style.position = 'absolute';
@@ -310,10 +313,10 @@ export default class Visual extends WynVisual {
         height: getComputedStyle(that.progressBoxes[i]).height
       });
       const options = {
-        grid:{
+        grid: {
           bottom: 10,
-          left:10,
-          right:10,
+          left: 10,
+          right: 10,
           height: `${that.styleConfig.progressBarWidth}px`
         },
         xAxis: {
@@ -334,11 +337,11 @@ export default class Visual extends WynVisual {
               color: that.styleConfig.progressBarBackground,
               barBorderRadius: 30
             },
-            label:{
+            label: {
               show: that.styleConfig.showProgressLabel,
-              position:'insideRight',
+              position: 'insideRight',
               formatter: function () {
-                return `${((that.renderConfig.actualValues[i]/that.renderConfig.contrastValues[i]) * 100).toFixed(2)}%`;
+                return `${((that.renderConfig.actualValues[i] / that.renderConfig.contrastValues[i]) * 100).toFixed(2)}%`;
               },
               textStyle: {
                 ...that.styleConfig.progressTextStyle,
@@ -415,7 +418,7 @@ export default class Visual extends WynVisual {
     const measures = [];
     if (this.category.length === 0) {
       const formatMeasures = [];
-      for(let i = 0; i < display.length; i++) {
+      for (let i = 0; i < display.length; i++) {
         formatMeasures.push(this.host.formatService.format(format[i], this.plainDataView.data[0][display[i]]));
       }
       measures.push(formatMeasures);
@@ -560,41 +563,107 @@ export default class Visual extends WynVisual {
     }
   }
 
+ private cardRightClickHandler = (e: any) => {
+    //tooltip	跳转保留等
+    this.dom.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.host.contextMenuService.show({
+          position: {
+            x: e.pageX,
+            y: e.pageY,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
+    })
+ }
+
   private cardClickHandler = (e: any) => {
+    this.dom.addEventListener("click", () => {
+      this.selectionManager.clear();
+      this.host.toolTipService.hide();
+      this.host.contextMenuService.hide();
+      return;
+    })
     e.stopPropagation();
     const textContent = e.currentTarget.textContent;
-    const selectedKpi = this.renderConfig.kpiS.filter(kpi => textContent.includes(kpi.category));
+    const selectedKpi = this.renderConfig.kpiS.filter((kpi: any) => textContent.includes(kpi.category));
     const selectionId = selectedKpi[0].selectionId;
-    if (!this.selectionManager.contains(selectionId)) {
-      this.selectionManager.select(selectionId, true);
-    } else {
-      this.selectionManager.clear(selectionId);
+
+    this.host.contextMenuService.hide();
+    //鼠标左键功能
+    let leftMouseButton = this.properties.leftMouseButton;
+    switch (leftMouseButton) {
+      //鼠标联动设置    
+      case "none": {
+        if (this.properties.onlySelect) {
+          this.selectionManager.clear();
+          this.selectionManager.select(selectionId, true);
+        } else {
+          if (!this.selectionManager.contains(selectionId)) {
+            this.selectionManager.select(selectionId, true);
+          } else {
+            this.selectionManager.clear(selectionId);
+          }
+        }
+        const selectedKpiS = this.renderConfig.kpiS.filter((kpi: any) => this.selectionManager.contains(kpi.selectionId));
+        this.cardBoxes.forEach(cardBox => {
+          selectedKpiS.some(selectedKpi => cardBox.textContent.includes(selectedKpi.category))
+            ? cardBox.style.setProperty('opacity', '1')
+            : cardBox.style.setProperty('opacity', '0.2');
+        });
+        break;
+      }
+      case "showToolTip": {
+        this.host.toolTipService.show({
+          position: {
+            x: e.pageX,
+            y: e.pageY,
+          },
+          fields: [{
+            label: this.categoryDisplay,
+            value: selectedKpi[0].category,
+          }, {
+            label: this.kpiDisplay,
+            value: selectedKpi[0].kpi,
+          }],
+          selected: this.selectionManager.getSelectionIds(),
+          menu: true,
+        });
+        break;
+      }
+      
     }
-    if (this.selectionManager.isEmpty()) {
-      this.reset();
-    } else {
-      this.host.toolTipService.show({
-        position: {
-          x: e.pageX,
-          y: e.pageY,
-        },
-        fields: [{
-          label: this.categoryDisplay,
-          value: selectedKpi[0].category,
-        }, {
-          label: this.kpiDisplay,
-          value: selectedKpi[0].kpi,
-        }],
-        selected: this.selectionManager.getSelectionIds(),
-        menu: true,
-      });
-      const selectedKpiS = this.renderConfig.kpiS.filter(kpi => this.selectionManager.contains(kpi.selectionId));
-      this.cardBoxes.forEach(cardBox => {
-        selectedKpiS.some(selectedKpi => cardBox.textContent.includes(selectedKpi.category))
-          ? cardBox.style.setProperty('opacity', '1')
-          : cardBox.style.setProperty('opacity', '0.2');
-      });
-    }
+
+    // if (this.selectionManager.isEmpty()) {
+    //   this.reset();
+    // } else {
+    //   this.host.toolTipService.show({
+    //     position: {
+    //       x: e.pageX,
+    //       y: e.pageY,
+    //     },
+    //     fields: [{
+    //       label: this.categoryDisplay,
+    //       value: selectedKpi[0].category,
+    //     }, {
+    //       label: this.kpiDisplay,
+    //       value: selectedKpi[0].kpi,
+    //     }],
+    //     selected: this.selectionManager.getSelectionIds(),
+    //     menu: true,
+    //   });
+    //   const selectedKpiS = this.renderConfig.kpiS.filter((kpi: any) => this.selectionManager.contains(kpi.selectionId));
+    //   this.cardBoxes.forEach(cardBox => {
+    //     selectedKpiS.some(selectedKpi => cardBox.textContent.includes(selectedKpi.category))
+    //       ? cardBox.style.setProperty('opacity', '1')
+    //       : cardBox.style.setProperty('opacity', '0.2');
+    //   });
+    // }
   }
 
   private dealNullArray = (array: string[]) => {
@@ -630,18 +699,18 @@ export default class Visual extends WynVisual {
       const tagCategory = document.createElement('p');
       const tagKpi = document.createElement('p');
       const tagMeasures = {
-        leftTag : [],
-        rightTag : []
+        leftTag: [],
+        rightTag: []
       };
       const textCategory = document.createTextNode(this.renderConfig.category.length === 0 ? '' : this.renderConfig.category[i]);
       const textKpi = document.createTextNode(this.renderConfig === Visual.defaultConfig ? `${Visual.defaultConfig.kpiS[i]}` : `${this.renderConfig.kpiS[i].kpi}`);
       const titleMeasures = {
-        leftTitle : [],
-        rightTitle : []
+        leftTitle: [],
+        rightTitle: []
       };
       const textMeasures = {
-        leftText : [],
-        rightText : []
+        leftText: [],
+        rightText: []
       };
       this.fillMeasures(this.renderConfig.measuresDisplay, this.renderConfig.measuresValue, tagMeasures, titleMeasures, textMeasures, i);
       this.setCommonCardStyle(tagCategory, tagKpi, tagMeasures, this.styleConfig.categoryStyle, this.styleConfig.kpiStyle, this.styleConfig.measureStyle);
@@ -651,6 +720,7 @@ export default class Visual extends WynVisual {
       this.chartBoxes.push(chartBox);
       this.progressBoxes.push(progressBox);
       cardBox.addEventListener('click', this.cardClickHandler);
+      cardBox.addEventListener('contextmenu', this.cardRightClickHandler);
       this.cardBoxes.push(cardBox);
     }
   }
@@ -675,6 +745,7 @@ export default class Visual extends WynVisual {
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
+    this.properties = options.properties;
     this.styleConfig = options.properties;
     this.plainDataView = options.dataViews[0] && options.dataViews[0].plain;
     this.progressDataView = options.dataViews[1] && options.dataViews[1].plain;
