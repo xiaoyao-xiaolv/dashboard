@@ -791,7 +791,7 @@ export default class Visual extends WynVisual {
                 let realDisplayUnit = this.displayUnit;
                 const formatService = this.host.formatService;
                 if (formatService.isAutoDisplayUnit(this.displayUnit)) {
-                  realDisplayUnit = formatService.getAutoDisplayUnit(value);
+                  realDisplayUnit = formatService.getAutoDisplayUnit([value]);
                 }
                 value = formatService.format(this.format, value, realDisplayUnit)
               }
@@ -931,7 +931,14 @@ export default class Visual extends WynVisual {
               _textArr.push(`${this.locationName}: ${_toolTip.name}`)
             }
             if (options.showTooltipValue) {
-              _textArr.push(`${this.valuesName}: ${_toolTip.datas}`)
+                let value
+                let realDisplayUnit = this.displayUnit;
+                const formatService = this.host.formatService;
+                if (formatService.isAutoDisplayUnit(this.displayUnit)) {
+                  realDisplayUnit = formatService.getAutoDisplayUnit([_toolTip.datas]);
+                }
+                value = formatService.format(this.format, _toolTip.datas, realDisplayUnit)
+              _textArr.push(`${this.valuesName}: ${value}`)
             }
             if (options.showTooltipText && _toolTips.length) {
               let _tooltipText: any;
