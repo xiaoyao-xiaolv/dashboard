@@ -841,7 +841,7 @@ export default class Visual extends WynVisual {
     const _scatterOptions = {
       symbol: options.scatterSymbol === 'path' ? options.scatterImage : options.scatterSymbol,
       // symbol: 'circle',
-      symbolSize: [options.symbolWidth, options.symbolHeight],
+      symbolSize: options.scatterSymbol === 'path' ? [options.pathWidth, options.pathHeight] : [options.symbolWidth, options.symbolWidth],
     }
     const _getTargetOptions = () => {
       if (options.scatterSymbol === 'bar') {
@@ -1104,12 +1104,18 @@ export default class Visual extends WynVisual {
     let hiddenStates = [];
     // bar
     if (!properties.showBar ) {
-      hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize', 'scatterSymbol', 'symbolWidth', 'symbolHeight', 'scatterImage'])
+      hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize', 'scatterSymbol', 'symbolWidth', 'pathWidth','pathHeight', 'scatterImage'])
     } else {
       if (properties.scatterSymbol === 'bar') {
-        hiddenStates = hiddenStates.concat([ 'symbolWidth', 'symbolHeight', 'scatterImage', 'labelPosition'])
-      }else {
-        hiddenStates = hiddenStates.concat([ 'barSize', 'barBevelSmoothness', 'barMinHeight' , `${properties.scatterSymbol !== 'path'? 'scatterImage': ''}`])
+        hiddenStates = hiddenStates.concat([ 'symbolWidth',  'pathWidth','pathHeight', 'scatterImage', 'labelPosition'])
+      } else {
+        const _path = ['pathWidth','pathHeight', 'scatterImage']
+        hiddenStates = hiddenStates.concat(['barSize', 'barBevelSmoothness', 'barMinHeight'])
+        if (properties.scatterSymbol !== 'path') {
+          hiddenStates = hiddenStates.concat(_path)
+        } else {
+          hiddenStates = hiddenStates.concat(['symbolWidth'])
+        }
       }
     }
     // showLabel

@@ -306,7 +306,7 @@
                         "name": "barSize",
                         "type": "Integer",
                         "displayName": "图标尺寸",
-                        "defaultValue": 10,
+                        "defaultValue": 20,
                         "min": 0
                     },
                     {
@@ -320,7 +320,7 @@
                         "name": "barMinHeight",
                         "type": "Integer",
                         "displayName": "图标最小高度",
-                        "defaultValue": 10,
+                        "defaultValue": 25,
                         "min": 0
                     },
                     {
@@ -331,10 +331,17 @@
                         "min": 0
                     },
                     {
-                        "name": "symbolHeight",
+                        "name": "pathWidth",
+                        "type": "Integer",
+                        "displayName": "图标宽度",
+                        "defaultValue": 15,
+                        "min": 0
+                    },
+                    {
+                        "name": "pathHeight",
                         "type": "Integer",
                         "displayName": "图标高度",
-                        "defaultValue": 16,
+                        "defaultValue": 50,
                         "min": 0
                     },
                     {
