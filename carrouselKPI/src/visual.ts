@@ -1,3 +1,4 @@
+import { Properties } from './../../histogram/src/interface';
 import '../style/visual.less';
 import _ = require('lodash');
 import * as $ from 'jquery';
@@ -39,6 +40,7 @@ export default class Visual extends WynVisual {
   private selection: any;
   private selectionManager: any;
   private selectionIds: any;
+  private container: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
@@ -47,6 +49,7 @@ export default class Visual extends WynVisual {
     this.isMock = true;
     this.visualHost = host;
     this.selection = [];
+    this.container = dom;
     this.selectionManager = host.selectionService.createSelectionManager();
 
     //  custom font famliy
@@ -88,7 +91,7 @@ export default class Visual extends WynVisual {
   private showTooltip = (x, y, id) => {
     let currentItem = this.items[id];
     const config = {
-      position: {x,y},
+      position: { x, y },
       title: currentItem[this.dimensions],
       fields: [],
       selected: this.selectionManager.getSelectionIds(),
@@ -113,17 +116,35 @@ export default class Visual extends WynVisual {
   }
 
   private bindEvents = () => {
-    this.root.on('click', ()=> {
+    this.root.on('click', () => {
       this.selectionManager.clear();
       this.visualHost.toolTipService.hide();
+      this.visualHost.contextMenuService.hide();
       return;
     })
 
-    $('.figure').on('click', (event ) => {
+    this.container.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.visualHost.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.visualHost.contextMenuService.hide();	
+      }
+    })
+
+
+    $('.figure').on('click', (event) => {
       event.stopPropagation();
-      let id = event .currentTarget.attributes[1].value;
+      let id = event.currentTarget.attributes[1].value;
       let sid = this.selectionIds[id];
-      if(this.selectionManager.contains(sid)) {
+      if (this.selectionManager.contains(sid)) {
         this.selectionManager.clear(sid);
         this.visualHost.toolTipService.hide();
         return;
@@ -184,7 +205,7 @@ export default class Visual extends WynVisual {
     }
 
     this.render();
-    if(!this.isMock){
+    if (!this.isMock) {
       this.bindEvents();
     }
   }
@@ -278,7 +299,7 @@ export default class Visual extends WynVisual {
       }
 
       let figureElement = $("<div>").attr('class', 'figure frame')
-        .attr('selectionId',() => this.isMock ? -1 : i)
+        .attr('selectionId', () => this.isMock ? -1 : i)
         .css({ 'transform': 'rotateY(' + rotateY[i] + 'deg) translateZ(' + translateZ + 'px)' })
         .height(height).width(width).data('rotateY', rotateY[i])
         .append(figureTitle, figureValues)
@@ -497,15 +518,16 @@ export default class Visual extends WynVisual {
     const formatUnit = units.find((item) => item.value === Number(dataUnit))
     format = (format / formatUnit.value).toFixed(2)
 
-    if (dataType === 'number'  || dataType === 'none' || dataType === '') {
+    if (dataType === 'number' || dataType === 'none' || dataType === '') {
       format = this.visualHost.formatService.format(this.valueFormat, format).toLocaleString();
-    }  else if (dataType === '%') {
+    } else if (dataType === '%') {
       format = format + dataType
     } else {
       format = dataType + format
     }
     return format + formatUnit.unit
   }
+
 
   // private static drawLines(container, lineContainer) {
   //   let svg = $(`<svg viewBox="0 0 ${Visual.width} ${Visual.height}" xmlns="http://www.w3.org/2000/svg"></svg>`);
