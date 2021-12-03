@@ -4,7 +4,14 @@
             {
                 "name": "ActualValue",
                 "displayNameKey": "数值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "dimension",
@@ -327,78 +334,6 @@
                         "defaultValue": "top"
                     },
                     {
-                        "name": "dataindicateType",
-                        "type": "Enum",
-                        "displayName": "数据格式",
-                        "items": [
-                            {
-                                "value": "",
-                                "displayNameKey": "常规"
-                            },
-                            {
-                                "value": "number",
-                                "displayNameKey": "数字"
-                            },
-                            {
-                                "value": "￥",
-                                "displayNameKey": "货币"
-                            },
-                            {
-                                "value": "%",
-                                "displayNameKey": "百分比"
-                            }
-                        ],
-                        "defaultValue": ""
-                    },
-                    {
-                        "name": "dataindicateUnit",
-                        "type": "Enum",
-                        "displayName": "数据单位",
-                        "items": [
-                            {
-                                "value": "1",
-                                "displayNameKey": "自动"
-                            },
-                            {
-                                "value": "1",
-                                "displayNameKey": "无"
-                            },
-                            {
-                                "value": "100",
-                                "displayNameKey": "百"
-                            },
-                            {
-                                "value": "1000",
-                                "displayNameKey": "千"
-                            },
-                            {
-                                "value": "10000",
-                                "displayNameKey": "万"
-                            },
-                            {
-                                "value": "100000",
-                                "displayNameKey": "十万"
-                            },
-                            {
-                                "value": "1000000",
-                                "displayNameKey": "百万"
-                            },
-                            {
-                                "value": "1000000",
-                                "displayNameKey": "千万"
-                            },
-                            {
-                                "value": "10000000",
-                                "displayNameKey": "亿"
-                            },
-                            {
-                                "value": "100000000000",
-                                "displayNameKey": "十亿"
-                            }
-                        ],
-                        "defaultValue": "1"
-                    },
-                    {
                         "name": "dataindicateTextStyle",
                         "type": "TextStyle",
                         "displayName": "字体设置",
@@ -552,7 +487,43 @@
                 ]
             },
             {
-                "type": "interaction"
+                "type": "interaction",
+                "properties": [
+                    {
+                        "name": "leftMouseButton",
+                        "type": "Enum",
+                        "displayName": "鼠标左键选项",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "无"
+                            },
+                            {
+                                "value": "showToolTip",
+                                "displayNameKey": "显示工具提示"
+                            },
+                            {
+                                "value": "Keep",
+                                "displayNameKey": "保留"
+                            },
+                            {
+                                "value": "Exclude",
+                                "displayNameKey": "排除"
+                            },
+                            {
+                                "value": "Jump",
+                                "displayNameKey": "跳转"
+                            }
+                        ],
+                        "defaultValue": "none"
+                    },
+                    {
+                        "name": "onlySelect",
+                        "type": "Boolean",
+                        "displayName": "数据单选",
+                        "defaultValue": true
+                    }
+                ]
             },
             {
                 "type": "title"
