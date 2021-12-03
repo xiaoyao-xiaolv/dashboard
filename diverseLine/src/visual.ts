@@ -77,7 +77,6 @@ export default class Visual extends WynVisual {
     })
 
 
-    //鼠标左键
     this.chart.on('click', (params) => {
       this.host.contextMenuService.hide();
       params.event.event.stopPropagation();
