@@ -5,8 +5,10 @@ export default class Visual {
   private container: HTMLDivElement;
   private items: any;
   private properties: any;
+  private host: any;
 
   constructor(dom: HTMLDivElement, host: any, options: any) {
+    this.host = host;
     this.container = dom;
     this.items = [];
     this.properties = {
@@ -14,7 +16,7 @@ export default class Visual {
       customText: '请输入标题',
       textStyle: {
         fontSize: '20pt',
-        fontFamily:'微软雅黑',
+        fontFamily: '微软雅黑',
         fontStyle: 'Normal',
         fontWeight: 'Normal'
       },
@@ -23,6 +25,46 @@ export default class Visual {
       customAnimateDelay: '0s',
       customAnimateRepeat: 'animate__repeat-1'
     };
+    this.selectEvent(options);
+  }
+
+  
+  private selection: any;
+
+  private selectEvent(options) {
+    this.selection = this.host.selectionService.createSelectionId();
+
+    this.container.addEventListener('click', (params) => {
+      let leftMouseButton = options.properties.leftMouseButton;
+      console.log(leftMouseButton)
+      console.log(params)
+      this.host.commandService.execute([{
+        name: leftMouseButton,
+        payload: {
+          selectionIds: this.selection,
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+        }
+      }])
+    })
+
+    this.container.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.host.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      } else {
+        this.host.contextMenuService.hide();
+      }
+    })
   }
 
   public update(options: any) {
@@ -41,7 +83,7 @@ export default class Visual {
     this.render();
   }
 
-  public render () {
+  public render() {
     this.container.innerHTML = "";
     const options = this.properties;
     const isMock = !this.items.length;
@@ -53,10 +95,10 @@ export default class Visual {
     dowebok.classList.add('title-text');
     dowebok.classList.add(options.customTextAlign);
     dowebok.classList.add(options.customTextVerticalAlign);
-    if(options.customTextAlign === 'v-center' && options.customTextVerticalAlign === 'h-center') {
+    if (options.customTextAlign === 'v-center' && options.customTextVerticalAlign === 'h-center') {
       dowebok.classList.add('center')
     }
-    
+
     p1.innerHTML = items;
     p1.style.color = options.textStyle.color;
     p1.style.fontSize = options.textStyle.fontSize;
@@ -69,18 +111,18 @@ export default class Visual {
 
     if (options.customAnimate) {
       let addAnimateName = 'animate__';
-      
-      if(options.customAnimateName === 'flip') {
-        addAnimateName =addAnimateName + options.customAnimateName + options.customAnimateFlipDirection
-      }else if (options.customAnimateName === 'rotateIn') {
-        addAnimateName =addAnimateName + options.customAnimateName + options.customAnimateRotateDirection
+
+      if (options.customAnimateName === 'flip') {
+        addAnimateName = addAnimateName + options.customAnimateName + options.customAnimateFlipDirection
+      } else if (options.customAnimateName === 'rotateIn') {
+        addAnimateName = addAnimateName + options.customAnimateName + options.customAnimateRotateDirection
       } else {
         addAnimateName = addAnimateName + options.customAnimateName + options.customAnimateDirection
       }
-      
+
       const addAnimateDelay = 'animate__' + options.customAnimateDelay;
       const addAnimateRepeat = 'animate__' + options.customAnimateRepeat;
-     
+
       p1.classList.add('animate__animated');
       p1.classList.add(addAnimateName);
       p1.classList.add(addAnimateDelay);
@@ -88,7 +130,7 @@ export default class Visual {
       p1.style.setProperty('--animate-duration', `${options.customAnimateDuration}s`);
     }
     dowebok.appendChild(p1);
-    
+
     this.container.appendChild(dowebok);
   }
 
@@ -103,9 +145,9 @@ export default class Visual {
   public getInspectorHiddenState(updateOptions: any): string[] {
     // control animate display
     if (!updateOptions.properties.customAnimate) {
-      return ['customAnimateName', 'customAnimateDirection', 'customAnimateDuration','customAnimateRotateDirection', 'customAnimateFlipDirection', 'customAnimateDelay', 'customAnimateRepeat'];
+      return ['customAnimateName', 'customAnimateDirection', 'customAnimateDuration', 'customAnimateRotateDirection', 'customAnimateFlipDirection', 'customAnimateDelay', 'customAnimateRepeat'];
     }
-    
+
     if (updateOptions.properties.customAnimateName === 'flip') {
       return ['customAnimateDirection', 'customAnimateRotateDirection'];
     }
@@ -113,7 +155,7 @@ export default class Visual {
     if (updateOptions.properties.customAnimateName === 'rotateIn') {
       return ['customAnimateDirection', 'customAnimateFlipDirection'];
     }
-    
+
     if (updateOptions.properties.customAnimateName !== 'rotateIn' || updateOptions.properties.customAnimateName !== 'flip') {
       return ['customAnimateRotateDirection', 'customAnimateFlipDirection'];
     }
