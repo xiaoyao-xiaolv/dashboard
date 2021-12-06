@@ -487,7 +487,7 @@ export default class Visual extends WynVisual {
             show: options.dataindicate,
             position: options.dataindicatePosition,
             formatter: (item) => {
-              return this.formatData(item.value)
+              return   this.formatData(item.value)
             },
             ...options.dataindicateTextStyle,
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
@@ -513,7 +513,10 @@ export default class Visual extends WynVisual {
             show: options.dataindicate,
             position: options.dataindicatePosition,
             ...options.dataindicateTextStyle,
-            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
+            fontSize: parseFloat(options.dataindicateTextStyle.fontSize),
+            formatter: (data) => {
+              return this.formatData(data.value)
+            }
           },
           itemStyle: {
             normal: {
