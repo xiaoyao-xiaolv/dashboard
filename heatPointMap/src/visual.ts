@@ -37,6 +37,28 @@ export default class Visual extends WynVisual {
     this.properties = {
       customColor: ["#fff4d1", "#ffe9a4", "#ffde76", "#ffd348", "#bf9e36", "#806a24"]
     }
+    this.r_data = [{"日期(周)":"周一","日期(时间)":"1点","数量":10},{"日期(周)":"周一","日期(时间)":"3点","数量":20},
+                    {"日期(周)":"周一","日期(时间)":"6点","数量":30},{"日期(周)":"周一","日期(时间)":"9点","数量":40},
+                    {"日期(周)":"周一","日期(时间)":"12点","数量":50},
+                    {"日期(周)":"周二","日期(时间)":"1点","数量":10},{"日期(周)":"周二","日期(时间)":"3点","数量":20},
+                    {"日期(周)":"周二","日期(时间)":"6点","数量":30},{"日期(周)":"周二","日期(时间)":"9点","数量":40},
+                    {"日期(周)":"周二","日期(时间)":"12点","数量":50},
+                    {"日期(周)":"周三","日期(时间)":"1点","数量":10},{"日期(周)":"周三","日期(时间)":"3点","数量":20},
+                    {"日期(周)":"周三","日期(时间)":"6点","数量":30},{"日期(周)":"周三","日期(时间)":"9点","数量":40},
+                    {"日期(周)":"周三","日期(时间)":"12点","数量":50},
+                    {"日期(周)":"周四","日期(时间)":"1点","数量":10},{"日期(周)":"周四","日期(时间)":"3点","数量":20},
+                    {"日期(周)":"周四","日期(时间)":"6点","数量":30},{"日期(周)":"周四","日期(时间)":"9点","数量":40},
+                    {"日期(周)":"周四","日期(时间)":"12点","数量":50},
+                    {"日期(周)":"周五","日期(时间)":"1点","数量":10},{"日期(周)":"周五","日期(时间)":"3点","数量":20},
+                    {"日期(周)":"周五","日期(时间)":"6点","数量":30},{"日期(周)":"周五","日期(时间)":"9点","数量":40},
+                    {"日期(周)":"周五","日期(时间)":"12点","数量":50},
+                    {"日期(周)":"周六","日期(时间)":"1点","数量":10},{"日期(周)":"周六","日期(时间)":"3点","数量":20},
+                    {"日期(周)":"周六","日期(时间)":"6点","数量":30},{"日期(周)":"周六","日期(时间)":"9点","数量":40},
+                    {"日期(周)":"周六","日期(时间)":"12点","数量":50},
+                    {"日期(周)":"周日","日期(时间)":"1点","数量":10},{"日期(周)":"周日","日期(时间)":"3点","数量":20},
+                    {"日期(周)":"周日","日期(时间)":"6点","数量":30},{"日期(周)":"周日","日期(时间)":"9点","数量":40},
+                    {"日期(周)":"周日","日期(时间)":"12点","数量":50}
+                  ]
   }
 
   // toolTip
@@ -83,6 +105,22 @@ export default class Visual extends WynVisual {
     this.container.addEventListener('mouseleave', (e: any) => {
       if (isTooltipModelShown) return;
       this.hideTooltip();
+    })
+
+    this.chart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {								
+            x: params.event.event.x,
+            y: params.event.event.y,
+          }
+        })
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
     })
 
     this.chart.on('click', (params) => {
@@ -164,7 +202,15 @@ export default class Visual extends WynVisual {
 
     const visualMapColor = options.heatType === 'heatmap' ? options.customColor : (options.heatFillType === 'single' ? options.pointColorSingle : options.pointColorMultiple)
     var th=this;
+
+    if(isMock){
+      th["Series"] = "日期(周)"
+      th["dimension"] = "日期(时间)"
+    }
+
+    let y = 0;
     for (let i = 0; i < dy.length; i++) {
+      let x = 0;
       for (let j = 0; j < dx.length; j++) {
         const item: any = []
         item[0] = j;
@@ -174,13 +220,17 @@ export default class Visual extends WynVisual {
         if (items.length>0){
           valuc=items[0][th.ActualValue];
         }
-        data.push([item[0], item[1],valuc])
+        if(isMock){
+          data.push([x++,y ,y*10])
+        }else{
+          data.push([item[0], item[1],valuc])
+        }
       }
+      y++
     }
 
     //这种方式赋值,会导致data中有些值空缺
     //initData.map((value: any, index: any) => data[index][2] = value || '-');
-
 
     const max3 = data.sort((a, b) => b[2] - a[2]).slice(0, options.effectNumber);
     const min3 = data.sort((a, b) => a[2] - b[2]).slice(0, options.effectNumber);
@@ -251,7 +301,8 @@ export default class Visual extends WynVisual {
         },
       },
       textStyle: textStyle,
-      series: [{
+      series: [
+        {
         name: this.ActualValue || '数量',
         type: options.heatType,
         xAxisIndex: 0,
@@ -334,6 +385,11 @@ export default class Visual extends WynVisual {
         legend = ['legendVerticalPosition']
       }
 
+    }
+
+    if(updateOptions.properties.heatType != "heatmap") {
+      legend =  legend.concat['dataindicate']
+      legend = legend.concat['dataindicateTextStyle']
     }
 
     if (updateOptions.properties.heatType == 'scatter') {
