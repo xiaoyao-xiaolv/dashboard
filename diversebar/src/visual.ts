@@ -96,9 +96,9 @@ export default class Visual extends WynVisual {
         switch (leftMouseButton) {
           //鼠标联动设置    
           case "none": {
-            if(this.selectionManager.contains(sid)){
+            if (this.selectionManager.contains(sid)) {
               this.selectionManager.clear(sid)
-            }else{
+            } else {
               if (this.properties.onlySelect) {
                 this.selectionManager.clear();
               }
@@ -143,19 +143,19 @@ export default class Visual extends WynVisual {
           menu: true
         }, 10)
         return;
-      }else{
-        this.host.contextMenuService.hide();	
+      } else {
+        this.host.contextMenuService.hide();
       }
     })
 
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
-    this.format = options.dataViews[0].plain.profile.ActualValue.values[0].format;
     const dataView = options.dataViews[0];
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
+      this.format = options.dataViews[0].plain.profile.ActualValue.values[0].format;
       const plainData = dataView.plain;
 
       this.isMock = false;
@@ -268,9 +268,9 @@ export default class Visual extends WynVisual {
   }
 
   public formatData = (number) => {
-      const formatService = this.host.formatService;
-      let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
-      return formatService.format(this.format, number, realDisplayUnit);
+    const formatService = this.host.formatService;
+    let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+    return formatService.format(this.format, number, realDisplayUnit);
   }
 
   public render() {
@@ -487,7 +487,7 @@ export default class Visual extends WynVisual {
             show: options.dataindicate,
             position: options.dataindicatePosition,
             formatter: (item) => {
-              return   this.formatData(item.value)
+              return this.formatData(item.value)
             },
             ...options.dataindicateTextStyle,
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
