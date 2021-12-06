@@ -9,16 +9,16 @@ import '../style/visual.less';
 
 // fontSize others => px;
 const convertOtherUnitToPx = (fontSize: string): number => {
-    const divDom = document.createElement('div');
-    divDom.style.visibility = 'hidden';
-    divDom.style.position = 'absolute';
-    divDom.style.padding = '0';
-    divDom.style.border = '0';
-    divDom.style.width = fontSize;
-    document.body.appendChild(divDom);
-    const info = divDom.getBoundingClientRect();
-    document.body.removeChild(divDom);
-    return info.width;
+  const divDom = document.createElement('div');
+  divDom.style.visibility = 'hidden';
+  divDom.style.position = 'absolute';
+  divDom.style.padding = '0';
+  divDom.style.border = '0';
+  divDom.style.width = fontSize;
+  document.body.appendChild(divDom);
+  const info = divDom.getBoundingClientRect();
+  document.body.removeChild(divDom);
+  return info.width;
 }
 
 export default class Visual {
@@ -28,7 +28,7 @@ export default class Visual {
   private valueField: string;
   private seriesField: string;
   private frequencyField: string;
-  private properties: Properties;
+  private properties: any;
 
   constructor(public dom: HTMLDivElement, public host: any, options: any) {
     this.selectionManager = host.selectionService.createSelectionManager();
@@ -43,10 +43,29 @@ export default class Visual {
     })
     this.render();
     this.chart.on('click', this.onClick);
+    this.onClickRight()
+  }
+
+  private onClickRight = () => {
+    this.dom.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.host.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
+    })
   }
 
   private onClick = (e: Event) => {
-    console.log(e);
+
     const items = this.items;
     if (!items.length || e.data == null) {
       if (this.selectionManager.isEmpty()) {
@@ -69,17 +88,59 @@ export default class Visual {
     });
     const selectionIds = selectedItems.map(item => item.selectionId);
     const hasSomeIdNotContained = selectionIds.some(selectionId => !this.selectionManager.contains(selectionId));
-    if (hasSomeIdNotContained) {
-      this.selectionManager.select(selectionIds, true);
-    } else {
-      selectionIds.forEach(selectionId => {
-        this.selectionManager.clear(selectionId);
-      });
+    let leftMouseButton = this.properties.leftMouseButton;
+    const sid = selectionIds;
+    switch (leftMouseButton) {
+      //鼠标联动设置    
+      case "none": {
+        if (hasSomeIdNotContained) {
+          if (this.properties.onlySelect) {
+            this.selectionManager.clear();
+          }
+          this.selectionManager.select(selectionIds, true);
+        } else {
+          selectionIds.forEach(selectionId => {
+            this.selectionManager.clear(selectionId);
+          });
+        }
+        if (this.selectionManager.isEmpty()) {
+          this.host.toolTipService.hide();
+          return;
+        }
+        break
+      }
+      case "showToolTip": {
+        this.host.toolTipService.show({
+          position: {
+            x: e.x,
+            y: e.y,
+          },
+  
+          fields: [{
+            label: e.data[0],
+            value: e.data[1],
+          }],
+          selected: this.selectionManager.getSelectionIds(),
+          menu: true,
+        }, 10);
+        break;
+      }
+      default: {
+        this.host.commandService.execute([{
+          name: leftMouseButton,
+          payload: {
+            selectionIds: sid,
+            position: {
+              x: e.x,
+              y: e.y,
+            },
+          }
+        }])
+      }
     }
-    if (this.selectionManager.isEmpty()) {
-      this.host.toolTipService.hide();
-      return;
-    }
+
+
+
   }
 
   private render = () => {
@@ -88,7 +149,7 @@ export default class Visual {
 
     const items = isMock ? mockItems : this.items;
     const valueField = isMock ? mockValueField : this.valueField;
-    const seriesField = isMock ? mockSeriesField : this.seriesField; 
+    const seriesField = isMock ? mockSeriesField : this.seriesField;
 
     const dataSet = new DataSet();
     const dataView = dataSet.createView().source(items);
@@ -101,7 +162,7 @@ export default class Visual {
       groupBy: [seriesField],
       as: [valueField, this.frequencyField],
     });
-  
+
     this.chart.data(dataView.rows);
     this.setGroupingAxis(valueField, binWidth);
     this.setFrequencyAxis(this.frequencyField);
@@ -142,14 +203,14 @@ export default class Visual {
       this.chart.axis(valueField, {
         line: groupingAxisLine ? this.getG2AxisLineStyle() : null,
         label: groupingAxisTickLabel ? {
-            style: this.getG2TextStyle(groupingAxisTextStyle),
-            autoRotate: groupingAxisLabelAutoRotate,
-            formatter: (text) => this.host.formatService.format(groupingAxisFormat, text),
-          } : null,
+          style: this.getG2TextStyle(groupingAxisTextStyle),
+          autoRotate: groupingAxisLabelAutoRotate,
+          formatter: (text) => this.host.formatService.format(groupingAxisFormat, text),
+        } : null,
         tickLine: groupingAxisTickMark ? this.getG2AxisLineStyle() : null,
         title: groupingAxisTitle ? {
-            style: this.getG2TextStyle(groupingAxisTextStyle),
-          } : null,
+          style: this.getG2TextStyle(groupingAxisTextStyle),
+        } : null,
       });
       this.chart.scale(valueField, {
         tickInterval: binWidth,
@@ -249,7 +310,6 @@ export default class Visual {
   }
 
   public update(options: any) {
-    console.log(options);
     const dataView = options.dataViews[0];
     this.items = [];
     this.seriesField = '';
