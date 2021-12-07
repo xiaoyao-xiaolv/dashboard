@@ -28,7 +28,7 @@ const config = {
         use: ['babel-loader', 'awesome-typescript-loader?silent=true'],
       },
       {
-        test: /\.less$/,
+        test: /\.less|.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
       },
       {
@@ -41,6 +41,9 @@ const config = {
       },
     ],
     unknownContextCritical: false,
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.json', '.css', '.less'],
   },
   mode: 'development',
 };
