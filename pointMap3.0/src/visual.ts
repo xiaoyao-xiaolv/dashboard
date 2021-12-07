@@ -492,6 +492,22 @@ export default class Visual extends WynVisual {
       };
       // this.dispatch('downplay',selectInfo)
     })
+
+    myChart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {								
+            x: params.event.event.x,
+            y: params.event.event.y,
+          }
+        })
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
+    })
   }
   private createBreadcrumb = (name: any, left: any, index: any) => {
     let line = [
