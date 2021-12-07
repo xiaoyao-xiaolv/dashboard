@@ -29,18 +29,28 @@ export default class Visual {
   }
 
   public update(options: any) {
-    if(options.isFocus || options.isViewer) {
+    if(options.isFocus || options.isViewer || options.updateType === "propertyChange" || options.updateType === "dataViewChange") {
       this.cityListCode = [];
       this.properties = options.properties;
-      let config = {
-        "layout": 1,
-        "width": "450",
-        "height": "150",
+        const config = {
+        "layout": "1",
+        "width": this.properties.width,
+        "height": this.properties.height,
         "background": 1,
-        "dataColor": "FFFFFF",
-        "borderRadius": 5,
+        "dataColor": this.properties.dataColor,
+        "borderRadius": this.properties.borderRadius,
         "key": "e1b995f9292e4303ab28f145ffb6a95d"
       };
+
+      if(this.properties.language !== "") {
+        config["language"] = this.properties.language;
+      }
+
+      if(this.properties.autoBackgroundColor) {
+        config.background = 4;
+        config["backgroundColor"] = this.properties.backgroundColor;
+      }
+
       let autoChangeCity = () => {
         if (timer) clearInterval(timer);
         timer = setInterval(() => {
@@ -97,9 +107,16 @@ export default class Visual {
   }
 
   public getInspectorHiddenState(updateOptions: any): string[] {
+      const hiddenStatus = [];
+
       if(updateOptions.properties.autoCity) {
-          return ['cityList', 'intervalTime'];
+        Array.prototype.push.apply(hiddenStatus, ['cityList', 'intervalTime']);
       }
+      if(!updateOptions.properties.autoBackgroundColor) {
+        hiddenStatus.push('backgroundColor');
+      }
+
+      return hiddenStatus;
   }
 
   // 自定义属性可见性
