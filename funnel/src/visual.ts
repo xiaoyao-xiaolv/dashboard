@@ -14,6 +14,7 @@ export default class Visual extends WynVisual {
   private ActualValue: string
   private x: number
   private y: number
+  private format: any;
 
   static mockItems = [
     { label: '一月', value: 5000 },
@@ -49,7 +50,7 @@ export default class Visual extends WynVisual {
     });
 
     this.container.addEventListener('click', (e) => {
-      this.selectionManager.clear();
+      // this.selectionManager.clear();
       this.host.toolTipService.hide();
     })
     host.eventService.registerOnCustomEventCallback(this.onCustomEventHandler);
@@ -63,16 +64,7 @@ export default class Visual extends WynVisual {
   }
 
   private clickHandler = (node: any) => {
-
-
-    const selectionId = this.getNodeSelectionId(node.label.raw)
-    if (!this.selectionManager.contains(selectionId)) {
-      this.selectionManager.select(selectionId, true);
-    } else {
-      this.selectionManager.clear(selectionId);
-    }
-
-    this.host.toolTipService.show({
+    let showTooltip = () => this.host.toolTipService.show({
       position: {
         x: this.x,
         y: this.y,
@@ -85,6 +77,42 @@ export default class Visual extends WynVisual {
       selected: this.selectionManager.getSelectionIds(),
       menu: true
     });
+
+    let leftMouseButton = this.properties.leftMouseButton;
+    const sid = this.items[node.index].selectionId;
+    switch (leftMouseButton) {
+      //鼠标联动设置    
+      case "none": {
+        if (this.selectionManager.contains(sid)) {
+          this.selectionManager.clear(sid)
+        } else {
+          if (this.properties.onlySelect) {
+            this.selectionManager.clear();
+          }
+          this.selectionManager.select(sid, true);
+        }
+        if (this.selectionManager.selected.length == this.items[2].length) {
+          this.selectionManager.clear();
+        }
+        break;
+      }
+      case "showToolTip": {
+        showTooltip;
+        break;
+      }
+      default: {
+        this.host.commandService.execute([{
+          name: leftMouseButton,
+          payload: {
+            selectionIds: sid,
+            position: {
+              x: this.x,
+              y: this.y,
+            },
+          }
+        }])
+      }
+    }
   }
 
   private getCustomBg = (items: any, backgroundColors) => {
@@ -112,6 +140,7 @@ export default class Visual extends WynVisual {
     let data = isMock ? Visual.mockItems : this.items;
 
     data = this.getCustomBg(data, backgroundColors);
+    let index = 0;
 
     const option = {
       chart: {
@@ -138,7 +167,10 @@ export default class Visual extends WynVisual {
         fontFamily: options.textStyle.fontFamily,
         fontSize: options.textStyle.fontSize,
         fill: options.textStyle.color,
-        format: '{l}: {v}'
+        format: (item) => {
+          let showData = item + ":" + this.formatData(data[index++].value);
+          return showData
+        }
       },
       events: {
         click: {
@@ -148,6 +180,11 @@ export default class Visual extends WynVisual {
             })
           }
         }
+      },
+      legend: {
+        data: "aa",
+        enabled: true
+
       }
     };
 
@@ -162,6 +199,7 @@ export default class Visual extends WynVisual {
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
+    this.format = options.dataViews[0].plain.profile.ActualValue.values[0].format;
     const dataView = options.dataViews[0];
     this.items = [];
     if (dataView &&
@@ -188,6 +226,12 @@ export default class Visual extends WynVisual {
     }
     this.properties = options.properties;
     this.render()
+  }
+
+  private formatData(number) {
+    const formatService = this.host.formatService;
+    let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+    return formatService.format(this.format, number, realDisplayUnit);
   }
 
   public onDestroy() {

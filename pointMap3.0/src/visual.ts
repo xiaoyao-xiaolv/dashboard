@@ -48,7 +48,7 @@ export default class Visual extends WynVisual {
   private linelen: any;
   private graphic: any;
   private timeInterval: any;
-
+  private initBindData:any
   static mockItems =  [
     {
       name: '北京',
@@ -115,8 +115,12 @@ export default class Visual extends WynVisual {
 
   private getMapJson = (_mapName: string, isENd?: boolean) => {
     const _name = _mapName.replace(locationReg, '');
-    if (_mapName == 'china' || _mapName == '陕西省' ) {
-      this.mapJsonData = _mapName === 'china' ? ChainJson : ShanXiJson;
+    if (_mapName == 'china'  ) {
+      this.mapJsonData = ChainJson;
+      if (this.properties.mapSelectId.length) {
+        this.host.propertyService.setProperty('mapSelectId', '');
+      }
+      
     } else {
       let _adCodeId = '100000'
       let mapJson = ChainJson;
@@ -173,13 +177,17 @@ export default class Visual extends WynVisual {
     } else {
       this.items = this.initItems;
     }
-    const _dataNames: [] = this.items.map((_item: any) => _item.name.replace(locationReg, ''))
+    const _dataNames: any = Array.from(new Set(this.items.map((_item: any) => _item.name.replace(locationReg, ''))))
+   
     this.items = _dataNames.map((_dataName: any) => {
       const _target = this.items.filter((_item: any) => _item.name.replace(locationReg, '') === _dataName && _item);
+      let _toolTips: any = [];
+      _target.map((_tooltipText: any) => _toolTips.push(..._tooltipText.toolTip))
       if (_target) {
         if (_target.length > 1) {
           return {
             ..._target[0],
+            toolTip: _toolTips,
             datas: _target.reduce((_init, _target) => _init + _target.datas, 0)
           }
         } else {
@@ -205,16 +213,16 @@ export default class Visual extends WynVisual {
     this.locationName && selectionId.withDimension(dimension , _item);
     return selectionId
   }
-  private prepareData(data: any, profile: any,) {
+  private prepareData(data: any, profile: any, mapLevel?: number) {
     return data.map((item, index) => {
       let geoCoord = this.bindCoords ? [item[this.longitudeName], item[this.latitudeName]] : this.getCoords(item[this.locationName]);
-      const toolTip = this.toolTipName.map((_item: string) => { return { [_item]: item[_item]}});
+      const toolTip = this.toolTipName.map((_item: string) => { return { [_item]: item[_item] } });
       return {
           name: item[this.locationName],
           value: item.value ? item.value: geoCoord,
           datas: item[this.valuesName],
           toolTip: toolTip,
-          selectionId:  this.getSelectionId(item, profile.location.values[this.properties.mapLevel])
+          selectionId:  this.getSelectionId(item, profile.location.values[mapLevel ? mapLevel - 1 : this.properties.mapLevel])
       }
     })
   }
@@ -229,6 +237,7 @@ export default class Visual extends WynVisual {
       let bindData = options.dataViews[0].plain.data;
       this.profile = profile;
       this.bindData = bindData;
+      this.initBindData = bindData;
       this.valuesName = profile.values.values[0].display;
       //  default show first location
       this.locationName = profile.location.values[0].display;
@@ -240,9 +249,8 @@ export default class Visual extends WynVisual {
         this.latitudeName = profile.latitude.values[0].display;
       }
      
-      // bindData.push({'客户省份': '陕西省', '客户城市':'渭南市', '标准价格': 666})
       this.items = this.prepareData(bindData, profile);
-      this.initItems = this.prepareData(bindData, profile);
+      this.initItems = this.prepareData(bindData, profile, 1);
       // data format and display unit
       this.format = options.dataViews[0].plain.profile.values.options.valueFormat;
       this.displayUnit = options.dataViews[0].plain.profile.values.options.valueDisplayUnit;
@@ -390,9 +398,9 @@ export default class Visual extends WynVisual {
     let _selectionIds: any = [];
     if (selectionId) {
       // save
-      if (this.properties.mapSelectId.length) {
+      if (this.properties.mapSelectId.length ) {
         _selectionIds = JSON.parse(this.properties.mapSelectId);
-        if (this.properties.mapLevel > 1) {
+        if (_selectionIds.length > 2) {
           _selectionIds[2] = selectionId
         } else {
           _selectionIds = _selectionIds.concat([selectionId]);
@@ -422,14 +430,17 @@ export default class Visual extends WynVisual {
         params.event.event.preventDefault();
         this.showTooltip(params.event.event, true);
       }
-     
+
       if (!this.selectionManager.contains(selectionId)) {
-        this.selectionManager.select(selectionId, true);
-        // this.dispatch('highlight', selectInfo);
+        this.selectionManager.select(selectionId, false);
         this.selection.push(selectInfo);
       } else {
         this.selectionManager.clear(selectionId);
       }
+    } else {
+      const items = this.prepareData(this.initBindData, this.profile, Number(this.properties.mapLevel + 1));
+      const _target = items.find((_item: any) => _item.name.replace(locationReg, '') === params.name.replace(locationReg, ''))
+      this.selectionManager.select(_target.selectionId, true);
     }
      
   }
@@ -449,28 +460,30 @@ export default class Visual extends WynVisual {
     myChart.off('mouseup')
     
     myChart.on('click', (params) => {
-
-      if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
-        if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
-          // this.host.propertyService.setProperty('mapParams', JSON.stringify(params));
-          if (this.properties.mapLevel === 1) {
-            this.selectionManager.clear();
-          }
-          this.host.propertyService.setProperty('mapLevel', 1);
-          this.host.propertyService.setProperty('MapId', params.name);
-          this.host.propertyService.setProperty('provinceName', params.name);
-          this.host.propertyService.setProperty('cityName', '');
-          this.getMapJson(params.name);
-          this.toDrilling(params);
-        }else if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
-          this.host.propertyService.setProperty('mapLevel', 2);
-          this.host.propertyService.setProperty('MapId', params.name);
-          this.host.propertyService.setProperty('cityName', params.name);
-          this.getMapJson(params.name);
-          this.toDrilling(params);
-        } 
-      } else {
-        this.toDrilling(params, true);
+      // no data cant click
+      const _existLocation = this.items.map((_item: any) => _item.name);
+      if (_existLocation.includes(params.name)) {
+        if (this.properties.MapId !== params.name && this.properties.mapLevel !== 2) {
+          if (this.provinceNameData.includes(params.name.replace(locationReg, ''))) {
+            if (this.properties.mapLevel === 1) {
+              this.selectionManager.clear();
+            }
+            this.host.propertyService.setProperty('mapLevel', 1);
+            this.host.propertyService.setProperty('MapId', params.name);
+            this.host.propertyService.setProperty('provinceName', params.name);
+            this.host.propertyService.setProperty('cityName', '');
+            this.getMapJson(params.name);
+            this.toDrilling(params);
+          }else if (this.cityNameData.includes(params.name.replace(locationReg, ''))) {
+            this.host.propertyService.setProperty('mapLevel', 2);
+            this.host.propertyService.setProperty('MapId', params.name);
+            this.host.propertyService.setProperty('cityName', params.name);
+            this.getMapJson(params.name);
+            this.toDrilling(params);
+          } 
+        } else {
+          this.toDrilling(params, true);
+        }
       }
     })
 
@@ -480,6 +493,22 @@ export default class Visual extends WynVisual {
         dataIndex: params.dataIndex,
       };
       // this.dispatch('downplay',selectInfo)
+    })
+
+    myChart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {								
+            x: params.event.event.x,
+            y: params.event.event.y,
+          }
+        })
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
     })
   }
   private createBreadcrumb = (name: any, left: any, index: any) => {
@@ -521,18 +550,21 @@ export default class Visual extends WynVisual {
           switch (index) {
             case 1:
               // 省份drilling
-              // this.toDrilling(JSON.parse(this.properties.mapParams));
               this.host.propertyService.setProperty('mapLevel', 1);
               this.host.propertyService.setProperty('MapId', name);
               this.host.propertyService.setProperty('cityName', '');
               
+              const _target = this.initItems.find((_item: any) => _item.name.replace(locationReg, '') === name.replace(locationReg, ''))
+              this.selectionManager.select(_target.selectionId, true);
               if (this.properties.mapSelectId.length) {
-                const _selectionIds = JSON.parse(this.properties.mapSelectId);
-                _selectionIds.length > 2 &&  this.host.propertyService.setProperty('mapSelectId', _selectionIds.splice(2));
-              }
-              
-              // this.getMapJson(name);
-              
+                let _selectionIds = JSON.parse(this.properties.mapSelectId);
+                if (_selectionIds.length > 2) {
+                  const _newSelection: [] = _selectionIds.slice(0, 2);
+                  this.host.propertyService.setProperty('mapSelectId', JSON.stringify(_newSelection));
+                } else {
+                  this.host.propertyService.setProperty('mapSelectId', JSON.stringify(_selectionIds));
+                }
+              }             
               break;
             case 2:
               break;
@@ -656,9 +688,15 @@ export default class Visual extends WynVisual {
       }
     })
 
+    const _scatterData = items.map((item: any) => {
+      return {
+        name: item.name,
+        value: [item.value[0], item.value[1], 2],
+        datas: item.datas,
+      }
+    })
 
     const formatList = options.mapCollection;
-
     const formatColor = (_formatColor, value) => {
       if (formatList.length > 0) {
         formatList.map((_item: any) => {
@@ -717,17 +755,20 @@ export default class Visual extends WynVisual {
       })
       return _richStyle;
     }
-
+    
+    const _position = options.scatterSymbol === 'bar' ? {} :{ position: options.labelPosition };
     const labelOptions = () => {
       return {
         show: options.showLabel,
         distance: options.labelDistance,
+       ... _position,
         textStyle: {
           ...options.labelTextStyle,
           fontSize: parseInt(options.labelTextStyle.fontSize.slice(0, -2)),
           borderWidth: options.tooltipBackgroundType === 'color' ? 1 : 0,
           borderColor: options.tooltipBackgroundType === 'color' ? options.labelBorderColor : 'rgba(0,0,0,0)',
         },
+        
         formatter: (params: any) => {
             let _text = [];
             let value = params.data.datas;
@@ -768,7 +809,7 @@ export default class Visual extends WynVisual {
                 let realDisplayUnit = this.displayUnit;
                 const formatService = this.host.formatService;
                 if (formatService.isAutoDisplayUnit(this.displayUnit)) {
-                  realDisplayUnit = formatService.getAutoDisplayUnit(value);
+                  realDisplayUnit = formatService.getAutoDisplayUnit([value]);
                 }
                 value = formatService.format(this.format, value, realDisplayUnit)
               }
@@ -791,13 +832,106 @@ export default class Visual extends WynVisual {
         
         }
     }
+    const _rotateXY = {
+      alpha: options.mapAlpha,
+      beta: options.mapBeta,
+      minAlpha: 0,
+      maxAlpha: 360,
+      minBeta: -80,
+      maxBeta: 280,
+      maxDistance: 800,
+    }
+    const _barOptions = {
+      barSize:options.showBar ?  [options.barSize * 0.1, options.barSize * 0.1]: [0,0],
+      bevelSize: options.barBevelSmoothness / 100,
+      bevelSmoothness: options.barBevelSmoothness,
+      minHeight: options.barMinHeight,
+      itemStyle: {
+        color: (params: any) => {
+
+          const _value = params.data.datas;
+          const _color = options.useToBar ? formatColor(options.barColor, _value) : options.barColor;
+          return _color
+        },
+      },
+    }
+
+    const _scatterOptions = {
+      symbol: options.scatterSymbol === 'path' ? options.scatterImage : options.scatterSymbol,
+      // symbol: 'circle',
+      symbolSize: options.scatterSymbol === 'path' ? [options.pathWidth, options.pathHeight] : [options.symbolWidth, options.symbolWidth],
+    }
+    const _getTargetOptions = () => {
+      if (options.scatterSymbol === 'bar') {
+        return _barOptions;
+      } else {
+        return _scatterOptions;
+      }
+    }
+    const _bottomLightMap = options.showBottomLight
+      ? {
+        type: 'map3D',
+        map: '3DMapCustom',
+        name: '3DMapCustom',
+        show: options.showBottomLight,
+        boxWidth: options.mapBoxWidth,
+        boxHeight: options.mapBoxHeight,
+        regionHeight: options.lightHeight,
+        viewControl: {
+          projection: 'perspective',
+          autoRotate: false,
+          damping: 0,
+          rotateSensitivity: 2, //旋转操作的灵敏度
+          rotateMouseButton: 'left', //旋转操作使用的鼠标按键
+          zoomSensitivity: 2, //缩放操作的灵敏度
+          panSensitivity: 2, //平移操作的灵敏度
+          panMouseButton: 'right', //平移操作使用的鼠标按键
+          ..._rotateXY,
+          distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
+          center: [0, options.lightHeight, 0],
+          animation: true,
+          animationDurationUpdate: 1000,
+          animationEasingUpdate: 'cubicInOut'
+        },
+        realisticMaterial: {
+          roughness: 0.8,
+          metalness: 0
+        },
+        postEffect: {
+          enable: true
+        },
+        groundPlane: {
+          show: false
+        },
+        light: {
+          main: {
+            intensity: 1,
+            alpha: 30
+          },
+          ambient: {
+            intensity: 0
+          }
+        },
+        label: {
+            show: false, //是否显示市
+        },
+        itemStyle: {
+            color: options.lightColor, //地图颜色
+            borderWidth: options.lightWidth, //分界线wdith
+            distance: 5,
+            borderColor: options.mapColor, //分界线颜色
+        },
+        data: _data,
+        zlevel: 1,
+        silent: true,
+      } : '';
     myChart.setOption({
       graphic: this.graphic,
       tooltip: {
         trigger: 'item',
         // padding: [15, 15],
         show: options.showTooltip,
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(0,0,0,0)',
         borderColor:'transparent',
         position(pos) { 
           return myTooltip.getPosOrSize('pos', pos);
@@ -807,18 +941,29 @@ export default class Visual extends WynVisual {
             const name = _item.name.replace(locationReg, '');
             return name === params.name.replace(locationReg, '') && _item;
           });
-          
+          let _toolTips = _toolTip && _toolTip.toolTip && _toolTip.toolTip || [];
+
           if (!this.isMock && _toolTip) {
             let _textArr = []
-            if (options.showTooltipValue) {
-              _textArr.push(`${this.valuesName}: ${_toolTip.datas}`)
-            }
             if (options.showTooltipLocation) {
               _textArr.push(`${this.locationName}: ${_toolTip.name}`)
             }
-            if (options.showTooltipText) {
-              _toolTip.toolTip.map((_text: any, index: number) => {
-                _textArr.push(`${this.toolTipName[index]}: ${_text[this.toolTipName[index]]}`)
+            if (options.showTooltipValue) {
+                let value
+                let realDisplayUnit = this.displayUnit;
+                const formatService = this.host.formatService;
+                if (formatService.isAutoDisplayUnit(this.displayUnit)) {
+                  realDisplayUnit = formatService.getAutoDisplayUnit([_toolTip.datas]);
+                }
+                value = formatService.format(this.format, _toolTip.datas, realDisplayUnit)
+              _textArr.push(`${this.valuesName}: ${value}`)
+            }
+            if (options.showTooltipText && _toolTips.length) {
+              let _tooltipText: any;
+              this.toolTipName.map((_textName: any) => {
+                _tooltipText = _toolTips.map((_item: any) => _item[_textName]).filter((_text) => _text);
+                const _tooltip = $.type(_tooltipText[0]) == 'number' ?  _tooltipText.reduce((_init, _target) => _init + _target, 0) :_tooltipText[0]
+                return _textArr.push(`${_textName}: ${_tooltip || ''}`)
               })
             }
             return myTooltip.getTooltipDom(_textArr.join('\n'))
@@ -842,7 +987,7 @@ export default class Visual extends WynVisual {
             zoomSensitivity: 2, //缩放操作的灵敏度
             panSensitivity: 2, //平移操作的灵敏度
             panMouseButton: 'right', //平移操作使用的鼠标按键
-            
+            ..._rotateXY,
             distance: options.mapAdCodeId == 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
             center: [0, 0, 0],
 
@@ -851,10 +996,10 @@ export default class Visual extends WynVisual {
             animationEasingUpdate: 'cubicInOut'
         },
         itemStyle: {
-        color: 'red', //地图颜色
-        borderWidth: 3, //分界线wdith
-        distance: 5,
-        borderColor: 'green', //分界线颜色
+          color: 'red', //地图颜色
+          borderWidth: 3, //分界线wdith
+          distance: 5,
+          borderColor: 'green', //分界线颜色
         },
         emphasis: {
             label: {
@@ -886,6 +1031,7 @@ export default class Visual extends WynVisual {
               zoomSensitivity: 2, //缩放操作的灵敏度
               panSensitivity: 2, //平移操作的灵敏度
               panMouseButton: 'right', //平移操作使用的鼠标按键
+              ..._rotateXY,
 
               distance: options.mapAdCodeId === 'china'?  110 : options.mapDistance, //默认视角距离主体的距离
               center: [0, 0, 0],
@@ -914,19 +1060,10 @@ export default class Visual extends WynVisual {
             },
             label: {
                 show: false, //是否显示市
-                textStyle: {
-                    color: '#fff', //文字颜色
-                    fontSize: 20, //文字大小
-              },
-              formatter: (test: any,) => {
-                const _label = test.data.name || ' '
-                return _label
-              }
             },
             itemStyle: {
                 color: options.mapColor, //地图颜色
                 borderWidth: options.mapDemarcationBorder, //分界线wdith
-                distance: 5,
                 borderColor: options.mapDemarcationColor, //分界线颜色
             },
             emphasis: {
@@ -941,19 +1078,19 @@ export default class Visual extends WynVisual {
                 },
             },
             data: _data,
-            zlevel: 1,
-          // silent: true,
-        },
-        {
-            type: 'bar3D',
             zlevel: 2,
+        },
+        _bottomLightMap,
+        {
+            type: options.scatterSymbol === 'bar' ?   'bar3D' : 'scatter3D',
+            zlevel: 3,
             coordinateSystem: 'geo3D',
             shading: 'lambert',
             data: _barData,
-            barSize:options.showBar ?  [options.barSize * 0.1, options.barSize * 0.1]: [0,0],
-            bevelSize: options.barBevelSmoothness / 100,
-            bevelSmoothness: options.barBevelSmoothness,
-            minHeight: options.barMinHeight,
+            // barSize:options.showBar ?  [options.barSize * 0.1, options.barSize * 0.1]: [0,0],
+            // bevelSize: options.barBevelSmoothness / 100,
+            // bevelSmoothness: options.barBevelSmoothness,
+            // minHeight: options.barMinHeight,
             silent: true,
             itemStyle: {
               color: (params: any) => {
@@ -964,7 +1101,9 @@ export default class Visual extends WynVisual {
               },
             },
             label: labelOptions(),
+            ..._getTargetOptions(),
         },
+      
       ]
     });
   }
@@ -983,11 +1122,23 @@ export default class Visual extends WynVisual {
     let hiddenStates = [];
     // bar
     if (!properties.showBar ) {
-      hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize'])
+      hiddenStates = hiddenStates.concat(['barColor', 'barColor', 'barBevelSmoothness', 'barMinHeight', 'barSize', 'scatterSymbol', 'symbolWidth', 'pathWidth','pathHeight', 'scatterImage'])
+    } else {
+      if (properties.scatterSymbol === 'bar') {
+        hiddenStates = hiddenStates.concat([ 'symbolWidth',  'pathWidth','pathHeight', 'scatterImage', 'labelPosition'])
+      } else {
+        const _path = ['pathWidth','pathHeight', 'scatterImage']
+        hiddenStates = hiddenStates.concat(['barSize', 'barBevelSmoothness', 'barMinHeight'])
+        if (properties.scatterSymbol !== 'path') {
+          hiddenStates = hiddenStates.concat(_path)
+        } else {
+          hiddenStates = hiddenStates.concat(['symbolWidth'])
+        }
+      }
     }
     // showLabel
     if (!properties.showLabel ) {
-      hiddenStates = hiddenStates.concat(['showLocation', 'showValue', 'tooltipBackgroundType', 'labelBackgroundColor', 'labelBackgroundImage' ,'labelBorderColor', 'labelPadding', 'labelTextStyle', 'labelDistance'])
+      hiddenStates = hiddenStates.concat(['showLocation', 'showValue', 'tooltipBackgroundType', 'labelBackgroundColor', 'labelBackgroundImage' ,'labelBorderColor', 'labelPadding', 'labelTextStyle', 'labelDistance', 'labelPosition'])
     } else {
       if (properties.tooltipBackgroundType === 'color') {
         hiddenStates = hiddenStates.concat(['labelBackgroundImage'])
@@ -1000,6 +1151,12 @@ export default class Visual extends WynVisual {
     if (!properties.showTooltip ) {
       hiddenStates = hiddenStates.concat(['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipBgBorderColor', 'tooltipBorderRadius', 'tooltipTextStyle' , 'showTooltipValue', 'showTooltipLocation', 'showTooltipText'])
     }
+
+     // showBottomLight
+     if (!properties.showBottomLight ) {
+      hiddenStates = hiddenStates.concat(['lightColor', 'lightWidth'])
+    }
+
     return hiddenStates;
   }
 

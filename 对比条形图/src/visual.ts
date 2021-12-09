@@ -441,6 +441,7 @@ export default class Visual {
     }
     this._getRichList(options, items)
     let option = {
+      
       tooltip: {
         show: true,
         trigger: 'item',

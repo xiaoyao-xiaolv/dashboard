@@ -282,6 +282,15 @@
     "actions": [
         {
             "type": "focus"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
         }
     ],
     "analysis": []

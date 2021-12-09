@@ -37,6 +37,27 @@ export default class Visual extends WynVisual {
     this.items = [];
     this.properties = {
     };
+    this.selectEvent();
+  }
+
+  private selectEvent() {
+    //鼠标右键
+    this.container.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      console.log(params)
+      if (params.button === 2) {
+        this.host.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.host.contextMenuService.hide();
+      }
+    })
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {

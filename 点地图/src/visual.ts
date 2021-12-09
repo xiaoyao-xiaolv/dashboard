@@ -55,6 +55,11 @@ export default class Visual extends WynVisual {
   private shadowDiv: any;
   private bindCoords: boolean;
   private tooltipFields: any;
+  private host: any;
+  private selectionManager: any;
+  private selectionIds: any;
+  private format: any;
+
 
   static mockItems = [
     { name: "福州", value: [119.306239, 26.075302, 13] }
@@ -80,7 +85,7 @@ export default class Visual extends WynVisual {
     this.chart = echarts.init(dom);
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);
-    this.container.firstElementChild.setAttribute('style','height : 0');
+    this.container.firstElementChild.setAttribute('style', 'height : 0');
     this.items = [];
     this.properties = {
     };
@@ -103,6 +108,52 @@ export default class Visual extends WynVisual {
     this.myTooltip = new myTooltipC('visualDom', this.config);
     this.auto_tooltip();
     this.bindCoords = false;
+    this.host = host;
+    this.selectionManager = host.selectionService.createSelectionManager();
+    this.selectEvent();
+  }
+
+  private selectEvent() {
+    this.container.addEventListener("click", () => {
+      this.selectionManager.clear();
+      this.host.toolTipService.hide();
+      this.host.contextMenuService.hide();
+      return;
+    })
+
+    this.chart.on('click', (params) => {
+      params.event.event.stopPropagation();
+      {
+        if (this.selectionManager.contains(this.selectionIds[params.dataIndex])) {
+          this.selectionManager.clear();
+          this.host.toolTipService.hide();
+          return;
+        } else {
+          this.selectionManager.select(this.selectionIds[params.dataIndex])
+        }
+      }
+
+    })
+
+
+
+    //鼠标右键
+    this.chart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }
+    })
+
+
   }
 
   private queryData = (keyWord: string) => {
@@ -121,8 +172,8 @@ export default class Visual extends WynVisual {
       let valueObj = {
         name: dataItem[this.locationName],
         valueInfo: {
-          valueName : this.valuesName,
-          value : dataItem[this.valuesName]
+          valueName: this.valuesName,
+          value: dataItem[this.valuesName]
         }
       };
 
@@ -141,8 +192,8 @@ export default class Visual extends WynVisual {
       if (this.tooltipFields.length) {
         tooltips = this.tooltipFields.map((filed) => {
           return {
-            filed : filed,
-            value : dataItem[filed]
+            filed: filed,
+            value: dataItem[filed]
           }
         });
         valueObj['tooltipFields'] = tooltips;
@@ -154,13 +205,21 @@ export default class Visual extends WynVisual {
 
 
   public update(options: VisualNS.IVisualUpdateOptions) {
+    this.selectionIds = [];
     this.items = [];
     this.tooltipFields = [];
-    let profileItems = options.dataViews[0] && options.dataViews[0].plain.profile;
+    const profileItems = options.dataViews[0] && options.dataViews[0].plain.profile;
     if (profileItems && options.dataViews.length) {
+
       let plainData = options.dataViews[0].plain;
       this.locationName = plainData.profile.location.values[0].display
       this.valuesName = plainData.profile.values.values[0].display;
+
+      options.dataViews[0].plain.data.forEach(data => {
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(options.dataViews[0].plain.profile.location.values[0], data);
+        this.selectionIds.push(selectionId)
+      });
 
       this.bindCoords = !!(profileItems.long.values.length && profileItems.lat.values.length);
       if (this.bindCoords) {
@@ -173,7 +232,9 @@ export default class Visual extends WynVisual {
         this.tooltipFields = toolTipValues.map(value => value.display);
       }
       this.items = this.convertData(plainData.data);
+      this.format = options.dataViews[0].plain.profile.values.values[0].format;
     }
+
     this.properties = options.properties;
     this.render();
   }
@@ -202,7 +263,7 @@ export default class Visual extends WynVisual {
       time: 0.3,
       font: `${options.tooltipTextStyle.fontStyle} ${options.tooltipTextStyle.fontWeight} ${options.tooltipTextStyle.fontSize} ${options.tooltipTextStyle.fontFamily}`,
       color: options.tooltipTextStyle.color,
-      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left ],
+      padding: [options.tooltipPadding.top, options.tooltipPadding.right, options.tooltipPadding.bottom, options.tooltipPadding.left],
       width: options.tooltipWidth,
       height: options.tooltipHeight,
       lineHeight: 24,
@@ -333,7 +394,8 @@ export default class Visual extends WynVisual {
       let valueStr = '';
 
       if (data.valueInfo) {
-        valueStr = `${data.valueInfo.valueName} : ${data.valueInfo.value}\n`;
+        let formatterData = formatData(data.valueInfo.value)
+        valueStr = `${data.valueInfo.valueName} : ${formatterData}\n`;
       }
 
       if (data.tooltipFields) {
@@ -342,6 +404,12 @@ export default class Visual extends WynVisual {
         })
       }
       return `${locationStr}${valueStr}${tooltipStr}`;
+    }
+
+    var formatData = (number) => {
+      const formatService = this.host.formatService;
+      let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+      return formatService.format(this.format, number, realDisplayUnit);
     }
 
     var option = {
@@ -432,8 +500,8 @@ export default class Visual extends WynVisual {
       return ['pointSize', 'pointMaxSize', 'pointMinSize'];
     }
 
-    if(!options.properties.showTooltip) {
-      return ['tooltipBackgroundColor','tooltipWidth','tooltipHeight','tooltipBorderColor','tooltipPadding','tooltipTextStyle'];
+    if (!options.properties.showTooltip) {
+      return ['tooltipBackgroundColor', 'tooltipWidth', 'tooltipHeight', 'tooltipBorderColor', 'tooltipPadding', 'tooltipTextStyle'];
     }
     return ['showLabel', 'textColor', 'textFont']
   }
@@ -441,4 +509,6 @@ export default class Visual extends WynVisual {
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     return null;
   }
+
+  
 }

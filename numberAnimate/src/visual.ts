@@ -47,7 +47,33 @@ export default class Visual extends WynVisual {
     };
 
     this.selectionManager = host.selectionService.createSelectionManager();
+    this.selectEvent();
+  }
 
+  private selectEvent() {
+    this.container.addEventListener("click", () => {
+      this.selectionManager.clear();
+      this.host.toolTipService.hide();
+      this.host.contextMenuService.hide();
+      return;
+    })
+  
+     //tooltip	跳转保留等
+     this.container.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.host.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
+    })
   }
 
   public renderDigits(number: number) {

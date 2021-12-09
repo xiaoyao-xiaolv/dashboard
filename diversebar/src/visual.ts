@@ -22,6 +22,7 @@ export default class Visual extends WynVisual {
   private YLabelOffset: number;
   private lengendLabelOffset: number;
   private lengendLabeIndex: number;
+  private format: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options)
@@ -83,25 +84,68 @@ export default class Visual extends WynVisual {
       this.hideTooltip();
     })
 
+
+    //鼠标左键
     this.chart.on('click', (params) => {
-
-      if (params.componentType !== 'series') return;
-
-      this.showTooltip(params, true);
-
-      params.event.event.seriesClick = true;
-
-      const selectInfo = {
-        seriesIndex: params.seriesIndex,
-        dataIndex: params.dataIndex,
-      };
-      if (this.items[2][params.dataIndex]) {
+      this.host.contextMenuService.hide();
+      params.event.event.stopPropagation();
+      if (params.event.event.button == 0) {
+        //鼠标左键功能
+        let leftMouseButton = this.properties.leftMouseButton;
         const sid = this.items[2][params.dataIndex];
-        this.selectionManager.select(sid, true);
+        switch (leftMouseButton) {
+          //鼠标联动设置    
+          case "none": {
+            if (this.selectionManager.contains(sid)) {
+              this.selectionManager.clear(sid)
+            } else {
+              if (this.properties.onlySelect) {
+                this.selectionManager.clear();
+              }
+              this.selectionManager.select(sid, true);
+            }
+            if (this.selectionManager.selected.length == this.items[2].length) {
+              this.selectionManager.clear();
+            }
+            break;
+          }
+          case "showToolTip": {
+            this.showTooltip(params, true);
+            break;
+          }
+          default: {
+            this.host.commandService.execute([{
+              name: leftMouseButton,
+              payload: {
+                selectionIds: sid,
+                position: {
+                  x: params.event.event.x,
+                  y: params.event.event.y,
+                },
+              }
+            }])
+          }
+        }
       }
-      this.dispatch('highlight', selectInfo);
-      this.selection.push(selectInfo)
+    })
 
+
+
+    //右键显示
+    this.container.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.host.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      } else {
+        this.host.contextMenuService.hide();
+      }
     })
 
   }
@@ -111,6 +155,7 @@ export default class Visual extends WynVisual {
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
+      this.format = options.dataViews[0].plain.profile.ActualValue.values[0].format;
       const plainData = dataView.plain;
 
       this.isMock = false;
@@ -159,6 +204,7 @@ export default class Visual extends WynVisual {
         this.dimension && selectionId.withDimension(plainData.profile.dimension.values[0], item);
         return selectionId
       }
+      // console.log(items)
       this.items[2] = items.map((item) => getSelectionId(item));
       this.items[2] = _.uniqWith(this.items[2], _.isEqual)
       // get max 
@@ -221,51 +267,10 @@ export default class Visual extends WynVisual {
     }
   }
 
-  public formatData = (number, dataUnit, dataType) => {
-    let format = number
-    const units = [{
-      value: 1,
-      unit: ''
-    },
-    {
-      value: 100,
-      unit: '百'
-    }, {
-      value: 1000,
-      unit: '千'
-    }, {
-      value: 10000,
-      unit: '万'
-    }, {
-      value: 100000,
-      unit: '十万'
-    }, {
-      value: 1000000,
-      unit: '百万'
-    }, {
-      value: 10000000,
-      unit: '千万'
-    }, {
-      value: 100000000,
-      unit: '亿'
-    }, {
-      value: 1000000000,
-      unit: '十亿'
-    }, {
-      value: 100000000000,
-      unit: '万亿'
-    }]
-    const formatUnit = units.find((item) => item.value === Number(dataUnit))
-    format = (format / formatUnit.value).toFixed(2)
-
-    if (dataType === 'number') {
-      format = format.toLocaleString()
-    } else if (dataType === '%') {
-      format = format + dataType
-    } else {
-      format = dataType + format
-    }
-    return format + formatUnit.unit
+  public formatData = (number) => {
+    const formatService = this.host.formatService;
+    let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+    return formatService.format(this.format, number, realDisplayUnit);
   }
 
   public render() {
@@ -482,7 +487,7 @@ export default class Visual extends WynVisual {
             show: options.dataindicate,
             position: options.dataindicatePosition,
             formatter: (item) => {
-              return this.formatData(item.value, options.dataindicateUnit, options.dataindicateType)
+              return this.formatData(item.value)
             },
             ...options.dataindicateTextStyle,
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
@@ -508,7 +513,10 @@ export default class Visual extends WynVisual {
             show: options.dataindicate,
             position: options.dataindicatePosition,
             ...options.dataindicateTextStyle,
-            fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
+            fontSize: parseFloat(options.dataindicateTextStyle.fontSize),
+            formatter: (data) => {
+              return this.formatData(data.value)
+            }
           },
           itemStyle: {
             normal: {
@@ -564,12 +572,14 @@ export default class Visual extends WynVisual {
             let itemsData = items.filter(item => item.seriesType === 'bar')
             let stringData = this.Series ? `${this.ActualValue[0]}<br />` : '';
             itemsData.map(item => {
+              item.data = this.formatData(item.data)
               stringData += `${item.seriesName || '数量'}: ${item.data} <br />`
             })
             return stringData
           } else {
             let stringData = ''
             items.map(item => {
+              item.data = this.formatData(item.data)
               stringData += `${item.seriesName || '数量'}: ${item.data} <br />`
             })
             return stringData
@@ -626,7 +636,7 @@ export default class Visual extends WynVisual {
         axisLabel: {
           show: options.leftAxisLabel,
           formatter: (value) => {
-            return this.formatUnit(value, options.dataUnit)
+            return value
           },
           ...options.leftTextStyle,
           fontSize: parseFloat(options.leftTextStyle.fontSize),
@@ -685,7 +695,7 @@ export default class Visual extends WynVisual {
     }
     //dataindicate
     if (!updateOptions.properties.dataindicate) {
-      hiddenOptions = hiddenOptions.concat(['dataindicatePosition', 'dataindicateTextStyle', 'dataindicateType', 'dataindicateUnit'])
+      hiddenOptions = hiddenOptions.concat(['dataindicatePosition', 'dataindicateTextStyle', 'dataindicateType'])
     }
     if (!updateOptions.properties.leftAxis) {
       hiddenOptions = hiddenOptions.concat(['leftAxisLabel', 'leftAxisTick', 'leftAxisLine', 'leftSplitLine', 'dataUnit'])

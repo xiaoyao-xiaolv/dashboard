@@ -70,7 +70,53 @@ export default class Visual extends WynVisual {
         this.selection.forEach(i => this.dispatch('downplay', i));
         this.selection = [];
         this.selectionManager.clear();
+        this.host.toolTipService.hide();
+        this.host.contextMenuService.hide();
         return;
+      }
+    })
+
+
+    this.chart.on('click', (params) => {
+      this.host.contextMenuService.hide();
+      params.event.event.stopPropagation();
+      if (params.event.event.button == 0) {
+        //鼠标左键功能
+        let leftMouseButton = this.properties.leftMouseButton;
+        const sid = this.items[2][params.dataIndex];
+        switch (leftMouseButton) {
+          //鼠标联动设置    
+          case "none": {
+            if(this.selectionManager.contains(sid)){
+              this.selectionManager.clear(sid)
+            }else{
+              if (this.properties.onlySelect) {
+                this.selectionManager.clear();
+              }
+              this.selectionManager.select(sid, true);
+            }
+            if (this.selectionManager.selected.length == this.items[2].length) {
+              this.selectionManager.clear();
+            }
+            break;
+          }
+          case "showToolTip": {
+            this.showTooltip(params, true);
+            break;
+          }
+          default: {
+            this.host.commandService.execute([{
+              name: leftMouseButton,
+              payload: {
+                selectionIds: sid,
+                position: {
+                  x: params.event.event.x,
+                  y: params.event.event.y,
+                },
+              }
+            }])
+          }
+        }
       }
     })
 
@@ -84,26 +130,7 @@ export default class Visual extends WynVisual {
       this.hideTooltip();
     })
 
-    this.chart.on('click', (params) => {
-
-      if (params.componentType !== 'series') return;
-
-      this.showTooltip(params, true);
-
-      params.event.event.seriesClick = true;
-
-      const selectInfo = {
-        seriesIndex: params.seriesIndex,
-        dataIndex: params.dataIndex,
-      };
-      if (this.items[2][params.dataIndex]) {
-        const sid = this.items[2][params.dataIndex];
-        this.selectionManager.select(sid, true);
-      }
-      this.dispatch('highlight', selectInfo);
-      this.selection.push(selectInfo)
-
-    })
+   
 
   }
 

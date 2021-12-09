@@ -19,6 +19,7 @@ export default class Visual {
       shape: 'circle',
       showImage: false
     };
+    
   }
 
   public update(options: any) {

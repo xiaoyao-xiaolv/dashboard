@@ -67,16 +67,16 @@
                         "defaultValue": "#fff"
                     },
                     {
-                        "name": "fontColor",
-                        "type": "Color",
-                        "displayName": "字体颜色",
-                        "defaultValue": "#f44e3b"
-                    },
-                    {
-                        "name": "fontSize",
-                        "type": "Integer",
-                        "displayName": "字体大小",
-                        "defaultValue": 10
+                        "name": "fontSet",
+                        "displayName": "字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "10pt",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
                     }
                 ]
             },

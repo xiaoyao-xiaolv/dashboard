@@ -593,7 +593,13 @@
                         }
                     ],
                     "defaultValue": "none"
-                }]
+                },
+                {
+                        "name": "onlySelect",
+                        "type": "Boolean",
+                        "displayName": "数据单选",
+                        "defaultValue": true
+				}]
             },
             {
                 "type": "title"

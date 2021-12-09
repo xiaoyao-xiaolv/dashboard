@@ -310,6 +310,23 @@ export default class Visual extends WynVisual {
       }
       
     })
+
+    myChart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {								//跳转的selectionsId(左键需要)
+            x: params.event.event.x,
+            y: params.event.event.y,
+          }
+        })
+        return;
+      }else{
+        this.host.contextMenuService.hide();	
+      }
+    })
+
   }
 
   private getCoords = (keyWord: string) => {

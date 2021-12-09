@@ -14,6 +14,8 @@ export default class Visual extends WynVisual {
   private colorField: string;
   private sizeField: string;
   private selectionManager: any;
+  private selection: any[];
+
 
   static mockItems = [{ 'size': 'POS', 'value': 687, 'color': '2015' }, { 'size': 'POS', 'value': 691, 'color': '2016' }, { 'size': 'POS', 'value': 815, 'color': '2014' }, { 'size': 'Bank Transfer', 'value': 2427, 'color': '2015' }, { 'size': 'Bank Transfer', 'value': 2421, 'color': '2016' }, { 'size': 'Bank Transfer', 'value': 2382, 'color': '2014' }, { 'size': 'Check', 'value': 930, 'color': '2015' }, { 'size': 'Check', 'value': 987, 'color': '2016' }, { 'size': 'Check', 'value': 1075, 'color': '2014' }, { 'size': 'Online', 'value': 851, 'color': '2015' }, { 'size': 'Online', 'value': 957, 'color': '2016' }, { 'size': 'Online', 'value': 856, 'color': '2014' }, { 'size': 'Cash', 'value': 721, 'color': '2015' }, { 'size': 'Cash', 'value': 737, 'color': '2016' }, { 'size': 'Cash', 'value': 647, 'color': '2014' }, { 'size': 'Other', 'value': 743, 'color': '2015' }, { 'size': 'Other', 'value': 628, 'color': '2016' }, { 'size': 'Other', 'value': 652, 'color': '2014' }];
 
@@ -21,6 +23,8 @@ export default class Visual extends WynVisual {
     super(dom, host, updateOpt)
     this.container = dom;
     this.visualHost = host;
+
+    this.selection = [];
 
     // dom.style.backgroundImage = `url(${host.assetsManager.getImage('testImg')})`;
 
@@ -47,6 +51,16 @@ export default class Visual extends WynVisual {
 
     this.render();
     host.eventService.registerOnCustomEventCallback(this.onCustomEventHandler);
+    this.selectEvent();
+  }
+
+  private selectEvent() {
+    this.container.addEventListener("click", () => {
+      this.selectionManager.clear();
+      this.visualHost.toolTipService.hide();
+      this.visualHost.contextMenuService.hide();
+      return;
+    })
   }
 
   private mouseEnterHandler = (node: any) => {
@@ -73,29 +87,75 @@ export default class Visual extends WynVisual {
     //this.visualHost.toolTipService.hide();
   }
 
-  private clickHandler = (node: any) => {
-    d3.event.stopPropagation();
-    const selectionId = node.data.selectionId
-    if (!this.selectionManager.contains(selectionId)) {
-      this.selectionManager.select(selectionId, true);
-    } else {
-      this.selectionManager.clear(selectionId);
-    }
-
-    this.visualHost.toolTipService.show({
-      position: {
+  private rightMouseClick = (node) => {
+    document.oncontextmenu = function () { return false; };
+    document.oncontextmenu = function () { return false; };
+    this.visualHost.contextMenuService.show({
+      position: {								//跳转的selectionsId(左键需要)
         x: d3.event.x,
         y: d3.event.y,
       },
-      title: node.data.color,
-      fields: [{
-        label: this.valueField,
-        value: node.data.value,
-      }],
-      selectionId: node.data.selectionId,
-      selected: this.selectionManager.getSelectionIds(),
-      menu: true,
-    });
+    })
+    return;
+  }
+
+  private clickHandler = (node: any) => {
+    document.oncontextmenu = function () { return false; };
+    this.visualHost.contextMenuService.hide();
+    d3.event.stopPropagation();
+    const selectionId = node.data.selectionId
+
+
+    //鼠标左键功能
+    let leftMouseButton = this.properties.leftMouseButton;
+    switch (leftMouseButton) {
+      //鼠标联动设置    
+      case "none": {
+        if (this.properties.onlySelect) {
+          if (!this.selectionManager.contains(selectionId)) {
+            this.selection = [];
+            this.selectionManager.clear();
+            this.selection.push(selectionId);
+          } else {
+            this.selection = [];
+            this.selectionManager.clear();
+          }
+        } else {
+          if (!this.selectionManager.contains(selectionId)) {
+            this.selection.push(selectionId);
+          } else {
+            this.selection.splice(this.selection.indexOf(selectionId, 1))
+            this.selectionManager.clear(selectionId)
+            return
+          }
+        }
+        this.selectionManager.select(this.selection, true);
+        if (this.selection.length == this.items) {
+          this.selectionManager.clear(this.selection);
+          this.selection = [];
+        }
+        break;
+      }
+      case "showToolTip": {
+        this.showTooltip(node);
+        break;
+      }
+      default: {
+        const selectionIds = selectionId;
+        this.visualHost.commandService.execute([{
+          name: leftMouseButton,
+          payload: {
+            selectionIds,
+            position: {
+              x: d3.event.x,
+              y: d3.event.y,
+            },
+          }
+        }])
+      }
+    }
+
+
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
@@ -155,7 +215,7 @@ export default class Visual extends WynVisual {
       .size([this.width, this.height])
       .padding(1.5);
 
-      const root = d3.hierarchy({ children: items })
+    const root = d3.hierarchy({ children: items })
       .sum(function (d: any) { return d.value; })
       .each(function (d: any) {
         const size = d.data.size;
@@ -166,7 +226,7 @@ export default class Visual extends WynVisual {
         }
       });
 
-      const node = this.svg.selectAll('.node')
+    const node = this.svg.selectAll('.node')
       .data(pack(root).leaves())
       .enter().append('g')
       .attr('class', 'node')
@@ -176,7 +236,9 @@ export default class Visual extends WynVisual {
       node.on('mouseenter', this.mouseEnterHandler)
         .on('mousemove', this.mouseMoveHandler)
         .on('mouseleave', this.mouseLeaveHandler)
-        .on('click', this.clickHandler);
+        .on('click', this.clickHandler)
+        .on('contextmenu', this.rightMouseClick)
+
 
       if (!this.selectionManager.isEmpty()) {
         const selectionManager = this.selectionManager;
@@ -229,9 +291,27 @@ export default class Visual extends WynVisual {
     this.svg.attr('width', this.width);
     this.svg.attr('height', this.height);
   }
+
+  private showTooltip(node) {
+    this.visualHost.toolTipService.show({
+      position: {
+        x: d3.event.x,
+        y: d3.event.y,
+      },
+      title: node.data.color,
+      fields: [{
+        label: this.valueField,
+        value: node.data.value,
+      }],
+      selected: this.selectionManager.getSelectionIds(),
+      menu: true,
+    });
+  }
+
   public onDestroy() {
 
   }
+
   public onResize() {
     this.fitSize();
     this.render();

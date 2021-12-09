@@ -1,4 +1,5 @@
 {
+    "id": "269f9ac0-5735-11ec-8849-495f6068268b",
     "name": "动态数字",
     "displayName": "动态数字",
     "displayNameKey": "",
@@ -12,6 +13,5 @@
         }
     },
     "configuration": {},
-    "id": "7f984760-b93a-11eb-a68f-ff32f823c29d",
-    "cliVersion": "5.0.0"
+    "cliVersion": "5.0.1"
 }

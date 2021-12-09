@@ -100,13 +100,13 @@
                     {
                     "displayNameKey": "当前地图",
                     "name": "MapId",
-                    "type": "Text",
+                    "type": "Hidden",
                         "defaultValue": "china"
                     },
                     {
                         "displayNameKey": "地图深度",
                         "name": "mapLevel",
-                        "type": "Text",
+                        "type": "Hidden",
                         "defaultValue": "0"
                     },
                     {
@@ -116,17 +116,10 @@
                         "defaultValue": ""
                     },
                     {
-                        "name": "mapDistance",
-                        "type": "Integer",
-                        "displayName": "地图距离",
-                        "defaultValue": 400,
-                        "min": 0
-                    },
-                    {
                         "name": "mapBoxWidth",
                         "type": "Integer",
                         "displayName": "地图宽度",
-                        "defaultValue": 200,
+                        "defaultValue": 600,
                         "min": 0
                     },
                     {
@@ -147,26 +140,26 @@
                         "name": "mapColor",
                         "type": "Color",
                         "displayName": "地图颜色",
-                        "defaultValue": "#2B5890"
+                        "defaultValue": "rgba(2, 43, 155, 0.6)"
                     },
                     {
                         "name": "mapHoverColor",
                         "type": "Color",
                         "displayName": "地图高亮颜色",
-                        "defaultValue": "#0489d6"
+                        "defaultValue": "rgba(0, 191, 255, 0.6)"
                     },
                     {
                         "name": "mapDemarcationBorder",
                         "type": "Integer",
                         "displayName": "地图分界线宽",
-                        "defaultValue": 3,
+                        "defaultValue": 1,
                         "min": 0
                     },
                     {
                         "name": "mapDemarcationColor",
                         "type": "Color",
                         "displayName": "地图分界颜色",
-                        "defaultValue": "#5578A5"
+                        "defaultValue": "#185bd2"
                     },
                     {
                         "displayNameKey": "省份名字",
@@ -181,10 +174,23 @@
                         "defaultValue": ""
                     },
                     {
-                        "displayNameKey": "mapParams",
-                        "name": "mapParams",
-                        "type": "Hidden",
-                        "defaultValue": ""
+                        "displayNameKey": "X方向视角",
+                        "name": "mapAlpha",
+                        "type": "Integer",
+                        "defaultValue": 40
+                    },
+                    {
+                        "displayNameKey": "Y方向视角",
+                        "name": "mapBeta",
+                        "type": "Integer",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "mapDistance",
+                        "type": "Integer",
+                        "displayName": "Z方向视角",
+                        "defaultValue": 600,
+                        "min": 0
                     }
                 ]
             },
@@ -214,40 +220,135 @@
                 ]
             },
             {
-                "displayName": "柱子样式",
+                "displayName": "底部高亮样式",
+                "properties": [
+                    {
+                        "name": "showBottomLight",
+                        "type": "Boolean",
+                        "displayName": "显示高亮",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "lightColor",
+                        "type": "Color",
+                        "displayName": "高亮颜色",
+                        "defaultValue": "rgba(149, 255, 253, 0.7)"
+                    },
+                    {
+                        "name": "lightWidth",
+                        "type": "Integer",
+                        "displayName": "高亮宽度",
+                        "defaultValue": 0,
+                        "min": 0
+                    },
+                    {
+                        "name": "lightHeight",
+                        "type": "Integer",
+                        "displayName": "高亮高度",
+                        "defaultValue": 1,
+                        "min": 0
+                    }
+                    
+                ]
+            },
+            {
+                "displayName": "图标样式",
                 "properties": [
                     {
                     "name": "showBar",
                     "type": "Boolean",
-                    "displayName": "显示柱子",
+                    "displayName": "图标图标",
                     "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "图标样式",
+                        "name": "scatterSymbol",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "bar",
+                                "displayNameKey": "柱子"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            },
+                            {
+                                "value": "pin",
+                                "displayNameKey": "水滴"
+                            },
+                            {
+                                "value": "arrow",
+                                "displayNameKey": "箭头"
+                            },
+                            {
+                                "value": "path",
+                                "displayNameKey": "自定义"
+                            }
+                        ],
+                        "defaultValue": "bar"
                     },
                     {
                         "name": "barColor",
                         "type": "Color",
-                        "displayName": "柱子颜色",
-                        "defaultValue": "#fff"
+                        "displayName": "图标颜色",
+                        "defaultValue": "rgba(149, 255, 253, 0.7)"
                     },
                     {
                         "name": "barSize",
                         "type": "Integer",
-                        "displayName": "柱子尺寸",
-                        "defaultValue": 10,
+                        "displayName": "图标尺寸",
+                        "defaultValue": 20,
                         "min": 0
                     },
                     {
                         "name": "barBevelSmoothness",
                         "type": "Integer",
-                        "displayName": "柱子圆角",
+                        "displayName": "图标圆角",
                         "defaultValue": 100,
                         "min": 0
                     },
                     {
                         "name": "barMinHeight",
                         "type": "Integer",
-                        "displayName": "柱子最小高度",
-                        "defaultValue": 10,
+                        "displayName": "图标最小高度",
+                        "defaultValue": 25,
                         "min": 0
+                    },
+                    {
+                        "name": "symbolWidth",
+                        "type": "Integer",
+                        "displayName": "图标宽度",
+                        "defaultValue": 16,
+                        "min": 0
+                    },
+                    {
+                        "name": "pathWidth",
+                        "type": "Integer",
+                        "displayName": "图标宽度",
+                        "defaultValue": 15,
+                        "min": 0
+                    },
+                    {
+                        "name": "pathHeight",
+                        "type": "Integer",
+                        "displayName": "图标高度",
+                        "defaultValue": 50,
+                        "min": 0
+                    },
+                    {
+                        "name": "scatterImage",
+                        "type": "LongText",
+                        "displayName": "自定义图标路径",
+                        "defaultValue": "path://m232.99844,160.209511l15.863519,0l0,-14.211071l16.27296,0l0,14.211071l15.863521,0l0,14.577861l-15.863521,0l0,14.211069l-16.27296,0l0,-14.211069l-15.863519,0l0,-14.577861z"
                     }
             ]
             },
@@ -295,6 +396,30 @@
                         "defaultValue": "color"
                     },
                     {
+                        "name": "labelPosition",
+                        "type": "Enum",
+                        "displayName": "背景填充",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayNameKey": "居上"
+                            },
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayNameKey": "居下"
+                            }
+                        ],
+                        "defaultValue": "top"
+                    },
+                    {
                         "name": "labelBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",
@@ -335,7 +460,7 @@
                 ]
             },
             {
-                "displayName": "提示标签",
+                "displayName": "鼠标提示标签",
                 "properties": [
                     {
                         "name": "showTooltip",
@@ -344,15 +469,15 @@
                         "defaultValue": false
                     },
                     {
-                        "name": "showTooltipValue",
-                        "type": "Boolean",
-                        "displayName": "显示数值",
-                        "defaultValue": true
-                    },
-                    {
                         "name": "showTooltipLocation",
                         "type": "Boolean",
                         "displayName": "显示位置名称",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showTooltipValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
                         "defaultValue": true
                     },
                     {
@@ -379,7 +504,7 @@
                         "name": "tooltipHeight",
                         "type": "Integer",
                         "min": 10,
-                        "defaultValue": 80
+                        "defaultValue": 120
                     },
                     {
                         "name": "tooltipBorderColor",
@@ -426,13 +551,13 @@
                 "properties": [
                     {
                     "name": "automaticRotation",
-                    "type": "Boolean",
+                    "type": "Hidden",
                     "displayName": "自动轮播",
                     "defaultValue": false
                     },
                     {
                         "name": "rotationInterval",
-                        "type": "Integer",
+                        "type": "Hidden",
                         "displayName": "轮播间隔",
                         "defaultValue": 3,
                         "min": 1

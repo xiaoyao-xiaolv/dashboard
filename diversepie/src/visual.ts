@@ -154,7 +154,14 @@ export default class Visual extends WynVisual {
       };
       if (this.items[2][params.dataIndex]) {
         const sid = this.items[2][params.dataIndex];
-        this.selectionManager.select(sid, true);
+        if(this.selectionManager.contains(sid)){
+          this.selectionManager.clear(sid)
+        }else{
+          if (this.properties.onlySelect) {
+            this.selectionManager.clear();
+          }
+          this.selectionManager.select(sid, true);
+        }
       }
       this.dispatch('highlight', selectInfo);
       this.selection.push(selectInfo);

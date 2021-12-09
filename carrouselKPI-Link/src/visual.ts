@@ -27,6 +27,7 @@ export default class Visual extends WynVisual {
   private static elementWidth = 200;
   private static elementHeight = 100;
   private valueFormat: any;
+  private container: any;
 
   private isDimensions: boolean;
   private isValue: boolean;
@@ -45,6 +46,7 @@ export default class Visual extends WynVisual {
     this.totalItem = null;
     this.isMock = true;
     this.visualHost = host;
+    this.container = dom;
 
     //  custom font famliy
     var newStyle = document.createElement('style');
@@ -90,6 +92,24 @@ export default class Visual extends WynVisual {
       let id = event.currentTarget.attributes[1].value;
       let link = this.items[id][this.linkName];
       window.open(link, this.options.openType);
+      this.visualHost.toolTipService.hide();
+      this.visualHost.contextMenuService.hide();
+    })
+
+    this.container.addEventListener('mouseup', (params) => {
+      document.oncontextmenu = function () { return false; };
+      if (params.button === 2) {
+        this.visualHost.contextMenuService.show({
+          position: {
+            x: params.x,
+            y: params.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }else{
+        this.visualHost.contextMenuService.hide();	
+      }
     })
   }
 

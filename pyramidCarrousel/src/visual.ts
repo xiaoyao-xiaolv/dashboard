@@ -31,9 +31,11 @@ export default class Visual extends WynVisual {
   private dimensions: string;
   private valueFormat: any;
   private container: JQuery<HTMLDivElement>;
+  private dom: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
+    this.dom = dom;
     dom.classList.add('visual-pyramid-carrousel-container');
     this.container = $(dom);
     const div = document.createElement('div');
@@ -44,6 +46,7 @@ export default class Visual extends WynVisual {
     this.visualHost = host;
     this.isFirstRender = true;
   }
+
 
   private drawCircles(circleContainer, options) {
     var side = Visual.elementWidth * 3.5;

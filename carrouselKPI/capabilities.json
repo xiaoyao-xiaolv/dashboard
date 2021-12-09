@@ -5,11 +5,11 @@
                 "name": "values",
                 "displayNameKey": "实际值",
                 "options": [
-                  {
-                    "displayNameKey": "数据格式",
-                    "type": "format",
-                    "name": "valueFormat"
-                  }
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
                 ],
                 "kind": "value"
             },

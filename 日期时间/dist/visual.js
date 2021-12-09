@@ -1,1 +1,123 @@
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.WynVisualClass=e():t.WynVisualClass=e()}(window,function(){return o={},r.m=n=[function(t,e,n){"use strict";e.__esModule=!0,n(1);var o=(r.prototype.update=function(t){this.properties=t.properties,this.render()},r.prototype.render=function(){var t=this;this.container.innerHTML="";var e=this.properties,n=document.createElement("p");n.className="p1",n.style.whiteSpace="pre",n.style.fontSize="20px",n.style.margin="0 auto",this.container.appendChild(n);var o,r=new Date,i=r.getHours(),l=r.getMinutes(),a=r.getSeconds(),u=new Date;0==u.getDay()&&(o="星期日  "),1==u.getDay()&&(o="星期一  "),2==u.getDay()&&(o="星期二  "),3==u.getDay()&&(o="星期三  "),4==u.getDay()&&(o="星期四  "),5==u.getDay()&&(o="星期五  "),6==u.getDay()&&(o="星期六  ");var s=u.getFullYear()+"年"+(u.getMonth()+1)+"月"+u.getDate()+"日";switch(n.style.color=e.textStyle.color,n.style.fontSize=e.textStyle.fontSize,n.style.fontFamily=e.textStyle.fontFamily,n.style.fontStyle=e.textStyle.fontStyle,n.style.fontWeight=e.textStyle.fontWeight,e.shape){case"Short":n.innerHTML=s;break;case"Long":n.innerHTML=s+" "+this.p(i)+":"+this.p(l)+":"+this.p(a);break;default:n.innerHTML=s+" "+o+" "+this.p(i)+":"+this.p(l)+":"+this.p(a)}clearTimeout(f);var f=setTimeout(function(){t.render()},1e3)},r.prototype.p=function(t){return t<10?"0"+t:t},r.prototype.getInspectorVisibilityState=function(t){return null},r.prototype.getActionBarVisibilityState=function(t){return null},r);function r(t,e){this.onActionEventHandler=function(t){console.log(t)},this.container=t,this.properties={shape:"detailed",textStyle:{color:"#fff",fontSize:"10pt",fontFamily:"微软雅黑",fontStyle:"Normal",fontWeight:"Normal"}}}e.default=o},function(t,e,n){}],r.c=o,r.d=function(t,e,n){r.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:n})},r.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)r.d(n,o,function(t){return e[t]}.bind(null,o));return n},r.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(e,"a",e),e},r.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},r.p="",r(r.s=0).default;function r(t){if(o[t])return o[t].exports;var e=o[t]={i:t,l:!1,exports:{}};return n[t].call(e.exports,e,e.exports,r),e.l=!0,e.exports}var n,o});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["WynVisualClass"] = factory();
+	else
+		root["WynVisualClass"] = factory();
+})(window, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/visual.ts");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/visual.ts":
+/*!***********************!*\
+  !*** ./src/visual.ts ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nexports.__esModule = true;\n\n__webpack_require__(/*! ../style/visual.less */ \"./style/visual.less\");\n\nvar Visual =\n/** @class */\nfunction () {\n  function Visual(dom, host) {\n    this.onActionEventHandler = function (name) {\n      console.log(name);\n    };\n\n    this.container = dom;\n    this.container.classList.add('visual-date-time');\n    this.properties = {\n      shape: 'detailed',\n      textStyle: {\n        color: '#fff',\n        fontSize: '10pt',\n        fontFamily: '微软雅黑',\n        fontStyle: 'Normal',\n        fontWeight: 'Normal'\n      }\n    };\n  }\n\n  Visual.prototype.update = function (options) {\n    this.properties = options.properties;\n    this.render();\n  };\n\n  ;\n\n  Visual.prototype.render = function () {\n    var _this = this;\n\n    this.container.innerHTML = \"\";\n    var options = this.properties;\n    var p1 = document.createElement(\"p\");\n    p1.className = 'p1';\n    p1.style.whiteSpace = 'pre';\n    p1.style.fontSize = '20px';\n    p1.style.margin = '0 auto';\n    this.container.appendChild(p1); //显示时间\n\n    var nowtime = new Date();\n    var hour = nowtime.getHours(); //时\n\n    var minutes = nowtime.getMinutes(); //分\n\n    var seconds = nowtime.getSeconds(); //秒\n    //文字增加空格\n\n    var today = new Date();\n    var weekday;\n    if (today.getDay() == 0) weekday = \"星期日  \";\n    if (today.getDay() == 1) weekday = \"星期一  \";\n    if (today.getDay() == 2) weekday = \"星期二  \";\n    if (today.getDay() == 3) weekday = \"星期三  \";\n    if (today.getDay() == 4) weekday = \"星期四  \";\n    if (today.getDay() == 5) weekday = \"星期五  \";\n    if (today.getDay() == 6) weekday = \"星期六  \";\n    var date = today.getFullYear() + \"年\" + (today.getMonth() + 1) + \"月\" + today.getDate() + \"日\";\n    p1.style.color = options.textStyle.color;\n    p1.style.fontSize = options.textStyle.fontSize;\n    p1.style.fontFamily = options.textStyle.fontFamily;\n    p1.style.fontStyle = options.textStyle.fontStyle;\n    p1.style.fontWeight = options.textStyle.fontWeight;\n\n    switch (options.shape) {\n      case \"Short\":\n        {\n          p1.innerHTML = date;\n          break;\n        }\n\n      case \"Long\":\n        {\n          p1.innerHTML = date + \" \" + this.p(hour) + \":\" + this.p(minutes) + \":\" + this.p(seconds);\n          break;\n        }\n\n      default:\n        {\n          p1.innerHTML = date + \" \" + weekday + \" \" + this.p(hour) + \":\" + this.p(minutes) + \":\" + this.p(seconds);\n          break;\n        }\n    }\n\n    clearTimeout(timeID);\n    var timeID = setTimeout(function () {\n      _this.render();\n    }, 1000);\n  };\n\n  Visual.prototype.p = function (s) {\n    return s < 10 ? '0' + s : s;\n  }; // 自定义属性可见性\n\n\n  Visual.prototype.getInspectorVisibilityState = function (properties) {\n    return null;\n  }; // 功能按钮可见性\n\n\n  Visual.prototype.getActionBarVisibilityState = function (updateOptions) {\n    return null;\n  };\n\n  return Visual;\n}();\n\nexports[\"default\"] = Visual;\n\n//# sourceURL=webpack://WynVisualClass/./src/visual.ts?");
+
+/***/ }),
+
+/***/ "./style/visual.less":
+/*!***************************!*\
+  !*** ./style/visual.less ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack://WynVisualClass/./style/visual.less?");
+
+/***/ })
+
+/******/ })["default"];
+});

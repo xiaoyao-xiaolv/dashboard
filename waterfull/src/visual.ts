@@ -13,6 +13,7 @@ export default class Visual extends WynVisual {
   private items: any;
   private selectionManager: any;
   private selection: any[] = [];
+  private format: any;
 
   static mockItems = [
     ["1月", "2月", "3月", "4月", "5月", "累计"], [12, 20, 6, -7, 59]
@@ -54,6 +55,13 @@ export default class Visual extends WynVisual {
     }, 10);
   });
 
+  //数据格式
+  private formatData(number) {
+    const formatService = this.host.formatService;
+    let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+    return formatService.format(this.format, number, realDisplayUnit);
+  }
+
   private hideTooltip = () => {
     this.host.toolTipService.hide();
     isTooltipModelShown = false;
@@ -73,42 +81,73 @@ export default class Visual extends WynVisual {
         this.selection.forEach(i => this.dispatch('downplay', i));
         this.selection = [];
         this.selectionManager.clear();
+        this.host.toolTipService.hide();
+        this.host.contextMenuService.hide();
         return;
       }
     })
 
-    this.container.addEventListener('mouseleave', (e: any) => {
-      if (isTooltipModelShown) return;
-      this.hideTooltip();
-    })
-
-    this.chart.on('mousemove', (params) => {
-      if (params.componentType !== 'series') return;
-
-      if (!isTooltipModelShown) this.showTooltip(params);
-    })
 
     this.chart.on('click', (params) => {
-
-      if (params.componentType !== 'series') return;
-
-      this.showTooltip(params, true);
-
-      params.event.event.seriesClick = true;
-
-      const selectInfo = {
-        seriesIndex: params.seriesIndex,
-        dataIndex: params.dataIndex,
-      };
-      // linkage logic,get series index
-      if (this.items[2][params.dataIndex]) {
+      this.host.contextMenuService.hide();
+      params.event.event.stopPropagation();
+      if (params.event.event.button == 0) {
+        //鼠标左键功能
+        let leftMouseButton = this.properties.leftMouseButton;
         const sid = this.items[2][params.dataIndex];
-        this.selectionManager.select(sid, true);
+        switch (leftMouseButton) {
+          //鼠标联动设置    
+          case "none": {
+            if (this.selectionManager.contains(sid)) {
+              this.selectionManager.clear(sid)
+            } else {
+              if (this.properties.onlySelect) {
+                this.selectionManager.clear();
+              }
+              this.selectionManager.select(sid, true);
+            }
+            if (this.selectionManager.selected.length == this.items[2].length) {
+              this.selectionManager.clear();
+            }
+            break;
+          }
+          case "showToolTip": {
+            this.showTooltip(params, true);
+            break;
+          }
+          default: {
+            this.host.commandService.execute([{
+              name: leftMouseButton,
+              payload: {
+                selectionIds: sid,
+                position: {
+                  x: params.event.event.x,
+                  y: params.event.event.y,
+                },
+              }
+            }])
+          }
+        }
       }
-
-      this.dispatch('highlight', selectInfo);
-      this.selection.push(selectInfo)
     })
+
+    this.chart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {								//跳转的selectionsId(左键需要)
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      } else {
+        this.host.contextMenuService.hide();
+      }
+    })
+
 
   }
 
@@ -117,6 +156,7 @@ export default class Visual extends WynVisual {
     this.items = [];
     if (dataView &&
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
+      this.format = options.dataViews[0].plain.profile.ActualValue.values[0].format;
       const plainData = dataView.plain;
       const dimension = plainData.profile.dimension.values[0].display;
       const ActualValue = plainData.profile.ActualValue.values[0].display;
@@ -173,7 +213,15 @@ export default class Visual extends WynVisual {
         obj.push(dy[i]);
         obj.push(dy[i]);
         obj.push(dy[i]);
-        zt.push(obj);
+        if (i === lastIndex) {
+          let data = {
+            value: obj,
+            itemStyle: !this.items.length ? options.totalColor : null
+          }
+          zt.push(data);
+        } else {
+          zt.push(obj);
+        }
       } else {
         var start = zt[i - 1][1];
         var val = parseFloat(dy[i]);
@@ -236,6 +284,10 @@ export default class Visual extends WynVisual {
     let { dy, zt, label } = this.getBasicData(dyData, [], [], options);
     const lineData = this.getLineData(dyData, options);
     // get properties
+    let itemStyle = {
+      color: options.totalColor
+    }
+    zt[zt.length - 1]["itemStyle"] = itemStyle
 
     const option = {
       xAxis: {
@@ -290,11 +342,14 @@ export default class Visual extends WynVisual {
           symbolSize: 0.000000000000001,
           label: {
             show: options.customShowMark,
-            color: options.customPaletteColor[0].colorStops ? options.customPaletteColor[0].colorStops[0] : options.customPaletteColor[0],
-            position: 'top',
-            fontSize: options.fontSize,
-            formatter: function (res) {
-              return res.data.value;
+            color: options.showTextStyle.color,
+            fontFamily: options.showTextStyle.fontFamily,
+            fontSize: options.showTextStyle.fontSize.replace("pt", ""),
+            fontStyle: options.showTextStyle.fontStyle,
+            fontWeight: options.showTextStyle.fontWeight,
+            position: options.labelPosition,
+            formatter: (res) => {
+              return this.formatData(res.data.value);
             }
           },
           data: label
@@ -348,12 +403,18 @@ export default class Visual extends WynVisual {
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
 
+    let hiddenOptions: Array<string> = [''];
+
     if (!options.properties.customShowLegend) {
-      return ['legendFontSize', 'legendVerticalPosition', 'legendHorizontalPosition']
+     hiddenOptions = hiddenOptions.concat(['legendFontSize', 'legendVerticalPosition', 'legendHorizontalPosition'])
     }
 
     if (!options.properties.customShowLine) {
-      return ['customLineColor']
+      hiddenOptions = hiddenOptions.concat(['customLineColor'])
+    }
+
+    if(!options.properties.customShowMark){
+      hiddenOptions = hiddenOptions.concat(['showTextStyle','labelPosition'])
     }
     return null;
   }

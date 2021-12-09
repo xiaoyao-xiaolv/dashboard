@@ -15,6 +15,7 @@ export default class Visual extends WynVisual {
   private selection: any[] = [];
   private ActualValue: string;
   private dimension: string;
+  private format: any;
   static mockItems: any = [
     ["1月", "2月", "3月", "4月", "5月", "6月", "7月"], [56, 44, 38, 25, 20, 12, 7]
   ];
@@ -39,7 +40,7 @@ export default class Visual extends WynVisual {
       },
 
       fields: [{
-        label: this.ActualValue,
+        label: params.name,
         value: params.data,
       }],
       selected: this.selectionManager.getSelectionIds(),
@@ -59,6 +60,7 @@ export default class Visual extends WynVisual {
   public bindEvents = () => {
     // lister click 
     this.container.addEventListener('click', (e: any) => {
+      this.host.contextMenuService.hide();
       if (!e.seriesClick) {
         // clear tooltip
         this.hideTooltip();
@@ -75,31 +77,79 @@ export default class Visual extends WynVisual {
       this.hideTooltip();
     })
 
+    //鼠标左键
     this.chart.on('click', (params) => {
+      this.host.contextMenuService.hide();
+      params.event.event.stopPropagation();
+      if (params.event.event.button == 0) {
+        //鼠标左键功能
+        let leftMouseButton = this.properties.leftMouseButton;
+        switch (leftMouseButton) {
+          //鼠标联动设置    
+          case "none": {
+            if (this.selectionManager.isEmpty()) {
+              this.selection.push(this.items[2][params.dataIndex]);
+              this.selectionManager.select(this.selection, true);
+              return
+            }
 
-      if (params.componentType !== 'series') return;
-
-      this.showTooltip(params, true);
-
-      params.event.event.seriesClick = true;
-
-      const selectInfo = {
-        seriesIndex: params.seriesIndex,
-        dataIndex: params.dataIndex,
-      };
-
-      if (this.items[2][params.dataIndex]) {
-        const sid = this.items[2][params.dataIndex];
-        this.selectionManager.select(sid, true);
+            if (!this.selectionManager.contains(this.items[2][params.dataIndex])) {
+              this.selection.push(this.items[2][params.dataIndex]);
+            } else {
+              this.selection.splice(this.selection.indexOf(this.items[2][params.dataIndex]), 1);
+              this.selectionManager.clear(this.items[2][params.dataIndex])
+            }
+            if (this.selection.length == this.items[2].length) {
+              this.selectionManager.clear();
+              this.selection = new Array<any>();
+              this.host.toolTipService.hide();
+              return;
+            }
+            this.selectionManager.select(this.selection, true);
+            break;
+          }
+          case "showTool": {
+            this.showTooltip(params, true);
+            break;
+          }
+          default: {
+            const selectionIds = this.items[2][params.dataIndex];
+            this.host.commandService.execute([{
+              name: leftMouseButton,
+              payload: {
+                selectionIds,
+                position: {
+                  x: params.event.event.x,
+                  y: params.event.event.y,
+                },
+              }
+            }])
+          }
+        }
       }
-      this.dispatch('highlight', selectInfo);
-      this.selection.push(selectInfo)
 
+    })
+
+    this.chart.on('mouseup', (params) => {
+      if (params.event.event.button === 2) {
+        document.oncontextmenu = function () { return false; };
+        params.event.event.preventDefault();
+        this.host.contextMenuService.show({
+          position: {
+            //跳转的selectionsId(左键需要)
+            x: params.event.event.x,
+            y: params.event.event.y,
+          },
+          menu: true
+        }, 10)
+        return;
+      }
     })
 
   }
 
   public update(options: VisualNS.IVisualUpdateOptions) {
+    this.format = options.dataViews[0].plain.profile.ActualValue.values[0].format;
     const dataView = options.dataViews[0];
     this.items = [];
     if (dataView &&
@@ -145,6 +195,7 @@ export default class Visual extends WynVisual {
         lineData[index] = (Number((initData[0] / totalNumber).toFixed(2)) * 100);
       }
     })
+    lineData[lineData.length - 1] = 100
     return lineData
   }
 
@@ -197,6 +248,7 @@ export default class Visual extends WynVisual {
     this.container.style.opacity = isMock ? '0.3' : '1';
     const options = this.properties;
     let columnarData = isMock ? Visual.mockItems[1] : this.items[1];
+
     const lineData = this.getLineData(columnarData);
 
     // lengend position
@@ -220,6 +272,7 @@ export default class Visual extends WynVisual {
       tooltip: {
         trigger: 'item',
         formatter: (params, ticket) => {
+          params.data = this.formatData(params.data)
           const value = params.componentSubType === 'bar' ? params.data : params.data + '%'
           return `${params.name}: ${value}`
         },
@@ -307,7 +360,7 @@ export default class Visual extends WynVisual {
           type: 'value',
           // max: 100,
           axisLabel: {
-            formatter: `{value}(%)`,
+            formatter: `{value}%`,
             show: options.rightAxisLabel,
             textStyle: {
               color: options.rightTextStyle.color,
@@ -344,7 +397,10 @@ export default class Visual extends WynVisual {
             normal: {
               show: options.dataindicate,
               position: options.dataindicatePosition,
-              formatter: '{c}',
+              formatter: (params) => {
+                params.data = this.formatData(params.data)
+                return params.data
+              },
               textStyle: {
                 color: options.dataindicateTextStyle.color,
                 fontStyle: options.dataindicateTextStyle.fontStyle,
@@ -420,5 +476,11 @@ export default class Visual extends WynVisual {
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     return null;
+  }
+
+  private formatData = (number) => {
+    const formatService = this.host.formatService;
+    let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+    return formatService.format(this.format, number, realDisplayUnit);
   }
 }
