@@ -6,6 +6,23 @@
             {
                 "displayName": "图表样式",
                 "properties": [
+
+                    {
+                        "name": "mode",
+                        "type": "Enum",
+                        "displayName": "模式",
+                        "items": [
+                            {
+                                "value": "standard",
+                                "displayNameKey": "标准"
+                            },
+                            {
+                                "value": "simple",
+                                "displayNameKey": "简易"
+                            }
+                        ],
+                        "defaultValue": "standard"
+                    },
                     {
                         "name": "autoCity",
                         "type": "Boolean",
@@ -14,8 +31,12 @@
                     },
                     {
                         "name": "cityList",
-                        "type": "LongText",
-                        "displayName": "城市列表"
+                        "type": "Collection",
+                        "displayName": "城市列表",
+                        "itemShape": {
+                            "type": "Text"
+                        },
+                        "defaultValue": ["北京"]
                     },
                     {
                         "name": "intervalTime",
@@ -50,18 +71,18 @@
                         "defaultValue": 10
                     },
                     {
-                        "name": "height",
-                        "type": "Integer",
-                        "displayName": "高度",
-                        "min": 10,
-                        "defaultValue": 150
-                    },
-                    {
                         "name": "width",
                         "type": "Integer",
                         "displayName": "宽度",
                         "min": 10,
                         "defaultValue": 450
+                    },
+                    {
+                        "name": "height",
+                        "type": "Integer",
+                        "displayName": "高度",
+                        "min": 10,
+                        "defaultValue": 150
                     },
                     {
                         "name": "language",

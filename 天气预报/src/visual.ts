@@ -16,31 +16,46 @@ export default class Visual {
     this.visualHost = host;
     this.cityID = cityID;
     this.properties = {};
-    let config = {
-      "layout": 1,
-      "width": "450",
-      "height": "150",
-      "background": 1,
-      "dataColor": "FFFFFF",
-      "borderRadius": 5,
-      "key": "e1b995f9292e4303ab28f145ffb6a95d"
-    };
-    this.render(config);
   }
 
   public update(options: any) {
+    this.properties = options.properties;
+    let config;
     if(options.isFocus || options.isViewer || options.updateType === "propertyChange" || options.updateType === "dataViewChange") {
       this.cityListCode = [];
-      this.properties = options.properties;
-        const config = {
-        "layout": "1",
-        "width": this.properties.width,
-        "height": this.properties.height,
-        "background": 1,
-        "dataColor": this.properties.dataColor,
-        "borderRadius": this.properties.borderRadius,
-        "key": "e1b995f9292e4303ab28f145ffb6a95d"
-      };
+      switch (this.properties.mode) {
+        case 'standard' :
+          config = {
+            "layout": "1",
+            "width": this.properties.width,
+            "height": this.properties.height,
+            "background": 1,
+            "dataColor": this.properties.dataColor,
+            "borderRadius": this.properties.borderRadius,
+            "key": "e1b995f9292e4303ab28f145ffb6a95d"
+          };
+          break;
+        case 'simple' :
+          config = {
+            "modules": "012",
+            "background": "1",
+            "tmpColor": this.properties.dataColor,
+            "tmpSize": "18",
+            "cityColor": this.properties.dataColor,
+            "citySize": "18",
+            "aqiColor": this.properties.dataColor,
+            "aqiSize": "18",
+            "weatherIconSize": "24",
+            "alertIconSize": "18",
+            "padding": "10px 10px 10px 10px",
+            "shadow": "0",
+            "borderRadius": this.properties.borderRadius,
+            "fixed": "false",
+            "vertical": "top",
+            "horizontal": "left",
+            "key": "78a121dbb5e240d6be62c34d1841131b"
+          }
+      }
 
       if(this.properties.language !== "") {
         config["language"] = this.properties.language;
@@ -64,13 +79,14 @@ export default class Visual {
       }
 
       if(!this.properties.autoCity) {
-        let cityList = this.properties.cityList.split('\n').map(city => city.trim());
+        let cityList = this.properties.cityList.map(city => city.trim());
         cityList.forEach(((city) => {
           if(city !== '' && this.cityID[`${city}`]) {
             this.cityListCode.push(this.cityID[`${city}`]);
           }
         }))
         if (this.cityListCode.length > 1) {
+          this.render(config);
           autoChangeCity();
         } else {
           config["city"] = this.cityListCode[0];
@@ -87,14 +103,14 @@ export default class Visual {
   private render(config) {
     this.container.innerHTML = '';
     let div = document.createElement('div');
-    div.id = "he-plugin-standard";
+    div.id = `he-plugin-${this.properties.mode}`;
 
     let configScript = document.createElement('script');
     configScript.type = "text/javascript";
 
     let jsScript = document.createElement('script');
     jsScript.type = "text/javascript";
-    jsScript.src = "https://widget.heweather.net/standard/static/js/he-standard-common.js?v=1.1";
+    jsScript.src = `https://widget.heweather.net/${this.properties.mode}/static/js/he-${this.properties.mode}-common.js?v=2.0`;
 
     this.container.appendChild(div);
     this.container.appendChild(configScript);
@@ -109,10 +125,15 @@ export default class Visual {
   public getInspectorHiddenState(updateOptions: any): string[] {
       const hiddenStatus = [];
 
-      if(updateOptions.properties.autoCity) {
+      if (updateOptions.properties.autoCity) {
         Array.prototype.push.apply(hiddenStatus, ['cityList', 'intervalTime']);
       }
-      if(!updateOptions.properties.autoBackgroundColor) {
+
+      if (updateOptions.properties.mode === 'simple') {
+        Array.prototype.push.apply(hiddenStatus, ['width', 'height']);
+      }
+
+      if (!updateOptions.properties.autoBackgroundColor) {
         hiddenStatus.push('backgroundColor');
       }
 
