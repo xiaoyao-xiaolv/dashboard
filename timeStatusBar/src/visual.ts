@@ -105,13 +105,19 @@ export default class Visual extends WynVisual {
         this.data['categories'] = plainData.sort[filedName['categories']].order;
       }
 
-      let bindColorLength = this.properties.statusColors.length;
-      if (this.data['statusList'].length > bindColorLength) {
-        this.data['colors'] = this.data['statusList'].map((status, index) => {
-           return this.properties.statusColors[index % bindColorLength];
-        })
+      if (!this.properties.mainColorAssignment) {
+        let bindColorLength = this.properties.statusColors.length;
+        if (this.data['statusList'].length > bindColorLength) {
+          this.data['colors'] = this.data['statusList'].map((status, index) => {
+            return this.properties.statusColors[index % bindColorLength];
+          })
+        } else {
+          this.data['colors'] = this.properties.statusColors;
+        }
       } else {
-        this.data['colors'] = this.properties.statusColors;
+        this.data['colors'] = this.data['statusList'].map((status) => {
+          return this.properties.mainColorAssignment[status];
+        })
       }
 
       this.data['statusData'] = plainData.data.map((data) => {
@@ -133,10 +139,18 @@ export default class Visual extends WynVisual {
     this.container.style.opacity = this.isMock ? '0.5' : '1';
     let data = this.isMock ? this.mockData : this.data;
     data.statusData.forEach((item) => {
-      let index = data.statusList.indexOf(item.name);
-      item['itemStyle'] = {
-        normal: {
-          color: data.colors[index]
+      if (this.properties.mainColorAssignment) {
+        item['itemStyle'] = {
+          normal: {
+            color: this.properties.mainColorAssignment[item.name]
+          }
+        }
+      } else {
+        let index = data.statusList.indexOf(item.name);
+        item['itemStyle'] = {
+          normal: {
+            color: data.colors[index]
+          }
         }
       }
     })
@@ -277,7 +291,6 @@ export default class Visual extends WynVisual {
     });
     [].unshift.apply(option.series, seriesStatus);
     this.myChart.setOption(option);
-
   }
 
   public onDestroy(): void {
@@ -290,11 +303,19 @@ export default class Visual extends WynVisual {
   }
 
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
+    const hiddenStatus = [];
+
     if (options.properties.startCustom) {
-      return [ 'timeFormat'];
+      hiddenStatus.push('timeFormat');
     } else {
-      return [ 'customTimeFormat' ];
+      hiddenStatus.push('customTimeFormat');
     }
+
+    if (options.properties.mainColorAssignment) {
+      hiddenStatus.push('statusColors');
+    }
+
+    return hiddenStatus;
   }
 
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
@@ -302,6 +323,21 @@ export default class Visual extends WynVisual {
   }
 
   public getColorAssignmentConfigMapping(dataViews: VisualNS.IDataView[]): VisualNS.IColorAssignmentConfigMapping {
-    return null;
+    if (!dataViews.length) {
+      return null;
+    }
+    const plain = dataViews[0].plain;
+    const statusProfile = plain.profile.status.values[0];
+    if (!statusProfile) {
+      return null;
+    }
+    const colorValues = plain.data.map(d => d[statusProfile.display]);
+    return {
+      mainColorAssignment: {
+        values: Array.from(new Set(colorValues)),
+        type: 'dimension',
+        columns: [statusProfile],
+      },
+    };
   }
 }

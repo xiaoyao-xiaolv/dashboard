@@ -94,6 +94,12 @@
                 "displayName": "图表样式",
                 "properties": [
                     {
+                        "name": "mainColorAssignment",
+                        "type": "ColorAssignment",
+                        "displayName": "保持颜色分配",
+                        "defaultValue": false
+                    },
+                    {
                         "name": "statusColors",
                         "type": "Palette",
                         "displayName": "状态颜色"
