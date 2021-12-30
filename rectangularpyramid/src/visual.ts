@@ -26,17 +26,23 @@ export default class Visual extends WynVisual {
   private dimensions: any;
   private value: any;
   private contrast: any;
+  private host: any;
+  private format: any;
+  private selectionIds: any;
+  private selectionManager: any;
 
   constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
     super(dom, host, options);
     this.root = $(dom);
     this.isMock = true;
+    this.host = host;
     this.isFirstRender = true;
+    this.selectionManager = host.selectionService.createSelectionManager();
   }
 
   public update(updateOptions: VisualNS.IVisualUpdateOptions) {
     const options = updateOptions;
-
+    this.selectionIds = [];
     const dataView = options.dataViews[0];
 
     this.isMock = !(dataView && dataView.plain.profile.dimensions.values.length);
@@ -54,6 +60,7 @@ export default class Visual extends WynVisual {
       // this.items.push({ [this.dimensions]: '', [this.value]: '' })
 
     } else {
+      this.format = options.dataViews[0].plain.profile.values.values[0].format;
       this.dimensions = !this.isMock && plainData.profile.dimensions.values[0].display || '';
       this.value = this.isValue && plainData.profile.values.values[0].display || '';
       // this.contrast = this.isContrast && plainData.profile.contrast.values[0].display || '';
@@ -71,12 +78,50 @@ export default class Visual extends WynVisual {
         items = newItems.filter((item) => item)
       }
       this.items = items
+      items.forEach((data) => {
+        const selectionId = this.host.selectionService.createSelectionId();
+        selectionId.withDimension(options.dataViews[0].plain.profile.dimensions.values[0], data);
+        this.selectionIds.push(selectionId);
+      })
       this.items.push({ [this.dimensions]: '', [this.value]: '' })
     }
 
     this.options = options.properties;
     this.render()
 
+  }
+
+  private selectEvent(data,sid,properties) {
+    let leftMouseButton = properties.leftMouseButton;
+    switch (leftMouseButton) {
+      //鼠标联动设置    
+      case "none": {
+        if(this.selectionManager.contains(this.selectionIds[sid])){
+          this.selectionManager.clear(this.selectionIds[sid])
+        }else{
+          if (properties.onlySelect) {
+            this.selectionManager.clear();
+          }
+          this.selectionManager.select(this.selectionIds[sid], true);
+        }
+        if (this.selectionManager.selected.length == this.items.length) {
+          this.selectionManager.clear();
+        }
+        break;
+      }
+      default: {
+        this.host.commandService.execute([{
+          name: leftMouseButton,
+          payload: {
+            selectionIds: this.selectionIds[sid],
+            position: {
+              x: data.screenX,
+              y: data.screenY,
+            },
+          }
+        }])
+      }
+    }
   }
 
   public render() {
@@ -194,12 +239,15 @@ export default class Visual extends WynVisual {
         if (index < length - 1) {
           i === 0 && $('<div class="s2d-text">')
             .text(this.items[index][this.dimensions])
+            .click((data) => this.selectEvent(data,index,options))
             .css({ ...positionText, ...options.dimensionsTextStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
             .appendTo(s2d);
           i === 1 && $('<div class="s2d-text">')
-            .text(this.formatData(this.items[index][this.value], options.detailValueUnit, options.detailValueType))
+            .text(this.formatData(this.items[index][this.value],options.detailValueUnit))
+            .click((data) => this.selectEvent(data,index,options))
             .css({ ...positionText, ...options.textStyle, top: `${(length - (index + 1)) * yInterval + (yInterval / 4)}%` })
             .appendTo(s2d);
+          
         } else {
           s2d.css({ 'visibility': options.pyramidSharp ? 'visiable' : 'hidden' })
         }
@@ -213,7 +261,7 @@ export default class Visual extends WynVisual {
           'height': `${(x1 - x0) * 0.01 * 17.5}em`,
           'transform': `translateY(${-(17 + 9 * index)}%) rotateX(90deg) translateX(${-(43 - (2 * index + 1))}%)`
         })
-        .appendTo(s3dContainer);
+        // .appendTo(s3dContainer);
 
     }
     for (let i = 0; i < length; i++) {
@@ -222,53 +270,53 @@ export default class Visual extends WynVisual {
 
   }
 
-  public formatData = (number, dataUnit, dataType) => {
-    let format = number
-    // const dataUnit = options.totalValueUnit
-    const units = [{
-      value: 1,
-      unit: ''
-    },
-    {
-      value: 100,
-      unit: '百'
-    }, {
-      value: 1000,
-      unit: '千'
-    }, {
-      value: 10000,
-      unit: '万'
-    }, {
-      value: 100000,
-      unit: '十万'
-    }, {
-      value: 1000000,
-      unit: '百万'
-    }, {
-      value: 10000000,
-      unit: '千万'
-    }, {
-      value: 100000000,
-      unit: '亿'
-    }, {
-      value: 1000000000,
-      unit: '十亿'
-    }, {
-      value: 100000000000,
-      unit: '万亿'
-    }]
-    const formatUnit = units.find((item) => item.value === Number(dataUnit))
-    format = (format / formatUnit.value).toFixed(2)
+  // public formatData = (number, dataUnit, dataType) => {
+  //   let format = number
+  //   // const dataUnit = options.totalValueUnit
+  //   const units = [{
+  //     value: 1,
+  //     unit: ''
+  //   },
+  //   {
+  //     value: 100,
+  //     unit: '百'
+  //   }, {
+  //     value: 1000,
+  //     unit: '千'
+  //   }, {
+  //     value: 10000,
+  //     unit: '万'
+  //   }, {
+  //     value: 100000,
+  //     unit: '十万'
+  //   }, {
+  //     value: 1000000,
+  //     unit: '百万'
+  //   }, {
+  //     value: 10000000,
+  //     unit: '千万'
+  //   }, {
+  //     value: 100000000,
+  //     unit: '亿'
+  //   }, {
+  //     value: 1000000000,
+  //     unit: '十亿'
+  //   }, {
+  //     value: 100000000000,
+  //     unit: '万亿'
+  //   }]
+  //   const formatUnit = units.find((item) => item.value === Number(dataUnit))
+  //   format = (format / formatUnit.value).toFixed(2)
 
-    if (dataType === 'number') {
-      format = format.toLocaleString()
-    } else if (dataType === '%') {
-      format = format + dataType
-    } else {
-      format = dataType + format
-    }
-    return format + formatUnit.unit
-  }
+  //   if (dataType === 'number') {
+  //     format = format.toLocaleString()
+  //   } else if (dataType === '%') {
+  //     format = format + dataType
+  //   } else {
+  //     format = dataType + format
+  //   }
+  //   return format + formatUnit.unit
+  // }
 
   public onDestroy() {
     if (this.renderTimer != null) {
@@ -330,4 +378,47 @@ export default class Visual extends WynVisual {
   public getActionBarHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     return null;
   }
+
+  //数据格式
+  private formatData (number,realDisplayUnit) {
+    let format = number
+    const units = [{
+      value: 1,
+      unit: ''
+    },
+    {
+      value: 100,
+      unit: '百'
+    }, {
+      value: 1000,
+      unit: '千'
+    }, {
+      value: 10000,
+      unit: '万'
+    }, {
+      value: 100000,
+      unit: '十万'
+    }, {
+      value: 1000000,
+      unit: '百万'
+    }, {
+      value: 10000000,
+      unit: '千万'
+    }, {
+      value: 100000000,
+      unit: '亿'
+    }, {
+      value: 1000000000,
+      unit: '十亿'
+    }, {
+      value: 100000000000,
+      unit: '万亿'
+    }]
+    const formatUnit = units.find((item) => item.value === Number(realDisplayUnit))
+    format = (format / formatUnit.value).toFixed(2)
+    const formatService = this.host.formatService;
+    return formatService.format(this.format, format,realDisplayUnit)+ formatUnit.unit;
+  }
+
+  
 }

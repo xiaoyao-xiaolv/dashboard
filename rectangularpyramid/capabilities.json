@@ -4,7 +4,14 @@
             {
                 "name": "values",
                 "displayNameKey": "实际值",
-                "kind": "value"
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
             },
             {
                 "name": "dimensions",
@@ -170,30 +177,6 @@
                         "inheritFrom": "dashboard.textStyle"
                     },
                     {
-                        "name": "detailValueType",
-                        "type": "Enum",
-                        "displayName": "数据格式",
-                        "items": [
-                            {
-                                "value": "",
-                                "displayNameKey": "常规"
-                            },
-                            {
-                                "value": "number",
-                                "displayNameKey": "数字"
-                            },
-                            {
-                                "value": "￥",
-                                "displayNameKey": "货币"
-                            },
-                            {
-                                "value": "%",
-                                "displayNameKey": "百分比"
-                            }
-                        ],
-                        "defaultValue": ""
-                    },
-                    {
                         "name": "detailValueUnit",
                         "type": "Enum",
                         "displayName": "数据单位",
@@ -244,7 +227,37 @@
                 ]
             },
             {
-                "type": "interaction"
+                "type": "interaction",
+                "properties": [{
+                    "name": "leftMouseButton",
+                    "type": "Enum",
+                    "displayName": "鼠标左键选项",
+                    "items": [
+                        {
+                            "value": "none",
+                            "displayNameKey": "无"
+                        },
+                        {
+                            "value": "Keep",
+                            "displayNameKey": "保留"
+                        },
+                        {
+                            "value": "Exclude",
+                            "displayNameKey": "排除"
+                        },
+                        {
+                            "value": "Jump",
+                            "displayNameKey": "跳转"
+                        }
+                    ],
+                    "defaultValue": "none"
+                },
+                {
+                        "name": "onlySelect",
+                        "type": "Boolean",
+                        "displayName": "数据单选",
+                        "defaultValue": true
+				}]
             },
             {
                 "type": "title",
@@ -259,11 +272,11 @@
     },
     "actions": [
         {
-            "type": "sort"
-        },
-        {
             "type": "focus"
         },
+        {
+            "type": "filter"
+    },
         {
             "type": "annotation"
         }
