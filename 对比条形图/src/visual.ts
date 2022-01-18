@@ -29,6 +29,8 @@ export default class Visual {
   private Dimension: string;
   private ContrastValue: string;
   private richStyle: any;
+  private format1: any;
+  private format2: any;
   static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
     , [58, 46, 47, 49, 59, 17, 25, 83, 34]
     , [74, 64, 78, 65, 79, 21, 28, 91, 38]
@@ -336,38 +338,49 @@ export default class Visual {
     } else {
       const units = [{
         value: 1,
-        unit: ''
+        unit: '',
+        DisplayUnit: 'none'
       }, {
         value: 100,
-        unit: '百'
+        unit: '百',
+        DisplayUnit: 'hundreds'
       }, {
         value: 1000,
-        unit: '千'
+        unit: '千',
+        DisplayUnit: 'thousands'
       }, {
         value: 10000,
-        unit: '万'
+        unit: '万',
+        DisplayUnit: 'tenThousands'
       }, {
         value: 100000,
-        unit: '十万'
+        unit: '十万',
+        DisplayUnit: 'hundredThousand'
       }, {
         value: 1000000,
-        unit: '百万'
+        unit: '百万',
+        DisplayUnit: 'millions'
       }, {
         value: 10000000,
-        unit: '千万'
+        unit: '千万',
+        DisplayUnit: 'tenMillion'
       }, {
         value: 100000000,
-        unit: '亿'
+        unit: '亿',
+        DisplayUnit: 'hundredMillion'
       }, {
         value: 1000000000,
-        unit: '十亿'
-      }, {
-        value: 100000000000,
-        unit: '万亿'
+        unit: '十亿',
+        DisplayUnit: 'billions'
       }]
       let formatUnit = units.find((item) => item.value === Number(dataUnit))
-      return format + formatUnit.unit
+      return this.formatD(format,formate,formatUnit.DisplayUnit)
     }
+  }
+
+  private formatD (number,formate,DisplayUnit) {
+    const formatService = this.host.formatService;
+    return formatService.format(formate, number,DisplayUnit);
   }
 
   public setTopColor(array: any, index: Number, type: string) {
