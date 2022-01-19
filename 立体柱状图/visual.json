@@ -1,0 +1,17 @@
+{
+    "id": "b60053f0-6dd1-11ec-9dcf-7d319dc9b51a",
+    "name": "stereohistogram",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "5.0.1"
+}
