@@ -1,0 +1,17 @@
+{
+    "id": "957ae6b0-736a-11ec-81a3-d524c962a576",
+    "name": "3dpie",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "5.0.1"
+}
