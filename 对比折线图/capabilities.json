@@ -1,0 +1,69 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "value",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
+            },{
+                "name": "series",
+                "displayNameKey": "分类轴",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "value": {
+                                "min": 1,
+                                "max": 2
+                            },
+                            "series": {
+                                "m1n": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "options": {
+    },
+    "actions": [
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "edit"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
