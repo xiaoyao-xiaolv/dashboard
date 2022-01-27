@@ -12,8 +12,15 @@ export default class Visual extends WynVisual {
   private funnelData: any[];
   private isDoubleFunnel: boolean;
   private properties: any;
-  private actualValueTotal: number;
-  private reducedValueTotal: number;
+  private isMock: any;
+  static mockItems = [
+    {actual_value: 2,reduced_value: 3,series: "西瓜"},
+    {actual_value: 3,reduced_value: 4,series: "苹果"},
+    {actual_value: 4,reduced_value: 5,series: "香蕉"},
+    {actual_value: 5,reduced_value: 6,series: "石榴"},
+    {actual_value: 6,reduced_value: 7,series: "甘蔗"},
+    {actual_value: 7,reduced_value: 8,series: "火龙果"}
+  ]
 
 
 
@@ -120,77 +127,77 @@ export default class Visual extends WynVisual {
   //属性隐藏设置
   public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
     this.properties = options;
-    //是否是对比图
-    this.isDoubleFunnel = (this.properties.dataViews[0].plain.profile.reduced_value.values.length == 0) ? false : true;
-
-
     let hiddenOptions: Array<string> = [''];
-    hiddenOptions = hiddenOptions.concat(['legendHorizontalPosition']);
+    if (options.dataViews.length != 0) {
+      //是否是对比图
+      this.isDoubleFunnel = (this.properties.dataViews[0].plain.profile.reduced_value.values.length == 0) ? false : true;
+      hiddenOptions = hiddenOptions.concat(['legendHorizontalPosition']);
 
-    //图例宽高自定义
-    if (options.properties.legendArea === 'auto') {
-      hiddenOptions = hiddenOptions.concat(['legendWidth', 'legendHeight']);
-    }
+      //图例宽高自定义
+      if (options.properties.legendArea === 'auto') {
+        hiddenOptions = hiddenOptions.concat(['legendWidth', 'legendHeight']);
+      }
 
-    if (options.properties.funnelStyle === 'style2' || this.isDoubleFunnel) {
-      hiddenOptions = hiddenOptions.concat(['maxSize', 'minSize']);
-    }
-    //样式切换  漏斗样式
-    if (!this.isDoubleFunnel) {
-      hiddenOptions = hiddenOptions.concat(['actualMaxSize', 'actualMinSize', 'reducedMaxSize', 'reducedMinSize']);
-    }
+      if (options.properties.funnelStyle === 'style2' || this.isDoubleFunnel) {
+        hiddenOptions = hiddenOptions.concat(['maxSize', 'minSize']);
+      }
+      //样式切换  漏斗样式
+      if (!this.isDoubleFunnel) {
+        hiddenOptions = hiddenOptions.concat(['actualMaxSize', 'actualMinSize', 'reducedMaxSize', 'reducedMinSize']);
+      }
 
-    //标签
-    //单漏斗  标签显示
-    if (!this.isDoubleFunnel) {
-      hiddenOptions = hiddenOptions.concat(['labelWidth']);
-    }
-    if (!this.properties.properties.showLabelName || !this.properties.properties.showLabelValue) {
-      hiddenOptions = hiddenOptions.concat(['showTwoRow']);
-    }
-    if (!this.properties.properties.showLabelName && !this.properties.properties.showLabelValue) {
-      hiddenOptions = hiddenOptions.concat(['LabelPosition', 'showTextStyle']);
-    }
-    //单漏斗  实际占比
-    if (!this.properties.properties.showActualPro) {
-      hiddenOptions = hiddenOptions.concat(['guideLineLength', 'guideLineWidth', 'showActualTextStyle']);
-    }
-    //单漏斗  上下占比
-    if (!this.properties.properties.showConPro) {
-      hiddenOptions = hiddenOptions.concat(['showComTextStyle']);
-    }
-    //对比漏斗
-    //隐藏
-    if (this.isDoubleFunnel) {
-      hiddenOptions = hiddenOptions.concat(['showTwoRow', 'LabelPosition', 'guideLineLength', 'guideLineWidth', 'showActualTextStyle']);
-    }
-    if (this.isDoubleFunnel && options.properties.funnelStyle == 'style2') {
-      hiddenOptions = hiddenOptions.concat(['showConPro'])
-    }
+      //标签
+      //单漏斗  标签显示
+      if (!this.isDoubleFunnel) {
+        hiddenOptions = hiddenOptions.concat(['labelWidth']);
+      }
+      if (!this.properties.properties.showLabelName || !this.properties.properties.showLabelValue) {
+        hiddenOptions = hiddenOptions.concat(['showTwoRow']);
+      }
+      if (!this.properties.properties.showLabelName && !this.properties.properties.showLabelValue) {
+        hiddenOptions = hiddenOptions.concat(['LabelPosition', 'showTextStyle']);
+      }
+      //单漏斗  实际占比
+      if (!this.properties.properties.showActualPro) {
+        hiddenOptions = hiddenOptions.concat(['guideLineLength', 'guideLineWidth', 'showActualTextStyle']);
+      }
+      //单漏斗  上下占比
+      if (!this.properties.properties.showConPro) {
+        hiddenOptions = hiddenOptions.concat(['showComTextStyle']);
+      }
+      //对比漏斗
+      //隐藏
+      if (this.isDoubleFunnel) {
+        hiddenOptions = hiddenOptions.concat(['showTwoRow', 'LabelPosition', 'guideLineLength', 'guideLineWidth', 'showActualTextStyle']);
+      }
+      if (this.isDoubleFunnel && options.properties.funnelStyle == 'style2') {
+        hiddenOptions = hiddenOptions.concat(['showConPro'])
+      }
 
-    //图例
-    //显示图例
-    if (!options.properties.showLegend) {
-      hiddenOptions = hiddenOptions.concat(['itemGap', 'showLegendName', "legendSeriesWidth", "showLegendValue", "legendValueWidth", "showLegendCom", "legendIcon", "legendPosition", "legendVerticalPosition", "legendHorizontalPosition", "legendArea", "legendTextStyle"]);
-    }
-    //图例显示之间宽度
-    if (!options.properties.showLegendName) {
-      hiddenOptions = hiddenOptions.concat(['legendSeriesWidth']);
-    }
-    //图例字体隐藏
-    if ((!options.properties.showLegendValue && !options.properties.showLegendCom && !options.properties.showLegendName)) {
-      hiddenOptions = hiddenOptions.concat(['legendTextStyle']);
-    }
-    //图例字体
-    if ((!options.properties.showLegendValue && !options.properties.showLegendCom)) {
-      hiddenOptions = hiddenOptions.concat(['legendSeriesWidth']);
-    }
-    if (!options.properties.showLegendValue || !options.properties.showLegendCom) {
-      hiddenOptions = hiddenOptions.concat(['legendValueWidth']);
-    }
-    //对比图
-    if (this.isDoubleFunnel) {
-      hiddenOptions = hiddenOptions.concat(['showLegendValue', 'showLegendCom']);
+      //图例
+      //显示图例
+      if (!options.properties.showLegend) {
+        hiddenOptions = hiddenOptions.concat(['itemGap', 'showLegendName', "legendSeriesWidth", "showLegendValue", "legendValueWidth", "showLegendCom", "legendIcon", "legendPosition", "legendVerticalPosition", "legendHorizontalPosition", "legendArea", "legendTextStyle"]);
+      }
+      //图例显示之间宽度
+      if (!options.properties.showLegendName) {
+        hiddenOptions = hiddenOptions.concat(['legendSeriesWidth']);
+      }
+      //图例字体隐藏
+      if ((!options.properties.showLegendValue && !options.properties.showLegendCom && !options.properties.showLegendName)) {
+        hiddenOptions = hiddenOptions.concat(['legendTextStyle']);
+      }
+      //图例字体
+      if ((!options.properties.showLegendValue && !options.properties.showLegendCom)) {
+        hiddenOptions = hiddenOptions.concat(['legendSeriesWidth']);
+      }
+      if (!options.properties.showLegendValue || !options.properties.showLegendCom) {
+        hiddenOptions = hiddenOptions.concat(['legendValueWidth']);
+      }
+      //对比图
+      if (this.isDoubleFunnel) {
+        hiddenOptions = hiddenOptions.concat(['showLegendValue', 'showLegendCom']);
+      }
     }
 
     return hiddenOptions;
@@ -425,7 +432,7 @@ export default class Visual extends WynVisual {
         // 数值显示
         {
           itemStyle: {
-            opacity: 1
+            opacity: this.isMock ? 0.3 : 1
           },
           type: 'funnel',
           // color: colors,
@@ -667,7 +674,6 @@ export default class Visual extends WynVisual {
       series: [
 
         {
-
           //实际数值
           name: this.properties.dataViews[0].plain.profile.actual_value.values[0].display,
           //相应鼠标时间
@@ -1055,23 +1061,21 @@ export default class Visual extends WynVisual {
 
   //获取数据集所有数据，并保存在funnelDate
   public getFunnelPairData() {
-    this.actualValueTotal = 0;
-    this.reducedValueTotal = 0;
+    this.isMock = true
     let allData;
 
     this.funnelData = [];
     this.selectionIds = [];
 
     const dataView = this.properties.dataViews[0] && this.properties.dataViews[0].plain;
-
-    const seriesDisplay = dataView.profile.series.values[0].display;
-    const actualDisplay = dataView.profile.actual_value.values[0].display
-    let reducedDisplay: string
-    if (this.isDoubleFunnel) {
-      reducedDisplay = dataView.profile.reduced_value.values[0].display;
-    }
-
     if (dataView) {
+      this.isMock = false
+      const seriesDisplay = dataView.profile.series.values[0].display;
+      const actualDisplay = dataView.profile.actual_value.values[0].display
+      let reducedDisplay: string
+      if (this.isDoubleFunnel) {
+        reducedDisplay = dataView.profile.reduced_value.values[0].display;
+      }
       dataView.data.sort((a, b) => { return b[actualDisplay] - a[actualDisplay] })
       dataView.data.forEach((dataPoint) => {
         //数据共享
@@ -1084,17 +1088,18 @@ export default class Visual extends WynVisual {
           actual_value: Number(dataPoint[actualDisplay]),
           reduced_value: Number,
         }
-        this.actualValueTotal += Number(dataPoint[actualDisplay]);
 
         if (this.isDoubleFunnel) {
           selectionId.withDimension(dataView.profile.reduced_value.values[0], dataPoint);
           allData.reduced_value = dataPoint[reducedDisplay];
-          this.reducedValueTotal += Number(dataPoint[reducedDisplay]);
         }
         this.selectionIds.push(selectionId);
         this.funnelData.push(allData);
       })
     };
+    if(this.isMock){
+      this.funnelData = Visual.mockItems ; 
+    }
   }
 
   //获取曲率指数
@@ -1122,12 +1127,12 @@ export default class Visual extends WynVisual {
       width = topWidth - minWidth;
       nedSize = funnelWidth * (maxSize / 100);
       for (let i = 1; i < data.length; i++) {
-        curvenessValues.push((width * (data[i] / maxValue) + nedSize) / cors+1);
+        curvenessValues.push((width * (data[i] / maxValue) + nedSize) / cors + 1);
       }
 
       curvenessValues.reverse()
     }
-  
+
     return curvenessValues;
   }
 
