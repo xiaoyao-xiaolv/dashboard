@@ -1,10 +1,11 @@
 import '../style/visual.less';
-import * as echarts from 'echarts';
+import * as echarts from 'echarts';     //@4.8.0    0.4.3
 import 'echarts-gl'
 
 export default class Visual extends WynVisual {
 
     private host: any;
+    private dom: any;
     private selectionManager: any;
     private selectionIds: any;
     private format: any;
@@ -12,10 +13,24 @@ export default class Visual extends WynVisual {
     private items: any;
     private options: any;
     private hoveredIndex: any;
+    private isMock: any;
+    static mockItems = {
+        data: [
+            { 销售省份: "湖北", 销售金额: 12345 },
+            { 销售省份: "江苏", 销售金额: 24681 },
+            { 销售省份: "四川", 销售金额: 31451 },
+            { 销售省份: "青海", 销售金额: 11264 },
+            { 销售省份: "安徽", 销售金额: 21358 },
+        ],
+        series: ["湖北", "江苏", "四川", "青海", "安徽"],
+        value: [12345, 24681, 31451, 11264, 21358]
+    }
+
 
     constructor(dom: HTMLDivElement, host: VisualNS.VisualHost, options: VisualNS.IVisualUpdateOptions) {
         super(dom, host, options);
         this.host = host;
+        this.dom = dom;
         this.selectionIds = [];
         this.selectionManager = host.selectionService.createSelectionManager();
         this.myEcharts = echarts.init(dom);
@@ -23,8 +38,12 @@ export default class Visual extends WynVisual {
     }
 
     public selectEvent() {
-
-
+        this.dom.addEventListener("click", () => {
+            this.selectionManager.clear();
+            this.host.toolTipService.hide();
+            this.host.contextMenuService.hide();
+            return;
+        })
         //鼠标左键
         this.myEcharts.on('click', (params) => {
             this.host.contextMenuService.hide();
@@ -90,7 +109,7 @@ export default class Visual extends WynVisual {
             if (this.hoveredIndex == params.seriesName) {
                 return;
             }
-            else{
+            else {
                 this.hoveredIndex = params.seriesName
                 this.render()
             }
@@ -105,35 +124,55 @@ export default class Visual extends WynVisual {
     }
 
     public update(options: VisualNS.IVisualUpdateOptions) {
+        this.isMock = true;
         this.items = {
             series: [],
             value: [],
-            data: []
+            tooltip: [],
+            data: [],
+            total: 0
         };
-
         const dataView = options.dataViews[0] && options.dataViews[0].plain;
         if (dataView) {
+            this.items;
+            this.isMock = false
             this.format = options.dataViews[0].plain.profile.value.values[0].format;
             this.items.data = dataView.data
             const seriesDisplay = dataView.profile.series.values[0].display;
             const valueDisplay = dataView.profile.value.values[0].display;
-
+            let toolDisplay
+            let items = dataView.data;
+            const sortFlags = dataView.sort[seriesDisplay].order;
+            let newItems: any = sortFlags.map((flags) => {
+                return newItems = items.find((item) => item[seriesDisplay] === flags && item)
+            })
+            if (dataView.profile.tooltipFields.values.length != 0) {
+                toolDisplay = dataView.profile.tooltipFields.values[0].display
+            }
             // this.isMock = false
-            dataView.data.forEach((data) => {
+            newItems.forEach((data) => {
                 const selectionId = this.host.selectionService.createSelectionId();
                 selectionId.withDimension(dataView.profile.series.values[0], data);
                 this.selectionIds.push(selectionId)
                 this.items.series.push(data[seriesDisplay])
                 this.items.value.push(data[valueDisplay])
+                this.items.total += data[valueDisplay]
+                if (dataView.profile.tooltipFields.values.length != 0) {
+                    this.items.tooltip.push(toolDisplay + ":" + data[toolDisplay])
+                }
             })
         }
         this.options = options.properties;
+        if (this.isMock) {
+            this.items = Visual.mockItems
+        }
         this.render();
     }
 
 
 
     public render() {
+        this.myEcharts.clear();
         let pie3DData = [];
         for (let i = 0; i < this.items.data.length; i++) {
             let data = {
@@ -141,20 +180,21 @@ export default class Visual extends WynVisual {
                 value: this.items.value[i],
                 itemStyle: {
                     color: this.getColors(this.options.Color, i, 0),
-                    opacity: this.options.opacity / 100
+                    opacity: this.isMock ? 0.1 : this.options.opacity / 100
                 }
             }
             pie3DData.push(data)
         }
-        let distance = 400-this.options.distance
-        distance = distance - (this.options.internal*1.5) 
-        let option = this.getPie3D(pie3DData, this.options.internal/100,distance);
+        let distance = 400 - this.options.distance
+        distance = distance - (this.options.internal * 1.5)
+        let option = this.getPie3D(pie3DData, this.options.internal / 100, distance);
 
 
         this.myEcharts.setOption(option);
+        console.log(this.myEcharts)
     }
 
- 
+
 
     public onDestroy(): void {
 
@@ -281,7 +321,7 @@ export default class Visual extends WynVisual {
     }
 
     // 生成模拟 3D 饼图的配置项
-    public getPie3D(pieData, internalDiameterRatio,distance) {
+    public getPie3D(pieData, internalDiameterRatio, distance) {
 
         let series = [];
         let sumValue = 0;
@@ -330,60 +370,28 @@ export default class Visual extends WynVisual {
         // 向每个 series-surface 传入不同的参数方程 series-surface.parametricEquation，也就是实现每一个扇形。
         for (let i = 0; i < series.length; i++) {
             endValue = startValue + series[i].pieData.value;
-            let val = this.hoveredIndex == series[i].pieData.name ? (series[i].pieData.value / sumValue) * 100 + 10 : (series[i].pieData.value / sumValue) * 100 ;
+            let val = this.hoveredIndex == series[i].pieData.name ? (series[i].pieData.value / sumValue) * 100 + 10 : (series[i].pieData.value / sumValue) * 100;
             series[i].pieData.startRatio = startValue / sumValue;
             series[i].pieData.endRatio = endValue / sumValue;
-            series[i].parametricEquation = this.getParametricEquation(series[i].pieData.startRatio, series[i].pieData.endRatio, false, false, k, val+this.options.itemHeigh);
+            series[i].parametricEquation = this.getParametricEquation(series[i].pieData.startRatio, series[i].pieData.endRatio, false, false, k, val + this.options.itemHeigh);
             startValue = endValue;
+
             legendData.push(series[i].name);
         }
 
-        // 补充一个透明的圆环，用于支撑高亮功能的近似实现。
-        // series.push({
-        //     name: 'mouseoutSeries',
-        //     type: 'surface',
-        //     parametric: true,
-        //     wireframe: {
-        //         show: false
-        //     },
-        //     itemStyle: {
-        //         opacity: 0
-        //     },
-        //     parametricEquation: {
-        //         u: {
-        //             min: 0,
-        //             max: Math.PI * 2,
-        //             step: Math.PI / 20
-        //         },
-        //         v: {
-        //             min: 0,
-        //             max: Math.PI,
-        //             step: Math.PI / 20
-        //         },
-        //         x: function (u, v) {
-        //             return Math.sin(v) * Math.sin(u) + Math.sin(u);
-        //         },
-        //         y: function (u, v) {
-        //             return Math.sin(v) * Math.cos(u) + Math.cos(u);
-        //         },
-        //         z: function (u, v) {
-        //             return Math.cos(v) > 0 ? 0.1 : -0.1;
-        //         }
-        //     }
-        // });
         const orient = this.options.legendPosition === 'left' || this.options.legendPosition === 'right' ? 'vertical' : 'horizontal';
 
         // 准备待返回的配置项，把准备好的 legendData、series 传入。
         let option = {
             sumValue: sumValue,
             //animation: false,
-
             legend: {
                 left: this.options.legendPosition === 'left' || this.options.legendPosition === 'right' ? this.options.legendPosition : this.options.legendVerticalPosition,
                 top: this.options.legendPosition === 'top' || this.options.legendPosition === 'bottom' ? this.options.legendPosition : this.options.legendHorizontalPosition,
                 width: this.options.legendArea === 'custom' ? `${this.options.legendWidth}%` : 'auto',
                 height: this.options.legendArea === 'custom' ? `${this.options.legendHeight}%` : 'auto',
                 show: this.options.showLegend,
+                type: this.options.openLegendPage ? 'scroll' : 'plain',
                 orient: orient,
                 itemGap: this.options.itemGap,
                 icon: this.options.legendIcon,
@@ -393,25 +401,51 @@ export default class Visual extends WynVisual {
                     fontSize: this.options.legendTextStyle.fontSize.replace("pt", ""),
                     fontStyle: this.options.legendTextStyle.fontStyle,
                     fontWeight: this.options.legendTextStyle.fontWeight,
+                    rich: {
+                        a: {
+                            width: this.options.legendSeriesWidth
+                        },
+                        b: {
+                            width: this.options.legendValueWidth
+                        }
+                    }
+                },
+                formatter: (data) => {
+                    let result = ""
+                    let index = this.items.series.indexOf(data)
+                    if (this.options.showLegendSeries) {
+                        result = result + `{a|${data}}`
+                    }
+                    if (this.options.showLegendValue) {
+                        result += `{b|${this.items.value[index]}}`
+                    }
+                    if (this.options.showLegendPercent) {
+                        let per = (Math.round((this.items.value[index] / this.items.total) * 100 * 100) / 100).toFixed(2)
+                        result += `{c|${per}}`
+                    }
+                    return result == "" ? " " : result
                 },
                 data: legendData
             },
             tooltip: {
                 formatter: params => {
                     if (params.seriesName !== 'mouseoutSeries') {
-                        return `${params.seriesName}<br/><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.formatData(option.series[params.seriesIndex].pieData.value)}`;
+                        return `${params.seriesName}<br/><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.formatData(option.series[params.seriesIndex].pieData.value)}<br/>${this.items.tooltip[params.seriesIndex]}`;
                     }
                 }
             },
             xAxis3D: {
+                show: true,
                 min: -1,
                 max: 1
             },
             yAxis3D: {
+                show: true,
                 min: -1,
                 max: 1
             },
             zAxis3D: {
+                show: true,
                 min: -1,
                 max: 1
             },
@@ -421,11 +455,13 @@ export default class Visual extends WynVisual {
                 viewControl: {
                     damping: 0.8,
                     // distance  : 2000,
-                    alpha: this.options.alpha,
-                    beta: this.options.beta,
+                    center: [-this.options.centerX, -this.options.centerZ, this.options.centerY],
+                    alpha: this.options.beta,
+                    beta: this.options.alpha + this.options.startAngle,
                     rotateSensitivity: 1,
                     zoomSensitivity: 1,
                     panSensitivity: 1,
+                    panMouseButton: "right",
                     autoRotateAfterStill: 5,
                     distance: distance,
                     //自动旋转

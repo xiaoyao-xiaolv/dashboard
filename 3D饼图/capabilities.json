@@ -17,6 +17,11 @@
                 "name": "series",
                 "displayNameKey": "分类",
                 "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
             }
         ],
         "dataViewMappings": [
@@ -64,6 +69,12 @@
                         "min": 0
                     },
                     {
+                        "name": "startAngle",
+                        "type": "Integer",
+                        "displayName": "起始角度",
+                        "defaultValue": 0
+                    },
+                    {
                         "displayName": "透明度",
                         "name": "opacity",
                         "type": "Percentage",
@@ -98,6 +109,24 @@
                         "defaultValue": 40,
                         "max": 100,
                         "min": 0
+                    },
+                    {
+                        "name": "centerX",
+                        "type": "Percentage",
+                        "displayName": "扇形中心-X",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "centerY",
+                        "type": "Percentage",
+                        "displayName": "扇形中心-Y",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "centerZ",
+                        "type": "Percentage",
+                        "displayName": "扇形中心-z",
+                        "defaultValue": 0
                     },
                     {
                         "name": "AutomaticStyle",
@@ -175,6 +204,42 @@
                         "type": "Integer",
                         "displayName": "图例间距",
                         "defaultValue": 15
+                    },
+                    {
+                        "name": "openLegendPage",
+                        "type": "Boolean",
+                        "displayName": "开启图例分页",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "showLegendSeries",
+                        "type": "Boolean",
+                        "displayName": "显示系列名",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "legendSeriesWidth",
+                        "type": "Integer",
+                        "displayName": "系列名宽度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "showLegendValue",
+                        "type": "Boolean",
+                        "displayName": "显示数值",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "legendValueWidth",
+                        "type": "Integer",
+                        "displayName": "数值宽度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "showLegendPercent",
+                        "type": "Boolean",
+                        "displayName": "显示比值",
+                        "defaultValue": false
                     },
                     {
                         "name": "legendIcon",
@@ -314,6 +379,10 @@
                         }
                     }
                 ]
+            },
+            {
+                "type": "title",
+                "defaultValue": "aaa"
             }
         ]
     },

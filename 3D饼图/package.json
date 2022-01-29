@@ -28,8 +28,8 @@
     "file-loader": "6.0.0"
   },
   "dependencies": {
-    "echarts": "^4.1.0",
-    "echarts-gl": "^1.1.0",
+    "echarts": "^4.9.0",
+    "echarts-gl": "^1.1.2",
     "surface": "^0.8.1"
   }
 }
