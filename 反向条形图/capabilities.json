@@ -1,0 +1,98 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "value",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    }
+                ]
+            },
+            {
+                "name": "classification",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            },
+            {
+                "name": "series",
+                "displayNameKey": "系列",
+                "kind": "grouping"
+            },
+            {
+                "name": "columnSection",
+                "displayNameKey": "列切面",
+                "kind": "grouping"
+            },
+            {
+                "name": "rowSection",
+                "displayNameKey": "行切面",
+                "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "value": {
+                                "min": 1
+                            },
+                            "classification": {
+                                "m1n": 1
+                            },
+                            "columnSection": {
+                                "max": 1
+                            },
+                            "rowSection": {
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "classification": {
+                    "max": 1
+                },
+                "series": {
+                    "max": 0
+                }
+            },
+            {
+                "value": {
+                    "max": 1
+                },
+                "series": {
+                    "min": 1
+                }
+            },
+            {
+                "value": {
+                    "min": 2
+                },
+                "series": {
+                    "max": 0
+                }
+            }
+        ]
+    },
+    "options": {},
+    "actions": [
+        {
+            "type": "focus"
+        }
+    ],
+    "analysis": []
+}
