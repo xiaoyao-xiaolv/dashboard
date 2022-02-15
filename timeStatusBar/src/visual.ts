@@ -100,6 +100,7 @@ export default class Visual extends WynVisual {
         offTime : plainData.data[0][filedName['offTime']],
         statusList : plainData.sort[filedName['status']].order
       };
+      this.data.statusList = this.data.statusList.map((data) => {return data + ""})
 
       if (this.multiCategories) {
         this.data['categories'] = plainData.sort[filedName['categories']].order;
@@ -122,7 +123,7 @@ export default class Visual extends WynVisual {
 
       this.data['statusData'] = plainData.data.map((data) => {
         let resultData = {
-          name: data[filedName['status']],
+          name: data[filedName['status']] + "",
           value: [data[filedName['startTime']], data[filedName['endTime']]]
         }
         if (this.multiCategories && this.data.categories.indexOf(data[filedName['categories']]) >= 0) {
@@ -217,8 +218,24 @@ export default class Visual extends WynVisual {
       yAxis: {
         show: false
       },
+      tooltip: {
+        show: true
+      },
       series: [
         {
+          tooltip: {
+            formatter: (params,ticket,callback) => {
+              let res = params.name + "<br/>";
+              if(this.multiCategories){
+                res = res + "开始时间:" + params.value[1] + "<br/>"
+                res = res + "结束时间:" + params.value[2]
+              }else{
+                res = res + "开始时间:" + params.value[0] + "<br/>"
+                res = res + "结束时间:" + params.value[1]
+              }
+              return res
+            }
+          },
           type: 'custom',
           renderItem : renderCustomItem,
           encode: {
@@ -281,6 +298,7 @@ export default class Visual extends WynVisual {
         }
       }
     }
+
 
     let seriesStatus = data.statusList.map((status) => {
       return {
