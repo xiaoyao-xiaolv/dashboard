@@ -88,7 +88,7 @@ export default class Visual extends WynVisual {
                 document.oncontextmenu = function () { return false; };
                 params.event.event.preventDefault();
                 this.host.contextMenuService.show({
-                    position: {								//跳转的selectionsId(左键需要)
+                    position: {
                         x: params.event.event.x,
                         y: params.event.event.y,
                     }
@@ -131,9 +131,8 @@ export default class Visual extends WynVisual {
                 lineValueDisplay = dataView.profile.reducedValue.values[0].display;
                 this.items.legend.push(lineValueDisplay)
             }
-            console.log(options)
             this.format1 = options.dataViews[0].plain.profile.actualValue.values[0].format;
-            if(options.dataViews[0].plain.profile.lineValue.values.length != 0){
+            if (options.dataViews[0].plain.profile.lineValue.values.length != 0) {
                 this.format2 = options.dataViews[0].plain.profile.lineValue.values[0].format;
             }
             this.isMock = false
@@ -158,8 +157,9 @@ export default class Visual extends WynVisual {
 
     public render() {
         this.myEcharts.clear();
-        let symbolOffset = -10-(this.options.tilt/2)
-        let symbolSize = 20+this.options.tilt
+        let symbolOffset = -10 - (this.options.tilt / 2)
+        let symbolSize = 20 + this.options.tilt
+        console.log(this.options)
 
         const orient = this.options.legendPosition === 'left' || this.options.legendPosition === 'right' ? 'vertical' : 'horizontal';
         const legend = {
@@ -181,29 +181,58 @@ export default class Visual extends WynVisual {
             },
             itemWidth: 25,
             itemHeight: 15,
-            selectedMode: false
         }
         const grid = { top: '10%', left: '10%', right: '3%', bottom: '15%' }
         // xAxis
         const xAxis = {
-            axisTick: { show: true },
-            axisLine: { lineStyle: { color: 'rgba(255,255,255, .2)' } },
-            axisLabel: { textStyle: { fontSize: 12, color: '#fff' }, },
+            show: this.options.showClassification,
+            axisTick: { show: this.options.showClassificationSign },
+            axisLine: { show: this.options.showClassificationLine, lineStyle: { color: 'rgba(255,255,255, .2)' } },
+            axisLabel: {
+                hideOverlap: this.options.classificationLabelBeyond == "hide" ? true : false,
+                overflow: this.options.classificationLabelBeyond != "hide" ? this.options.classificationLabelBeyond : 'none',
+                rotate: this.options.classificationLabelDirection,
+                show: this.options.showClassificationLabel,
+                color: this.options.classificationLabelTextStyle.color,
+                fontFamily: this.options.classificationLabelTextStyle.fontFamily,
+                fontSize: this.options.classificationLabelTextStyle.fontSize,
+                fontStyle: this.options.classificationLabelTextStyle.fontStyle,
+                fontWeight: this.options.classificationLabelTextStyle.fontWeight,
+            },
             data: this.isMock ? Visual.mockItems.xdata : this.items.series
         }
 
         // yAxis
         // 双y轴
         const yAxis = [{
+            show: this.options.showValue,
+            min: this.options.showValueDetailed ? this.options.showValueMin : 0,
+            max: !this.options.showValueDetailed ? Math.ceil(this.items.maxValue / 100) * 100 : this.options.showValueMax,
+            interval: this.options.showValueDetailed ? this.options.showValueInterval : null,
             splitLine: { lineStyle: { color: 'rgba(255,255,255, .05)' } },
-            axisLine: { show: false, },
-            axisLabel: { textStyle: { fontSize: 16, color: '#fff' } }
+            axisLine: {
+                show: this.options.showValueLine
+            },
+            axisLabel: {
+                show: this.options.showValueLabel,
+                rotate: this.options.valueLabelDirection,
+                color: this.options.valueLabelTextStyle.color,
+                fontFamily: this.options.valueLabelTextStyle.fontFamily,
+                fontSize: this.options.valueLabelTextStyle.fontSize,
+                fontStyle: this.options.valueLabelTextStyle.fontStyle,
+                fontWeight: this.options.valueLabelTextStyle.fontWeight
+            },
+            axisTick: {
+                show: this.options.showValueSign
+            }
         }, {
+            name: this.items.legend[1],
             show: false
-        }]
+        }
+        ]
 
         // series
-        const series = [
+        let series = [
             {
                 z: 12,
                 name: '上部',
@@ -225,7 +254,7 @@ export default class Visual extends WynVisual {
                             if (this.options.showLabelName) {
                                 result = result + data.name + ": "
                             }
-                            return result + this.formatData(data.data,this.format1)
+                            return result + this.formatData(data.data, this.format1)
                         }
                     }
                 },
@@ -260,7 +289,7 @@ export default class Visual extends WynVisual {
                             if (this.options.showLabelName) {
                                 result = result + data.name + ": "
                             }
-                            return result + this.formatData(data.data,this.format1)
+                            return result + this.formatData(data.data, this.format1)
                         }
                     }
                 },
@@ -308,7 +337,7 @@ export default class Visual extends WynVisual {
                         // x: 0, x2: 1, y: 0, y2: 0,
                         colorStops: this.options.funnelStyle == "circle" ? [{ offset: 1, color: this.options.leftValueColor + "00" }, { offset: 0, color: this.options.leftValueColor + "FF" }] : [{ offset: 0, color: this.options.leftValueColor + "1A" }, { offset: 0.5, color: this.options.leftValueColor + "33" }, { offset: 0.5, color: this.options.leftValueColor + "B3" }, { offset: 1, color: this.options.leftValueColor + "33" }]
                     },
-                    opacity: this.isMock ? .1 : this.options.actualTransparency/100,
+                    opacity: this.isMock ? .1 : this.options.actualTransparency / 100,
                 },
             }
             , {
@@ -320,7 +349,7 @@ export default class Visual extends WynVisual {
                 data: this.isMock ? Visual.mockItems.disinfeced : this.items.reducedValue,
                 itemStyle: {
                     color: this.options.leftValueColor,
-                    opacity: this.isMock ? .3 : this.options.reducedTransparency/100,
+                    opacity: this.isMock ? .3 : this.options.reducedTransparency / 100,
                 },
             },
             {
@@ -355,19 +384,25 @@ export default class Visual extends WynVisual {
                 label: {
                     show: this.options.showRightLabel,
                     formatter: (params) => {
-                        return this.formatData(params.data,this.format2)
+                        return this.formatData(params.data, this.format2)
                     },
                     textStyle: { fontSize: 16, color: '#ffd11a' }
                 },
                 data: this.isMock ? Visual.mockItems.rateData : this.items.lineValue
-            }
+            },
         ]
+        let seriesStatus = this.items.legend.map((status) => {
+            return {
+                type: 'bar',
+                name: status,
+            }
+        });
+        [].unshift.apply(series, seriesStatus);
         var option = {
             xAxis,
             yAxis,
             grid,
             legend,
-            backgroundColor: 'rgba(0, 0, 0, .8)',
             series,
         }
         this.myEcharts.setOption(option);
@@ -386,7 +421,7 @@ export default class Visual extends WynVisual {
             hiddenOptions = hiddenOptions.concat(['showLabelName', 'actualLabelY', 'acturalFar', 'reducedLabelY', 'reducedFar', 'actualLaberTextStyle', 'reducedLaberTextStyle']);
         }
         if (!this.options.showLegend) {
-            hiddenOptions = hiddenOptions.concat(['itemGap', 'legendIcon', 'legendPosition', 'legendHorizontalPosition','legendVerticalPosition','legendArea','legendWidth','legendHeight','legendTextStyle']);
+            hiddenOptions = hiddenOptions.concat(['itemGap', 'legendIcon', 'legendPosition', 'legendHorizontalPosition', 'legendVerticalPosition', 'legendArea', 'legendWidth', 'legendHeight', 'legendTextStyle']);
         }
         if (this.options.legendPosition === 'left' || this.options.legendPosition === 'right') {
             hiddenOptions = hiddenOptions.concat(['legendVerticalPosition'])
@@ -395,6 +430,15 @@ export default class Visual extends WynVisual {
         }
         if (this.options.legendArea === 'auto') {
             hiddenOptions = hiddenOptions.concat(['legendWidth', 'legendHeight']);
+        }
+        if (!this.options.showValueDetailed) {
+            hiddenOptions = hiddenOptions.concat(['showValueMin', 'showValueMax', 'showValueInterval']);
+        }
+        if (!this.options.showValue) {
+            hiddenOptions = hiddenOptions.concat(['showValueDetailed', 'showValueMin', 'showValueMax', 'showValueInterval', 'showValueLine', 'showValueLabel', 'showValueSign', 'showValueTitle', 'valueLabelDirection', 'valueLabelTextStyle']);
+        }
+        if (!this.options.showClassification) {
+            hiddenOptions = hiddenOptions.concat(['showClassificationAll', 'showClassificationLine', 'showClassificationLabel', 'showClassificationSign', 'showClassificationTitle', 'classificationLabelDirection', 'classificationLabelBeyond', 'classificationLabelTextStyle']);
         }
         return hiddenOptions;
     }
@@ -425,7 +469,7 @@ export default class Visual extends WynVisual {
     }
 
     //数据格式
-    private formatData(number,format) {
+    private formatData(number, format) {
         const formatService = this.host.formatService;
         let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
         return formatService.format(format, number, realDisplayUnit);

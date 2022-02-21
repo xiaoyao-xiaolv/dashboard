@@ -408,6 +408,169 @@
                         }
                     }
                 ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+                    {
+                        "type": "Boolean",
+                        "name": "showClassification",
+                        "displayName": "显示轴",
+                        "defaultValue": true
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showClassificationLine",
+                        "displayName": "显示轴线",
+                        "defaultValue": true
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showClassificationLabel",
+                        "displayName": "显示刻度标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showClassificationSign",
+                        "displayName": "显示标记",
+                        "defaultValue": false
+                    },
+                    {
+                        "type": "Enum",
+                        "name": "classificationLabelDirection",
+                        "displayName": "标签方向",
+                        "defaultValue": 0,
+                        "items": [
+                            {
+                                "value": "0",
+                                "displayNameKey": "横向"
+                            },
+                            {
+                                "value": "-90",
+                                "displayNameKey": "纵向"
+                            },
+                            {
+                                "value": "-45",
+                                "displayNameKey": "倾斜"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Enum",
+                        "name": "classificationLabelBeyond",
+                        "displayName": "标签超长设置",
+                        "defaultValue": "hide",
+                        "items": [
+                            {
+                                "value": "hide",
+                                "displayNameKey": "隐藏"
+                            },
+                            {
+                                "value": "truncate",
+                                "displayNameKey": "省略"
+                            },
+                            {
+                                "value": "break",
+                                "displayNameKey": "换行"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "classificationLabelTextStyle",
+                        "displayName": "字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "1.0x",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数值轴",
+                "properties": [
+                    {
+                        "type": "Boolean",
+                        "name": "showValue",
+                        "displayName": "显示轴",
+                        "defaultValue": true
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showValueDetailed",
+                        "displayName": "详细设计",
+                        "defaultValue": false
+                    },
+                    {
+                        "type": "Float",
+                        "name": "showValueMin",
+                        "displayName": "最小值"
+                    },
+                    {
+                        "type": "Float",
+                        "name": "showValueMax",
+                        "displayName": "最大值"
+                    },
+                    {
+                        "type": "Float",
+                        "name": "showValueInterval",
+                        "displayName": "间隔"
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showValueLine",
+                        "displayName": "显示轴线",
+                        "defaultValue": true
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showValueLabel",
+                        "displayName": "显示刻度标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "showValueSign",
+                        "displayName": "显示标记",
+                        "defaultValue": false
+                    },
+                    {
+                        "type": "Enum",
+                        "name": "valueLabelDirection",
+                        "displayName": "标签方向",
+                        "defaultValue": 0,
+                        "items": [
+                            {
+                                "value": "0",
+                                "displayNameKey": "横向"
+                            },
+                            {
+                                "value": "-90",
+                                "displayNameKey": "纵向"
+                            },
+                            {
+                                "value": "-45",
+                                "displayNameKey": "倾斜"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "valueLabelTextStyle",
+                        "displayName": "字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "1.0x",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    }
+                ]
             }
         ]
     },
