@@ -1,4 +1,3 @@
-import { Properties } from './../../histogram/src/interface';
 import '../style/visual.less';
 import * as echarts from 'echarts';
 //@ts-ignore
@@ -86,8 +85,16 @@ export default class Visual {
         if (dataView && dataView.plain.profile.ActualValue.values.length) {
             const plainData = dataView.plain;
             this.ActualValue = plainData.profile.ActualValue.values;
-            this.ContrastValue = plainData.profile.ContrastValue.values;
-            this.items = this.ContrastValue.length ? [plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]] : [plainData.data[0][this.ActualValue[0].display]];
+            this.ActualValue[0]["value"] = this.formatData(plainData.data[0][this.ActualValue[0].display], dataView.plain.profile.ActualValue.options.valueDisplayUnit, dataView.plain.profile.ActualValue.options.valueFormat);
+            if (dataView.plain.profile.ContrastValue.values.length != 0) {
+                this.ContrastValue = plainData.profile.ContrastValue.values;
+                this.ContrastValue[0]["value"] = this.formatData(plainData.data[0][this.ContrastValue[0].display], dataView.plain.profile.ActualValue.options.valueDisplayUnit, dataView.plain.profile.ActualValue.options.valueFormat)
+                this.items = this.ContrastValue.length ? [plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]] : 1;
+            } else {
+                this.ContrastValue = "null"
+                this.items = [1]
+            }
+
         }
         this.properties = options.properties;
         this.render();
@@ -96,10 +103,10 @@ export default class Visual {
     private findInterval(options: any, items: any) {
         items = items * 100
         let color;
-        options.setShowColor.forEach((data,index) => {
+        options.setShowColor.forEach((data, index) => {
             if (items > data.sectionMin) {
                 if (items <= data.sectionMax) {
-                    color = this.getColors(index,1);
+                    color = this.getColors(index, 1);
                 }
             }
         });
@@ -159,20 +166,20 @@ export default class Visual {
         }
         color = {
             type: 'linear',
-          x: 0,
-          y: 0,
-          x2: 0,
-          y2: 1,
-          colorStops: [{
-            offset: 0,
-            color: color + "33"
-          }, {
-            offset: 1,
-            color: color + "FF"
-          }],
-          globalCoord: false
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [{
+                offset: 0,
+                color: color + "33"
+            }, {
+                offset: 1,
+                color: color + "FF"
+            }],
+            globalCoord: false
         }
-        
+
         var option = {
             series: [
                 {
@@ -193,14 +200,33 @@ export default class Visual {
                     },
                     backgroundStyle: backgroundStyle,
                     label: {
-                        show: options.showlabel,
-                        formatter: function () {
-                            if (options.displayFormat == "number") {
-                                return (items * 1).toFixed(2);
-                            } else {
-                                return (items * 100).toFixed(2) + '%';
+                        show: options.showLabel,
+                        formatter: () => {
+                            let result = "";
+                            if (options.showActualLabel) {
+                                result = result + this.ActualValue[0].display
                             }
-
+                            if (options.showReducedLabel && this.ContrastValue != "null") {
+                                result = result + "/" + this.ContrastValue[0].display + "\n"
+                            } else {
+                                result += "\n"
+                            }
+                            if (options.showActualValue) {
+                                result = result + this.ActualValue[0].value
+                            }
+                            if (options.showReducedValue && this.ContrastValue != "null") {
+                                result = result + "/" + this.ActualValue[0].value + "\n"
+                            } else {
+                                result += "\n"
+                            }
+                            if(options.showReducedPercent){
+                                if (options.displayFormat == "number") {
+                                    return result = result + (items * 1).toFixed(2);
+                                } else {
+                                    return result = result + (items * 100).toFixed(2) + '%';
+                                }
+                            } 
+                            return result
                         },
                         color: options.textStyle.color,
                         fontSize: options.textStyle.fontSize.substr(0, 2),
@@ -220,6 +246,64 @@ export default class Visual {
         this.render();
     }
 
+    public formatData = (number, dataUnit, formate) => {
+        let format = number
+        if (dataUnit === 'auto') {
+            const formatService = this.host.formatService;
+            let realDisplayUnit = dataUnit;
+            if (formatService.isAutoDisplayUnit(dataUnit)) {
+                realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+            }
+            return format = formatService.format(formate, number, realDisplayUnit);
+        } else {
+            const units = [{
+                value: 1,
+                unit: '',
+                DisplayUnit: 'none'
+            }, {
+                value: 100,
+                unit: '百',
+                DisplayUnit: 'hundreds'
+            }, {
+                value: 1000,
+                unit: '千',
+                DisplayUnit: 'thousands'
+            }, {
+                value: 10000,
+                unit: '万',
+                DisplayUnit: 'tenThousands'
+            }, {
+                value: 100000,
+                unit: '十万',
+                DisplayUnit: 'hundredThousand'
+            }, {
+                value: 1000000,
+                unit: '百万',
+                DisplayUnit: 'millions'
+            }, {
+                value: 10000000,
+                unit: '千万',
+                DisplayUnit: 'tenMillion'
+            }, {
+                value: 100000000,
+                unit: '亿',
+                DisplayUnit: 'hundredMillion'
+            }, {
+                value: 1000000000,
+                unit: '十亿',
+                DisplayUnit: 'billions'
+            }]
+            let formatUnit = units.find((item) => item.value === Number(dataUnit))
+            return this.formatD(format, formate, formatUnit.DisplayUnit)
+        }
+    }
+
+    private formatD(number, formate, DisplayUnit) {
+        const formatService = this.host.formatService;
+        return formatService.format(formate, number, DisplayUnit);
+    }
+
+
     // 自定义属性可见性
     public getInspectorHiddenState(updateOptions: any): string[] {
         if (!updateOptions.properties.showColor) {
@@ -228,7 +312,7 @@ export default class Visual {
         if (!updateOptions.properties.showoutline) {
             return ['borderDistance', 'outlineborderWidth', 'outlineborderColor'];
         }
-        if (!updateOptions.properties.showlabel) {
+        if (!updateOptions.properties.showLabel) {
             return ['textStyle'];
         }
         return null;
