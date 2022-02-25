@@ -15,13 +15,14 @@ const config = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'visual.css',
-    }),
+    })
   ],
   optimization: {
     minimizer: [new OptimizeCSSAssetsPlugin({}), new UglifyJsPlugin()],
   },
   module: {
     rules: [
+      
       {
         test: /\.(ts)$/,
         exclude: /node_modules/,

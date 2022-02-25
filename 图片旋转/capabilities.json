@@ -3,20 +3,137 @@
     "options": {
         "visual": [
             {
-                "displayName": "自定义属性",
+                "displayName": "图表样式",
                 "properties": [
                     {
                         "name": "maskImage",
                         "type": "Image",
                         "displayName": "图片"
+                    },
+                    {
+                        "name": "animationStyle",
+                        "type": "Enum",
+                        "displayName": "动画类型",
+                        "defaultValue": "move",
+                        "items": [
+                            {
+                                "value": "move",
+                                "displayNameKey": "移动"
+                            },
+                            {
+                                "value": "Rotate",
+                                "displayNameKey": "旋转"
+                            },
+                            {
+                                "value": "Zoom",
+                                "displayNameKey": "缩放"
+                            },
+                            {
+                                "value": "Ripples",
+                                "displayNameKey": "涟漪"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "repeat",
+                        "type": "Boolean",
+                        "displayName": "重复执行",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Integer",
+                        "displayName": "执行次数",
+                        "defaultValue":0
+                    },
+                    {
+                        "name": "animationDelay",
+                        "type": "Float",
+                        "displayName": "延迟时间(秒)",
+                        "defaultValue":0
+                    },
+                    {
+                        "name": "animationSpeed",
+                        "type": "Percentage",
+                        "displayName": "动画速度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "moveFor",
+                        "type": "Enum",
+                        "displayName": "移动方向",
+                        "defaultValue": "moveForX",
+                        "items":[
+                            {
+                                "value": "moveForX",
+                                "displayNameKey": "水平方向"
+                            },
+                            {
+                                "value": "moveForY",
+                                "displayNameKey": "竖直方向"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "rotateStyle",
+                        "type": "Enum",
+                        "displayName": "旋转类型",
+                        "defaultValue": "myRotate",
+                        "items": [
+                            {
+                                "value": "myRotate",
+                                "displayNameKey": "中心旋转"
+                            },
+                            {
+                                "value": "myRotateX",
+                                "displayNameKey": "绕X轴旋转"
+                            },
+                            {
+                                "value": "myRotateY",
+                                "displayNameKey": "绕Y轴旋转"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tilt",
+                        "type": "Percentage",
+                        "displayName": "整体倾斜",
+                        "defaultValue": "0",
+                        "min": 0,
+                        "max": 70         
+                    },
+                    {
+                        "name": "beginPosition",
+                        "type": "Percentage",
+                        "displayName": "初始位置",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "endPosition",
+                        "type": "Percentage",
+                        "displayName": "结束位置",
+                        "defaultValue": 100
+                    },
+                    {
+                        "name": "minSize",
+                        "type": "Percentage",
+                        "displayName": "最小尺寸",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "maxSize",
+                        "type": "Percentage",
+                        "displayName": "最大尺寸",
+                        "defaultValue": 50
                     }
                 ]
-            },
-            {
-                "type": "appearance"
             }
         ]
     },
-    "actions": [],
+    "actions": [
+        {
+            "type": "focus"
+        }
+    ],
     "analysis": []
 }
