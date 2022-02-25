@@ -1,6 +1,6 @@
 import '../style/visual.less';
 import _ = require('lodash');
-import  CustomStyle  from './customStyle.js';
+import CustomStyle from './customStyle.js';
 const echarts = require('echarts');
 
 const clickLeftMouse = 0;
@@ -140,46 +140,61 @@ export default class Visual {
       this.ActualValue = plainData.profile.ActualValue.values.length ? plainData.profile.ActualValue.values[0].display : '';
       this.ContrastValue = plainData.profile.ContrastValue.values.length ? plainData.profile.ContrastValue.values[0].display : '';
       this.Dimension = plainData.profile.dimension.values.length ? plainData.profile.dimension.values[0].display : '';
-
       this.isActualValue = !!plainData.profile.ActualValue.values.length;
-      this.isDimension = !!plainData.profile.dimension.values.length;
       this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
-      let datas = plainData.data;
-      const sortFlags = plainData.sort[this.Dimension].order;
-      let newItems: any = sortFlags.map((flags) => {
-        return newItems = datas.find((item) => item[this.Dimension] === flags && item)
-      })
-      datas = newItems.filter((item) => item)
-  
-      datas.map((data: any) => {
-        this.actualFormate = this.ActualValue && plainData.profile.ActualValue.values[0].format;
-        this.contrastFormate = this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
-        this.ActualValue && this.items[1].push(data[this.ActualValue]);
-        this.ContrastValue && this.items[2].push(data[this.ContrastValue]);
-        if (this.ActualValue && this.ContrastValue) {
-          this.items[3].push(Number((data[this.ActualValue] / data[this.ContrastValue] * 100).toFixed(2)));
-        } else if (this.ActualValue) {
-          this.items[3].push(Number((data[this.ActualValue] / 100 * 100).toFixed(2)));
+      this.isDimension = !!plainData.profile.dimension.values.length;
+      if (this.Dimension != '') {
+        let datas = plainData.data;
+        const sortFlags = plainData.sort[this.Dimension].order;
+        let newItems: any = sortFlags.map((flags) => {
+          return newItems = datas.find((item) => item[this.Dimension] === flags && item)
+        })
+        datas = newItems.filter((item) => item)
+
+        datas.map((data: any) => {
+          this.actualFormate = this.ActualValue && plainData.profile.ActualValue.values[0].format;
+          this.contrastFormate = this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
+          this.ActualValue && this.items[1].push(data[this.ActualValue]);
+          this.ContrastValue && this.items[2].push(data[this.ContrastValue]);
+          if (this.ActualValue && this.ContrastValue) {
+            this.items[3].push(Number((data[this.ActualValue] / data[this.ContrastValue] * 100).toFixed(2)));
+          } else if (this.ActualValue) {
+            this.items[3].push(Number((data[this.ActualValue] / 100 * 100).toFixed(2)));
+          }
+
+          this.Dimension && this.items[0].push(data[this.Dimension]);
+
+          const getSelectionId = (_item) => {
+            const selectionId = this.host.selectionService.createSelectionId();
+            selectionId.withDimension(plainData.profile.dimension.values[0], _item);
+            return selectionId;
+          }
+          this.Dimension && this.items[5].push(getSelectionId(data));
+        })
+
+        if (this.ActualValue && this.ContrastValue && this.Dimension) {
+          this.allShow = true;
+          this.items[4] = [this.ActualValue, this.ContrastValue, this.Dimension];
+          // this.items[0] = plainData.sort[this.Dimension] ? plainData.sort[this.Dimension].order : '';
+
         }
-
-        this.Dimension && this.items[0].push(data[this.Dimension]);
-
-        const getSelectionId = (_item) => {
-          const selectionId = this.host.selectionService.createSelectionId();
-          selectionId.withDimension(plainData.profile.dimension.values[0], _item);
-          return selectionId;
+        this.actualFormat = plainData.profile.ActualValue.options.valueFormat;
+        this.contrastFormat = plainData.profile.ContrastValue.options.valueFormat;
+      } else {
+        if (this.ContrastValue != '') {
+          this.items[0].push(this.ActualValue)
+          this.items[1].push(plainData.data[0][this.ActualValue])
+          this.items[2].push(plainData.data[0][this.ContrastValue])
+          this.items[3].push(Number((plainData.data[0][this.ActualValue] / plainData.data[0][this.ContrastValue] * 100).toFixed(2)))
+          this.items[4].push(this.ActualValue)
+          this.items[4].push(this.ContrastValue)
+        } else {
+          this.items[0].push(this.ActualValue)
+          this.items[1].push(plainData.data[0][this.ActualValue])
+          this.items[3].push(100)
+          this.items[4].push(this.ActualValue)
         }
-        this.Dimension && this.items[5].push(getSelectionId(data));
-      })
-
-      if (this.ActualValue && this.ContrastValue && this.Dimension) {
-        this.allShow = true;
-        this.items[4] = [this.ActualValue, this.ContrastValue, this.Dimension];
-        // this.items[0] = plainData.sort[this.Dimension] ? plainData.sort[this.Dimension].order : '';
-
       }
-      this.actualFormat = plainData.profile.ActualValue.options.valueFormat;
-      this.contrastFormat = plainData.profile.ContrastValue.options.valueFormat;
     } else {
       this.isMock = true
     }
@@ -292,7 +307,7 @@ export default class Visual {
     }
     return;
   }
-  
+
   private _getRichList(_options, allData: any) {
     const { rankingConditionCollection: rankingArr, rankingTextStyle: textStyle, rankingShape: bgShape, rankingSize: widthSize, rankingBackgroundImage: bgImage, rankingBackgroundColor: bgColor, showBackgroundColor } = _options;
     const _basicTextStyle = {
@@ -374,14 +389,10 @@ export default class Visual {
         DisplayUnit: 'billions'
       }]
       let formatUnit = units.find((item) => item.value === Number(dataUnit))
-      return this.formatD(format,formate,formatUnit.DisplayUnit)
+      return this.host.formatService.format(formate, format, formatUnit.DisplayUnit)
     }
   }
 
-  private formatD (number,formate,DisplayUnit) {
-    const formatService = this.host.formatService;
-    return formatService.format(formate, number,DisplayUnit);
-  }
 
   public setTopColor(array: any, index: Number, type: string) {
     const _target = array.find((_item) => Number(_item.rankingConditionValue) === index);
@@ -454,7 +465,7 @@ export default class Visual {
     }
     this._getRichList(options, items)
     let option = {
-      
+
       tooltip: {
         show: true,
         trigger: 'item',
@@ -538,6 +549,11 @@ export default class Visual {
         type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
         barWidth: options.barWidth,
         data: this.isMock ? items[3] : (this.isContrastValue ? items[3] : items[1]),
+        showBackground: !this.isContrastValue && options.showBackground,
+        backgroundStyle: {
+          color: options.barBackgroundColor,
+          borderRadius: [options.radiusLeftTop,options.radiusRightTop,options.radiusRightDown,options.radiusLeftDown]
+        },
         symbolRepeat: "fixed",
         symbolMargin: options.barSymbolMargin,
         symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? `image://${options.barSymbolImage}` : options.barSymbolType),
@@ -599,6 +615,13 @@ export default class Visual {
                 dataRatio = items[1];
               }
             }
+            if(!this.isDimension){
+              if(this.isContrastValue){
+                dataRatio = this.items[4][0] + "/" + this.items[4][1]
+              }else{
+                dataRatio = this.items[4][0]
+              }
+            }
             return dataRatio
           },
         },
@@ -610,7 +633,7 @@ export default class Visual {
             offset: 1,
             color: options.barEndcolor // 100% 处的颜色
           }], false),
-          barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusLeftDown, options.radiusRightDown]
+          barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusRightDown, options.radiusLeftDown]
         }
       }, {
         type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
@@ -671,7 +694,6 @@ export default class Visual {
       }]
     }
     this.chart.setOption(option)
-
   }
   public onResize() {
     this.chart.resize();
@@ -700,6 +722,13 @@ export default class Visual {
     }
     if (updateOptions.properties.barSymbolType !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
+    }
+    if (updateOptions.dataViews[0].plain.profile.ContrastValue.values.length != 0) {
+      hiddenOptions = hiddenOptions.concat(['showBackground'])
+    }else{
+      if (!updateOptions.properties.showBackground) {
+        hiddenOptions = hiddenOptions.concat(['barBackgroundColor'])
+      }
     }
 
     // dataLabel

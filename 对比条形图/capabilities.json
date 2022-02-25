@@ -106,6 +106,12 @@
                         "defaultValue": 18
                     },
                     {
+                        "type": "Boolean",
+                        "name": "showBackground",
+                        "displayName": "显示背景",
+                        "defaultValue": false
+                    },
+                    {
                         "name": "barBackgroundColor",
                         "type": "Color",
                         "displayName": "背景颜色",
