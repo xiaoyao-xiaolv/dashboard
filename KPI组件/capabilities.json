@@ -1,0 +1,335 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "actualValue",
+                "displayNameKey": "实际值",
+                "kind": "value"
+            },
+            {
+                "name": "reducedValue",
+                "displayNameKey": "对比值",
+                "kind": "value"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "actual_value": {
+                                "min": 1
+                            },
+                            "reduced_value": {
+                                "min": 0
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "数据来源",
+                "properties": [
+                    {
+                        "name": "actualValueSource",
+                        "type": "Boolean",
+                        "displayName": "自定义实际值",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "actualValue",
+                        "type": "Float",
+                        "displayName": "实际值",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "actualName",
+                        "type": "Text",
+                        "displayName": "实际值名称",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "reducedValueSource",
+                        "type": "Boolean",
+                        "displayName": "自定义对比值",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "reducedValue",
+                        "type": "Float",
+                        "displayName": "对比值",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "reducedName",
+                        "type": "Text",
+                        "displayName": "对比值名称",
+                        "defaultValue": ""
+                    }
+                ]
+            },
+            {
+                "displayName": "主体显示",
+                "properties": [
+                    {
+                        "name": "customMain",
+                        "type": "Boolean",
+                        "displayName": "自定义主体",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "customMassage",
+                        "type": "Float",
+                        "displayName": "主体信息(%)",
+                        "max": 100,
+                        "min": 0,
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "mainXPosition",
+                        "type": "Enum",
+                        "displayName": "横向位置",
+                        "defaultValue": "center",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayName": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayName": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayName": "右侧"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "mainYPosition",
+                        "type": "Enum",
+                        "displayName": "纵向位置",
+                        "defaultValue": "center",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayName": "顶部"
+                            },
+                            {
+                                "value": "center",
+                                "displayName": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayName": "底部"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "conditionColor",
+                        "type": "Boolean",
+                        "displayName": "开启条件颜色",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "mainText",
+                        "displayName": "字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "1.0x",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    },
+                    {
+                        "name": "setShowColor",
+                        "type": "Collection",
+                        "displayName": "设置条件颜色",
+                        "itemShape": [
+                            {
+                                "name": "sectionMin",
+                                "type": "Integer",
+                                "min": 0,
+                                "displayName": "大于(%)"
+                            },
+                            {
+                                "name": "sectionMax",
+                                "type": "Integer",
+                                "max": 100,
+                                "displayName": "小于等于(%)"
+                            },
+                            {
+                                "name": "mainColor",
+                                "type": "Color",
+                                "displayName": "颜色",
+                                "defaultValue": "transparent"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "displayName": "数据量显示",
+                "properties": [
+                    {
+                        "name": "showVolume",
+                        "type": "Boolean",
+                        "displayName": "显示数据量",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "customVolume",
+                        "type": "Boolean",
+                        "displayName": "自定义数据量",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "volumeMassage",
+                        "type": "Text",
+                        "displayName": "数据量信息",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "volumeXPosition",
+                        "type": "Enum",
+                        "displayName": "横向位置",
+                        "defaultValue": "center",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayName": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayName": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayName": "右侧"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "volumeYPosition",
+                        "type": "Enum",
+                        "displayName": "纵向位置",
+                        "defaultValue": "center",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayName": "顶部"
+                            },
+                            {
+                                "value": "center",
+                                "displayName": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayName": "底部"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "volumeText",
+                        "displayName": "字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "1.0x",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    }
+                ]
+            },
+            {
+                "displayName": "数据信息显示",
+                "properties": [
+                    {
+                        "name": "showLabel",
+                        "type": "Boolean",
+                        "displayName": "显示数据信息",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "customLabel",
+                        "type": "Boolean",
+                        "displayName": "自定义数据信息",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "labelMassage",
+                        "type": "Text",
+                        "displayName": "数据信息",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "labelXPosition",
+                        "type": "Enum",
+                        "displayName": "横向位置",
+                        "defaultValue": "center",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayName": "左侧"
+                            },
+                            {
+                                "value": "center",
+                                "displayName": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayName": "右侧"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "labelYPosition",
+                        "type": "Enum",
+                        "displayName": "纵向位置",
+                        "defaultValue": "center",
+                        "items": [
+                            {
+                                "value": "top",
+                                "displayName": "顶部"
+                            },
+                            {
+                                "value": "center",
+                                "displayName": "居中"
+                            },
+                            {
+                                "value": "bottom",
+                                "displayName": "底部"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "labelText",
+                        "displayName": "字体设置",
+                        "type": "TextStyle",
+                        "defaultValue": {
+                            "color": "#f0f0f0",
+                            "fontFamily": "微软雅黑",
+                            "fontSize": "1.0x",
+                            "fontStyle": "Normal",
+                            "fontWeight": "Normal"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        }
+    ],
+    "analysis": []
+}
