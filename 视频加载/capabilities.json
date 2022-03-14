@@ -36,6 +36,12 @@
                         "type": "Text",
                         "displayName": "视频地址",
                         "defaultValue": "http://video1.grapecity.com.cn/WynEnterprise/online/wyn3.0.mp4"
+                    },
+                    {
+                        "name": "autoplay",
+                        "type": "Boolean",
+                        "displayName": "自动播放",
+                        "defaultValue": true
                     }
                 ]
             },

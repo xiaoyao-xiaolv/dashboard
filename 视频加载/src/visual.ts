@@ -31,7 +31,9 @@ export default class Visual {
     let video: any = document.createElement("video");
     video.muted = false;
     video.setAttribute("controls", "controls");
-    video.setAttribute("autoplay", "autoplay");
+    if(options.autoplay){
+      video.setAttribute("autoplay", "autoplay");
+    }
     video.setAttribute("loop", "loop");
     video.setAttribute("preload", "auto");
     video.setAttribute("height", "100%");
