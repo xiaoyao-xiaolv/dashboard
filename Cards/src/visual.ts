@@ -473,7 +473,10 @@ export default class Visual extends WynVisual {
         this.kpiDisplay = this.plainDataView.profile.kpi.values[0].display;
         const kpiFormat = this.plainDataView.profile.kpi.values[0].format;
         if (this.category.length === 0) {
-          kpiS.push({ kpi: this.host.formatService.format(kpiFormat, this.plainDataView.data[0][this.kpiDisplay]) });
+          if(this.plainDataView.data[0]){
+            kpiS.push({ kpi: this.host.formatService.format(kpiFormat, this.plainDataView.data[0][this.kpiDisplay]) });
+          }
+          
         } else {
           for (let i = 0; i < this.category.length; i++) {
             let sum = 0;
@@ -703,7 +706,7 @@ export default class Visual extends WynVisual {
         rightTag: []
       };
       const textCategory = document.createTextNode(this.renderConfig.category.length === 0 ? '' : this.renderConfig.category[i]);
-      const textKpi = document.createTextNode(this.renderConfig === Visual.defaultConfig ? `${Visual.defaultConfig.kpiS[i]}` : `${this.renderConfig.kpiS[i].kpi}`);
+      const textKpi = document.createTextNode(this.renderConfig === Visual.defaultConfig ? `${Visual.defaultConfig.kpiS[i]}` : `${this.renderConfig.kpiS[i]? this.renderConfig.kpiS[i].kpi:""}`);
       const titleMeasures = {
         leftTitle: [],
         rightTitle: []
