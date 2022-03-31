@@ -1,0 +1,98 @@
+{
+    "dataBinding": {
+        "dataRoles":[
+            {
+                "name": "ActualValue",
+                "displayNameKey": "预警值",
+                "kind": "value",
+                "options": [
+                    {
+                      "displayNameKey": "数据格式",
+                      "type": "format",
+                      "name": "valueFormat"
+                    }
+                  ]
+            }
+        ],
+        "dataViewMappings":[{
+            "plain":
+            {
+                "required": [
+                {
+                    "ActualValue":
+                    {
+                        "max": 1,
+                        "min": 1
+                    }
+                }]
+            }
+        }]
+    },
+
+    "options": {
+        "visual": [
+            {
+                "displayName": "区间划分",
+                "properties": [
+                    {
+                        "name": "dialSectionColor",
+                        "displayName": "区间色",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "section",
+                                "displayName": "区间号",
+                                "type": "Integer", 
+                                "min": 1
+                            },
+                            {
+                                "name": "sectionMax",
+                                "displayName": "区间上限值",
+                                "type": "Integer",
+                                "defaultValue": 400000
+                            },
+                            {
+                                "name": "color",
+                                "displayName": "区间颜色",
+                                "type": "Color",
+                                "defaultValue": "#509dea"
+                            }
+                        ],
+                        "defaultValue": [{
+                            "section": 1,
+                            "sectionMax": 100000,
+                            "color": "#5af3ff"
+                        },
+                        {
+                            "section": 2,
+                            "sectionMax": 200000,
+                            "color": "#509dea"
+                        },{
+                            "section": 3,
+                            "sectionMax": 300000,
+                            "color": "#f5ba1a"
+                        },{
+                            "section": 4,
+                            "sectionMax": 400000,
+                            "color": "#f84d4d"
+                        }]
+                    },
+                    {
+                        "name": "dialColorUseToEye",
+                        "type": "Boolean",
+                        "displayName": "作用到眼睛",
+                        "defaultValue": true
+                    }, 
+                    {
+                        "name": "dialColorUseToBelly",
+                        "type": "Boolean",
+                        "displayName": "作用到肚子",
+                        "defaultValue": true
+                    }
+                ]
+            }
+        ]
+    },
+    "actions": [],
+    "analysis": []
+}

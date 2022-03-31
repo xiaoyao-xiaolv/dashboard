@@ -1,0 +1,12 @@
+{
+    "dataBinding": {
+    },
+    "options": {
+    },
+    "actions": [
+      {
+        "type": "focus"
+      }
+    ],
+    "analysis": []
+}

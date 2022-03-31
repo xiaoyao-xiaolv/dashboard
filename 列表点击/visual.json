@@ -1,0 +1,16 @@
+{
+    "name": "test",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "4.1.0"
+}

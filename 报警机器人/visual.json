@@ -1,0 +1,12 @@
+{
+    "id": "c241d7e0-a0e6-11ec-a428-7521c2c0beaa",
+    "name": "报警机器人",
+    "displayName": "报警机器人",
+    "displayNameKey": "",
+    "icon": "assets/icon.png",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "configuration": {},
+    "cliVersion": "5.0.1"
+}
