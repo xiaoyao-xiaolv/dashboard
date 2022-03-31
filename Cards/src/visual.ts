@@ -419,7 +419,7 @@ export default class Visual extends WynVisual {
     if (this.category.length === 0) {
       const formatMeasures = [];
       for (let i = 0; i < display.length; i++) {
-        formatMeasures.push(this.host.formatService.format(format[i], this.plainDataView.data[0][display[i]]));
+         formatMeasures.push(this.host.formatService.format(format[i], this.plainDataView.data[0]?this.plainDataView.data[0][display[i]]:0));
       }
       measures.push(formatMeasures);
     } else {
@@ -570,6 +570,7 @@ export default class Visual extends WynVisual {
     //tooltip	跳转保留等
     this.dom.addEventListener('mouseup', (params) => {
       document.oncontextmenu = function () { return false; };
+      debugger
       if (params.button === 2) {
         this.host.contextMenuService.show({
           position: {
@@ -638,6 +639,19 @@ export default class Visual extends WynVisual {
           menu: true,
         });
         break;
+      }
+      default:{
+          const selectionIds = this.selectionManager.getSelectionIds();
+          this.host.commandService.execute([{
+            name: this.properties.leftMouseButton,
+            payload: {
+              selectionIds,
+              position: {
+                x: e.x,
+                y: e.y,
+              },
+            }
+          }])
       }
       
     }

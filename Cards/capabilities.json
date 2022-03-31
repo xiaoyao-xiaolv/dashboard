@@ -1,17 +1,14 @@
 {
     "dataBinding": {
-        "dataRoles": [
-            {
+        "dataRoles": [{
                 "name": "kpi",
                 "displayNameKey": "dataBinding.kpi",
                 "kind": "value",
-                "options": [
-                    {
-                        "displayNameKey": "数据格式",
-                        "type": "format",
-                        "name": "valueFormat"
-                    }
-                ]
+                "options": [{
+                    "displayNameKey": "数据格式",
+                    "type": "format",
+                    "name": "valueFormat"
+                }]
             },
             {
                 "name": "category",
@@ -22,25 +19,21 @@
                 "name": "leftMeasures",
                 "displayNameKey": "dataBinding.leftMeasures",
                 "kind": "attributeOrValue",
-                "itemOptions": [
-                    {
-                        "name": "dataFormat",
-                        "type": "format",
-                        "displayNameKey": "dataBinding.dataFormat"
-                    }
-                ]
+                "itemOptions": [{
+                    "name": "dataFormat",
+                    "type": "format",
+                    "displayNameKey": "dataBinding.dataFormat"
+                }]
             },
             {
                 "name": "rightMeasures",
                 "displayNameKey": "dataBinding.rightMeasures",
                 "kind": "attributeOrValue",
-                "itemOptions": [
-                    {
-                        "name": "dataFormat",
-                        "type": "format",
-                        "displayNameKey": "dataBinding.dataFormat"
-                    }
-                ]
+                "itemOptions": [{
+                    "name": "dataFormat",
+                    "type": "format",
+                    "displayNameKey": "dataBinding.dataFormat"
+                }]
             },
             {
                 "kind": "collection",
@@ -51,22 +44,18 @@
                 ]
             }
         ],
-        "templates": [
-            {
+        "templates": [{
                 "name": "chart",
                 "displayNameKey": "dataBinding.chart",
-                "dataRoles": [
-                    {
+                "dataRoles": [{
                         "name": "value",
                         "displayNameKey": "dataBinding.value",
                         "kind": "value",
-                        "options": [
-                            {
-                                "displayNameKey": "数据格式",
-                                "type": "format",
-                                "name": "valueFormat"
-                            }
-                        ]
+                        "options": [{
+                            "displayNameKey": "数据格式",
+                            "type": "format",
+                            "name": "valueFormat"
+                        }]
                     },
                     {
                         "name": "axis",
@@ -74,74 +63,64 @@
                         "kind": "grouping"
                     }
                 ],
-                "dataViewMappings": [
-                    {
-                        "plain": {
-                            "dataRoles": [
-                                "value",
-                                "axis",
-                                "category",
-                                "kpi",
-                                "leftMeasures",
-                                "rightMeasures"
-                            ],
-                            "required": [
-                                {
-                                    "kpi": {
-                                        "min": 1
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "conditions": [
-                    {
-                        "value": {
-                            "max": 1
-                        },
-                        "axis": {
-                            "max": 1
-                        },
-                        "category": {
-                            "max": 1
-                        },
-                        "kpi": {
-                            "max": 1
-                        }
-                    }
-                ],
-                "options": [
-                    {
-                        "name": "chartType",
-                        "type": "enum",
-                        "displayNameKey": "dataBinding.chartType",
-                        "items": [
-                            {
-                                "value": "bar",
-                                "displayNameKey": "dataBinding.bar",
-                                "iconCss": "mdi mdi-chart-bar"
-                            },
-                            {
-                                "value": "line",
-                                "displayNameKey": "dataBinding.line",
-                                "iconCss": "mdi mdi-chart-line-variant"
-                            },
-                            {
-                                "value": "area",
-                                "displayNameKey": "dataBinding.area",
-                                "iconCss": "mdi mdi-chart-areaspline"
-                            }
+                "dataViewMappings": [{
+                    "plain": {
+                        "dataRoles": [
+                            "value",
+                            "axis",
+                            "category",
+                            "kpi",
+                            "leftMeasures",
+                            "rightMeasures"
                         ],
-                        "defaultValue": "line"
+                        "required": [{
+                            "kpi": {
+                                "min": 1
+                            }
+                        }]
                     }
-                ]
+                }],
+                "conditions": [{
+                    "value": {
+                        "max": 1
+                    },
+                    "axis": {
+                        "max": 1
+                    },
+                    "category": {
+                        "max": 1
+                    },
+                    "kpi": {
+                        "max": 1
+                    }
+                }],
+                "options": [{
+                    "name": "chartType",
+                    "type": "enum",
+                    "displayNameKey": "dataBinding.chartType",
+                    "items": [{
+                            "value": "bar",
+                            "displayNameKey": "dataBinding.bar",
+                            "iconCss": "mdi mdi-chart-bar"
+                        },
+                        {
+                            "value": "line",
+                            "displayNameKey": "dataBinding.line",
+                            "iconCss": "mdi mdi-chart-line-variant"
+                        },
+                        {
+                            "value": "area",
+                            "displayNameKey": "dataBinding.area",
+                            "iconCss": "mdi mdi-chart-areaspline"
+                        }
+                    ],
+                    "defaultValue": "line"
+                }]
             },
             {
                 "name": "progress",
                 "displayNameKey": "dataBinding.progress",
-                "dataRoles": [
-                    {
+                "dataRoles": [{
                         "name": "actualValue",
                         "displayNameKey": "dataBinding.actualValue",
                         "kind": "value"
@@ -152,84 +131,68 @@
                         "kind": "value"
                     }
                 ],
-                "dataViewMappings": [
-                    {
-                        "plain": {
-                            "dataRoles": [
-                                "actualValue",
-                                "contrastValue",
-                                "category",
-                                "kpi",
-                                "leftMeasures",
-                                "rightMeasures"
-                            ],
-                            "required": [
-                                {
-                                    "kpi": {
-                                        "min": 1
-                                    },
-                                    "actualValue": {
-                                        "min": 1
-                                    },
-                                    "contrastValue": {
-                                        "min": 1
-                                    }
-                                }
-                            ]
-                        }
+                "dataViewMappings": [{
+                    "plain": {
+                        "dataRoles": [
+                            "actualValue",
+                            "contrastValue",
+                            "category",
+                            "kpi",
+                            "leftMeasures",
+                            "rightMeasures"
+                        ],
+                        "required": [{
+                            "kpi": {
+                                "min": 1
+                            },
+                            "actualValue": {
+                                "min": 1
+                            },
+                            "contrastValue": {
+                                "min": 1
+                            }
+                        }]
                     }
-                ],
-                "conditions": [
-                    {
-                        "actualValue": {
-                            "max": 1
-                        },
-                        "contrastValue": {
-                            "max": 1
-                        },
-                        "category": {
-                            "max": 1
-                        },
-                        "kpi": {
-                            "max": 1
-                        }
+                }],
+                "conditions": [{
+                    "actualValue": {
+                        "max": 1
+                    },
+                    "contrastValue": {
+                        "max": 1
+                    },
+                    "category": {
+                        "max": 1
+                    },
+                    "kpi": {
+                        "max": 1
                     }
-                ]
+                }]
             }
         ],
         "conversionRules": {
-            "in": [
-                {
-                    "mode": "pre",
-                    "execute": [
-                        {
-                            "source": "values",
-                            "target": "kpi",
-                            "cmd": "first"
-                        }
-                    ]
-                }
-            ],
-            "out": [
-                {
-                    "mode": "pre",
-                    "execute": [
-                        {
-                            "source": "kpi",
-                            "target": "values",
-                            "cmd": "first"
-                        }
-                    ]
-                }
-            ]
+            "in": [{
+                "mode": "pre",
+                "execute": [{
+                    "source": "values",
+                    "target": "kpi",
+                    "cmd": "first"
+                }]
+            }],
+            "out": [{
+                "mode": "pre",
+                "execute": [{
+                    "source": "kpi",
+                    "target": "values",
+                    "cmd": "first"
+                }]
+            }]
         }
     },
     "options": {
-        "visual": [
-            {
+        "visual": [{
                 "displayNameKey": "options.cardsStyle",
-                "properties": [
-                    {
+                "properties": [{
                         "name": "maintainColorAssignment",
                         "type": "ColorAssignment",
                         "displayNameKey": "options.maintainColorAssignment",
@@ -293,8 +256,7 @@
                         "name": "layout",
                         "type": "Enum",
                         "displayNameKey": "options.layout",
-                        "items": [
-                            {
+                        "items": [{
                                 "value": "horizontalLayout",
                                 "displayNameKey": "options.horizontalLayout"
                             },
@@ -362,8 +324,7 @@
                         "name": "measureLeftAlign",
                         "type": "Enum",
                         "displayNameKey": "options.measureLeftAlign",
-                        "items": [
-                            {
+                        "items": [{
                                 "value": "left",
                                 "displayNameKey": "options.left"
                             },
@@ -382,8 +343,7 @@
                         "name": "measureRightAlign",
                         "type": "Enum",
                         "displayNameKey": "options.measureRightAlign",
-                        "items": [
-                            {
+                        "items": [{
                                 "value": "left",
                                 "displayNameKey": "options.left"
                             },
@@ -439,8 +399,7 @@
             },
             {
                 "displayNameKey": "options.progressBarStyle",
-                "properties": [
-                    {
+                "properties": [{
                         "name": "progressBarWidth",
                         "type": "Integer",
                         "displayNameKey": "options.progressBarWidth",
@@ -482,19 +441,29 @@
             },
             {
                 "type": "interaction",
-                "properties": [
-                    {
+                "properties": [{
                         "name": "leftMouseButton",
                         "type": "Enum",
                         "displayName": "鼠标左键选项",
-                        "items": [
-                            {
+                        "items": [{
                                 "value": "none",
                                 "displayNameKey": "无"
                             },
                             {
                                 "value": "showToolTip",
                                 "displayNameKey": "显示工具提示"
+                            },
+                            {
+                                "value": "Keep",
+                                "displayNameKey": "保留"
+                            },
+                            {
+                                "value": "Exclude",
+                                "displayNameKey": "排除"
+                            },
+                            {
+                                "value": "Jump",
+                                "displayNameKey": "跳转"
                             }
                         ],
                         "defaultValue": "none"
@@ -509,8 +478,7 @@
             }
         ]
     },
-    "actions": [
-        {
+    "actions": [{
             "type": "clearSelection"
         },
         {
