@@ -136,7 +136,14 @@ export default class Visual extends WynVisual {
                 this.format2 = options.dataViews[0].plain.profile.lineValue.values[0].format;
             }
             this.isMock = false
-            dataView.data.forEach((data) => {
+            let datas = dataView.data;
+            const sortFlags = dataView.sort[seriesDisplay].order;
+            let newItems: any = sortFlags.map((flags) => {
+              return newItems = datas.find((item) => item[seriesDisplay] === flags && item)
+            })
+            datas = newItems.filter((item) => item)
+
+            datas.forEach((data) => {
                 const selectionId = this.host.selectionService.createSelectionId();
                 selectionId.withDimension(dataView.profile.series.values[0], data);
                 this.selectionIds.push(selectionId)
