@@ -163,8 +163,8 @@ export default class Visual extends WynVisual {
     if (dataViews.length) {
       const plainData = dataViews[0].plain.data || [];
       const profileItems = dataViews[0].plain.profile;
-      const imageProfileName = profileItems.image.values[0].name;
-      const imageDescProfileName = profileItems.imageDescription.values[0] && profileItems.imageDescription.values[0].name;
+      const imageProfileName = profileItems.image.values[0].display;
+      const imageDescProfileName = profileItems.imageDescription.values[0] && profileItems.imageDescription.values[0].display;
       plainData.forEach((data) => {
         const selectionId = this.visualHost.selectionService.createSelectionId();
         selectionId.withDimension(profileItems.image.values[0], data);
