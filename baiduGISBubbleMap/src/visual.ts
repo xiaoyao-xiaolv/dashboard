@@ -178,7 +178,15 @@ export default class Visual {
     }
     let isMock = !this.items.length;
     let items = isMock ? Visual.mockItems : this.items;
-    this.shadowDiv.style.cssText = `box-shadow: inset 0 0 ${options.borderShadowBlurLevel}px ${options.borderShadowWidth}px ${options.borderShadowColor}; position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
+    console.log(options.borderShadowWidth)
+    console.log(options.borderShadowBlurLevel)
+    this.shadowDiv.style.cssText =
+        `box-shadow: 
+        0px ${0-options.borderShadowWidth.bottom}px ${options.borderShadowBlurLevel.bottom}px 0px ${options.borderShadowColor} inset,   /*下边阴影  红色*/
+        ${0-options.borderShadowWidth.right}px 0px ${options.borderShadowBlurLevel.right}px 0px ${options.borderShadowColor} inset,   /*右边阴影  绿色*/
+        ${options.borderShadowWidth.left}px 0px ${options.borderShadowBlurLevel.left}px 0px ${options.borderShadowColor} inset,    /*左边阴影  蓝色*/
+        0px ${options.borderShadowWidth.top}px ${options.borderShadowBlurLevel.top}px 0px ${options.borderShadowColor} inset;    /*上边阴影  黄色*/
+        position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;`;
     this.container.style.opacity = isMock ? '0.5' : '1';
     let maxValue = Math.max.apply(null, items.map(function (item) {
       return item.value[2];

@@ -172,13 +172,13 @@
                     },
                     {
                         "name": "borderShadowWidth",
-                        "type": "Integer",
+                        "type": "Position",
                         "displayName": "边界阴影宽度",
                         "defaultValue": 0
                     },
                     {
                         "name": "borderShadowBlurLevel",
-                        "type": "Integer",
+                        "type": "Position",
                         "displayName": "边界阴影模糊度",
                         "defaultValue": 0
                     }
