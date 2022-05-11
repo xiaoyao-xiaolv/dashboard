@@ -5,7 +5,7 @@ import * as echarts from 'echarts';
 let isTooltipModelShown = false;
 export default class Visual extends WynVisual {
 
-  private static mockItems = [['一月', '二月', '三月'], [[100, 50, 20]]];
+  private static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"], [[78.38, 71.88, 60.26, 75.38, 74.68, 80.95, 89.29, 91.21, 89.47]]];
 
   private container: HTMLDivElement;
   private host: any;
@@ -157,36 +157,36 @@ export default class Visual extends WynVisual {
       dataView.plain.profile.ActualValue.values.length && dataView.plain.profile.dimension.values.length) {
       this.format = options.dataViews[0].plain.profile.ActualValue.values[0].format;
       const plainData = dataView.plain;
-
       this.isMock = false;
       this.dimension = plainData.profile.dimension.values[0].display;
       this.ActualValue = plainData.profile.ActualValue.values.map((item) => item.display);
-
       let items = plainData.data;
-      const isSort = plainData.sort[this.dimension].priority === 0 ? true : false;
+      const sortFlage = plainData.sort[this.dimension].order;
 
-      // data sort 
-      if (isSort) {
-        const sortFlage = plainData.sort[this.dimension].order;
+      this.Series = plainData.profile.series.values.length ? plainData.profile.series.values[0].display : '';
+      const seriesData = []
+      if (this.Series) {
+        var seriesFlage = plainData.sort[this.Series].order;
+        const datas = []
+        seriesFlage.map((serise, index) => {
+          datas[index] = items.filter((item) => item[this.Series] === serise && item[this.ActualValue[0]])
+
+        })
+
+        datas.map((item, index) => {
+          let newItems: any = sortFlage.map((flage) => {
+            return newItems = item.find((data) => data[this.dimension] === flage && data)
+          })
+          seriesData[index] = newItems.map(data => data[this.ActualValue[0]])
+        })
+      } else {
         let newItems: any = sortFlage.map((flage) => {
           return newItems = items.find((item) => item[this.dimension] === flage && item)
         })
         items = newItems.filter((item) => item)
       }
-      this.Series = plainData.profile.series.values.length ? plainData.profile.series.values[0].display : '';
-      const seriesData = []
-      if (this.Series) {
-        const seriesFlage = plainData.sort[this.Series].order;
-        const datas = []
-        seriesFlage.map((serise, index) => {
-          datas[index] = items.filter((item) => item[this.Series] === serise && item[this.ActualValue[0]])
-        })
-        datas.map((item, index) => {
-          seriesData[index] = item.map(data => data[this.ActualValue[0]])
-        })
-      }
 
-      this.items[0] = items.map((item) => item[this.dimension]);
+      this.items[0] = sortFlage;
 
       const data = [];
       this.ActualValue.map((item, index) => {
@@ -204,7 +204,6 @@ export default class Visual extends WynVisual {
         this.dimension && selectionId.withDimension(plainData.profile.dimension.values[0], item);
         return selectionId
       }
-      // console.log(items)
       this.items[2] = items.map((item) => getSelectionId(item));
       this.items[2] = _.uniqWith(this.items[2], _.isEqual)
       // get max 
@@ -215,7 +214,7 @@ export default class Visual extends WynVisual {
       this.lengendLabeIndex = lengendLabe.indexOf(_.max(lengendLabe));
       // get serise label
       if (this.Series) {
-        this.items[3] = items.map((item) => item[this.Series]);
+        this.items[3] = seriesFlage;
         this.items[3] = _.uniqWith(this.items[3], _.isEqual)
       }
     } else {
@@ -279,9 +278,12 @@ export default class Visual extends WynVisual {
     const options = this.properties;
 
     this.container.style.opacity = isMock ? '0.3' : '1';
-    const legendTextStyle = { ...options.legendTextStyle };
 
     const datas: any = this.isMock ? Visual.mockItems[1] : this.items[1];
+
+    //图例字体样式
+    const legendTextStyle = { ...options.legendTextStyle };
+    //图例位置
     const orient = options.legendPosition === 'left' || options.legendPosition === 'right' ? 'vertical' : 'horizontal';
 
     const getYLbaelOffset = (str, y: string) => {
@@ -295,8 +297,11 @@ export default class Visual extends WynVisual {
       yLabelOffset.remove()
       return width
     }
+
     this.YLabelOffset = getYLbaelOffset(isMock ? '200' : this.MaxFillNumber, 'y');
+
     this.lengendLabelOffset = getYLbaelOffset(isMock ? '月份' : this.ActualValue[this.lengendLabeIndex], 'leg');
+
     const getOffset = (left: boolean, position) => {
       let legend = 0;
       let label = 0;
@@ -355,6 +360,7 @@ export default class Visual extends WynVisual {
       }
       return data
     }
+
     // column bar data 
     const drawColumnBar = () => {
       const getSymbolOffset = (index: number) => {
@@ -457,7 +463,7 @@ export default class Visual extends WynVisual {
           data: options.showColumnBottom ? data : []
         },
         {
-          name: this.isMock ? '销量' : (this.Series ? this.items[3][index] : this.ActualValue[index]),
+          name: this.isMock ? '出勤率' : (this.Series ? this.items[3][index] : this.ActualValue[index]),
           type: 'bar',
           itemStyle: {
             normal: {
@@ -502,11 +508,10 @@ export default class Visual extends WynVisual {
 
     //  hill bar 
     const drawHillBar = () => {
-
       const serise = [];
       datas.map((data, index) => {
         const serisedata = [{
-          name: this.isMock ? '销量' : (this.Series ? this.items[3][index] : this.ActualValue[index]),
+          name: this.isMock ? '出勤率' : (this.Series ? this.items[3][index] : this.ActualValue[index]),
           type: 'pictorialBar',
           symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
           label: {
@@ -567,28 +572,29 @@ export default class Visual extends WynVisual {
         axisPointer: {
           type: datas.length > 1 ? 'shadow' : 'line'
         },
+        backgroundColor: '#ffffff',
+        padding: [10, 15],
+        textStyle: {
+          color: '#000000'
+        },
         formatter: (items) => {
           if (options.barType == 'column') {
             let itemsData = items.filter(item => item.seriesType === 'bar')
-            let stringData = this.Series ? `${this.ActualValue[0]}<br />` : '';
+            let _toolTipText = ''
+
+            _toolTipText += `${this.dimension}: ${items[0].name} <br>`
+
             itemsData.map(item => {
               item.data = this.formatData(item.data)
-              stringData += `${item.seriesName || '数量'}: ${item.data} <br />`
+              _toolTipText += `${item.seriesName}: ${item.data} <br />`
             })
-            return stringData
-          } else {
-            let stringData = ''
-            items.map(item => {
-              item.data = this.formatData(item.data)
-              stringData += `${item.seriesName || '数量'}: ${item.data} <br />`
-            })
-            return stringData
+            return _toolTipText
           }
         }
       },
       grid: gridStyle,
       legend: {
-        data: this.isMock ? ['销量'] : (this.Series ? this.items[3] : this.ActualValue),
+        data: this.isMock ? ['出勤率'] : (this.Series ? this.items[3] : this.ActualValue),
         align: 'left',
         show: options.showLegend,
         left: options.legendPosition === 'left' || options.legendPosition === 'right' ? options.legendPosition : options.legendVerticalPosition,
@@ -617,6 +623,7 @@ export default class Visual extends WynVisual {
           margin: options.barType === 'column' && options.showColumnBottom ? bar[Number(options.columnWidth)].margin : 8,
           ...options.xAxisTextStyle,
           fontSize: parseFloat(options.xAxisTextStyle.fontSize),
+          rotate:options.rotate
         }
       },
       yAxis: {

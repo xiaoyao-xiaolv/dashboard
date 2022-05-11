@@ -141,7 +141,7 @@
                         "name": "fillColor",
                         "type": "Color",
                         "displayName": "填充颜色",
-                        "defaultValue": "#c1c2cb"
+                        "defaultValue": "rgba(193, 194, 203, 0.5)"
                     },
                     {
                         "name": "showColumnBottom",
@@ -360,6 +360,12 @@
                         "defaultValue": true
                     },
                     {
+                        "name": "rotate",
+                        "type": "Integer",
+                        "displayName": "标签旋转角度",
+                        "defaultValue": 0
+                    },
+                    {
                         "name": "xAxisTick",
                         "type": "Boolean",
                         "displayName": "显示刻度标记",
@@ -538,13 +544,19 @@
             "type": "focus"
         },
         {
-            "type": "sort"
-        },
-        {
             "type": "export"
         },
         {
             "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
         },
         {
             "type": "annotation"
