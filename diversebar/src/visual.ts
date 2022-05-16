@@ -225,51 +225,56 @@ export default class Visual extends WynVisual {
     this.render()
   }
 
-  public formatUnit = (value: any, dataUnit) => {
-    if (value) {
+  public formatData = (number, dataUnit, formate) => {
+    let format = number
+    if (dataUnit === 'auto') {
+      const formatService = this.host.formatService;
+      let realDisplayUnit = dataUnit;
+      if (formatService.isAutoDisplayUnit(dataUnit)) {
+        realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+      }
+      return format = formatService.format(formate, number, realDisplayUnit);
+    } else {
       const units = [{
         value: 1,
-        unit: ''
-      },
-      {
+        unit: '',
+        DisplayUnit: 'none'
+      }, {
         value: 100,
-        unit: '百'
+        unit: '百',
+        DisplayUnit: 'hundreds'
       }, {
         value: 1000,
-        unit: '千'
+        unit: '千',
+        DisplayUnit: 'thousands'
       }, {
         value: 10000,
-        unit: '万'
+        unit: '万',
+        DisplayUnit: 'tenThousands'
       }, {
         value: 100000,
-        unit: '十万'
+        unit: '十万',
+        DisplayUnit: 'hundredThousand'
       }, {
         value: 1000000,
-        unit: '百万'
+        unit: '百万',
+        DisplayUnit: 'millions'
       }, {
         value: 10000000,
-        unit: '千万'
+        unit: '千万',
+        DisplayUnit: 'tenMillion'
       }, {
         value: 100000000,
-        unit: '亿'
+        unit: '亿',
+        DisplayUnit: 'hundredMillion'
       }, {
         value: 1000000000,
-        unit: '十亿'
-      }, {
-        value: 100000000000,
-        unit: '万亿'
+        unit: '十亿',
+        DisplayUnit: 'billions'
       }]
-      const format = units.find((item) => item.value === Number(dataUnit))
-      return value / format.value + format.unit
-    } else {
-      return value
+      let formatUnit = units.find((item) => item.value === Number(dataUnit))
+      return this.host.formatService.format(formate, format, formatUnit.DisplayUnit)
     }
-  }
-
-  public formatData = (number) => {
-    const formatService = this.host.formatService;
-    let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
-    return formatService.format(this.format, number, realDisplayUnit);
   }
 
   public render() {
@@ -493,7 +498,7 @@ export default class Visual extends WynVisual {
             show: options.dataindicate,
             position: options.dataindicatePosition,
             formatter: (item) => {
-              return this.formatData(item.value)
+              return this.formatData(item.value,options.dataUnit,this.format)
             },
             ...options.dataindicateTextStyle,
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize)
@@ -520,7 +525,7 @@ export default class Visual extends WynVisual {
             ...options.dataindicateTextStyle,
             fontSize: parseFloat(options.dataindicateTextStyle.fontSize),
             formatter: (data) => {
-              return this.formatData(data.value)
+              return this.formatData(data.value,options.dataUnit,this.format)
             }
           },
           itemStyle: {
@@ -585,7 +590,7 @@ export default class Visual extends WynVisual {
             _toolTipText += `${this.dimension}: ${items[0].name} <br>`
 
             itemsData.map(item => {
-              item.data = this.formatData(item.data)
+              item.data = this.formatData(item.data,options.dataUnit,this.format)
               _toolTipText += `${item.seriesName}: ${item.data} <br />`
             })
             return _toolTipText
@@ -623,7 +628,7 @@ export default class Visual extends WynVisual {
           margin: options.barType === 'column' && options.showColumnBottom ? bar[Number(options.columnWidth)].margin : 8,
           ...options.xAxisTextStyle,
           fontSize: parseFloat(options.xAxisTextStyle.fontSize),
-          rotate:options.rotate
+          rotate: options.rotate
         }
       },
       yAxis: {
@@ -643,7 +648,7 @@ export default class Visual extends WynVisual {
         axisLabel: {
           show: options.leftAxisLabel,
           formatter: (value) => {
-            return value
+            return this.formatData(value,options.dataUnit,this.format)
           },
           ...options.leftTextStyle,
           fontSize: parseFloat(options.leftTextStyle.fontSize),
