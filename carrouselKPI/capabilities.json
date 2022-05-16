@@ -220,15 +220,15 @@
                                 "displayNameKey": "百万"
                             },
                             {
-                                "value": "1000000",
+                                "value": "10000000",
                                 "displayNameKey": "千万"
                             },
                             {
-                                "value": "10000000",
+                                "value": "100000000",
                                 "displayNameKey": "亿"
                             },
                             {
-                                "value": "100000000000",
+                                "value": "1000000000",
                                 "displayNameKey": "十亿"
                             }
                         ],
@@ -356,15 +356,15 @@
                                 "displayNameKey": "百万"
                             },
                             {
-                                "value": "1000000",
+                                "value": "10000000",
                                 "displayNameKey": "千万"
                             },
                             {
-                                "value": "10000000",
+                                "value": "100000000",
                                 "displayNameKey": "亿"
                             },
                             {
-                                "value": "100000000000",
+                                "value": "1000000000",
                                 "displayNameKey": "十亿"
                             }
                         ],
@@ -466,7 +466,27 @@
                 ]
             },
             {
-                "type": "interaction"
+                "type": "interaction",
+                "properties": [{
+                    "name": "clickLeftMouse",
+                    "type": "Enum",
+                    "displayName": "鼠标左键选项",
+                    "items": [
+                        {
+                            "value": "none",
+                            "displayNameKey": "无"
+                        },
+                        {
+                            "value": "showToolTip",
+                            "displayNameKey": "显示工具提示"
+                        },
+                        {
+                            "value": "Jump",
+                            "displayNameKey": "跳转"
+                        }
+                    ],
+                    "defaultValue": "Jump"
+                }]
             },
             {
                 "type": "title",

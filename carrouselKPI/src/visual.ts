@@ -123,21 +123,21 @@ export default class Visual extends WynVisual {
       return;
     })
 
-    this.container.addEventListener('mouseup', (params) => {
-      document.oncontextmenu = function () { return false; };
-      if (params.button === 2) {
-        this.visualHost.contextMenuService.show({
-          position: {
-            x: params.x,
-            y: params.y,
-          },
-          menu: true
-        }, 10)
-        return;
-      }else{
-        this.visualHost.contextMenuService.hide();	
-      }
-    })
+    // this.container.addEventListener('mouseup', (params) => {
+    //   document.oncontextmenu = function () { return false; };
+    //   if (params.button === 2) {
+    //     this.visualHost.contextMenuService.show({
+    //       position: {
+    //         x: params.x,
+    //         y: params.y,
+    //       },
+    //       menu: true
+    //     }, 10)
+    //     return;
+    //   }else{
+    //     this.visualHost.contextMenuService.hide();	
+    //   }
+    // })
 
 
     $('.figure').on('click', (event) => {
@@ -150,7 +150,23 @@ export default class Visual extends WynVisual {
         return;
       }
       this.selectionManager.select(sid);
-      this.showTooltip(event.clientX, event.clientY, id);
+
+      if (this.options.clickLeftMouse === 'none' || this.options.clickLeftMouse === 'showToolTip') {
+        this.showTooltip(event.clientX, event.clientY, id);
+      } else {
+        this.visualHost.toolTipService.hide();
+        const selectionIds = this.selectionManager.getSelectionIds();
+        this.visualHost.commandService.execute([{
+          name: this.options.clickLeftMouse,
+          payload: {
+            selectionIds: selectionIds,
+            position: {
+              x: event.clientX,
+              y: event.clientY,
+            },
+          }
+        }])
+      }
     })
   }
 
