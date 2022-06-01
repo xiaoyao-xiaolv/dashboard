@@ -14,13 +14,15 @@ export default class Visual extends WynVisual {
     private options: any;
     private hoveredIndex: any;
     private isMock: any;
+    private valueColumn: any;
+
     static mockItems = {
         data: [
-            { 销售省份: "湖北", 销售金额: 12345 },
-            { 销售省份: "江苏", 销售金额: 24681 },
-            { 销售省份: "四川", 销售金额: 31451 },
-            { 销售省份: "青海", 销售金额: 11264 },
-            { 销售省份: "安徽", 销售金额: 21358 },
+            {销售省份: "湖北", 销售金额: 12345},
+            {销售省份: "江苏", 销售金额: 24681},
+            {销售省份: "四川", 销售金额: 31451},
+            {销售省份: "青海", 销售金额: 11264},
+            {销售省份: "安徽", 销售金额: 21358},
         ],
         series: ["湖北", "江苏", "四川", "青海", "安徽"],
         value: [12345, 24681, 31451, 11264, 21358]
@@ -91,7 +93,9 @@ export default class Visual extends WynVisual {
         //tooltip	跳转保留等	鼠标起来
         this.myEcharts.on('mouseup', (params) => {
             if (params.event.event.button === 2) {
-                document.oncontextmenu = function () { return false; };
+                document.oncontextmenu = function () {
+                    return false;
+                };
                 params.event.event.preventDefault();
                 this.host.contextMenuService.show({
                     position: {								//跳转的selectionsId(左键需要)
@@ -108,8 +112,7 @@ export default class Visual extends WynVisual {
         this.myEcharts.on('mouseover', (params) => {
             if (this.hoveredIndex == params.seriesName) {
                 return;
-            }
-            else {
+            } else {
                 this.hoveredIndex = params.seriesName
                 this.render()
             }
@@ -140,6 +143,7 @@ export default class Visual extends WynVisual {
             this.items.data = dataView.data
             const seriesDisplay = dataView.profile.series.values[0].display;
             const valueDisplay = dataView.profile.value.values[0].display;
+            this.valueColumn = valueDisplay;
             let toolDisplay
             let items = dataView.data;
             const sortFlags = dataView.sort[seriesDisplay].order;
@@ -169,8 +173,6 @@ export default class Visual extends WynVisual {
         this.render();
     }
 
-
-
     public render() {
         this.myEcharts.clear();
         let pie3DData = [];
@@ -195,7 +197,6 @@ export default class Visual extends WynVisual {
     }
 
 
-
     public onDestroy(): void {
 
     }
@@ -204,7 +205,6 @@ export default class Visual extends WynVisual {
         this.myEcharts.resize();
         this.render();
     }
-
 
 
     public getInspectorHiddenState(options: VisualNS.IVisualUpdateOptions): string[] {
@@ -430,7 +430,9 @@ export default class Visual extends WynVisual {
             tooltip: {
                 formatter: params => {
                     if (params.seriesName !== 'mouseoutSeries') {
-                        return `${params.seriesName}<br/><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.formatData(option.series[params.seriesIndex].pieData.value)}<br/>${this.items.tooltip[params.seriesIndex]}`;
+                        //return `${params.seriesName}<br/><span
+                        // style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.formatData(option.series[params.seriesIndex].pieData.value)}<br/>${this.items.tooltip[params.seriesIndex]}`;
+                        return `${params.seriesName}<br/><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.valueColumn} : ${this.formatData(option.series[params.seriesIndex].pieData.value)}<br/>`;
                     }
                 }
             },
