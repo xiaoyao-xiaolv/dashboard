@@ -1,0 +1,24 @@
+{
+    "id": "1faf8b40-3939-11ec-bcf2-63b0d2a20ed8",
+    "name": "百度地图",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [
+        "https://api.map.baidu.com/api?type=webgl&v=1.0&ak={{百度地图API服务密钥}}",
+        "https://api.map.baidu.com/api?v=2.0&ak={{百度地图API服务密钥}}",
+        "http://mapopen.bj.bcebos.com/github/BMapGLLib/TrackAnimation/src/TrackAnimation.min.js",
+        "http://api.map.baidu.com/library/LuShu/gl/src/LuShu_min.js"
+    ],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {
+        "百度地图API服务密钥": "OiQtuUjxk83zpXrYSg98lqlh8T5Abysl"
+    },
+    "cliVersion": "5.0.1"
+}

@@ -1,0 +1,131 @@
+
+#container{
+  height:100%;
+  width:100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.panel{
+  position:absolute;
+  top:10px;
+  left:10px;
+  overflow:auto;
+  z-index:999;
+  border-left:1px solid #c9c0c0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.sim-button{
+  line-height: 30px;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 125px;
+  margin: 5px;
+  cursor: pointer;
+  float: left;
+}
+.button28 {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  position: relative;
+}
+.button28 span{
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  padding: 10px;
+  color: rgb(233, 234, 236);
+}
+.button28 a{
+  text-decoration: none;
+  display: block;
+}
+.button28::before{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-top-color:rgb(190, 185, 185,0.8);
+  border-bottom-color: rgba(190, 185, 185, 0.8);
+  -webkit-transform: scale(0.1, 1);
+  transform: scale(0.1, 1);
+}
+.button28:hover span{
+  letter-spacing: 2px;
+}
+.button28:hover::before{
+  opacity: 1;
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
+
+}
+.button28::after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  background-color: rgba(138, 133, 133, 0.25);
+
+}
+.button28:hover::after{
+  opacity: 0;
+  -webkit-transform: scale(0.1, 1);
+  transform: scale(0.1, 1);
+}
+
+.button29 {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.button29 span {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  padding: 10px;
+  color: rgb(63, 61, 61);
+}
+
+.button29::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  background-color: rgba(138, 133, 133, 0.25);
+
+}

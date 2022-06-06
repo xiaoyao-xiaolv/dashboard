@@ -1,0 +1,1052 @@
+{
+  "dataBinding": {
+    "templates": [
+      {
+        "name": "BubbleData",
+        "displayNameKey": "图点数据",
+        "dataRoles": [
+          {
+            "name": "numeric",
+            "displayNameKey": "数值",
+            "kind": "value",
+            "options": [
+              {
+                "displayNameKey": "数据格式",
+                "type": "format",
+                "name": "valueFormat"
+              },
+              {
+                "displayNameKey": "数据单位",
+                "type": "displayUnit",
+                "name": "valueDisplayUnit"
+              }
+            ]
+          },
+          {
+            "name": "category",
+            "displayNameKey": "分类",
+            "kind": "grouping"
+          },
+          {
+            "name": "address",
+            "displayNameKey": "地址",
+            "kind": "grouping"
+          },
+          {
+            "name": "lng",
+            "displayNameKey": "经度",
+            "kind": "grouping"
+          },
+          {
+            "name": "lat",
+            "displayNameKey": "维度",
+            "kind": "grouping"
+          },
+          {
+            "name": "img",
+            "displayNameKey": "图标",
+            "kind": "grouping"
+          }
+        ],
+        "dataViewMappings": [
+          {
+            "plain": {
+              "required": [
+                {
+                  "category": {
+                    "min": 1
+                  },
+                  "numeric": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "conditions": [
+          {
+            "address": {
+              "max": 1
+            },
+            "lng": {
+              "max": 1
+            },
+            "lat": {
+              "max": 1
+            },
+            "numeric": {
+              "max": 1
+            },
+            "img": {
+              "max": 1
+            },
+            "category": {
+              "max": 1
+            }
+          }
+        ]
+      },
+      {
+        "name": "LineData",
+        "displayNameKey": "路线图",
+        "dataRoles": [
+          {
+            "name": "address",
+            "displayNameKey": "路线名称",
+            "kind": "grouping"
+          },
+          {
+            "name": "category",
+            "displayNameKey": "分类",
+            "kind": "grouping"
+          },
+          {
+            "name": "lnglat",
+            "displayNameKey": "路线",
+            "kind": "grouping"
+          },
+          {
+            "name": "cateImg",
+            "displayNameKey": "图标",
+            "kind": "grouping"
+          }
+        ],
+        "dataViewMappings": [
+          {
+            "plain": {
+              "required": [
+                {
+                  "address": {
+                    "min": 1
+                  },
+                  "category": {
+                    "min": 1
+                  },
+                  "lnglat": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "conditions": [
+          {
+            "address": {
+              "max": 1
+            },
+            "category": {
+              "max": 1
+            },
+            "lnglat": {
+              "max": 1
+            },
+            "cateImg": {
+              "max": 1
+            }
+          }
+        ]
+      },
+      {
+        "name": "MarkerData",
+        "displayNameKey": "标牌图",
+        "dataRoles": [
+          {
+            "name": "numeric",
+            "displayNameKey": "数值",
+            "kind": "value",
+            "options": [
+              {
+                "displayNameKey": "数据格式",
+                "type": "format",
+                "name": "valueFormat"
+              },
+              {
+                "displayNameKey": "数据单位",
+                "type": "displayUnit",
+                "name": "valueDisplayUnit"
+              }
+            ]
+          },
+          {
+            "name": "title",
+            "displayNameKey": "标题",
+            "kind": "grouping"
+          },
+          {
+            "name": "address",
+            "displayNameKey": "地址",
+            "kind": "grouping"
+          },
+          {
+            "name": "lng",
+            "displayNameKey": "经度",
+            "kind": "grouping"
+          },
+          {
+            "name": "lat",
+            "displayNameKey": "维度",
+            "kind": "grouping"
+          }
+        ],
+        "dataViewMappings": [
+          {
+            "plain": {
+              "required": [
+                {
+                  "numeric": {
+                    "min": 1
+                  },
+                  "title": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "conditions": [
+          {
+            "title": {
+              "max": 1
+            },
+            "address": {
+              "max": 1
+            },
+            "lng": {
+              "max": 1
+            },
+            "lat": {
+              "max": 1
+            },
+            "numeric": {
+              "max": 1
+            }
+          }
+        ]
+      }
+    ],
+    "dataRoles": [
+      {
+        "kind": "collection",
+        "groups": [
+          "BubbleData",
+          "LineData",
+          "MarkerData"
+        ],
+        "displayNameKey": "GIS地图数据",
+        "collapsible": true,
+        "editable": false
+      }
+    ]
+  },
+  "options": {
+    "visual": [
+      {
+        "displayName": "地图设置",
+        "properties": [
+          {
+            "name": "centerLnglat",
+            "displayName": "地图中心点",
+            "type": "Text",
+            "defaultValue": ""
+          },
+          {
+            "name": "zoom",
+            "displayName": "显示级别",
+            "type": "Float",
+            "defaultValue": 4,
+            "min": 0,
+            "max": 20
+          },
+          {
+            "name": "pitch",
+            "displayName": "倾斜角度",
+            "type": "Integer",
+            "defaultValue": 10,
+            "max": 90,
+            "min": 0
+          },
+          {
+            "name": "mapStyle",
+            "displayName": "地图样式",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "normal",
+                "displayName": "标准"
+              },
+              {
+                "value": "dark",
+                "displayName": "幻影黑"
+              },
+              {
+                "value": "light",
+                "displayName": "月光银"
+              },
+              {
+                "value": "whitesmoke",
+                "displayName": "远山黛"
+              },
+              {
+                "value": "fresh",
+                "displayName": "草色青"
+              },
+              {
+                "value": "grey",
+                "displayName": "雅士灰"
+              },
+              {
+                "value": "graffiti",
+                "displayName": "涂鸦"
+              },
+              {
+                "value": "macaron",
+                "displayName": "马卡龙"
+              },
+              {
+                "value": "blue",
+                "displayName": "靛青蓝"
+              },
+              {
+                "value": "darkblue",
+                "displayName": "极夜蓝"
+              },
+              {
+                "value": "wine",
+                "displayName": "酱籽"
+              },
+              {
+                "value": "ddc5cc6175db8107cbcdec11fbb92416",
+                "displayName": "2416"
+              }
+            ],
+            "defaultValue": "ddc5cc6175db8107cbcdec11fbb92416"
+          }
+        ]
+      },
+      {
+        "displayName": "底图元素",
+        "properties": [
+          {
+            "name": "v_wx",
+            "displayName": "卫星视图",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "v_dl",
+            "displayName": "路线网",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "v_bg",
+            "displayName": "区域面",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "v_road",
+            "displayName": "道路",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "v_building",
+            "displayName": "建筑物",
+            "type": "Boolean",
+            "defaultValue": true
+          }
+        ]
+      },
+      {
+        "displayName": "图点属性设置",
+        "properties": [
+          {
+            "name": "icon_category",
+            "displayName": "地图类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "point",
+                "displayName": "贴地图标"
+              },
+              {
+                "value": "bubble",
+                "displayName": "气泡图"
+              }
+            ],
+            "defaultValue": "point"
+          },
+          {
+            "name": "icon_type",
+            "displayName": "图标类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "PO",
+                "displayName": "圆点"
+              },
+              {
+                "value": "IMG",
+                "displayName": "自定义图标"
+              }
+            ],
+            "defaultValue": "PO"
+          },
+          {
+            "name": "icon_size",
+            "displayName": "图标大小",
+            "type": "Integer",
+            "defaultValue": 10,
+            "min": 0
+          },
+          {
+            "name": "icon_color",
+            "type": "Color",
+            "displayName": "填充颜色",
+            "defaultValue": "#5DFBF9"
+          },
+          {
+            "name": "icon_bor",
+            "type": "Color",
+            "displayName": "描边颜色",
+            "defaultValue": "#5DFBF9"
+          },
+          {
+            "name": "icon_bw",
+            "displayName": "描边宽度",
+            "type": "Integer",
+            "defaultValue": 1,
+            "min": 0
+          },
+          {
+            "name": "icon_symbol",
+            "displayName": "图标样式",
+            "type": "Image"
+          },
+          {
+            "name": "r_icon_width",
+            "displayName": "图标宽度",
+            "type": "Integer",
+            "defaultValue": 10
+          },
+          {
+            "name": "r_icon_height",
+            "displayName": "图标高度",
+            "type": "Integer",
+            "defaultValue": 10
+          },
+          {
+            "name": "r_icon_flash",
+            "displayName": "开启闪点",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "r_f_width",
+            "displayName": "闪点宽度",
+            "type": "Integer",
+            "defaultValue": 50
+          },
+          {
+            "name": "r_f_height",
+            "displayName": "闪点高度",
+            "type": "Integer",
+            "defaultValue": 50
+          },
+          {
+            "name": "r_f_duration",
+            "displayName": "闪点周期",
+            "type": "Integer",
+            "defaultValue": 1000,
+            "min": 0
+          },
+          {
+            "name": "icon_png",
+            "displayName": "闪点样式",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png",
+                "displayName": "红色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png",
+                "displayName": "黄色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/static/green.png",
+                "displayName": "蓝色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/static/orange.png",
+                "displayName": "橙色"
+              }
+            ],
+            "defaultValue": "https://a.amap.com/Loca/static/static/green.png"
+          },
+          {
+            "name": "customize",
+            "displayName": "自定义设置",
+            "type": "Collection",
+            "itemShape": [
+              {
+                "name": "num_interval",
+                "displayName": "数值区间",
+                "type": "Text",
+                "defaultValue": "(,)",
+                "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+              },
+              {
+                "name": "p_category",
+                "displayName": "分类",
+                "type": "Text",
+                "defaultValue": ""
+              },
+              {
+                "name": "icon_symbol",
+                "displayName": "图标样式",
+                "type": "Image"
+              },
+              {
+                "name": "r_icon_width",
+                "displayName": "图标宽度",
+                "type": "Integer",
+                "defaultValue": 10
+              },
+              {
+                "name": "r_icon_height",
+                "displayName": "图标高度",
+                "type": "Integer",
+                "defaultValue": 10
+              },
+              {
+                "name": "r_icon_flash",
+                "displayName": "开启闪点",
+                "type": "Boolean",
+                "defaultValue": false
+              },
+              {
+                "name": "r_f_width",
+                "displayName": "闪点宽度",
+                "type": "Integer",
+                "defaultValue": 50
+              },
+              {
+                "name": "r_f_height",
+                "displayName": "闪点高度",
+                "type": "Integer",
+                "defaultValue": 50
+              },
+              {
+                "name": "r_f_duration",
+                "displayName": "闪点周期",
+                "type": "Integer",
+                "defaultValue": 1000,
+                "min": 0
+              },
+              {
+                "name": "icon_png",
+                "displayName": "闪点样式",
+                "type": "Enum",
+                "items": [
+                  {
+                    "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png",
+                    "displayName": "红色"
+                  },
+                  {
+                    "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png",
+                    "displayName": "黄色"
+                  },
+                  {
+                    "value": "https://a.amap.com/Loca/static/static/green.png",
+                    "displayName": "蓝色"
+                  },
+                  {
+                    "value": "https://a.amap.com/Loca/static/static/orange.png",
+                    "displayName": "橙色"
+                  }
+                ],
+                "defaultValue": "https://a.amap.com/Loca/static/static/green.png"
+              }
+            ],
+            "defaultValue": []
+          },
+          {
+            "name": "q_type",
+            "displayName": "图标类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "point",
+                "displayName": "圆点"
+              },
+              {
+                "value": "icon",
+                "displayName": " 图标"
+              }
+            ],
+            "defaultValue": "point"
+          },
+          {
+            "name": "q_blend",
+            "displayName": "图标叠加效果",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "lighter",
+                "displayName": "叠加增亮"
+              },
+              {
+                "value": "normal",
+                "displayName": " 正常叠加"
+              }
+            ],
+            "defaultValue": "lighter"
+          },
+          {
+            "name": "q_color",
+            "type": "Color",
+            "displayName": "填充颜色",
+            "defaultValue": "#F86615"
+          },
+          {
+            "name": "q_bor",
+            "type": "Color",
+            "displayName": "描边颜色",
+            "defaultValue": "#F86615"
+          },
+          {
+            "name": "q_size",
+            "displayName": "图标大小",
+            "type": "Integer",
+            "defaultValue": 10,
+            "min": 0
+          },
+          {
+            "name": "q_bw",
+            "displayName": "描边宽度",
+            "type": "Integer",
+            "defaultValue": 1,
+            "min": 0
+          },
+          {
+            "name": "q_icon",
+            "displayName": "图标",
+            "type": "Image"
+          },
+          {
+            "name": "q_icon_width",
+            "displayName": "图标宽度",
+            "type": "Integer",
+            "defaultValue": 20,
+            "min": 0
+          },
+          {
+            "name": "q_icon_height",
+            "displayName": "图标高度",
+            "type": "Integer",
+            "defaultValue": 20,
+            "min": 0
+          },
+          {
+            "name": "q_moving",
+            "displayName": "渐变大小",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "q_icon_rotation",
+            "displayName": "旋转角度",
+            "type": "Integer",
+            "defaultValue": 0,
+            "min": 0,
+            "max": 360
+          },
+          {
+            "name": "q_animate",
+            "displayName": "动画效果",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "customize_bubble",
+            "displayName": "自定义设置",
+            "type": "Collection",
+            "itemShape": [
+              {
+                "name": "num_interval",
+                "displayName": "数值区间",
+                "type": "Text",
+                "defaultValue": "(,1000)",
+                "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+              },
+              {
+                "name": "q_category",
+                "displayName": "分类",
+                "type": "Text",
+                "defaultValue": ""
+              },
+              {
+                "name": "q_icon",
+                "displayName": "图标",
+                "type": "Image"
+              },
+              {
+                "name": "q_icon_width",
+                "displayName": "图标宽度",
+                "type": "Integer",
+                "defaultValue": 20,
+                "min": 0
+              },
+              {
+                "name": "q_icon_height",
+                "displayName": "图标高度",
+                "type": "Integer",
+                "defaultValue": 20,
+                "min": 0
+              },
+              {
+                "name": "q_icon_rotation",
+                "displayName": "旋转角度",
+                "type": "Integer",
+                "defaultValue": 0,
+                "min": 0,
+                "max": 360
+              }
+            ],
+            "defaultValue": []
+          }
+        ]
+      },
+      {
+        "displayName": "路线属性设置",
+        "properties": [
+          {
+            "name": "l_category",
+            "displayName": "路线类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "line",
+                "displayName": "固定路线"
+              },
+              {
+                "value": "pulse",
+                "displayName": "脉冲路线"
+              },
+              {
+                "value": "track",
+                "displayName": "轨迹图"
+              }
+            ],
+            "defaultValue": "line"
+          },
+          {
+            "name": "l_colors",
+            "displayName": "路线颜色",
+            "type": "Palette",
+            "defaultValue": "dashboard.palette"
+          },
+          {
+            "name": "l_lineWidth",
+            "displayName": "路线宽度",
+            "type": "Integer",
+            "defaultValue": 1,
+            "min": 0
+          },
+          {
+            "name": "l_borderColor",
+            "displayName": "描边颜色",
+            "type": "Color",
+            "defaultValue": "#2A4455"
+          },
+          {
+            "name": "l_borderWidth",
+            "displayName": "描边宽度",
+            "type": "Integer",
+            "defaultValue": 1,
+            "min": 0
+          },
+          {
+            "name": "p_colors_t",
+            "displayName": "脉冲头颜色",
+            "type": "Palette",
+            "defaultValue": "dashboard.palette"
+          },
+          {
+            "name": "p_colors_w",
+            "displayName": "脉冲尾颜色",
+            "type": "Palette",
+            "defaultValue": "dashboard.palette"
+          },
+          {
+            "name": "p_interval",
+            "displayName": "脉冲长度",
+            "type": "Integer",
+            "defaultValue": 25,
+            "min": 0,
+            "max": 100
+          },
+          {
+            "name": "p_duration",
+            "displayName": "脉冲周期",
+            "type": "Integer",
+            "defaultValue": 5000,
+            "min": 0
+          },
+          {
+            "name": "l_altitude",
+            "displayName": "海拔高度",
+            "type": "Integer",
+            "defaultValue": 100,
+            "min": 0
+          },
+          {
+            "name": "l_alt_status",
+            "displayName": "立体落差",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "lx_colors",
+            "displayName": "路线颜色",
+            "type": "Palette",
+            "defaultValue": "dashboard.palette"
+          },
+          {
+            "name": "lx_sel_colors",
+            "displayName": "选中颜色",
+            "type": "Palette",
+            "defaultValue": "dashboard.palette"
+          },
+          {
+            "name": "lx_xs_colors",
+            "displayName": "行驶路线颜色",
+            "type": "Palette",
+            "defaultValue": "dashboard.palette"
+          },
+          {
+            "name": "l_type",
+            "displayName": "路线类别",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "C",
+                "displayName": "行车路线"
+              },
+              {
+                "value": "F",
+                "displayName": "飞行路线"
+              }
+            ],
+            "defaultValue": "C"
+          },
+          {
+            "name": "l_line_show",
+            "displayName": "显示路线",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "l_icon",
+            "displayName": "图标样式",
+            "type": "Image"
+          },
+          {
+            "name": "l_speed",
+            "displayName": "移动速度",
+            "type": "Integer",
+            "defaultValue": 100,
+            "min": 0
+          },
+          {
+            "name": "l_Width",
+            "displayName": "路线宽度",
+            "type": "Integer",
+            "defaultValue": 5,
+            "min": 0
+          },
+          {
+            "name": "l_icon_Width",
+            "displayName": "图标宽度",
+            "type": "Integer",
+            "defaultValue": 24,
+            "min": 0
+          },
+          {
+            "name": "l_icon_height",
+            "displayName": "图标高度",
+            "type": "Integer",
+            "defaultValue": 24,
+            "min": 0
+          }
+        ]
+      },
+      {
+        "displayName": "标牌属性设置",
+        "properties": [
+          {
+            "name": "p_number",
+            "displayName": "标准值",
+            "type": "Integer",
+            "defaultValue": 60000,
+            "min": 0
+          },
+          {
+            "name": "p_altitude",
+            "displayName": "弹跳高度",
+            "type": "Integer",
+            "defaultValue": 15,
+            "min": 0
+          },
+          {
+            "name": "p_unit",
+            "displayName": "半径单位",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "px",
+                "displayName": "px"
+              },
+              {
+                "value": "meter",
+                "displayName": "米"
+              }
+            ],
+            "defaultValue": "meter"
+          },
+          {
+            "name": "p_img_fd",
+            "displayName": "浮动图标",
+            "type": "Image"
+          },
+          {
+            "name": "p_rolling",
+            "displayName": "视觉轮播",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "p_zoom",
+            "displayName": "距离偏移",
+            "type": "Float",
+            "defaultValue": 0.1,
+            "min": 0,
+            "max": 20
+          },
+          {
+            "name": "p_pitch",
+            "displayName": "上下偏移",
+            "type": "Integer",
+            "defaultValue": 0,
+            "min": 0
+          },
+          {
+            "name": "p_rotation",
+            "displayName": "左右偏移",
+            "type": "Integer",
+            "defaultValue": 0,
+            "min": 0
+          },
+          {
+            "name": "p_time",
+            "displayName": "暂停时长",
+            "type": "Integer",
+            "defaultValue": 3000,
+            "min": 0
+          },
+          {
+            "name": "p_sj_time",
+            "displayName": "过渡时长",
+            "type": "Integer",
+            "defaultValue": 2000,
+            "min": 0
+          },
+          {
+            "name": "p_round",
+            "displayName": "旋转角度",
+            "type": "Integer",
+            "defaultValue": 10,
+            "min": 0
+          },
+          {
+            "name": "p_offset_top",
+            "displayName": "中心点上下偏移",
+            "type": "Integer",
+            "defaultValue": 5
+          },
+          {
+            "name": "p_offset_left",
+            "displayName": "中心点左右偏移",
+            "type": "Integer",
+            "defaultValue": 5
+          }
+        ]
+      },
+      {
+        "displayName": "标牌标签设置",
+        "properties": [
+          {
+            "name": "p_radius",
+            "displayName": "标签弧度",
+            "type": "Integer",
+            "defaultValue": 15,
+            "min": 0
+          },
+          {
+            "name": "p_title_width",
+            "displayName": "标签宽度",
+            "type": "Integer",
+            "defaultValue": 300,
+            "min": 0
+          },
+          {
+            "name": "p_title_height",
+            "displayName": "标签高度",
+            "type": "Integer",
+            "defaultValue": 300,
+            "min": 0
+          },
+          {
+            "name": "p_text_height",
+            "displayName": "主体高度",
+            "type": "Integer",
+            "defaultValue": 130,
+            "min": 0
+          },
+          {
+            "name": "p_title_TextStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle",
+            "defaultValue": {
+              "fontSize": "30pt"
+            }
+          }
+        ]
+      },
+      {
+        "type": "title"
+      },
+      {
+        "type": "interaction"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "type": "focus"
+    },
+    {
+      "type": "export"
+    },
+    {
+      "type": "filter"
+    }
+  ],
+  "analysis": []
+}

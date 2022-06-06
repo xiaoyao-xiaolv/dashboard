@@ -1,0 +1,21 @@
+{
+    "id": "b0ec2fd0-6a41-11ec-8319-955996514ab0",
+    "name": "三维地图",
+    "displayName": "",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [
+        "https://webapi.amap.com/maps?v=1.4.15&key={{高德地图API}}&plugin=Map3D,AMap.DistrictSearch,AMap.DistrictLayer"
+    ],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {
+        "高德地图API": "a5e3195903211f0282e5d9c8e77ec3fd"
+    },
+    "cliVersion": "5.0.1"
+}

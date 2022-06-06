@@ -1,0 +1,186 @@
+{
+    "dataBinding": {
+    },
+    "options": {
+        "visual":[
+            {
+                "displayName": "地图设置",
+                "properties":[
+                    {
+                        "name": "centerText",
+                        "displayName": "加载区域",
+                        "type": "Text",
+                        "defaultValue": "陕西省"
+                    },
+                    {
+                        "name": "sn_show",
+                        "displayName": "显示下一级",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "pitch",
+                        "displayName": "倾斜角度",
+                        "type": "Integer",
+                        "defaultValue": 30,
+                        "min": 0,
+                        "max": 90
+                    },
+                    {
+                        "name": "zoom_min",
+                        "displayName": "最小缩放级别",
+                        "type": "Integer",
+                        "defaultValue": 4,
+                        "min": 0,
+                        "max": 20
+                    },
+                    {
+                        "name": "zoom",
+                        "displayName": "缩放级别",
+                        "type": "Integer",
+                        "defaultValue": 9,
+                        "min": 0,
+                        "max": 20
+                    },
+                    {
+                        "name": "bg_color",
+                        "displayName": "地图背景色",
+                        "type": "Color",
+                        "defaultValue": "#2A4455"
+                    },
+                    {
+                        "name": "zoom_max",
+                        "displayName": "最大缩放级别",
+                        "type": "Integer",
+                        "defaultValue": 18,
+                        "min": 0,
+                        "max": 20
+                    },
+                    {
+                        "name": "height",
+                        "displayName": "显示高度",
+                        "type": "Integer",
+                        "defaultValue": 50000,
+                        "min": 0
+                    },
+                    {
+                        "name": "bg_strokeColor",
+                        "displayName": "描边颜色",
+                        "type": "Color",
+                        "defaultValue": "#99ffff"
+                    },
+                    {
+                        "name": "strokeWeight",
+                        "displayName": "描边宽度",
+                        "type": "Integer",
+                        "defaultValue": 2,
+                        "min": 0
+                    },
+                    {
+                        "name": "wall_color",
+                        "displayName": "垂面颜色",
+                        "type": "Color",
+                        "defaultValue": "#0088ffcc"
+                    },
+                    {
+                        "name": "mapStyle",
+                        "displayName": "地图样式",
+                        "type": "Enum",
+                        "items": [{
+                            "value": "normal",
+                            "displayName": "标准"
+                        }, {
+                            "value": "dark",
+                            "displayName": "幻影黑"
+                        },{
+                            "value": "light",
+                            "displayName": "月光银"
+                        },{
+                            "value": "whitesmoke",
+                            "displayName": "远山黛"
+                        },{
+                            "value": "fresh",
+                            "displayName": "草色青"
+                        },{
+                            "value": "grey",
+                            "displayName": "雅士灰"
+                        },{
+                            "value": "graffiti",
+                            "displayName": "涂鸦"
+                        },{
+                            "value": "macaron",
+                            "displayName": "马卡龙"
+                        },{
+                            "value": "blue",
+                            "displayName": "靛青蓝"
+                        },{
+                            "value": "darkblue",
+                            "displayName": "极夜蓝"
+                        },{
+                            "value": "wine",
+                            "displayName": "酱籽"
+                        }
+                        ],
+                        "defaultValue": "whitesmoke"
+                    },
+                    {
+                        "name": "v_dl",
+                        "displayName": "显示路线",
+                        "type": "Boolean",
+                        "defaultValue": true
+                    }
+                ]
+            },
+            {
+                "displayName": "标签设置",
+                "properties":[
+                    {
+                        "name": "v_text",
+                        "displayName": "显示标签",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "bt_bgcolor",
+                        "type": "Color",
+                        "displayName": "标签背景色",
+                        "defaultValue": "rgba(190, 185, 185, 0.08)"
+                    },
+                    {
+                        "name": "bt_text",
+                        "type": "Color",
+                        "displayName": "标签边框色",
+                        "defaultValue": "rgba(204, 204, 204, 0.61)"
+                    },
+                    {
+                        "name": "bt_text_style",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "10pt"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        }
+    ],
+    "analysis": []
+}

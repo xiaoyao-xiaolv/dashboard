@@ -1,0 +1,405 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                    }
+                ]
+            },
+            {
+                "name": "title",
+                "displayNameKey": "标题",
+                "kind": "grouping"
+            },
+            {
+                "name": "location",
+                "displayNameKey": "位置",
+                "kind": "grouping"
+            },
+            {
+                "name": "longitude",
+                "displayNameKey": "经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "latitude",
+                "displayNameKey": "纬度",
+                "kind": "grouping"
+            },
+            {
+                "name": "tooltipFields",
+                "displayNameKey": "工具提示",
+                "kind": "attributeOrValue"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "title": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "min": 0
+                            },
+                            "latitude": {
+                                "min": 0
+                            }
+                        },
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "title": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min":0
+                            },
+                            "longitude": {
+                                "min": 1
+                            },
+                            "latitude": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "title": {
+                    "max": 1
+                },
+                "location": {
+                    "max": 1
+                },
+                "longitude": {
+                    "max": 1
+                },
+                "latitude": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "地图设置",
+                "properties": [
+                    {
+                        "name": "zoomEnable",
+                        "type": "Boolean",
+                        "displayName": "是否允许缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "地图缩放级别",
+                        "name": "zoom",
+                        "type": "Integer",
+                        "max": 28,
+                        "min": 3,
+                        "defaultValue": 12
+                    },
+                    {
+                        "name": "centralLocation",
+                        "type": "Text",
+                        "displayName": "地图中心点经度",
+                        "defaultValue": "北京市"
+                    },
+                    {
+                        "name": "map_heading",
+                        "displayName": "旋转角度",
+                        "type": "Integer",
+                        "defaultValue": 0,
+                        "min":0
+                    },
+                    {
+                        "name": "wx_tilt",
+                        "displayName": "倾斜角度",
+                        "type": "Integer",
+                        "min":0,
+                        "max": 85,
+                        "defaultValue": 73
+                    },
+                    {
+                        "name": "wx_gds_skyColors",
+                        "type": "Color",
+                        "displayName": "天空颜色",
+                        "defaultValue": "rgba(186, 211, 252, 1)"
+                    },
+                    {
+                        "name": "wx_zs_skyColors",
+                        "type": "Color",
+                        "displayName": "过度颜色",
+                        "defaultValue": "rgba(226, 237, 248, 0)"
+                    },
+                    {
+                        "name": "poiText",
+                        "type": "Boolean",
+                        "displayName": "显示名字",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "poiIcon",
+                        "type": "Boolean",
+                        "displayName": "显示图标",
+                        "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "地图主题样式",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "defaultValue": "darkStyle",
+                        "items": [
+                            {"value":"def","displayNameKey":"标准"},
+                            {"value":"darkStyle","displayNameKey":"黑夜风"},
+                            {"value":"purpleStyle","displayNameKey":"深灰色"},
+                            {"value":"whiteStyle","displayNameKey":"浅灰色"},
+                            {"value":"goldStyle","displayNameKey":"金色"},
+                            {"value":"greenStyle","displayNameKey":"绿野仙踪"},
+                            {"value":"blueStyle","displayNameKey":"青花瓷"}
+                        ]
+                    },
+                    {
+                        "displayNameKey": "地图类型",
+                        "name": "mapType",
+                        "type": "Enum",
+                        "defaultValue": "point",
+                        "items": [
+                            {"value":"point","displayNameKey":"点地图"},
+                            {"value":"heatmap","displayNameKey":"热力图"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "displayName": "图点设置",
+                "properties": [
+                    {
+                        "name": "mk_type",
+                        "type": "Enum",
+                        "displayName": "图点类型",
+                        "defaultValue": "radar",
+                        "items": [
+                            {"value":"radar","displayNameKey":"雷达图"},
+                            {"value":"breath","displayNameKey":"呼吸图"},
+                            {"value":"bubble","displayNameKey":"扩散图"},
+                            {"value":"wave","displayNameKey":"波纹图"},
+                            {"value":"point","displayNameKey":"散点图"},
+                            {"value":"none","displayNameKey":"不显示"}
+                        ]
+                    },
+                    {
+                        "name": "ra_color",
+                        "type": "Palette",
+                        "displayName": "图点颜色",
+                        "defaultValue": "#0fd920"
+                    },
+                    {
+                        "name": "ra_fx",
+                        "type": "Boolean",
+                        "displayName": "顺时针/逆时针",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "ra_random",
+                        "type": "Boolean",
+                        "displayName": "随机扩散",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "ra_duration",
+                        "type": "Integer",
+                        "min": 100,
+                        "displayName": "旋转周期",
+                        "defaultValue": 1000
+                    },
+                    {
+                        "name": "ra_trail",
+                        "type": "Integer",
+                        "min": 100,
+                        "displayName": "尾迹长度",
+                        "defaultValue": 360
+                    },
+                    {
+                        "name": "ra_radius",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "半径",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "ra_moving",
+                        "displayName": "渐变大小",
+                        "type": "Boolean",
+                        "defaultValue": false
+                    }
+                ]
+            },
+            {
+                "displayName": "热力地图设置",
+                "properties": [
+                    {
+                        "displayNameKey": "图形类型",
+                        "name": "mp_type",
+                        "type": "Enum",
+                        "defaultValue": "3d",
+                        "items": [
+                            {"value":"flat","displayNameKey":"平面"},
+                            {"value":"3d","displayNameKey":"三维"},
+                            {"value":"heat","displayNameKey":"柱状图"}
+                        ]
+                    },
+                    {
+                        "name": "mp_size",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "图点大小",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "mp_max",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "临界值",
+                        "defaultValue": 40
+                    },
+                    {
+                        "name": "mp_height",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "高度",
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "mp_color",
+                        "type": "Palette",
+                        "displayName": "颜色分配",
+                        "defaultValue": [
+                            "rgb(200, 200, 200, 0)",
+                            "rgb(200, 200, 200, 0)",
+                            "rgb(226, 95, 0, 0.9)",
+                            "rgb(239, 209, 19, 0.9)"
+                        ]
+                    },
+                    {
+                        "name": "mp_riseTime",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "动画时长",
+                        "defaultValue": 1000
+                    },
+                    {
+                        "name": "mp_max_height",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "最大高度",
+                        "defaultValue": 200
+                    },
+                    {
+                        "name": "mp_main_height",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "最小高度",
+                        "defaultValue": 1000
+                    }
+                ]
+            },
+            {
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "tooltipBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "name": "tooltipBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "tooltipPadding",
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 10,
+                            "bottom": 10,
+                            "left": 10,
+                            "right": 10
+                        }
+                    },
+                    {
+                        "name": "tooltipTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "10pt"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

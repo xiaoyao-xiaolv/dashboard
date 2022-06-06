@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./",
+      "sourceMap": true,
+      "module": "commonjs",
+      "target": "ES5",
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "lib": [
+        "esnext",
+        "dom"
+      ]
+    },
+    "include": [
+      "./src", "./visual.d.ts"
+    ],
+    "exclude": [
+      "node_modules",
+      "assets",
+      "dist"
+    ]
+  }

@@ -1,0 +1,541 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数值",
+                "kind": "value"
+            },
+            {
+                "name": "location",
+                "displayNameKey": "地点",
+                "kind": "grouping"
+            },
+            {
+                "name": "longitude",
+                "displayNameKey": "经度",
+                "kind": "grouping"
+            },
+            {
+                "name": "latitude",
+                "displayNameKey": "纬度",
+                "kind": "grouping"
+            },
+            {
+                "name": "para",
+                "displayNameKey": "参数",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min": 1
+                            },
+                            "longitude": {
+                                "min": 0
+                            },
+                            "latitude": {
+                                "min": 0
+                            }
+                        },
+                        {
+                            "values": {
+                                "min": 1
+                            },
+                            "location": {
+                                "min":0
+                            },
+                            "longitude": {
+                                "min": 1
+                            },
+                            "latitude": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "values": {
+                    "max": 1
+                },
+                "location": {
+                    "max": 1
+                },
+                "longitude": {
+                    "max": 1
+                },
+                "latitude": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "地图设置",
+                "properties": [
+                    {
+                        "name": "zoomEnable",
+                        "type": "Boolean",
+                        "displayName": "是否允许缩放",
+                        "defaultValue": true
+                    },
+                    {
+                        "displayNameKey": "地图缩放级别",
+                        "name": "zoom",
+                        "type": "Integer",
+                        "max": 28,
+                        "min": 3,
+                        "defaultValue": 12
+                    },
+                    {
+                        "name": "centralLocation",
+                        "type": "Text",
+                        "displayName": "地图中心点经度",
+                        "defaultValue": "北京市"
+                    },
+                    {
+                        "name": "map_heading",
+                        "displayName": "旋转角度",
+                        "type": "Integer",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "wx_show",
+                        "type": "Boolean",
+                        "displayName": "卫星模式",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "poiText",
+                        "type": "Boolean",
+                        "displayName": "显示名字",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "poiIcon",
+                        "type": "Boolean",
+                        "displayName": "显示图标",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "trafficOn",
+                        "type": "Boolean",
+                        "displayName": "显示交通图",
+                        "defaultValue": false
+                    },
+                    {
+                        "displayNameKey": "地图主题样式",
+                        "name": "mapStyle",
+                        "type": "Enum",
+                        "defaultValue": "midnight",
+                        "items": [
+                            {"value":"normal","displayNameKey":"标准"},
+                            {"value":"dark","displayNameKey":"黑夜风"},
+                            {"value":"light","displayNameKey":"清新蓝"},
+                            {"value":"redalert","displayNameKey":"红色警戒"},
+                            {"value":"googlelite","displayNameKey":"精简"},
+                            {"value":"grassgreen","displayNameKey":"自然绿"},
+                            {"value":"midnight","displayNameKey":"午夜蓝"},
+                            {"value":"pink","displayNameKey":"浪漫粉"},
+                            {"value":"darkgreen","displayNameKey":"青春绿"},
+                            {"value":"bluish","displayNameKey":"清新蓝绿"},
+                            {"value":"grayscale","displayNameKey":"高端灰"},
+                            {"value":"hardedge","displayNameKey":"强边界"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "displayName": "3D视图",
+                "properties": [
+                    {
+                        "name": "sd_show",
+                        "type": "Boolean",
+                        "displayName": "开启",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "wx_tilt",
+                        "displayName": "倾斜角度",
+                        "type": "Integer",
+                        "min":0,
+                        "max": 85,
+                        "defaultValue": 73
+                    },
+                    {
+                        "name": "wx_gds_skyColors",
+                        "type": "Color",
+                        "displayName": "天空颜色",
+                        "defaultValue": "rgba(186, 211, 252, 1)"
+                    },
+                    {
+                        "name": "wx_zs_skyColors",
+                        "type": "Color",
+                        "displayName": "过度颜色",
+                        "defaultValue": "rgba(226, 237, 248, 0)"
+                    }
+                ]
+            },
+            {
+                "displayName": "地图控件",
+                "properties": [
+                    {
+                        "name": "scaleControl",
+                        "type": "Boolean",
+                        "displayName": "显示比例尺",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "zoomControl",
+                        "type": "Boolean",
+                        "displayName": "显示缩放控件",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "control3D",
+                        "type": "Boolean",
+                        "displayName": "3D控制器",
+                        "defaultValue": false
+                    }
+                ]
+            },
+            {
+                "displayName": "标点设置",
+                "properties": [
+                    {
+                        "name": "mk_type",
+                        "type": "Boolean",
+                        "displayName": "显示标点",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "mk_icon",
+                        "type": "Text",
+                        "displayName": "图标地址",
+                        "regex": "^https://([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$|http://([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$",
+                        "defaultValue": "http://"
+                    },
+                    {
+                        "name": "mk_width",
+                        "type": "Integer",
+                        "displayName": "图标宽度",
+                        "defaultValue": 40
+                    },
+                    {
+                        "name": "mk_height",
+                        "type": "Integer",
+                        "displayName": "图标高度",
+                        "defaultValue": 40
+                    },
+                    {
+                        "name": "mk_x",
+                        "type": "Integer",
+                        "displayName": "图标X偏移",
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "mk_y",
+                        "type": "Integer",
+                        "displayName": "图标Y偏移",
+                        "defaultValue": 0
+                    }
+                ]
+            },
+            {
+                "displayName": "区域设置",
+                "properties": [
+                    {
+                        "name": "qy_show",
+                        "type": "Boolean",
+                        "displayName": "启用/关闭",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "qy_type",
+                        "type": "Boolean",
+                        "displayName": "选中/反选",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "qy_citys",
+                        "type": "Text",
+                        "displayName": "地理位置",
+                        "defaultValue": "北京市"
+                    },
+                    {
+                        "name": "qy_topFillColor",
+                        "type": "Color",
+                        "displayName": "顶部颜色",
+                        "defaultValue": "#5679ea"
+                    },
+                    {
+                        "name": "qy_topFillOpacity",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "顶部透明度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "qy_sideFillColor",
+                        "type": "Color",
+                        "displayName": "侧面颜色",
+                        "defaultValue": "#5679ea"
+                    },
+                    {
+                        "name": "qy_sideFillOpacity",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "侧面透明度",
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "qy_height",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "阴影高度",
+                        "defaultValue": 50
+                    }
+                ]
+            },
+            {
+                "displayName": "移动轨迹",
+                "properties": [
+                    {
+                        "name": "yd_show",
+                        "type": "Boolean",
+                        "displayName": "开启",
+                        "defaultValue": false
+                    },
+                    {
+                        "displayNameKey": "路线类型",
+                        "name": "yd_line_class",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "GD",
+                                "displayNameKey": "固定路线"
+                            },
+                            {
+                                "value": "DH",
+                                "displayNameKey": "导航路线"
+                            }
+                        ],
+                        "defaultValue": "固定路线 "
+                    },
+                    {
+                        "displayNameKey": "导航类型",
+                        "name": "yd_dh_type",
+                        "type": "Enum",
+                        "items": [
+                            {
+                                "value": "CAR",
+                                "displayNameKey": "驾车路线"
+                            },
+                            {
+                                "value": "WAL",
+                                "displayNameKey": "步行路线"
+                            },
+                            {
+                                "value": "BUS",
+                                "displayNameKey": "公交路线"
+                            },
+                            {
+                                "value": "RID",
+                                "displayNameKey": "骑行路线"
+                            }
+                        ],
+                        "defaultValue": "驾车路线 "
+                    },
+                    {
+                        "name": "yd_line_text",
+                        "type": "Text",
+                        "displayName": "路线字段",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "yd_line_star",
+                        "type": "Text",
+                        "displayName": "起点字段",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "yd_line_end",
+                        "type": "Text",
+                        "displayName": "终点字段",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "yd_icon_show",
+                        "type": "Boolean",
+                        "displayName": "显示图标",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "yd_line_icon",
+                        "type": "Image",
+                        "displayName": "图标"
+                    },
+                    {
+                        "name": "dy_icon_size",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "图标大小",
+                        "defaultValue": 48
+                    },
+                    {
+                        "name": "dy_icon_xy",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "图标偏移",
+                        "defaultValue": 28
+                    },
+                    {
+                        "name": "dy_icon_speed",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "移动速度",
+                        "defaultValue": 500
+                    },
+                    {
+                        "name": "yd_icon_xz",
+                        "type": "Boolean",
+                        "displayName": "自动旋转",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "yd_autoCenter",
+                        "type": "Boolean",
+                        "displayName": "视图跟随",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "yd_line_show",
+                        "type": "Boolean",
+                        "displayName": "显示路线",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "yd_strokeColor",
+                        "type": "Color",
+                        "displayName": "路线颜色",
+                        "defaultValue": "#5298ff"
+                    },
+                    {
+                        "name": "yd_strokeWeight",
+                        "type": "Integer",
+                        "displayName": "路线宽度",
+                        "min": 0,
+                        "defaultValue": 6
+                    },
+                    {
+                        "name": "yd_strokeOpacity",
+                        "type": "Integer",
+                        "displayName": "路线透明度",
+                        "min": 0,
+                        "defaultValue": 80
+                    }
+                ]
+            },
+            {
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "tooltipBackgroundColor",
+                        "type": "Color",
+                        "displayName": "背景颜色",
+                        "defaultValue": "rgba(66, 125, 249, 0.3)"
+                    },
+                    {
+                        "name": "tooltipBackgroundImage",
+                        "type": "Image",
+                        "displayName": "背景图片"
+                    },
+                    {
+                        "displayNameKey": "宽度",
+                        "name": "tooltipWidth",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 120
+                    },
+                    {
+                        "displayNameKey": "高度",
+                        "name": "tooltipHeight",
+                        "type": "Integer",
+                        "min": 10,
+                        "defaultValue": 60
+                    },
+                    {
+                        "name": "tooltipBorderColor",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "rgba(115, 216, 255, 0.88)"
+                    },
+                    {
+                        "displayNameKey": "边框宽度",
+                        "name": "tooltipBorderWidth",
+                        "type": "Integer",
+                        "defaultValue": 1
+                    },
+                    {
+                        "displayNameKey": "边框内边距",
+                        "name": "tooltipPadding",
+                        "type": "Position",
+                        "defaultValue": {
+                            "top": 10,
+                            "bottom": 10,
+                            "left": 10,
+                            "right": 10
+                        }
+                    },
+                    {
+                        "name": "tooltipTextStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体设置",
+                        "inheritFrom": "dashboard.textStyle",
+                        "defaultValue": {
+                            "fontSize": "14px"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        }
+    ],
+    "analysis": []
+}
