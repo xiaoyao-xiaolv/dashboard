@@ -2,15 +2,16 @@
   "name": "dashboard",
   "version": "1.0.0",
   "description": "可视化组件",
-  "dependencies": {},
   "devDependencies": {
     "@grapecity/wyn-visual-tools": "6.0.0",
-    "glob": "^7.1.7"
+    "glob": "^7.1.7",
+    "semver": "^7.3.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "node migrate",
-    "package": "node prepare"
+    "package": "node prepare",
+    "upgrade": "node upgrade"
   },
   "repository": {
     "type": "git",
