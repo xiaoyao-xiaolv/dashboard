@@ -37,14 +37,14 @@ export default class Visual {
     , [78.38, 71.88, 60.26, 75.38, 74.68, 80.95, 89.29, 91.21, 89.47]
     , ["复工人数", "总人数"]
   ];
-  constructor(dom: HTMLDivElement, host: any) {
+  constructor(dom: HTMLDivElement, host: any, options: VisualNS.IVisualUpdateOptions) {
     this.container = dom;
     this.chart = echarts.init(dom);
     this.items = [];
     this.isMock = true;
     this.allShow = true;
     this.host = host;
-    this.properties = {};
+    this.properties = options.properties;
     this.bindEvents();
     this.isTooltipModelShown = false;
     this.selection = [];
@@ -723,7 +723,7 @@ export default class Visual {
     if (updateOptions.properties.barSymbolType !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
     }
-    if (updateOptions.dataViews[0].plain.profile.ContrastValue.values.length != 0) {
+    if (updateOptions.dataViews[0] && updateOptions.dataViews[0].plain.profile.ContrastValue.values.length != 0) {
       hiddenOptions = hiddenOptions.concat(['showBackground'])
     }else{
       if (!updateOptions.properties.showBackground) {
