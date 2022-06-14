@@ -1,0 +1,17 @@
+{
+    "id": "c7d42f60-32f9-11ec-93d8-7d0c935474c2",
+    "name": "组合饼图",
+    "displayName": "组合饼图",
+    "displayNameKey": "",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "5.0.1"
+}
