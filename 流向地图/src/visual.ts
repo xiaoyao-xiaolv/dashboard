@@ -45,6 +45,7 @@ export default class Visual {
   private legendData: any;
   private destinationName: string;
   private valuesName: string;
+  private numberFormat:string;
   private departureName: string;
   private destinationlatName: string;
   private destinationlongName: string;
@@ -220,6 +221,7 @@ export default class Visual {
       const plainData = dataView.plain.data;
       this.destinationName = plainProfile.destination.values[0].display
       this.valuesName = plainProfile.values.values[0].display;
+      this.numberFormat = plainProfile.values.values[0].format;
       this.departureName = plainProfile.departure.values[0].display
       if (plainProfile.values.values.length && plainProfile.departure.values.length && plainProfile.destination.values.length &&
         plainProfile.departurelat.values.length && plainProfile.departurelong.values.length &&
@@ -257,6 +259,8 @@ export default class Visual {
     let departureValue = isMock ? ['北京', '上海', '广州市'] : this.legendData;
     let color = isMock ? ['#a6c84c', '#ffa022', '#46bee9'] : options.palette;
     var series = [];
+    var currentHost = this.host;
+    var format = this.numberFormat;
     items.map((item: any, i: number) => {
       if (item.length) {
         let j = i % color.length;
@@ -339,7 +343,7 @@ export default class Visual {
         trigger: 'item',
         formatter: function (params, ticket, callback) {
           if (params.seriesType == "lines") {
-            return params.data.fromName + " --> " + params.data.toName + "<br />" + params.data.value;
+            return params.data.fromName + " --> " + params.data.toName + "<br />" +  currentHost.formatService.format(format, params.data.value)  ;
           } else {
             return params.name;
           }

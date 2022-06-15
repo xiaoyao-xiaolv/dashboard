@@ -38,8 +38,7 @@ export default class Visual extends WynVisual {
     this.host = host;
     this.chart = echarts.init(dom);
     this.items = [];
-    this.properties = {
-    };
+    this.properties = options.properties;
     // create a  div
     this.shadowDiv = document.createElement("div");
     this.container.appendChild(this.shadowDiv);

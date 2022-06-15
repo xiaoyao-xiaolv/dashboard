@@ -1,7 +1,1 @@
-::-webkit-scrollbar {
-  display: none;
-}
-#visualDom {
-  overflow: hidden;
-}
-
+::-webkit-scrollbar{display:none}#visualDom{overflow:hidden}

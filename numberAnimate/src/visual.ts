@@ -118,10 +118,6 @@ export default class Visual extends WynVisual {
 
     const integerLength = options.properties.integerType === 'auto' ? 'auto' : options.properties.integerLength
 
-    delete options.properties.backgroundColor
-    delete options.properties.textStyle
-    delete options.properties.integerLength
-
     this.options.digit = {
       ...options.properties,
       integerLength,
