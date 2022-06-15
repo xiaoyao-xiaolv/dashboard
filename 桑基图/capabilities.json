@@ -1,0 +1,227 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "数据",
+                "kind": "value"
+            },
+            {
+                "name": "keys",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "conditions": [
+            {
+                "values": { "max": 1 }
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain":
+                {
+                    "required": [
+                        {
+                            "values":
+                            {
+                                "min": 1
+                            },
+                            "keys":
+                            {
+                                "min": 1
+                            }
+                        }]
+                }
+            }
+        ]
+
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "textStyle",
+                        "type": "TextStyle",
+                        "displayName": "字体样式",
+                        "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "name": "tooltip",
+                        "type": "Boolean",
+                        "displayName": "开启提示",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "aria",
+                        "type": "Boolean",
+                        "displayName": "开启花纹",
+                        "defaultValue": false
+                    },
+                    {
+                        "name": "draggable",
+                        "type": "Boolean",
+                        "displayName": "开启拖拽",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "orderby",
+                        "type": "Boolean",
+                        "displayName": "分类排序",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "total",
+                        "type": "Boolean",
+                        "displayName": "开启汇总",
+                        "defaultValue": false
+                    }
+                ]
+            },
+            {
+
+                "displayName": "数据标签",
+                "properties": [
+                    {
+                        "name": "rotate",
+                        "type": "Integer",
+                        "displayName": "标签旋转角度",
+                        "max": 360,
+                        "main": 0,
+                        "defaultValue": 0
+                    },
+                    {
+                        "name": "height",
+                        "type": "Integer",
+                        "min": 10,
+                        "max": 500,
+                        "displayName": "图表高度",
+                        "defaultValue": 90
+                    },
+                    {
+                        "name": "nodeWidth",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "标签宽度",
+                        "defaultValue": 20
+                    },
+                    {
+                        "name": "nodeGap",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "标签间距",
+                        "defaultValue": 8
+                    },
+                    {
+                        "name": "layoutIterations",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 100,
+                        "displayName": "迭代次数",
+                        "defaultValue": 32
+                    },
+                    {
+                        "name": "width",
+                        "type": "Integer",
+                        "displayName": "图表宽度",
+                        "defaultValue": 90,
+                        "min": 10,
+                        "max": 500
+                    },
+                    {
+                        "name": "curveness",
+                        "type": "Float",
+                        "displayName": "折线曲率",
+                        "max": 100,
+                        "step": 0.1,
+                        "min": 0,
+                        "defaultValue": 0.5
+                    },
+                    {
+                        "name": "lineHeight",
+                        "type": "Integer",
+                        "displayName": "标签行高",
+                        "defaultValue": 0,
+                        "min": 0,
+                        "max": 100
+                    },
+                    {
+                        "name": "unit",
+                        "type": "Text",
+                        "displayName": "数值单位",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "backgroundColor",
+                        "type": "Color",
+                        "displayName": "标签颜色",
+                        "defaultValue": ""
+                    },
+                    {
+                        "name": "label",
+                        "type": "Enum",
+                        "displayName": "标签位置",
+                        "items": [{
+                            "value": "top",
+                            "displayName": "上"
+                        }, {
+                            "value": "bottom",
+                            "displayName": "下"
+                        }, {
+                            "value": "left",
+                            "displayName": "左"
+                        }, {
+                            "value": "right",
+                            "displayName": "右"
+                        }],
+                        "defaultValue": "top"
+                    },
+                    {
+                        "name": "chartType",
+                        "type": "Enum",
+                        "displayName": "图表朝向",
+                        "items": [{
+                            "value": "vertical",
+                            "displayName": "垂直"
+                        }, {
+                            "value": "horizontal",
+                            "displayName": "水平"
+                        }],
+                        "defaultValue": "horizontal"
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "appearance"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "focus"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "filter"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}

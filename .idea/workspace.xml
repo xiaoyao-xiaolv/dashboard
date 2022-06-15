@@ -14,120 +14,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="修改图片轮播插件字段名称问题">
-      <change afterPath="$PROJECT_DIR$/三维地图/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/capabilities.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/i18nResources/en-US.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/i18nResources/zh-CN.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/i18nResources/zh-TW.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/src/AreaJson.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/src/visual.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/style/visual.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/visual.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/visual.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/三维地图/webpack.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/capabilities.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/i18nResources/en-US.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/i18nResources/zh-CN.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/i18nResources/zh-TW.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/src/style.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/src/visual.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/style/visual.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/visual.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/visual.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V1.0/webpack.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/README.en.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/capabilities.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/i18nResources/en-US.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/i18nResources/zh-CN.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/i18nResources/zh-TW.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/AreaJson.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/BMapStyle.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/IMapStyle.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/IShape.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/MCircleLayer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/MHeatmapLayer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/_temp.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/src/visual.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/style/visual.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/visual.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/visual.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/百度地图V2.0/webpack.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/capabilities.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/i18nResources/en-US.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/i18nResources/zh-CN.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/i18nResources/zh-TW.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/readme.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/redme.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/src/BubbleGeoJson.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/src/BubbleSvg.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/src/IShape.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/src/visual.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/style/visual.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/visual.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/visual.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/路线地图/webpack.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/README.en.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/capabilities.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/i18nResources/en-US.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/i18nResources/zh-CN.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/i18nResources/zh-TW.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/src/AreaJson.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/src/Bubble.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/src/CardPoint.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/src/IShape.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/src/Line.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/src/Point.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/src/visual.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/style/visual.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/visual.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/visual.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图V3.0/webpack.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/README.en.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/assets/icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/capabilities.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/i18nResources/en-US.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/i18nResources/zh-CN.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/i18nResources/zh-TW.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/AreaJson.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/IShape.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/Point.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/visual.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/style/visual.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/visual.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/visual.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/webpack.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zk_三维地图" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/zk_百度地图2.0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/zk_百度地图_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/zk_路线地图" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/zk_高德地图3.0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/zk_高德地图_柱状图" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/桑基图" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,11 +62,12 @@
     <option name="autoscrollFromSource" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/三维地图" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/桑基图" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -290,7 +179,8 @@
       <workItem from="1650854871342" duration="19000" />
       <workItem from="1651022700652" duration="2290000" />
       <workItem from="1654163600702" duration="31000" />
-      <workItem from="1654504440169" duration="1236000" />
+      <workItem from="1654504440169" duration="1385000" />
+      <workItem from="1655263946551" duration="322000" />
     </task>
     <task id="LOCAL-00001" summary="修改图片轮播插件字段名称问题">
       <created>1650793513096</created>
@@ -299,7 +189,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650793513097</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="修改图片轮播插件字段名称问题">
+      <created>1654506162259</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1654506162259</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,6 +230,31 @@
             </State>
           </value>
         </entry>
+        <entry key="6bea8e93-3b99-4afa-99ff-8c63d24b6b3f">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:E:/插件代码/GrapeCity官方插件/桑基图" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -344,6 +266,11 @@
             </State>
           </value>
         </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="6bea8e93-3b99-4afa-99ff-8c63d24b6b3f" value="TOOL_WINDOW" />
       </map>
     </option>
     <option name="RECENT_FILTERS">
