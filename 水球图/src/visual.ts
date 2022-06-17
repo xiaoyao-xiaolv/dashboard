@@ -15,12 +15,11 @@ export default class Visual {
 
     static mockItems = 0.5;
 
-    constructor(dom: HTMLDivElement, host: any) {
+    constructor(dom: HTMLDivElement, host: any, options: VisualNS.IVisualUpdateOptions) {
         this.container = dom;
         this.chart = echarts.init(dom);
         this.items = [];
-        this.properties = {
-        };
+        this.properties = options.properties;
         this.selectionManager = host.selectionService.createSelectionManager();
         this.host = host;
         this.selectEvent();
@@ -256,45 +255,7 @@ export default class Visual {
             }
             return format = formatService.format(formate, number, realDisplayUnit);
         } else {
-            const units = [{
-                value: 1,
-                unit: '',
-                DisplayUnit: 'none'
-            }, {
-                value: 100,
-                unit: '百',
-                DisplayUnit: 'hundreds'
-            }, {
-                value: 1000,
-                unit: '千',
-                DisplayUnit: 'thousands'
-            }, {
-                value: 10000,
-                unit: '万',
-                DisplayUnit: 'tenThousands'
-            }, {
-                value: 100000,
-                unit: '十万',
-                DisplayUnit: 'hundredThousand'
-            }, {
-                value: 1000000,
-                unit: '百万',
-                DisplayUnit: 'millions'
-            }, {
-                value: 10000000,
-                unit: '千万',
-                DisplayUnit: 'tenMillion'
-            }, {
-                value: 100000000,
-                unit: '亿',
-                DisplayUnit: 'hundredMillion'
-            }, {
-                value: 1000000000,
-                unit: '十亿',
-                DisplayUnit: 'billions'
-            }]
-            let formatUnit = units.find((item) => item.value === Number(dataUnit))
-            return this.formatD(format, formate, formatUnit.DisplayUnit)
+            return this.formatD(format, formate, dataUnit);
         }
     }
 
