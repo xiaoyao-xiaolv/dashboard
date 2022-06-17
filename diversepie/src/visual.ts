@@ -53,7 +53,7 @@ export default class Visual extends WynVisual {
     this.isMock = true;
     this.bindEvents();
     this.selectionManager = host.selectionService.createSelectionManager();
-    this.properties = {};
+    this.properties = options.properties;
     this.format = {};
     this.preview = false;
   }
@@ -622,7 +622,6 @@ export default class Visual extends WynVisual {
 
   public onResize() {
     this.chart.resize();
-    this.render();
   }
 
   public getInspectorHiddenState(updateOptions: VisualNS.IVisualUpdateOptions): string[] {

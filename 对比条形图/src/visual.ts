@@ -697,7 +697,6 @@ export default class Visual {
   }
   public onResize() {
     this.chart.resize();
-    this.render();
   }
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
