@@ -368,6 +368,7 @@ export default class Visual extends WynVisual {
             name: seriesData[index],
             type: 'pie',
             data: [],
+            center: [`${options.centerX}%`, `${options.centerY}%`],
             itemStyle: {
               normal: {
                 color: {
@@ -611,7 +612,7 @@ export default class Visual extends WynVisual {
       yAxis: {
         show: false
       },
-      series: getSeries(),
+      series: [getSeries()[0]],
     }
     this.chart.setOption(option)
   }
