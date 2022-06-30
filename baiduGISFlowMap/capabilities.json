@@ -210,18 +210,18 @@
                         "type": "Enum",
                         "defaultValue": "midnight",
                         "items": [
-                            {"value":"normal","displayNameKey":"标准"},
-                            {"value":"dark","displayNameKey":"黑夜风"},
-                            {"value":"light","displayNameKey":"清新蓝"},
-                            {"value":"redalert","displayNameKey":"红色警戒"},
-                            {"value":"googlelite","displayNameKey":"精简"},
-                            {"value":"grassgreen","displayNameKey":"自然绿"},
-                            {"value":"midnight","displayNameKey":"午夜蓝"},
-                            {"value":"pink","displayNameKey":"浪漫粉"},
-                            {"value":"darkgreen","displayNameKey":"青春绿"},
-                            {"value":"bluish","displayNameKey":"清新蓝绿"},
-                            {"value":"grayscale","displayNameKey":"高端灰"},
-                            {"value":"hardedge","displayNameKey":"强边界"}
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"标准"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"黑夜风"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"清新蓝"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"红色警戒"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"精简"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"自然绿"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"午夜蓝"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"浪漫粉"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"青春绿"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"清新蓝绿"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"高端灰"},
+                            {"value":"9eb4d6dc84b0b9162540621a7138916b","displayNameKey":"强边界"}
                         ]
                     },
                     {
