@@ -48,7 +48,7 @@ export default class Visual {
         center: [options.centerLongitude, options.centerLatitude],
         roam: options.zoomEnable,
         zoom: options.zoom,
-        mapStyle: {style : options.mapStyle},
+        mapStyleV2: {styleId : "a845146ba74d65c644992847fe911b47"},
       },
       visualMap: {
         show: false,

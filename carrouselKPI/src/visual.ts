@@ -139,8 +139,7 @@ export default class Visual extends WynVisual {
     //   }
     // })
 
-
-    $('.figure').on('click', (event) => {
+    this.root.delegate('.figure', 'click', (event) => {
       event.stopPropagation();
       let id = event.currentTarget.attributes[1].value;
       let sid = this.selectionIds[id];

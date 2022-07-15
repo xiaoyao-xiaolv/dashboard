@@ -343,7 +343,7 @@ export default class Visual {
       resizeEnable: true,
       zoom:options.zoom,
       roam: options.zoomEnable,
-      mapStyle:  {style : options.mapStyle},
+      mapStyleV2:  {styleId : "a845146ba74d65c644992847fe911b47"},
     }
     if (options.centerEnable) {
       bmap['center'] = [options.longitude, options.latitude];
