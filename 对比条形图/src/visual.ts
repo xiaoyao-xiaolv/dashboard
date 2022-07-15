@@ -37,14 +37,14 @@ export default class Visual {
     , [78.38, 71.88, 60.26, 75.38, 74.68, 80.95, 89.29, 91.21, 89.47]
     , ["复工人数", "总人数"]
   ];
-  constructor(dom: HTMLDivElement, host: any, options: VisualNS.IVisualUpdateOptions) {
+  constructor(dom: HTMLDivElement, host: any) {
     this.container = dom;
     this.chart = echarts.init(dom);
     this.items = [];
     this.isMock = true;
     this.allShow = true;
     this.host = host;
-    this.properties = options.properties;
+    this.properties = {};
     this.bindEvents();
     this.isTooltipModelShown = false;
     this.selection = [];
@@ -143,19 +143,32 @@ export default class Visual {
       this.isActualValue = !!plainData.profile.ActualValue.values.length;
       this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
       this.isDimension = !!plainData.profile.dimension.values.length;
+      let tooltipFields = [];
       if (this.Dimension != '') {
         let datas = plainData.data;
         const sortFlags = plainData.sort[this.Dimension].order;
         let newItems: any = sortFlags.map((flags) => {
           return newItems = datas.find((item) => item[this.Dimension] === flags && item)
         })
-        datas = newItems.filter((item) => item)
+        //get tooltipFields
+        if(plainData.profile.tooltipFields.values.length != 0){
+          this.items.push([])
+          plainData.profile.tooltipFields.values.forEach((val) => {
+            this.items.push([])
+            tooltipFields.push(val.display)
+          });
+          this.items[6] = tooltipFields
+        }
 
+        datas = newItems.filter((item) => item)
         datas.map((data: any) => {
           this.actualFormate = this.ActualValue && plainData.profile.ActualValue.values[0].format;
           this.contrastFormate = this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
           this.ActualValue && this.items[1].push(data[this.ActualValue]);
           this.ContrastValue && this.items[2].push(data[this.ContrastValue]);
+          tooltipFields.forEach((val,index) => {
+            this.items[7+index].push(data[val])
+          })
           if (this.ActualValue && this.ContrastValue) {
             this.items[3].push(Number((data[this.ActualValue] / data[this.ContrastValue] * 100).toFixed(2)));
           } else if (this.ActualValue) {
@@ -479,12 +492,18 @@ export default class Visual {
             return this.items[4][0]
           } else {
             let _toolTipText = ''
+            let dataIndex = params.dataIndex;
             // .toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,') 
             let actualTip = items[1][params.dataIndex]
             let contrast = items[2][params.dataIndex]
             _toolTipText += this.isDimension ? `${this.Dimension}: ${items[0][params.dataIndex]} <br>` : ''
             _toolTipText += this.isActualValue ? `${this.ActualValue}: ${this.formatData(actualTip, options.showSecondBarActualUnit, this.actualFormate)}<br>` : '';
             _toolTipText += this.isContrastValue ? `${this.ContrastValue}: ${this.formatData(contrast, options.showSecondBarContrastUnit, this.contrastFormate)}<br>` : '';
+            if(this.items.length > 6){
+              this.items[6].forEach((val,index) => {
+                _toolTipText += `${val}  : ${this.items[7+index][dataIndex]}<br>`;
+              });
+            }
             return _toolTipText;
           }
         }
@@ -697,6 +716,7 @@ export default class Visual {
   }
   public onResize() {
     this.chart.resize();
+    this.render();
   }
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
@@ -722,7 +742,7 @@ export default class Visual {
     if (updateOptions.properties.barSymbolType !== 'custom') {
       hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
     }
-    if (updateOptions.dataViews[0] && updateOptions.dataViews[0].plain.profile.ContrastValue.values.length != 0) {
+    if (updateOptions.dataViews[0].plain.profile.ContrastValue.values.length != 0) {
       hiddenOptions = hiddenOptions.concat(['showBackground'])
     }else{
       if (!updateOptions.properties.showBackground) {
