@@ -1,6 +1,6 @@
 {
   "name": "wyn_visual",
-  "version": "1.0.4",
+  "version": "1.0.8",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
