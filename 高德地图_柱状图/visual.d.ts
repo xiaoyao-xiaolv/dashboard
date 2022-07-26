@@ -228,11 +228,11 @@ declare namespace VisualNS {
   class FormatService {
     isAutoDisplayUnit(displayUnit: DisplayUnit): boolean;
     getAutoDisplayUnit(values: number[]): DisplayUnit;
-    format(format: string, value: number | string | Date | boolean, displayUnit?: DisplayUnit): string;
+    format(format: string, value: number, displayUnit?: DisplayUnit): string;
   }
 
   class SelectionId {
-    withMeasure(profile: IFieldProfile, dataPoint: IDataPoint): SelectionId;
+    withMeasure(profile: IFieldProfile): SelectionId;
     withDimension(profile: IFieldProfile, dataPoint: IDataPoint): SelectionId;
     equals(target: SelectionId): boolean;
     includes(target: SelectionId): boolean;

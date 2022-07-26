@@ -9,13 +9,13 @@
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. xxx
+2. xxxx
+3. xxxx
 
 #### 使用说明
 
-1.  xxxx
+1.  区域掩模 区域名称 支持多区域名称,逗号隔开即可
 2.  xxxx
 3.  xxxx
 

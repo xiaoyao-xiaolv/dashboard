@@ -13,9 +13,22 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="修改图片轮播插件字段名称问题">
+    <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="桑基图提交">
+      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/DefJson.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/Prism.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/桑基图" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/capabilities.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/src/AreaJson.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/src/AreaJson.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/src/Point.ts" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/src/Point.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/src/visual.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/style/visual.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/visual.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/visual.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/visual.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +80,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/桑基图" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/高德地图_柱状图" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -76,16 +89,16 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
-    <property name="ts.external.directory.path" value="D:\Program Files\JetBrains\WebStorm 2021.3.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="E:\插件代码\GrapeCity官方插件\百度地图V2.0\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\插件代码\GrapeCity官方插件\高德地图_柱状图" />
       <recent name="E:\插件代码\dashboard\三维地图" />
       <recent name="E:\插件代码\dashboard\路线地图" />
       <recent name="E:\插件代码\dashboard\高德地图V3.0" />
       <recent name="E:\插件代码\dashboard\高德地图_柱状图" />
-      <recent name="E:\插件代码\dashboard\百度地图V2.0" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\插件代码\dashboard\百度地图V2.0\assets" />
