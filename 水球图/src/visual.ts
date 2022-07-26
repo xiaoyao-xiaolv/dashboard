@@ -15,12 +15,11 @@ export default class Visual {
 
     static mockItems = 0.5;
 
-    constructor(dom: HTMLDivElement, host: any) {
+    constructor(dom: HTMLDivElement, host: any, options: VisualNS.IVisualUpdateOptions) {
         this.container = dom;
         this.chart = echarts.init(dom);
         this.items = [];
-        this.properties = {
-        };
+        this.properties = options.properties;
         this.selectionManager = host.selectionService.createSelectionManager();
         this.host = host;
         this.selectEvent();
@@ -89,12 +88,10 @@ export default class Visual {
             if (dataView.plain.profile.ContrastValue.values.length != 0) {
                 this.ContrastValue = plainData.profile.ContrastValue.values;
                 this.ContrastValue[0]["value"] = this.formatData(plainData.data[0][this.ContrastValue[0].display], dataView.plain.profile.ActualValue.options.valueDisplayUnit, dataView.plain.profile.ActualValue.options.valueFormat)
-                this.items = this.ContrastValue.length ? [plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]] : 1;
+                this.items = [plainData.data[0][this.ActualValue[0].display] / plainData.data[0][this.ContrastValue[0].display]]
             } else {
-                this.ContrastValue = "null"
-                this.items = [1]
+                this.items = [plainData.data[0][this.ActualValue[0].display]];
             }
-
         }
         this.properties = options.properties;
         this.render();
@@ -203,29 +200,32 @@ export default class Visual {
                         show: options.showLabel,
                         formatter: () => {
                             let result = "";
-                            if (options.showActualLabel) {
-                                result = result + this.ActualValue[0].display
+
+                            if (options.showActualLabel && this.ActualValue) {
+                                result += this.ActualValue[0].display
                             }
-                            if (options.showReducedLabel && this.ContrastValue != "null") {
-                                result = result + "/" + this.ContrastValue[0].display + "\n"
+                            if (options.showReducedLabel && this.ContrastValue) {
+                                result += (options.showActualLabel ?  "/" : "") + this.ContrastValue[0].display + "\n"
                             } else {
                                 result += "\n"
                             }
-                            if (options.showActualValue) {
-                                result = result + this.ActualValue[0].value
+
+                            if (options.showActualValue && this.ActualValue) {
+                                result += this.ActualValue[0].value
                             }
-                            if (options.showReducedValue && this.ContrastValue != "null") {
-                                result = result + "/" + this.ActualValue[0].value + "\n"
+                            if (options.showReducedValue && this.ContrastValue) {
+                                result += (options.showActualValue ?  "/" : "") + this.ContrastValue[0].value + "\n"
                             } else {
                                 result += "\n"
                             }
-                            if(options.showReducedPercent){
+
+                            if (options.showReducedPercent) {
                                 if (options.displayFormat == "number") {
-                                    return result = result + (items * 1).toFixed(2);
+                                    return result += (items * 1).toFixed(2);
                                 } else {
-                                    return result = result + (items * 100).toFixed(2) + '%';
+                                    return result += (items * 100).toFixed(2) + '%';
                                 }
-                            } 
+                            }
                             return result
                         },
                         color: options.textStyle.color,
@@ -256,45 +256,7 @@ export default class Visual {
             }
             return format = formatService.format(formate, number, realDisplayUnit);
         } else {
-            const units = [{
-                value: 1,
-                unit: '',
-                DisplayUnit: 'none'
-            }, {
-                value: 100,
-                unit: '百',
-                DisplayUnit: 'hundreds'
-            }, {
-                value: 1000,
-                unit: '千',
-                DisplayUnit: 'thousands'
-            }, {
-                value: 10000,
-                unit: '万',
-                DisplayUnit: 'tenThousands'
-            }, {
-                value: 100000,
-                unit: '十万',
-                DisplayUnit: 'hundredThousand'
-            }, {
-                value: 1000000,
-                unit: '百万',
-                DisplayUnit: 'millions'
-            }, {
-                value: 10000000,
-                unit: '千万',
-                DisplayUnit: 'tenMillion'
-            }, {
-                value: 100000000,
-                unit: '亿',
-                DisplayUnit: 'hundredMillion'
-            }, {
-                value: 1000000000,
-                unit: '十亿',
-                DisplayUnit: 'billions'
-            }]
-            let formatUnit = units.find((item) => item.value === Number(dataUnit))
-            return this.formatD(format, formate, formatUnit.DisplayUnit)
+            return this.formatD(format, formate, dataUnit);
         }
     }
 

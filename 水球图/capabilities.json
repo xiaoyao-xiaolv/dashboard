@@ -2,11 +2,6 @@
     "dataBinding": {
         "dataRoles": [
             {
-                "hidden": true,
-                "type": "你猜我是啥类型",
-                "value": "这不是一个彩蛋"
-            },
-            {
                 "name": "ActualValue",
                 "displayNameKey": "实际值",
                 "kind": "value",

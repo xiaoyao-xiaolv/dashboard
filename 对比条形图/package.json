@@ -1,6 +1,6 @@
 {
   "name": "wyn_visual",
-  "version": "1.0.32",
+  "version": "1.0.31",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    
     "@babel/core": "7.9.0",
     "awesome-typescript-loader": "5.2.1",
     "babel-loader": "8.0.6",
@@ -28,6 +29,8 @@
     "file-loader": "6.0.0"
   },
   "dependencies": {
+    "@types/node": "14.6.2",
+    "ts-node": "^8.0.2",
     "echarts": "^4.8.0",
     "lodash": "^4.17.20"
   }
