@@ -1,0 +1,279 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "actualValue",
+                "displayNameKey": "实际值",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                    }
+                ]
+            },
+            {
+                "name": "contrastValue1",
+                "displayNameKey": "对比值一",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                    }
+                ]
+            },
+            {
+                "name": "contrastValue2",
+                "displayNameKey": "对比值二",
+                "kind": "value",
+                "options": [
+                    {
+                        "displayNameKey": "数据格式",
+                        "type": "format",
+                        "name": "valueFormat"
+                    },
+                    {
+                        "displayNameKey": "数据单位",
+                        "type": "displayUnit",
+                        "name": "valueDisplayUnit"
+                    }
+                ]
+            },
+            {
+                "name": "category",
+                "displayNameKey": "分类",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain": {
+                    "required": [{
+                            "actualValue": {
+                                "min": 0
+                            },
+                            "contrastValue1": {
+                                "min": 0
+                            },
+                            "contrastValue2": {
+                                "min": 0
+                            },
+                            "category": {
+                                "min": 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "conditions": [
+            {
+                "actualValue": {
+                    "max": 1
+                },
+                "contrastValue1": {
+                    "max": 1
+                },
+                "contrastValue2": {
+                    "max": 1
+                },
+                "category": {
+                    "max": 1
+                }
+            }
+        ]
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "palette",
+                        "type": "Palette",
+                        "displayName": "调色板",
+                        "inheritFrom": "dashboard.palette"
+                    },
+                    {
+                        "name": "barActualWidth",
+                        "type": "Integer",
+                        "displayNameKey": "实际值宽度",
+                        "defaultValue": 10
+                    },
+                    {
+                        "name": "barContrast1Width",
+                        "type": "Integer",
+                        "displayNameKey": "对比值一宽度",
+                        "defaultValue": 30
+                    },
+                    {
+                        "name": "barContrast2Width",
+                        "type": "Integer",
+                        "displayNameKey": "对比值二宽度",
+                        "defaultValue": 50
+                    },
+                    {
+                        "name": "barContrast2High",
+                        "type": "Integer",
+                        "displayNameKey": "对比值二高度",
+                        "defaultValue": 5
+                    },
+                    {
+                        "name": "barActualGap",
+                        "type": "Percentage",
+                        "displayNameKey": "实际值间距",
+                        "defaultValue": -200,
+                        "min": -500,
+                        "max": 500
+                    },
+                    {
+                        "name": "barContrast2Gap",
+                        "type": "Percentage",
+                        "displayNameKey": "对比值二间距",
+                        "defaultValue": -10,
+                        "min": -200,
+                        "max": 200
+                    }
+
+                ]
+            },{
+                "displayName": "提示标签",
+                "properties": [
+                    {
+                        "name": "tooltip",
+                        "type": "Boolean",
+                        "displayName": "显示提示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "tooltip_color",
+                        "type": "Color",
+                        "displayName": "背景色",
+                        "defaultValue": "#FFFFFF"
+                    }
+                ]
+            },
+            {
+                "displayName": "分类轴",
+                "properties": [
+
+                ]
+            },
+            {
+                "displayName": "数值轴",
+                "properties": [
+
+                ]
+            },
+            {
+                "displayName": "图例",
+                "properties": [
+                    {
+                        "name": "legendShow",
+                        "type": "Boolean",
+                        "displayName": "显示图例",
+                        "defaultValue": true
+                    },{
+                        "name": "legendIcon",
+                        "type": "Enum",
+                        "displayName": "图例形状",
+                        "items": [
+                            {
+                                "value": "none",
+                                "displayNameKey": "默认"
+                            },
+                            {
+                                "value": "circle",
+                                "displayNameKey": "圆形"
+                            },
+                            {
+                                "value": "rect",
+                                "displayNameKey": "方形"
+                            },
+                            {
+                                "value": "roundRect",
+                                "displayNameKey": "圆角方形"
+                            },
+                            {
+                                "value": "triangle",
+                                "displayNameKey": "三角形"
+                            },
+                            {
+                                "value": "diamond",
+                                "displayNameKey": "菱形"
+                            }
+                        ],
+                        "defaultValue": "roundRect"
+                    },{
+                        "name": "legendVerticalPosition",
+                        "type": "Enum",
+                        "displayName": "位置",
+                        "items": [
+                            {
+                                "value": "left",
+                                "displayNameKey": "居左"
+                            },
+                            {
+                                "value": "center",
+                                "displayNameKey": "居中"
+                            },
+                            {
+                                "value": "right",
+                                "displayNameKey": "居右"
+                            }
+                        ],
+                        "defaultValue": "center"
+                    },{
+                        "name": "legend_textStyle",
+                        "type": "TextStyle",
+                        "displayName": "图例字体设置",
+                        "inheritFrom": "dashboard.textStyle"
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "type": "filter"
+        },
+        {
+            "type": "focus"
+        },
+        {
+            "type": "sort"
+        },
+        {
+            "type": "rank"
+        },
+        {
+            "type": "convertVisual"
+        },
+        {
+            "type": "export"
+        },
+        {
+            "type": "annotation"
+        }
+    ],
+    "analysis": []
+}
