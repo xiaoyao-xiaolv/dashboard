@@ -13,22 +13,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="桑基图提交">
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/DefJson.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/高德地图_柱状图/src/Prism.ts" afterDir="false" />
+    <list default="true" id="93d56d43-1edd-41e0-8f4f-cba9ace0b47f" name="Default Changelist" comment="高德地图gis点修改提交">
+      <change afterPath="$PROJECT_DIR$/视频监控/222.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/capabilities.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/capabilities.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/src/AreaJson.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/src/AreaJson.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/src/Point.ts" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/src/Point.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/src/visual.ts" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/src/visual.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/style/visual.less" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/style/visual.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/visual.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/visual.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/visual.json" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/visual.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/高德地图_柱状图/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/高德地图_柱状图/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/视频监控" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +29,7 @@
         <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -74,31 +63,25 @@
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/高德地图_柱状图" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
-    <property name="ts.external.directory.path" value="E:\插件代码\GrapeCity官方插件\百度地图V2.0\node_modules\typescript\lib" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/插件代码/GrapeCity官方插件/视频监控",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "E:\\插件代码\\GrapeCity官方插件\\高德地图_柱状图\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\插件代码\GrapeCity官方插件\baiduGISBubbleMap\src" />
       <recent name="E:\插件代码\GrapeCity官方插件\高德地图_柱状图" />
       <recent name="E:\插件代码\dashboard\三维地图" />
       <recent name="E:\插件代码\dashboard\路线地图" />
       <recent name="E:\插件代码\dashboard\高德地图V3.0" />
-      <recent name="E:\插件代码\dashboard\高德地图_柱状图" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\插件代码\dashboard\百度地图V2.0\assets" />
@@ -194,6 +177,9 @@
       <workItem from="1654163600702" duration="31000" />
       <workItem from="1654504440169" duration="1385000" />
       <workItem from="1655263946551" duration="322000" />
+      <workItem from="1659068306585" duration="578000" />
+      <workItem from="1659514476855" duration="1891000" />
+      <workItem from="1659684172726" duration="322000" />
     </task>
     <task id="LOCAL-00001" summary="修改图片轮播插件字段名称问题">
       <created>1650793513096</created>
@@ -209,11 +195,29 @@
       <option name="project" value="LOCAL" />
       <updated>1654506162259</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="高德地图gis点修改提交">
+      <created>1658816410808</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1658816410808</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -305,6 +309,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="修改图片轮播插件" />
     <MESSAGE value="修改图片轮播插件字段名称问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改图片轮播插件字段名称问题" />
+    <MESSAGE value="高德地图gis点修改提交" />
+    <option name="LAST_COMMIT_MESSAGE" value="高德地图gis点修改提交" />
   </component>
 </project>

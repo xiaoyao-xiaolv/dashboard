@@ -1,0 +1,34 @@
+{
+    "id": "25efbd30-1d15-11ec-96e3-77d601284d6c",
+    "name": "监控视频",
+    "displayName": "",
+    "displayNameKey": "监控视频",
+    "icon": "visualIcon",
+    "description": "",
+    "externalJs": [],
+    "externalCss": [],
+    "assets": {
+        "images": {
+            "visualIcon": "assets/icon.png",
+            "bg": "assets/bg.png",
+            "qp_1": "assets/qp_1.png",
+            "qp_2": "assets/qp_2.png",
+            "qp_3": "assets/qp_3.png",
+            "qp_4": "assets/qp_4.png",
+            "qp_5": "assets/qp_5.png",
+            "qp_6": "assets/qp_6.png",
+            "qp_7": "assets/qp_7.png",
+            "qp_8": "assets/qp_8.png",
+            "gb_1": "assets/gb_1.png",
+            "gb_2": "assets/gb_2.png",
+            "gb_3": "assets/gb_3.png",
+            "gb_4": "assets/gb_4.png",
+            "gb_5": "assets/gb_5.png",
+            "gb_6": "assets/gb_6.png",
+            "gb_7": "assets/gb_7.png",
+            "gb_8": "assets/gb_8.png"
+        }
+    },
+    "configuration": {},
+    "cliVersion": "5.0.0"
+}
