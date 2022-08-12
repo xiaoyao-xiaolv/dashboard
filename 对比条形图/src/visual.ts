@@ -31,10 +31,16 @@ export default class Visual {
   private richStyle: any;
   private format1: any;
   private format2: any;
-  static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
-    , [58, 46, 47, 49, 59, 17, 25, 83, 34]
-    , [74, 64, 78, 65, 79, 21, 28, 91, 38]
-    , [78.38, 71.88, 60.26, 75.38, 74.68, 80.95, 89.29, 91.21, 89.47]
+  // static mockItems = [["人事部", "财务部", "销售部", "市场部", "采购部", "产品部", "技术部", "客服部", "后勤部"]
+  //   , [58, 46, 47, 49, 59, 17, 25, 83, 34]
+  //   , [74, 64, 78, 65, 79, 21, 28, 91, 38]
+  //   , [78.38, 71.88, 60.26, 75.38, 74.68, 80.95, 89.29, 91.21, 89.47]
+  //   , ["复工人数", "总人数"]
+  // ];
+  static mockItems = [["人事部", "财务部", "销售部", "市场部"]
+    , [58, 46, 47, 49]
+    , [74, 64, 78, 65]
+    , [78.38, 71.88, 60.26, 75.38]
     , ["复工人数", "总人数"]
   ];
   constructor(dom: HTMLDivElement, host: any) {
@@ -457,6 +463,7 @@ export default class Visual {
   private render() {
     this.chart.clear();
     const options = this.properties;
+
     // update custom style 
     this.onUpdateStylePropertiesData();
     const items = this.isMock ? Visual.mockItems : this.items;
@@ -564,9 +571,11 @@ export default class Visual {
           show: false
         }
       }],
-      series: [{
+      series: [
+        {
         type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
-        barWidth: options.barWidth,
+        // barWidth: options.barWidth,
+        barWidth: options.styleName ==="style4" ? options.barWidthStyle :options.barWidth,
         data: this.isMock ? items[3] : (this.isContrastValue ? items[3] : items[1]),
         showBackground: !this.isContrastValue && options.showBackground,
         backgroundStyle: {
@@ -575,7 +584,7 @@ export default class Visual {
         },
         symbolRepeat: "fixed",
         symbolMargin: options.barSymbolMargin,
-        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? `image://${options.barSymbolImage}` : options.barSymbolType),
+        symbol: options.barSymbolType === 'default' ? '' : (options.barSymbolType === 'custom' ? (options.barSymbolImage ? `image://${options.barSymbolImage}` : 'default') : options.barSymbolType),
         symbolClip: true,
         symbolSize: [`${options.barSymbolSizeX}`, `${options.barSymbolSizeY}`],
         symbolPosition: "start",
@@ -644,19 +653,77 @@ export default class Visual {
             return dataRatio
           },
         },
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
-            offset: 0,
-            color: options.barStartColor // 0% 处的颜色
-          }, {
-            offset: 1,
-            color: options.barEndcolor // 100% 处的颜色
-          }], false),
-          barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusRightDown, options.radiusLeftDown]
+        itemStyle:{
+          normal: {
+            color: (params) => {
+              return this.properties.showBackgroundColor && this.properties.rankingConditionCollection.length>params.dataIndex &&  this.properties.rankingConditionCollection[params.dataIndex].rankingStartConditionColor &&  this.properties.rankingConditionCollection[params.dataIndex].rankingEndConditionColor  ? 
+              {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 1,
+                y2: 0,
+                colorStops: [
+                //   {
+                //   offset: 0,
+                //   // color: options.barStartColor
+                //   color: this.properties.rankingConditionCollection[params.dataIndex].rankingStartConditionColor 
+                // },
+                {
+                  offset: options.inner/100,
+                  // color: options.barStartColor
+                  color: this.properties.rankingConditionCollection[params.dataIndex].rankingStartConditionColor 
+                },
+                {
+                  offset: 1,
+                  // color: options.barEndcolor,
+                  color: this.properties.rankingConditionCollection[params.dataIndex].rankingEndConditionColor 
+                }
+                ],
+                global: false
+              }:
+              {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 1,
+                y2: 0,
+                colorStops: [
+                //   {
+                //   offset: 0,
+                //   color: options.barEndcolor
+                // },
+                {
+                  offset: options.inner/100,
+                  // color: options.barStartColor
+                  color: options.barEndcolor
+                },
+                {
+                  offset: 1,
+              
+                  color: options.barStartColor
+                }
+                ],
+                global: false
+              }
+            },
+            barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusRightDown, options.radiusLeftDown]
+          },
         }
+        // itemStyle: {
+        //   color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
+        //     offset: 0,
+        //     color: options.barStartColor // 0% 处的颜色
+        //   }, {
+        //     offset: 1,
+        //     color: options.barEndcolor // 100% 处的颜色
+        //   }], false),
+        //   barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusRightDown, options.radiusLeftDown]
+        // }
       }, {
         type: options.barSymbolType === 'default' ? "bar" : 'pictorialBar',
-        barWidth: options.barWidth,
+        // barWidth: options.barWidth,
+        barWidth: options.styleName==="style4" ? options.barWidthStyle :options.barWidth,
         xAxisIndex: 0,
         barGap: "-100%",
         data: items[this.isMock ? 0 : 3].map(function (item) {
@@ -712,8 +779,42 @@ export default class Visual {
         zlevel: -1
       }]
     }
+    //样式4
+    let series=[];
+    // let aircraft = 'path://M107.000,71.000 C104.936,71.000 102.665,70.806 100.273,70.467 C94.592,76.922 86.275,81.000 77.000,81.000 C70.794,81.000 65.020,79.170 60.172,76.029 C66.952,74.165 72.647,69.714 76.173,63.817 C69.821,61.362 64.063,58.593 60.000,56.039 L60.000,52.813 C70.456,53.950 80.723,55.000 83.000,55.000 C88.972,55.000 93.000,53.723 93.000,50.000 C93.000,47.071 89.222,45.000 83.000,45.000 C80.723,45.000 70.456,46.050 60.000,47.187 L60.000,43.989 C64.057,41.431 69.807,38.644 76.168,36.173 C72.641,30.281 66.948,25.834 60.172,23.971 C65.020,20.830 70.794,19.000 77.000,19.000 C86.270,19.000 94.584,23.074 100.265,29.524 C102.647,29.191 104.918,29.000 107.000,29.000 C129.644,29.000 148.000,50.000 148.000,50.000 C148.000,50.000 129.644,71.000 107.000,71.000 ZM113.000,38.000 C106.373,38.000 101.000,43.373 101.000,50.000 C101.000,56.627 106.373,62.000 113.000,62.000 C119.627,62.000 125.000,56.627 125.000,50.000 C125.000,43.373 119.627,38.000 113.000,38.000 ZM113.000,56.000 C109.686,56.000 107.000,53.314 107.000,50.000 C107.000,46.686 109.686,44.000 113.000,44.000 C116.314,44.000 119.000,46.686 119.000,50.000 C119.000,53.314 116.314,56.000 113.000,56.000 ZM110.500,19.000 C109.567,19.000 108.763,18.483 108.334,17.726 C100.231,9.857 89.187,5.000 77.000,5.000 C64.813,5.000 53.769,9.857 45.666,17.726 C45.237,18.483 44.433,19.000 43.500,19.000 C42.119,19.000 41.000,17.881 41.000,16.500 C41.000,15.847 41.256,15.259 41.665,14.813 L41.575,14.718 C50.629,5.628 63.156,-0.000 77.000,-0.000 C90.844,-0.000 103.371,5.628 112.425,14.718 L112.335,14.813 C112.744,15.259 113.000,15.847 113.000,16.500 C113.000,17.881 111.881,19.000 110.500,19.000 ZM53.000,49.484 C61.406,48.626 77.810,47.000 81.345,47.000 C87.353,47.000 91.000,48.243 91.000,50.000 C91.000,52.234 87.111,53.000 81.345,53.000 C77.810,53.000 61.406,51.374 53.000,50.516 L53.000,49.484 ZM53.000,47.000 L9.000,50.000 L53.000,53.000 L53.000,56.000 L-0.000,50.000 L53.000,44.000 L53.000,47.000 ZM43.500,81.000 C44.433,81.000 45.237,81.517 45.666,82.274 C53.769,90.143 64.813,95.000 77.000,95.000 C89.187,95.000 100.231,90.143 108.334,82.274 C108.763,81.517 109.567,81.000 110.500,81.000 C111.881,81.000 113.000,82.119 113.000,83.500 C113.000,84.153 112.744,84.741 112.335,85.187 L112.425,85.282 C103.371,94.372 90.844,100.000 77.000,100.000 C63.156,100.000 50.629,94.372 41.575,85.282 L41.665,85.187 C41.256,84.741 41.000,84.153 41.000,83.500 C41.000,82.119 42.119,81.000 43.500,81.000 Z'
+    if(this.properties.styleName=="style4"){
+      let obj={
+          type: 'pictorialBar',
+          symbol: `image://${options.SymbolImage}`,
+          // symbol:`${ `${aircraft}` }`,
+          symbolSize: [`${options.SymbolSizeX}`, `${options.SymbolSizeY}`],
+          symbolOffset: [`${options.SymbolMargin}`, 0],
+          // symbolOffset:[options.SymbolSizeX/2.5 === options.SymbolMargin ? options.SymbolSizeX/2.5 :options.SymbolMargin ,0],
+          z: 12,
+          itemStyle: {
+              normal: {
+                  color: '#fff',
+              },
+          },
+          data: this.getSymbolData(this.isMock ? items[3] : (this.isContrastValue ? items[3] : items[1])),
+      }
+      series.push(obj)
+    }
+    option.series=option.series.concat(series)
     this.chart.setOption(option)
   }
+  public getSymbolData = (data) => {
+    let arr = [];
+    for (var i = 0; i < data.length; i++) {
+        arr.push({
+            value: data[i],
+            symbolPosition: 'end',
+        });
+    }
+    return arr;
+  };
+
+  
   public onResize() {
     this.chart.resize();
     this.render();
@@ -721,80 +822,95 @@ export default class Visual {
   // 自定义属性可见性
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
+    if(updateOptions.dataViews.length > 0){
+        // fill shape
+        if (updateOptions.properties.barSymbolType === 'default') {
+          hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSizeX', 'barSymbolSizeY', 'barSymbolMargin'])
+        } else {
+          hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
+        }
 
-    // fill shape
-    if (updateOptions.properties.barSymbolType === 'default') {
-      hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSizeX', 'barSymbolSizeY', 'barSymbolMargin'])
-    } else {
-      hiddenOptions = hiddenOptions.concat(['radiusLeftTop', 'radiusRightTop', 'radiusLeftDown', 'radiusRightDown'])
-    }
+        if (updateOptions.properties.barSymbolType !== 'custom') {
+          hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
+        }
 
-    if (updateOptions.properties.barSymbolType !== 'custom') {
-      hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
-    }
+        if (updateOptions.properties.rankingShape !== 'custom') {
+          hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
+        }
+        if (updateOptions.properties.rankingShape === 'none') {
+          hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize'])
+        }
+        if (updateOptions.properties.barSymbolType !== 'custom') {
+          hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
+        }
+        if (updateOptions.dataViews[0].plain.profile.ContrastValue.values.length != 0) {
+          hiddenOptions = hiddenOptions.concat(['showBackground'])
+        }else{
+          if (!updateOptions.properties.showBackground) {
+            hiddenOptions = hiddenOptions.concat(['barBackgroundColor'])
+          }
+        }
 
-    if (updateOptions.properties.rankingShape !== 'custom') {
-      hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
-    }
-    if (updateOptions.properties.rankingShape === 'none') {
-      hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize'])
-    }
-    if (updateOptions.properties.barSymbolType !== 'custom') {
-      hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
-    }
-    if (updateOptions.dataViews[0].plain.profile.ContrastValue.values.length != 0) {
-      hiddenOptions = hiddenOptions.concat(['showBackground'])
+        // dataLabel
+        if (!updateOptions.properties.showBarLabel) {
+          hiddenOptions = hiddenOptions.concat(['axisYWidth', 'firstBarPositionX', 'firstBarPositionY', 'rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast', 'labelTextStyle', 'displayPolicy'])
+        }
+        // Classification axis
+        if (!updateOptions.properties.showLabel) {
+          hiddenOptions = hiddenOptions.concat(['showSecondBarPercent', 'showSecondPercentFormate', 'showSecondBarActual', 'showSecondBarContrast', 'textStyle'])
+        }
+
+        if (!updateOptions.properties.showRanking) {
+          hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY', 'rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle', 'showBackgroundColor', 'rankingConditionCollection'])
+        }
+        if (!updateOptions.properties.showFirstBarCategory) {
+          hiddenOptions = hiddenOptions.concat(['categoryLen'])
+        }
+        if (!updateOptions.properties.showFirstBarPercent) {
+          hiddenOptions = hiddenOptions.concat(['showFirstPercentFormate'])
+        }
+        if (!updateOptions.properties.showFirstBarActual) {
+          hiddenOptions = hiddenOptions.concat(['showFirstBarActualUnit'])
+        }
+        if (!updateOptions.properties.showFirstBarContrast) {
+          hiddenOptions = hiddenOptions.concat(['showFirstBarContrastUnit'])
+        }
+        if (!updateOptions.properties.showSecondBarPercent) {
+          hiddenOptions = hiddenOptions.concat(['showSecondPercentFormate'])
+        }
+        if (!updateOptions.properties.showSecondBarActual) {
+          hiddenOptions = hiddenOptions.concat(['showSecondBarActualUnit'])
+        }
+        if (!updateOptions.properties.showSecondBarContrast) {
+          hiddenOptions = hiddenOptions.concat(['showSecondBarContrastUnit'])
+        }
+        if (updateOptions.properties.firstBarAboutPosition === 'inside') {
+          hiddenOptions = hiddenOptions.concat(['firstBarOutsidePosition'])
+        }
+        if (updateOptions.properties.firstBarAboutPosition === 'outside') {
+          hiddenOptions = hiddenOptions.concat(['firstBarInsidePosition'])
+        }
+        if (!updateOptions.properties.showBackgroundColor) {
+          hiddenOptions = hiddenOptions.concat(['rankingConditionCollection'])
+        }
+        if (updateOptions.properties.sortAccording === 'noOrder') {
+          hiddenOptions = hiddenOptions.concat(['sorttype'])
+        }
+
+        if (updateOptions.properties.styleName === 'style4') {
+          hiddenOptions = hiddenOptions.concat(['barWidth'])
+        }
+
+        if (updateOptions.properties.styleName !== 'style4') {
+          hiddenOptions = hiddenOptions.concat(['SymbolImage','SymbolSizeX','SymbolSizeY','SymbolMargin','barWidthStyle'])
+        }
+
     }else{
-      if (!updateOptions.properties.showBackground) {
-        hiddenOptions = hiddenOptions.concat(['barBackgroundColor'])
-      }
+      hiddenOptions=hiddenOptions.concat(['barWidthStyle','showBackground','SymbolImage','SymbolSizeX','SymbolSizeY','SymbolMargin','barSymbolImage','barSymbolSizeX','barSymbolSizeY','barSymbolMargin'])
     }
+    
+    
 
-    // dataLabel
-    if (!updateOptions.properties.showBarLabel) {
-      hiddenOptions = hiddenOptions.concat(['axisYWidth', 'firstBarPositionX', 'firstBarPositionY', 'rotationDegree', 'showFirstBarCategory', 'showFirstBarPercent', 'showFirstBarActual', 'showFirstBarContrast', 'labelTextStyle', 'displayPolicy'])
-    }
-    // Classification axis
-    if (!updateOptions.properties.showLabel) {
-      hiddenOptions = hiddenOptions.concat(['showSecondBarPercent', 'showSecondPercentFormate', 'showSecondBarActual', 'showSecondBarContrast', 'textStyle'])
-    }
-
-    if (!updateOptions.properties.showRanking) {
-      hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY', 'rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle', 'showBackgroundColor', 'rankingConditionCollection'])
-    }
-    if (!updateOptions.properties.showFirstBarCategory) {
-      hiddenOptions = hiddenOptions.concat(['categoryLen'])
-    }
-    if (!updateOptions.properties.showFirstBarPercent) {
-      hiddenOptions = hiddenOptions.concat(['showFirstPercentFormate'])
-    }
-    if (!updateOptions.properties.showFirstBarActual) {
-      hiddenOptions = hiddenOptions.concat(['showFirstBarActualUnit'])
-    }
-    if (!updateOptions.properties.showFirstBarContrast) {
-      hiddenOptions = hiddenOptions.concat(['showFirstBarContrastUnit'])
-    }
-    if (!updateOptions.properties.showSecondBarPercent) {
-      hiddenOptions = hiddenOptions.concat(['showSecondPercentFormate'])
-    }
-    if (!updateOptions.properties.showSecondBarActual) {
-      hiddenOptions = hiddenOptions.concat(['showSecondBarActualUnit'])
-    }
-    if (!updateOptions.properties.showSecondBarContrast) {
-      hiddenOptions = hiddenOptions.concat(['showSecondBarContrastUnit'])
-    }
-    if (updateOptions.properties.firstBarAboutPosition === 'inside') {
-      hiddenOptions = hiddenOptions.concat(['firstBarOutsidePosition'])
-    }
-    if (updateOptions.properties.firstBarAboutPosition === 'outside') {
-      hiddenOptions = hiddenOptions.concat(['firstBarInsidePosition'])
-    }
-    if (!updateOptions.properties.showBackgroundColor) {
-      hiddenOptions = hiddenOptions.concat(['rankingConditionCollection'])
-    }
-    if (updateOptions.properties.sortAccording === 'noOrder') {
-      hiddenOptions = hiddenOptions.concat(['sorttype'])
-    }
     return hiddenOptions;
   }
 
