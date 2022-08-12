@@ -29,7 +29,12 @@
                 "name": "dimension",
                 "displayNameKey": "分类",
                 "kind": "grouping"
-            }
+            },
+            {
+				"name": "tooltipFields",
+				"displayNameKey": "工具提示",
+				"kind": "attributeOrValue"
+			}
         ],
         "dataViewMappings": [
             {

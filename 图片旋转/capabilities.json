@@ -14,7 +14,7 @@
                         "name": "animationStyle",
                         "type": "Enum",
                         "displayName": "动画类型",
-                        "defaultValue": "move",
+                        "defaultValue": "Rotate",
                         "items": [
                             {
                                 "value": "move",

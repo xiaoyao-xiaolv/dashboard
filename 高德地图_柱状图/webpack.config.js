@@ -48,7 +48,8 @@ const config = {
   mode: 'development',
   externals: {
     'AMap': 'AMap',
-    'Loca':'Loca'
+    'Loca':'Loca',
+    'AMapUI':'AMapUI'
   },
 };
 

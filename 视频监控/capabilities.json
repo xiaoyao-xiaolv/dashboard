@@ -1,0 +1,338 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "nameData",
+                "displayNameKey": "视频标题",
+                "kind": "grouping"
+            },
+            {
+                "name": "urlData",
+                "displayNameKey": "视频地址",
+                "kind": "grouping"
+            }
+        ],
+        "dataViewMappings": [
+            {
+                "plain":
+                {
+                    "required": [
+                        {
+                            "urlData":
+                            {
+                                "min": 1
+                            },
+                            "nameData":
+                            {
+                                "min": 1
+                            }
+                        }]
+                }
+            }
+        ],
+        "conditions": [{
+            "urlData": { "max": 1 },
+            "nameData": { "max": 1 }
+        }]
+
+    },
+    "options": {
+        "visual": [
+            {
+                "displayName": "基础设置",
+                "properties": [
+                    {
+                        "name": "videoType",
+                        "type": "Enum",
+                        "displayName": "视频类型",
+                        "items": [{
+                            "value": "mp4",
+                            "displayName": "mp4"
+                        }, {
+                            "value": "m3u8",
+                            "displayName": "m3u8/hls"
+                        },{
+                            "value": "webm",
+                            "displayName": "webm"
+                        },{
+                            "value": "ogg",
+                            "displayName": "ogv"
+                        }],
+                        "defaultValue": "mp4"
+                    },{
+                        "name": "url_show",
+                        "type": "Boolean",
+                        "displayName": "固定播放地址",
+                        "defaultValue": false
+                    },{
+                        "name": "url_def",
+                        "displayName": "视频地址",
+                        "type": "Collection",
+                        "itemShape": [
+                            {
+                                "name": "name",
+                                "displayName": "标题",
+                                "type": "Text"
+                            },{
+                                "name": "url",
+                                "displayName": "地址",
+                                "type": "Text"
+                            }
+                        ],
+                        "defaultValue": []
+                    },
+                    {
+                        "name": "data_show",
+                        "type": "Boolean",
+                        "displayName": "显示前N项目",
+                        "defaultValue": false
+                    },{
+                        "name": "data_value",
+                        "displayName": "保留数量",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 30,
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "margin",
+                        "type": "Integer",
+                        "min": 2,
+                        "max": 100,
+                        "displayName": "间隔",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "radius",
+                        "type": "Integer",
+                        "min": 0,
+                        "max": 90,
+                        "displayName": "圆角",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "border",
+                        "type": "Integer",
+                        "min": 0,
+                        "max": 100,
+                        "displayName": "边框宽度",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "solid",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "Transparent"
+                    },
+                    {
+                        "name": "videoWidth",
+                        "type": "Integer",
+                        "min": 1,
+                        "max": 10,
+                        "displayName": "单行视频个数",
+                        "defaultValue": 2
+                    },
+                    {
+                        "name": "videoAdd",
+                        "type": "Enum",
+                        "displayName": "填充类型",
+                        "items": [{
+                            "value": "def",
+                            "displayName": "默认显示"
+                        }, {
+                            "value": "tc",
+                            "displayName": "自动填充"
+                        }],
+                        "defaultValue": "tc"
+                    },
+                    {
+                        "name": "videoHeight",
+                        "type": "Integer",
+                        "min": 1,
+                        "displayName": "视频高度",
+                        "defaultValue": 320
+                    },
+                    {
+                        "name": "xy_show",
+                        "type": "Boolean",
+                        "displayName": "显示滚动条",
+                        "defaultValue": true
+                    }
+                ]
+            },
+            {
+                "displayName": "视频标签",
+                "properties": [
+                    {
+                        "name": "title_show",
+                        "type": "Boolean",
+                        "displayName": "显示标签",
+                        "defaultValue": true
+                    },
+                    {
+                        "name": "title_style",
+                        "displayName": "标签样式",
+                        "type": "TextStyle",
+                        "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "name": "title_color",
+                        "type": "Color",
+                        "displayName": "标签背景",
+                        "defaultValue": "#0062b1"
+                    },
+                    {
+                        "name": "img_width",
+                        "displayName": "图标大小",
+                        "type": "Integer",
+                        "min": 1,
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "img_style",
+                        "type": "Enum",
+                        "displayName": "图标样式",
+                        "items": [{
+                            "value": "qp_1",
+                            "displayName": "蓝色"
+                        }, {
+                            "value": "qp_2",
+                            "displayName": "黑色"
+                        },{
+                            "value": "qp_3",
+                            "displayName": "紫色"
+                        },{
+                            "value": "qp_4",
+                            "displayName": "绿色"
+                        },{
+                            "value": "qp_5",
+                            "displayName": "浅灰色"
+                        },{
+                            "value": "qp_6",
+                            "displayName": "深灰色"
+                        },{
+                            "value": "qp_7",
+                            "displayName": "红色"
+                        },{
+                            "value": "qp_8",
+                            "displayName": "白色"
+                        }],
+                        "defaultValue": "qp_5"
+                    }
+                ]
+            },
+
+            {
+                "displayName": "弹出设置",
+                "properties": [
+                    {
+                        "name": "title_div",
+                        "displayName": "标签样式",
+                        "type": "TextStyle",
+                        "inheritFrom": "dashboard.textStyle"
+                    },
+                    {
+                        "name": "div_loc",
+                        "type": "Enum",
+                        "displayName": "对齐方式",
+                        "items": [{
+                            "value": "left",
+                            "displayName": "左对齐"
+                        }, {
+                            "value": "center",
+                            "displayName": "居中"
+                        }],
+                        "defaultValue": "left"
+                    },
+                    {
+                        "name": "div_height",
+                        "displayName": "标签高度",
+                        "type": "Integer",
+                        "min": 1,
+                        "defaultValue": 25
+                    },
+                    {
+                        "name": "div_color",
+                        "type": "Color",
+                        "displayName": "标签背景",
+                        "defaultValue": "#0062b1"
+                    },
+                    {
+                        "name": "div_width",
+                        "displayName": "图标大小",
+                        "type": "Integer",
+                        "min": 1,
+                        "defaultValue": 14
+                    },
+                    {
+                        "name": "div_style",
+                        "type": "Enum",
+                        "displayName": "图标样式",
+                        "items": [{
+                            "value": "gb_1",
+                            "displayName": "蓝色"
+                        }, {
+                            "value": "gb_2",
+                            "displayName": "黑色"
+                        },{
+                            "value": "gb_3",
+                            "displayName": "紫色"
+                        },{
+                            "value": "gb_4",
+                            "displayName": "绿色"
+                        },{
+                            "value": "gb_5",
+                            "displayName": "浅灰色"
+                        },{
+                            "value": "gb_6",
+                            "displayName": "深灰色"
+                        },{
+                            "value": "gb_7",
+                            "displayName": "红色"
+                        },{
+                            "value": "gb_8",
+                            "displayName": "白色"
+                        }],
+                        "defaultValue": "gb_5"
+                    },
+                    {
+                        "name": "v_radius",
+                        "type": "Integer",
+                        "min": 0,
+                        "max": 90,
+                        "displayName": "圆角",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "v_border",
+                        "type": "Integer",
+                        "min": 0,
+                        "max": 100,
+                        "displayName": "边框宽度",
+                        "defaultValue": 3
+                    },
+                    {
+                        "name": "v_solid",
+                        "type": "Color",
+                        "displayName": "边框颜色",
+                        "defaultValue": "#0062b1"
+                    }
+                ]
+            },
+            {
+                "type": "title"
+            },
+            {
+                "type": "interaction"
+            }
+        ]
+    },
+    "actions": [{
+        "type": "focus"
+    }, {
+        "type": "filter"
+    }, {
+        "type": "rank"
+    }],
+    "analysis": []
+}
