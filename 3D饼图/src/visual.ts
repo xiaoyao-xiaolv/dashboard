@@ -9,6 +9,7 @@ export default class Visual extends WynVisual {
     private selectionManager: any;
     private selectionIds: any;
     private format: any;
+    private dataUnitFormat: any;
     private myEcharts: any;
     private items: any;
     private options: any;
@@ -18,14 +19,14 @@ export default class Visual extends WynVisual {
 
     static mockItems = {
         data: [
-            {销售省份: "湖北", 销售金额: 12345},
-            {销售省份: "江苏", 销售金额: 24681},
-            {销售省份: "四川", 销售金额: 31451},
-            {销售省份: "青海", 销售金额: 11264},
-            {销售省份: "安徽", 销售金额: 21358},
+            {销售地区: "营销一区", 销售金额: 100},
+            {销售地区: "营销二区", 销售金额: 80},
+            {销售地区: "营销三区", 销售金额: 50},
+            {销售地区: "营销四区", 销售金额: 20},
+            // {销售省份: "安徽", 销售金额: 21358},
         ],
-        series: ["湖北", "江苏", "四川", "青海", "安徽"],
-        value: [12345, 24681, 31451, 11264, 21358]
+        series: ["营销一区", "营销二区", "营销三区", "营销四区"],
+        value: [100, 80, 50, 20] //, 11264
     }
 
 
@@ -128,6 +129,7 @@ export default class Visual extends WynVisual {
 
     public update(options: VisualNS.IVisualUpdateOptions) {
         this.isMock = true;
+
         this.items = {
             series: [],
             value: [],
@@ -140,6 +142,7 @@ export default class Visual extends WynVisual {
             this.items;
             this.isMock = false
             this.format = options.dataViews[0].plain.profile.value.values[0].format;
+            this.dataUnitFormat = options.properties.dataUnitFormat;
             this.items.data = dataView.data
             const seriesDisplay = dataView.profile.series.values[0].display;
             const valueDisplay = dataView.profile.value.values[0].display;
@@ -166,9 +169,11 @@ export default class Visual extends WynVisual {
                 }
             })
         }
+
         this.options = options.properties;
         if (this.isMock) {
             this.items = Visual.mockItems
+            this.valueColumn = "销售金额";
         }
         this.render();
     }
@@ -187,7 +192,7 @@ export default class Visual extends WynVisual {
             }
             pie3DData.push(data)
         }
-        let distance = 400 - this.options.distance
+        let distance = 350 - this.options.distance
         distance = distance - (this.options.internal * 1.5)
         let option = this.getPie3D(pie3DData, this.options.internal / 100, distance);
 
@@ -229,6 +234,11 @@ export default class Visual extends WynVisual {
         if (this.options.legendArea === 'auto') {
             hiddenOptions = hiddenOptions.concat(['legendWidth', 'legendHeight']);
         }
+        if (!this.options.showLegendValue) {
+            hiddenOptions = hiddenOptions.concat(['showFirstBarActualUnit']);
+        }
+
+
         return hiddenOptions;
     }
 
@@ -323,6 +333,8 @@ export default class Visual extends WynVisual {
     // 生成模拟 3D 饼图的配置项
     public getPie3D(pieData, internalDiameterRatio, distance) {
 
+        let minVal = null;
+        let maxVal = null;
         let series = [];
         let sumValue = 0;
         let startValue = 0;
@@ -331,9 +343,21 @@ export default class Visual extends WynVisual {
         let k = typeof internalDiameterRatio !== 'undefined' ? (1 - internalDiameterRatio) / (1 + internalDiameterRatio) : 1 / 3;
 
         for (let i = 0; i < pieData.length; i++) {
+            if (minVal == null) {
+                minVal = pieData[i].value;
+            }
+            if (minVal > pieData[i].value) {
+                minVal = pieData[i].value;
+            }
+            if (maxVal == null) {
+                maxVal = pieData[i].value;
+            }
+            if (maxVal < pieData[i].value) {
+                maxVal = pieData[i].value;
+            }
+
 
             sumValue += pieData[i].value;
-
             let seriesItem = {
                 name: typeof pieData[i].name === 'undefined' ? `series${i}` : pieData[i].name,
                 type: 'surface',
@@ -368,12 +392,23 @@ export default class Visual extends WynVisual {
 
         // 使用上一次遍历时，计算出的数据和 sumValue，调用 getParametricEquation 函数，
         // 向每个 series-surface 传入不同的参数方程 series-surface.parametricEquation，也就是实现每一个扇形。
+
+        // 设置的高度
+        let maxHeight = this.options.maxItemHeight;  // 最大
+        let minHeight = this.options.minItemHeight;  // 最低
+        let averageHeight = (maxHeight + minHeight) / (maxVal - minVal);
         for (let i = 0; i < series.length; i++) {
             endValue = startValue + series[i].pieData.value;
-            let val = this.hoveredIndex == series[i].pieData.name ? (series[i].pieData.value / sumValue) * 100 + 10 : (series[i].pieData.value / sumValue) * 100;
             series[i].pieData.startRatio = startValue / sumValue;
             series[i].pieData.endRatio = endValue / sumValue;
-            series[i].parametricEquation = this.getParametricEquation(series[i].pieData.startRatio, series[i].pieData.endRatio, false, false, k, val + this.options.itemHeigh);
+
+            if (maxHeight == minHeight) {
+                series[i].parametricEquation = this.getParametricEquation(series[i].pieData.startRatio, series[i].pieData.endRatio, false, false, k, maxHeight);
+            } else {
+                let h = minHeight + (series[i].pieData.value - minVal) * averageHeight;
+                series[i].parametricEquation = this.getParametricEquation(series[i].pieData.startRatio, series[i].pieData.endRatio, false, false, k, h);
+            }
+
             startValue = endValue;
 
             legendData.push(series[i].name);
@@ -416,13 +451,21 @@ export default class Visual extends WynVisual {
                     if (this.options.showLegendSeries) {
                         result = result + `{a|${data}}`
                     }
+                    // 显示数值
                     if (this.options.showLegendValue) {
-                        result += `{b|${this.items.value[index]}}`
+                        result += `{b|${this.formatData2(this.items.value[index], this.options.showFirstBarActualUnit, this.format)}}`
                     }
                     if (this.options.showLegendPercent) {
-                        let per = (Math.round((this.items.value[index] / this.items.total) * 100 * 100) / 100).toFixed(2)
-                        result += `{c|${per}}`
+                        let per = null;
+                        if (this.isMock) {
+                            per = (Math.round((this.items.value[index] / sumValue) * 100 * 100) / 100).toFixed(2);
+                        } else {
+                            per = (Math.round((this.items.value[index] / this.items.total) * 100 * 100) / 100).toFixed(2);
+                        }
+                        // let per = (Math.round((this.items.value[index] / this.items.total) * 100 * 100) / 100).toFixed(2);
+                        result += `{c|${per}}%`
                     }
+
                     return result == "" ? " " : result
                 },
                 data: legendData
@@ -432,7 +475,7 @@ export default class Visual extends WynVisual {
                     if (params.seriesName !== 'mouseoutSeries') {
                         //return `${params.seriesName}<br/><span
                         // style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.formatData(option.series[params.seriesIndex].pieData.value)}<br/>${this.items.tooltip[params.seriesIndex]}`;
-                        return `${params.seriesName}<br/><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.valueColumn} : ${this.formatData(option.series[params.seriesIndex].pieData.value)}<br/>`;
+                        return `${params.seriesName}<br/><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>${this.valueColumn} : ${this.formatData2(option.series[params.seriesIndex].pieData.value, this.options.dataFormatUnit, this.format)}<br/>`;
                     }
                 }
             },
@@ -452,12 +495,14 @@ export default class Visual extends WynVisual {
                 max: 1
             },
             grid3D: {
+                left: this.options.centerX,
+                top: -this.options.centerY,
                 show: false,
                 boxHeight: 10,
                 viewControl: {
                     damping: 0.8,
-                    // distance  : 2000,
-                    center: [-this.options.centerX, -this.options.centerZ, this.options.centerY],
+                    // distance  : 2000,  扇形位置X Y Z
+                    center: [0, 0, 0],
                     alpha: this.options.beta,
                     beta: this.options.alpha + this.options.startAngle,
                     rotateSensitivity: 1,
@@ -528,5 +573,57 @@ export default class Visual extends WynVisual {
         const formatService = this.host.formatService;
         // let realDisplayUnit = formatService.getAutoDisplayUnit([number]);
         return formatService.format(this.format, number);
+    }
+
+    public formatData2 = (number, dataUnit, formate) => {
+        let format = number
+        if (dataUnit === 'auto') {
+            const formatService = this.host.formatService;
+            let realDisplayUnit = dataUnit;
+            if (formatService.isAutoDisplayUnit(dataUnit)) {
+                realDisplayUnit = formatService.getAutoDisplayUnit([number]);
+            }
+            return format = formatService.format(formate, number, realDisplayUnit);
+        } else {
+            const units = [{
+                value: 1,
+                unit: '',
+                DisplayUnit: 'none'
+            }, {
+                value: 100,
+                unit: '百',
+                DisplayUnit: 'hundreds'
+            }, {
+                value: 1000,
+                unit: '千',
+                DisplayUnit: 'thousands'
+            }, {
+                value: 10000,
+                unit: '万',
+                DisplayUnit: 'tenThousands'
+            }, {
+                value: 100000,
+                unit: '十万',
+                DisplayUnit: 'hundredThousand'
+            }, {
+                value: 1000000,
+                unit: '百万',
+                DisplayUnit: 'millions'
+            }, {
+                value: 10000000,
+                unit: '千万',
+                DisplayUnit: 'tenMillion'
+            }, {
+                value: 100000000,
+                unit: '亿',
+                DisplayUnit: 'hundredMillion'
+            }, {
+                value: 1000000000,
+                unit: '十亿',
+                DisplayUnit: 'billions'
+            }]
+            let formatUnit = units.find((item) => item.value === Number(dataUnit))
+            return this.host.formatService.format(formate, format, formatUnit.DisplayUnit)
+        }
     }
 }

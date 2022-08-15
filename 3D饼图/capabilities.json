@@ -1,426 +1,513 @@
 {
-	"dataBinding": {
-		"dataRoles": [
-			{
-				"name": "value",
-				"displayNameKey": "数值",
-				"kind": "value",
-				"options": [
-					{
-						"displayNameKey": "数据格式",
-						"type": "format",
-						"name": "valueFormat"
-					}
-				]
-			},
-			{
-				"name": "series",
-				"displayNameKey": "分类",
-				"kind": "grouping"
-			},
-			{
-				"name": "tooltipFields",
-				"displayNameKey": "工具提示",
-				"kind": "attributeOrValue"
-			}
-		],
-		"dataViewMappings": [
-			{
-				"plain": {
-					"required": [
-						{
-							"value": {
-								"min": 1
-							},
-							"series": {
-								"min": 1
-							}
-						}
-					]
-				}
-			}
-		],
-		"conditions": [
-			{
-				"value": {
-					"max": 1
-				},
-				"series": {
-					"max": 1
-				}
-			}
-		]
-	},
-	"options": {
-		"visual": [
-			{
-				"name": "chartStyle",
-				"displayName": "图表样式",
-				"properties": [
-					{
-						"type": "Palette",
-						"name": "Color",
-						"displayName": "调色板"
-					},
-					{
-						"displayName": "内径",
-						"name": "internal",
-						"type": "Percentage",
-						"defaultValue": 0,
-						"max": 100,
-						"min": 0
-					},
-					{
-						"displayName": "外径",
-						"name": "distance",
-						"type": "Percentage",
-						"defaultValue": 100,
-						"max": 100,
-						"min": 0
-					},
-					{
-						"name": "startAngle",
-						"type": "Integer",
-						"displayName": "起始角度",
-						"defaultValue": 0
-					},
-					{
-						"displayName": "透明度",
-						"name": "opacity",
-						"type": "Percentage",
-						"defaultValue": 100,
-						"max": 100,
-						"min": 0
-					},
-					{
-						"name": "itemHeigh",
-						"type": "Integer",
-						"displayName": "图形高度",
-						"defaultValue": 5
-					},
-					{
-						"displayName": "自动旋转",
-						"name": "Automatic",
-						"type": "Boolean",
-						"defaultValue": false
-					},
-					{
-						"displayName": "水平转动",
-						"name": "alpha",
-						"type": "Percentage",
-						"defaultValue": 40,
-						"max": 100,
-						"min": 0
-					},
-					{
-						"displayName": "竖直转动",
-						"name": "beta",
-						"type": "Percentage",
-						"defaultValue": 40,
-						"max": 100,
-						"min": 0
-					},
-					{
-						"name": "centerX",
-						"type": "Percentage",
-						"displayName": "扇形中心-X",
-						"defaultValue": 0
-					},
-					{
-						"name": "centerY",
-						"type": "Percentage",
-						"displayName": "扇形中心-Y",
-						"defaultValue": 0
-					},
-					{
-						"name": "centerZ",
-						"type": "Percentage",
-						"displayName": "扇形中心-z",
-						"defaultValue": 0
-					},
-					{
-						"name": "AutomaticStyle",
-						"type": "Enum",
-						"displayName": "顺时针",
-						"items": [
-							{
-								"value": "cw",
-								"displayName": "顺时针"
-							},
-							{
-								"value": "ccw",
-								"displayName": "逆时针"
-							}
-						]
-					},
-					{
-						"name": "autoRotateSpeed",
-						"displayName": "旋转速度",
-						"type": "Integer",
-						"defaultValue": 10
-					}
-				]
-			},
-			{
-				"type": "interaction",
-				"properties": [
-					{
-						"name": "leftMouseButton",
-						"type": "Enum",
-						"displayName": "鼠标左键选项",
-						"items": [
-							{
-								"value": "none",
-								"displayNameKey": "无"
-							},
-							{
-								"value": "showToolTip",
-								"displayNameKey": "显示工具提示"
-							},
-							{
-								"value": "Keep",
-								"displayNameKey": "保留"
-							},
-							{
-								"value": "Exclude",
-								"displayNameKey": "排除"
-							},
-							{
-								"value": "Jump",
-								"displayNameKey": "跳转"
-							}
-						],
-						"defaultValue": "none"
-					},
-					{
-						"name": "onlySelect",
-						"type": "Boolean",
-						"displayName": "数据单选",
-						"defaultValue": true
-					}
-				]
-			},
-			{
-				"displayName": "图例",
-				"properties": [
-					{
-						"displayName": "显示图例",
-						"name": "showLegend",
-						"type": "Boolean",
-						"defaultValue": true
-					},
-					{
-						"name": "itemGap",
-						"type": "Integer",
-						"displayName": "图例间距",
-						"defaultValue": 15
-					},
-					{
-						"name": "openLegendPage",
-						"type": "Boolean",
-						"displayName": "开启图例分页",
-						"defaultValue": false
-					},
-					{
-						"name": "showLegendSeries",
-						"type": "Boolean",
-						"displayName": "显示系列名",
-						"defaultValue": true
-					},
-					{
-						"name": "legendSeriesWidth",
-						"type": "Integer",
-						"displayName": "系列名宽度",
-						"defaultValue": 50
-					},
-					{
-						"name": "showLegendValue",
-						"type": "Boolean",
-						"displayName": "显示数值",
-						"defaultValue": false
-					},
-					{
-						"name": "legendValueWidth",
-						"type": "Integer",
-						"displayName": "数值宽度",
-						"defaultValue": 50
-					},
-					{
-						"name": "showLegendPercent",
-						"type": "Boolean",
-						"displayName": "显示比值",
-						"defaultValue": false
-					},
-					{
-						"name": "legendIcon",
-						"type": "Enum",
-						"displayName": "图例形状",
-						"items": [
-							{
-								"value": "none",
-								"displayNameKey": "默认"
-							},
-							{
-								"value": "circle",
-								"displayNameKey": "圆形"
-							},
-							{
-								"value": "rect",
-								"displayNameKey": "方形"
-							},
-							{
-								"value": "roundRect",
-								"displayNameKey": "圆角方形"
-							},
-							{
-								"value": "triangle",
-								"displayNameKey": "三角形"
-							},
-							{
-								"value": "diamond",
-								"displayNameKey": "菱形"
-							}
-						],
-						"defaultValue": "circle"
-					},
-					{
-						"name": "legendPosition",
-						"type": "Enum",
-						"displayName": "水平位置",
-						"items": [
-							{
-								"value": "left",
-								"displayNameKey": "左侧"
-							},
-							{
-								"value": "right",
-								"displayNameKey": "右侧"
-							},
-							{
-								"value": "top",
-								"displayNameKey": "顶部"
-							},
-							{
-								"value": "bottom",
-								"displayNameKey": "底部"
-							}
-						],
-						"defaultValue": "right"
-					},
-					{
-						"name": "legendVerticalPosition",
-						"type": "Enum",
-						"displayName": "垂直位置",
-						"items": [
-							{
-								"value": "left",
-								"displayNameKey": "居左"
-							},
-							{
-								"value": "center",
-								"displayNameKey": "居中"
-							},
-							{
-								"value": "right",
-								"displayNameKey": "居右"
-							}
-						],
-						"defaultValue": "center"
-					},
-					{
-						"name": "legendHorizontalPosition",
-						"type": "Enum",
-						"displayName": "垂直位置",
-						"items": [
-							{
-								"value": "top",
-								"displayNameKey": "顶部"
-							},
-							{
-								"value": "middle",
-								"displayNameKey": "居中"
-							},
-							{
-								"value": "bottom",
-								"displayNameKey": "底部"
-							}
-						],
-						"defaultValue": "middle"
-					},
-					{
-						"name": "legendArea",
-						"type": "Enum",
-						"displayName": "图例宽高",
-						"items": [
-							{
-								"value": "auto",
-								"displayNameKey": "默认"
-							},
-							{
-								"value": "custom",
-								"displayNameKey": "自定义"
-							}
-						],
-						"defaultValue": "auto"
-					},
-					{
-						"name": "legendWidth",
-						"type": "Percentage",
-						"displayName": "图例宽度",
-						"defaultValue": 0
-					},
-					{
-						"name": "legendHeight",
-						"type": "Percentage",
-						"displayName": "图例高度",
-						"defaultValue": 0
-					},
-					{
-						"name": "legendTextStyle",
-						"type": "TextStyle",
-						"displayName": "字体设置",
-						"inheritFrom": "dashboard.textStyle",
-						"defaultValue": {
-							"color": "#f0f0f0",
-							"fontFamily": "微软雅黑",
-							"fontSize": "14pt",
-							"fontStyle": "Normal",
-							"fontWeight": "Normal"
-						}
-					}
-				]
-			},
-			{
-				"type": "title",
-				"defaultValue": "aaa"
-			}
-		]
-	},
-	"actions": [
-		{
-			"type": "filter"
-		},
-		{
-			"type": "sort"
-		},
-		{
-			"type": "rank"
-		},
-		{
-			"type": "convertVisual"
-		},
-		{
-			"type": "focus"
-		},
-		{
-			"type": "edit"
-		},
-		{
-			"type": "export"
-		},
-		{
-			"type": "annotation"
-		}
-	],
-	"analysis": []
+  "dataBinding": {
+    "dataRoles": [
+      {
+        "name": "value",
+        "displayNameKey": "数值",
+        "kind": "value",
+        "options": [
+          {
+            "displayNameKey": "数据格式",
+            "type": "format",
+            "name": "valueFormat"
+          }
+        ]
+      },
+      {
+        "name": "series",
+        "displayNameKey": "分类",
+        "kind": "grouping"
+      },
+      {
+        "name": "tooltipFields",
+        "displayNameKey": "工具提示",
+        "kind": "attributeOrValue"
+      }
+    ],
+    "dataViewMappings": [
+      {
+        "plain": {
+          "required": [
+            {
+              "value": {
+                "min": 1
+              },
+              "series": {
+                "min": 1
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "value": {
+          "max": 1
+        },
+        "series": {
+          "max": 1
+        }
+      }
+    ]
+  },
+  "options": {
+    "visual": [
+      {
+        "name": "chartStyle",
+        "displayName": "图表样式",
+        "properties": [
+          {
+            "type": "Palette",
+            "name": "Color",
+            "displayName": "调色板"
+          },
+          {
+            "displayName": "内径",
+            "name": "internal",
+            "type": "Integer",
+            "defaultValue": 80
+          },
+          {
+            "displayName": "外径",
+            "name": "distance",
+            "type": "Integer",
+            "defaultValue": 100
+          },
+          {
+            "name": "startAngle",
+            "type": "Integer",
+            "displayName": "起始角度",
+            "defaultValue": 0
+          },
+          {
+            "displayName": "透明度",
+            "name": "opacity",
+            "type": "Percentage",
+            "defaultValue": 100,
+            "max": 100,
+            "min": 0
+          },
+          {
+            "name": "maxItemHeight",
+            "type": "Integer",
+            "displayName": "最大高度",
+            "defaultValue": 20
+          },
+          {
+            "name": "minItemHeight",
+            "type": "Integer",
+            "displayName": "最低高度",
+            "defaultValue": 5
+          },
+          {
+            "displayName": "自动旋转",
+            "name": "Automatic",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "displayName": "水平转动",
+            "name": "alpha",
+            "type": "Integer",
+            "defaultValue": 50
+          },
+          {
+            "displayName": "竖直转动",
+            "name": "beta",
+            "type": "Integer",
+            "defaultValue": 20
+          },
+          {
+            "name": "centerX",
+            "type": "Integer",
+            "displayName": "扇形中心-X",
+            "defaultValue": 0
+          },
+          {
+            "name": "centerY",
+            "type": "Integer",
+            "displayName": "扇形中心-Y",
+            "defaultValue": 10
+          },
+          {
+            "name": "AutomaticStyle",
+            "type": "Enum",
+            "displayName": "顺时针",
+            "items": [
+              {
+                "value": "cw",
+                "displayName": "顺时针"
+              },
+              {
+                "value": "ccw",
+                "displayName": "逆时针"
+              }
+            ]
+          },
+          {
+            "name": "autoRotateSpeed",
+            "displayName": "旋转速度",
+            "type": "Integer",
+            "defaultValue": 10
+          }
+        ]
+      },
+      {
+        "type": "interaction",
+        "properties": [
+          {
+            "name": "leftMouseButton",
+            "type": "Enum",
+            "displayName": "鼠标左键选项",
+            "items": [
+              {
+                "value": "none",
+                "displayNameKey": "无"
+              },
+              {
+                "value": "showToolTip",
+                "displayNameKey": "显示工具提示"
+              },
+              {
+                "value": "Keep",
+                "displayNameKey": "保留"
+              },
+              {
+                "value": "Exclude",
+                "displayNameKey": "排除"
+              },
+              {
+                "value": "Jump",
+                "displayNameKey": "跳转"
+              }
+            ],
+            "defaultValue": "none"
+          },
+          {
+            "name": "onlySelect",
+            "type": "Boolean",
+            "displayName": "数据单选",
+            "defaultValue": true
+          },{
+            "name": "dataFormatUnit",
+            "type": "Enum",
+            "displayName": "数据单位",
+            "items": [
+              {
+                "value": "auto",
+                "displayNameKey": "自动"
+              },
+              {
+                "value": "1",
+                "displayNameKey": "无"
+              },
+              {
+                "value": "100",
+                "displayNameKey": "百"
+              },
+              {
+                "value": "1000",
+                "displayNameKey": "千"
+              },
+              {
+                "value": "10000",
+                "displayNameKey": "万"
+              },
+              {
+                "value": "100000",
+                "displayNameKey": "十万"
+              },
+              {
+                "value": "1000000",
+                "displayNameKey": "百万"
+              },
+              {
+                "value": "10000000",
+                "displayNameKey": "千万"
+              },
+              {
+                "value": "100000000",
+                "displayNameKey": "亿"
+              },
+              {
+                "value": "1000000000",
+                "displayNameKey": "十亿"
+              }
+            ],
+            "defaultValue": "auto"
+          }
+        ]
+      },
+      {
+        "displayName": "图例",
+        "properties": [
+          {
+            "displayName": "显示图例",
+            "name": "showLegend",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "itemGap",
+            "type": "Integer",
+            "displayName": "图例间距",
+            "defaultValue": 15
+          },
+          {
+            "name": "openLegendPage",
+            "type": "Boolean",
+            "displayName": "开启图例分页",
+            "defaultValue": false
+          },
+          {
+            "name": "showLegendSeries",
+            "type": "Boolean",
+            "displayName": "显示系列名",
+            "defaultValue": true
+          },
+          {
+            "name": "legendSeriesWidth",
+            "type": "Integer",
+            "displayName": "系列名宽度",
+            "defaultValue": 50
+          },
+          {
+            "name": "showLegendValue",
+            "type": "Boolean",
+            "displayName": "显示数值",
+            "defaultValue": false
+          },
+          {
+            "name": "showFirstBarActualUnit",
+            "type": "Enum",
+            "displayName": "数值",
+            "items": [
+              {
+                "value": "auto",
+                "displayNameKey": "自动"
+              },
+              {
+                "value": "1",
+                "displayNameKey": "无"
+              },
+              {
+                "value": "100",
+                "displayNameKey": "百"
+              },
+              {
+                "value": "1000",
+                "displayNameKey": "千"
+              },
+              {
+                "value": "10000",
+                "displayNameKey": "万"
+              },
+              {
+                "value": "100000",
+                "displayNameKey": "十万"
+              },
+              {
+                "value": "1000000",
+                "displayNameKey": "百万"
+              },
+              {
+                "value": "10000000",
+                "displayNameKey": "千万"
+              },
+              {
+                "value": "100000000",
+                "displayNameKey": "亿"
+              },
+              {
+                "value": "1000000000",
+                "displayNameKey": "十亿"
+              }
+            ],
+            "defaultValue": "auto"
+          },
+          {
+            "name": "legendValueWidth",
+            "type": "Integer",
+            "displayName": "数值宽度",
+            "defaultValue": 50
+          },
+          {
+            "name": "showLegendPercent",
+            "type": "Boolean",
+            "displayName": "显示比值",
+            "defaultValue": false
+          },
+          {
+            "name": "legendIcon",
+            "type": "Enum",
+            "displayName": "图例形状",
+            "items": [
+              {
+                "value": "none",
+                "displayNameKey": "默认"
+              },
+              {
+                "value": "circle",
+                "displayNameKey": "圆形"
+              },
+              {
+                "value": "rect",
+                "displayNameKey": "方形"
+              },
+              {
+                "value": "roundRect",
+                "displayNameKey": "圆角方形"
+              },
+              {
+                "value": "triangle",
+                "displayNameKey": "三角形"
+              },
+              {
+                "value": "diamond",
+                "displayNameKey": "菱形"
+              }
+            ],
+            "defaultValue": "circle"
+          },
+          {
+            "name": "legendPosition",
+            "type": "Enum",
+            "displayName": "水平位置",
+            "items": [
+              {
+                "value": "left",
+                "displayNameKey": "左侧"
+              },
+              {
+                "value": "right",
+                "displayNameKey": "右侧"
+              },
+              {
+                "value": "top",
+                "displayNameKey": "顶部"
+              },
+              {
+                "value": "bottom",
+                "displayNameKey": "底部"
+              }
+            ],
+            "defaultValue": "bottom"
+          },
+          {
+            "name": "legendVerticalPosition",
+            "type": "Enum",
+            "displayName": "垂直位置",
+            "items": [
+              {
+                "value": "left",
+                "displayNameKey": "居左"
+              },
+              {
+                "value": "center",
+                "displayNameKey": "居中"
+              },
+              {
+                "value": "right",
+                "displayNameKey": "居右"
+              }
+            ],
+            "defaultValue": "center"
+          },
+          {
+            "name": "legendHorizontalPosition",
+            "type": "Enum",
+            "displayName": "垂直位置",
+            "items": [
+              {
+                "value": "top",
+                "displayNameKey": "顶部"
+              },
+              {
+                "value": "middle",
+                "displayNameKey": "居中"
+              },
+              {
+                "value": "bottom",
+                "displayNameKey": "底部"
+              }
+            ],
+            "defaultValue": "middle"
+          },
+          {
+            "name": "legendArea",
+            "type": "Enum",
+            "displayName": "图例宽高",
+            "items": [
+              {
+                "value": "auto",
+                "displayNameKey": "默认"
+              },
+              {
+                "value": "custom",
+                "displayNameKey": "自定义"
+              }
+            ],
+            "defaultValue": "auto"
+          },
+          {
+            "name": "legendWidth",
+            "type": "Percentage",
+            "displayName": "图例宽度",
+            "defaultValue": 0
+          },
+          {
+            "name": "legendHeight",
+            "type": "Percentage",
+            "displayName": "图例高度",
+            "defaultValue": 0
+          },
+          {
+            "name": "legendTextStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle",
+            "defaultValue": {
+              "color": "#f0f0f0",
+              "fontFamily": "微软雅黑",
+              "fontSize": "14pt",
+              "fontStyle": "Normal",
+              "fontWeight": "Normal"
+            }
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "defaultValue": "aaa"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "type": "filter"
+    },
+    {
+      "type": "sort"
+    },
+    {
+      "type": "rank"
+    },
+    {
+      "type": "convertVisual"
+    },
+    {
+      "type": "focus"
+    },
+    {
+      "type": "edit"
+    },
+    {
+      "type": "export"
+    },
+    {
+      "type": "annotation"
+    }
+  ],
+  "analysis": []
 }
