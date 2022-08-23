@@ -26,6 +26,11 @@
                 ]
             },
             {
+                "name": "compareCol",
+                "displayNameKey": "对比字段",
+                "kind": "value"
+            },
+            {
                 "name": "dimension",
                 "displayNameKey": "分类",
                 "kind": "grouping"
@@ -94,6 +99,10 @@
                             {
                                 "value": "style3",
                                 "displayNameKey": "样式3"
+                            },{
+                                
+                                "value": "style4",
+                                "displayNameKey": "样式4"
                             }
                           ],
                           "defaultValue": "default"
@@ -111,6 +120,12 @@
                         "defaultValue": 18
                     },
                     {
+                        "name": "barWidthStyle",
+                        "type": "Integer",
+                        "displayName": "柱子宽度",
+                        "defaultValue": 10
+                    },
+                    {
                         "type": "Boolean",
                         "name": "showBackground",
                         "displayName": "显示背景",
@@ -123,16 +138,33 @@
                         "defaultValue": "#8e929a"
                     },
                     {
-                        "name": "barStartColor",
+                        "name": "greCompareCol",
                         "type": "Color",
-                        "displayName": "起始颜色",
-                        "defaultValue": "#57eabf"
+                        "displayName": "大于对比字段",
+                        "defaultValue": "#00ff5f"
+                    },{
+                        "name": "lesCompareCol",
+                        "type": "Color",
+                        "displayName": "小于对比字段",
+                        "defaultValue": "#ff0000"
                     },
                     {
                         "name": "barEndcolor",
                         "type": "Color",
-                        "displayName": "终止颜色",
+                        "displayName": "起始颜色",
                         "defaultValue": "#2563f9"
+                    },
+                    {
+                        "name": "inner",
+                        "type": "Percentage",
+                        "displayName": "渐变色位置",
+                        "defaultValue": 60
+                    },
+                    {
+                        "name": "barStartColor",
+                        "type": "Color",
+                        "displayName": "终止颜色",
+                        "defaultValue": "#57eabf"
                     },
                     {
                         "displayNameKey": "排序依据",
@@ -260,6 +292,32 @@
                         "type": "Integer",
                         "displayName": "填充间隔",
                         "defaultValue": 3,
+                        "min" : 0
+                    },
+                    {
+                        "name": "SymbolImage",
+                        "type": "Image",
+                        "displayName": "终点图片",
+                        "defaultValue": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAMAAADWZboaAAAAZlBMVEUAAABe3uVe3+Vf3uVf3+Zf3uVg3+Zg3+Zf3+Vi4OZh4OZg3+Z86/Bh3+Zi4Odj4Odi4OZ86/B76/B86/Bj4ed56+9x5+xn4umB7/N87PB36e+A7/N+7fF/7vJ/7vJ+7fGA7/OB7/PReX+lAAAAIXRSTlMABQkVDREmIhk3MR10LEFFPHh7cUprXE35h2XnqMLAp+mHAG9cAAAB5ElEQVRIx83WjU7CMBQFYIoiKMqU/XUboHv/l/Tce7t2XamDNSacETEmX86tlK2rx4py150o+MstMBLwWRfHKo6JCVxLnvmFGBjFQ58oF1//sUZhGy/ClSTWObgnL4O+bkeN4nY2okfNMbkRt9/vtxz8InoTsWplJSCzFxPmO8+GpSIByX3YQAuGDWtRKhKjCnxDXhF6Z4yxnZ20Wgko7BMRDmxtSGVaI4kdTIgb+zTYoJQlIMlDlmUFgrcDWWC201qSayqlTkiCddWWeV62VU0YlnpRi9VOKaSUsiyq/N0krwq2Ugt7lVpZl5BfHNiytjagMi+XYp0kCR45hMlivVQrE/uU5pXSrCB5bM6d1t2lOZItMqmliT3q5uVxqxzyW/ccfYLNKx7ZTeykMvNyac2yt2Fbc61MHLSC0rwoxbiNdlQ3GBm1NLHQsHUrtEXppR/ljNpW6DbSCoqlFiVoN6YdaFlgsSFVPs1BdT8OaB5QyQzVcaqWDows/zepxR8ObLglTrdtCRVuRNj4Rrxh+//0ke2f8KVL+Kon3GCSbmsJN9OUW3j6g0Ns+LgCij2u0h+Sghc8mlMPBMgdx5DFh59VmOVHrvmDnoNxCz3J7MFWsMuaLyR089xz/xhlfijvwutR8gv3zk6BLUUeCgAAAABJRU5ErkJggg=="
+                    },
+                    {
+                        "name": "SymbolSizeX",
+                        "type": "Integer",
+                        "displayName": "终点图片宽度",
+                        "defaultValue": 60,
+                        "min" : 0
+                    },
+                    {
+                        "name": "SymbolSizeY",
+                        "type": "Integer",
+                        "displayName": "终点图片高度",
+                        "defaultValue": 60,
+                        "min" : 0
+                    },{
+                        "name": "SymbolMargin",
+                        "type": "Integer",
+                        "displayName": "终点间隔",
+                        "defaultValue": 25,
                         "min" : 0
                     }
                 ]
@@ -618,13 +676,13 @@
                         "name": "secondBarPositionX",
                         "type": "Integer",
                         "displayName": "排名位置X",
-                        "defaultValue": -50
+                        "defaultValue": -42
                     },
                     {
                         "name": "secondBarPositionY",
                         "type": "Integer",
                         "displayName": "排名位置Y",
-                        "defaultValue": 0
+                        "defaultValue": -7
                     },
                     {
                         "displayNameKey": "背景形状",
@@ -706,10 +764,21 @@
                                 "name": "rankingConditionColor",
                                 "displayName": "背景颜色",
                                 "type": "Color"
-                            }, {
+                            }, 
+                            {
                                 "name": "rankingConditionImage",
                                 "displayName": "背景图片",
                                 "type": "Image"
+                            },
+                            {
+                                "name": "rankingStartConditionColor",
+                                "displayName": "条形开始颜色",
+                                "type": "Color"
+                            },
+                            {
+                                "name": "rankingEndConditionColor",
+                                "displayName": "条形终止颜色",
+                                "type": "Color"
                             }
                         ],
                         "defaultValue": [
@@ -718,21 +787,28 @@
                                 "rankingReplaceValue": "1",
                                 "rankingFontColor": "",
                                 "rankingConditionColor": "#509dea",
-                                "rankingConditionImage":""
+                                "rankingConditionImage":"",
+                                "rankingStartConditionColor": "#509dea",
+                                "rankingEndConditionColor": "#d3e7fa"
                              },{
                                 "rankingConditionValue": "2",
                                 "rankingReplaceValue": "2",
                                 "rankingFontColor": "",
                                 "rankingConditionColor": "#08bc9b",
-                                "rankingConditionImage":""
+                                "rankingConditionImage":"",
+                                "rankingStartConditionColor": "#08bc9b",
+                                "rankingEndConditionColor": "#c1eee6"
                             },{
                                 "rankingConditionValue": "3",
                                 "rankingReplaceValue": "3",
                                 "rankingFontColor": "",
                                 "rankingConditionColor": "#bc7df2",
-                                "rankingConditionImage":""
+                                "rankingConditionImage":"",
+                                "rankingStartConditionColor": "#8c7df2",
+                                "rankingEndConditionColor": "#e2dffc"
                             }]
-                    }]
+                    }
+                ]
             },
             {
                 "type": "interaction",
