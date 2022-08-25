@@ -720,6 +720,24 @@
                         "defaultValue": "#444a58"
                     },
                     {
+                      "name": "rankingSize",
+                      "type": "Integer",
+                      "displayName": "背景间距",
+                      "defaultValue": 8
+                  },
+                  {
+                      "name": "rankingSizeX",
+                      "type": "Integer",
+                      "displayName": "背景宽度",
+                      "defaultValue": 10
+                  },
+                  {
+                      "name": "rankingSizeY",
+                      "type": "Integer",
+                      "displayName": "背景高度",
+                      "defaultValue": 10
+                  },
+                    {
                         "name": "rankingSize",
                         "type": "Integer",
                         "displayName": "背景大小",
