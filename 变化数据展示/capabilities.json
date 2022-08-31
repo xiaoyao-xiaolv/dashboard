@@ -1,0 +1,118 @@
+{
+    "dataBinding": {
+        "dataRoles": [
+            {
+                "name": "values",
+                "displayNameKey": "旧值",
+                "options": [
+                  {
+                    "displayNameKey": "数据格式",
+                    "type": "format",
+                    "name": "valueFormat"
+                  }
+                ],
+                "kind": "value"
+            },
+            {
+                "name": "contrast",
+                "displayNameKey": "新值",
+                "kind": "value"
+            }],"dataViewMappings": [
+                {
+                    "plain": {
+                        "required": [
+                            {
+                                "ActualValue": {
+                                    "min": 1
+                                }
+                            },
+                            {
+                                "ContrastValue": {
+                                    "min": 1
+                                }
+                            }
+                        ]
+                    }
+                }
+            ],
+            "conditions": [
+                {
+                    "ActualValue": {
+                        "max": 1
+                    },
+                    "ContrastValue": {
+                        "max": 1
+                    }
+                }
+            ]
+        },
+    "options": {
+        "visual": [
+            {
+                "displayName": "图表样式",
+                "properties": [
+                    {
+                        "name": "upImage",
+                        "type": "Image",
+                        "displayName": "上升箭头图"
+                    },
+                    {
+                        "name": "downImage",
+                        "type": "Image",
+                        "displayName": "下降箭头图"
+                    },
+                    {
+                        "name": "graphImage",
+                        "type": "Image",
+                        "displayName": "图表背景图"
+                    }
+                ]
+            },
+            {
+                "displayName": "样式调整",
+                "properties": [
+                    {
+                        "name": "titleFont",
+                        "type": "TextStyle",
+                        "displayName": "标题字体",
+                        "defaultValue": {
+                            "fontSize": "2.5x",
+                            "color": "#000"
+                        }
+                    },{
+                        "name": "numberFont",
+                        "type": "TextStyle",
+                        "displayName": "比值字体",
+                        "defaultValue": {
+                            "fontSize": "2.5x",
+                            "color": "#000"
+                        }
+                    },{
+                        "name": "bodyPosition",
+                        "type": "Integer",
+                        "displayName": "文字高度调整"
+                    }]
+
+            },
+            {
+                "name": "textStyleTotalText",
+                "type": "TextStyle",
+                "displayName": "标题字体",
+                "inheritFrom": "dashboard.textStyle",
+                "defaultValue": {
+                    "fontSize": "2.5x",
+                    "color": "#3eb2ff"
+                }
+            },
+            {
+                "type": "interaction"
+            },
+            {
+                "type": "appearance"
+            }]
+    },
+    "actions": [        {
+        "type": "focus"
+    }],
+    "analysis": []
+}
