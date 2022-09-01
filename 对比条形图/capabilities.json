@@ -26,6 +26,11 @@
                 ]
             },
             {
+                "name": "compareCol",
+                "displayNameKey": "对比字段",
+                "kind": "value"
+            },
+            {
                 "name": "dimension",
                 "displayNameKey": "分类",
                 "kind": "grouping"
@@ -131,6 +136,17 @@
                         "type": "Color",
                         "displayName": "背景颜色",
                         "defaultValue": "#8e929a"
+                    },
+                    {
+                        "name": "greCompareCol",
+                        "type": "Color",
+                        "displayName": "大于对比字段",
+                        "defaultValue": "#00ff5f"
+                    },{
+                        "name": "lesCompareCol",
+                        "type": "Color",
+                        "displayName": "小于对比字段",
+                        "defaultValue": "#ff0000"
                     },
                     {
                         "name": "barEndcolor",
@@ -703,6 +719,24 @@
                         "displayName": "背景颜色",
                         "defaultValue": "#444a58"
                     },
+                    {
+                      "name": "rankingSize",
+                      "type": "Integer",
+                      "displayName": "背景间距",
+                      "defaultValue": 8
+                  },
+                  {
+                      "name": "rankingSizeX",
+                      "type": "Integer",
+                      "displayName": "背景宽度",
+                      "defaultValue": 10
+                  },
+                  {
+                      "name": "rankingSizeY",
+                      "type": "Integer",
+                      "displayName": "背景高度",
+                      "defaultValue": 10
+                  },
                     {
                         "name": "rankingSize",
                         "type": "Integer",

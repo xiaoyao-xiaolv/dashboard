@@ -96,6 +96,8 @@ export default {
         showSecondBarActual: true,
         showSecondBarPercent: false,
         showBackgroundColor: true,
+        rankingSizeX: 10,
+        rankingSizeY: 10,
         rankingConditionCollection: [{
             rankingConditionValue: "1",
             rankingReplaceValue: '',
@@ -134,6 +136,8 @@ export default {
         showBackgroundColor: true,
         secondBarPositionX: -40,
         secondBarPositionY: -10,
+        rankingSizeX: 10,
+        rankingSizeY: 10,
         rankingConditionCollection: [{
             rankingConditionValue: "1",
             rankingReplaceValue: '冠',
@@ -174,6 +178,8 @@ export default {
         secondBarPositionX: 0,
         secondBarPositionY: -22,
         showBackgroundColor: true,
+        rankingSizeX: 10,
+        rankingSizeY: 10,
         rankingConditionCollection: [{
             rankingConditionValue: "1",
             rankingReplaceValue: '',
@@ -216,6 +222,8 @@ export default {
         displayPolicy: "none",
         firstBarPositionX: 1,
         firstBarPositionY: -13,
+        rankingSizeX: 10,
+        rankingSizeY: 10,
         labelTextStyle: {
             fontFamily: '微软雅黑',
             fontSize: '1.0X',

@@ -27,6 +27,7 @@ export default class Visual {
   private isTooltipModelShown: boolean;
   private ActualValue: string;
   private Dimension: string;
+  private compareCol: any;
   private ContrastValue: string;
   private richStyle: any;
   private format1: any;
@@ -138,7 +139,7 @@ export default class Visual {
 
   public update(options: any) {
     const dataView = options.dataViews[0];
-    this.items = [[], [], [], [], [], []];
+    this.items = [[], [], [], [], [], [],[]];
 
     if (dataView && dataView.plain.profile.ActualValue.values.length) {
       this.isMock = false;
@@ -146,6 +147,8 @@ export default class Visual {
       this.ActualValue = plainData.profile.ActualValue.values.length ? plainData.profile.ActualValue.values[0].display : '';
       this.ContrastValue = plainData.profile.ContrastValue.values.length ? plainData.profile.ContrastValue.values[0].display : '';
       this.Dimension = plainData.profile.dimension.values.length ? plainData.profile.dimension.values[0].display : '';
+      this.compareCol = plainData.profile.compareCol.values.length ? plainData.profile.compareCol.values[0].display : '';
+      this.actualFormate = this.ActualValue && plainData.profile.ActualValue.values[0].format;
       this.isActualValue = !!plainData.profile.ActualValue.values.length;
       this.isContrastValue = !!plainData.profile.ContrastValue.values.length;
       this.isDimension = !!plainData.profile.dimension.values.length;
@@ -163,18 +166,21 @@ export default class Visual {
             this.items.push([])
             tooltipFields.push(val.display)
           });
-          this.items[6] = tooltipFields
+          this.items[7] = tooltipFields
         }
 
         datas = newItems.filter((item) => item)
         datas.map((data: any) => {
-          this.actualFormate = this.ActualValue && plainData.profile.ActualValue.values[0].format;
           this.contrastFormate = this.ContrastValue && plainData.profile.ContrastValue.values[0].format;
           this.ActualValue && this.items[1].push(data[this.ActualValue]);
           this.ContrastValue && this.items[2].push(data[this.ContrastValue]);
           tooltipFields.forEach((val,index) => {
-            this.items[7+index].push(data[val])
+            this.items[8+index].push(data[val])
           })
+          if (plainData.profile.compareCol.values.length != 0) {
+            this.items[6].push(data[this.compareCol])
+          }
+
           if (this.ActualValue && this.ContrastValue) {
             this.items[3].push(Number((data[this.ActualValue] / data[this.ContrastValue] * 100).toFixed(2)));
           } else if (this.ActualValue) {
@@ -335,8 +341,8 @@ export default class Visual {
       fontFamily: textStyle.fontFamily,
       fontStyle: textStyle.fontStyle,
       borderRadius: bgShape === 'circular' ? 100 : '',
-      width: 10,
-      height: 10,
+      width: this.properties.rankingSizeX,
+      height: this.properties.rankingSizeY,
       align: 'left',
       padding: [widthSize, widthSize],
     }
@@ -506,9 +512,9 @@ export default class Visual {
             _toolTipText += this.isDimension ? `${this.Dimension}: ${items[0][params.dataIndex]} <br>` : ''
             _toolTipText += this.isActualValue ? `${this.ActualValue}: ${this.formatData(actualTip, options.showSecondBarActualUnit, this.actualFormate)}<br>` : '';
             _toolTipText += this.isContrastValue ? `${this.ContrastValue}: ${this.formatData(contrast, options.showSecondBarContrastUnit, this.contrastFormate)}<br>` : '';
-            if(this.items.length > 6){
-              this.items[6].forEach((val,index) => {
-                _toolTipText += `${val}  : ${this.items[7+index][dataIndex]}<br>`;
+            if(this.items.length > 7){
+              this.items[7].forEach((val,index) => {
+                _toolTipText += `${val}  : ${this.items[8+index][dataIndex]}<br>`;
               });
             }
             return _toolTipText;
@@ -544,7 +550,7 @@ export default class Visual {
                 const _target = [percent, actual, contrast];
                 dataRatio = _target.filter((_text) => _text).join('/');
               } else {
-                dataRatio = items[1];
+                dataRatio = this.formatData(this.items[1][0], options.showSecondBarActualUnit, this.actualFormate);
               }
             }
             return dataRatio
@@ -656,7 +662,10 @@ export default class Visual {
         itemStyle:{
           normal: {
             color: (params) => {
-              return this.properties.showBackgroundColor && this.properties.rankingConditionCollection.length>params.dataIndex &&  this.properties.rankingConditionCollection[params.dataIndex].rankingStartConditionColor &&  this.properties.rankingConditionCollection[params.dataIndex].rankingEndConditionColor  ? 
+              if(this.compareCol){
+                return params.value / 100 >= items[6][params.dataIndex] ?  options.greCompareCol : options.lesCompareCol ;
+              }else{
+                return this.properties.showBackgroundColor && this.properties.rankingConditionCollection.length>params.dataIndex &&  this.properties.rankingConditionCollection[params.dataIndex].rankingStartConditionColor &&  this.properties.rankingConditionCollection[params.dataIndex].rankingEndConditionColor  ? 
               {
                 type: 'linear',
                 x: 0,
@@ -705,6 +714,7 @@ export default class Visual {
                 }
                 ],
                 global: false
+              }
               }
             },
             barBorderRadius: [options.radiusLeftTop, options.radiusRightTop, options.radiusRightDown, options.radiusLeftDown]
@@ -823,6 +833,12 @@ export default class Visual {
   public getInspectorHiddenState(updateOptions: any): string[] {
     let hiddenOptions: Array<string> = [''];
     if(updateOptions.dataViews.length > 0){
+        //compareCol
+        if(updateOptions.dataViews[0].plain.profile.compareCol.values.length == 0){
+          hiddenOptions = hiddenOptions.concat(['greCompareCol', 'lesCompareCol'])
+        }else{
+          hiddenOptions = hiddenOptions.concat(['barEndcolor', 'inner','barStartColor'])
+        }
         // fill shape
         if (updateOptions.properties.barSymbolType === 'default') {
           hiddenOptions = hiddenOptions.concat(['barSymbolImage', 'barSymbolSizeX', 'barSymbolSizeY', 'barSymbolMargin'])
@@ -838,7 +854,7 @@ export default class Visual {
           hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
         }
         if (updateOptions.properties.rankingShape === 'none') {
-          hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize'])
+          hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize','rankingSizeX','rankingSizeY'])
         }
         if (updateOptions.properties.barSymbolType !== 'custom') {
           hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
@@ -861,7 +877,7 @@ export default class Visual {
         }
 
         if (!updateOptions.properties.showRanking) {
-          hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY', 'rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle', 'showBackgroundColor', 'rankingConditionCollection'])
+          hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY', 'rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle', 'showBackgroundColor', 'rankingConditionCollection','rankingSizeX','rankingSizeY'])
         }
         if (!updateOptions.properties.showFirstBarCategory) {
           hiddenOptions = hiddenOptions.concat(['categoryLen'])
