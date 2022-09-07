@@ -1,6 +1,6 @@
 {
     "id": "1558a630-d0fc-11ec-b33c-71b5ca9ded3f",
-    "name": "高德GIS点地图",
+    "name": "GIS地图",
     "displayName": "",
     "displayNameKey": "",
     "icon": "visualIcon",
@@ -13,7 +13,10 @@
     "externalCss": [],
     "assets": {
         "images": {
-            "visualIcon": "assets/icon.png"
+            "visualIcon": "assets/icon.png",
+            "point_1": "assets/point_1.png",
+            "loading_01": "assets/loading_01.png",
+            "loading": "assets/img.gif"
         }
     },
     "configuration": {
