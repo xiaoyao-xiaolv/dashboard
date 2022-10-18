@@ -341,8 +341,8 @@ export default class Visual {
       fontFamily: textStyle.fontFamily,
       fontStyle: textStyle.fontStyle,
       borderRadius: bgShape === 'circular' ? 100 : '',
-      width: 10,
-      height: 10,
+      width: this.properties.rankingSizeX,
+      height: this.properties.rankingSizeY,
       align: 'left',
       padding: [widthSize, widthSize],
     }
@@ -854,7 +854,7 @@ export default class Visual {
           hiddenOptions = hiddenOptions.concat(['rankingBackgroundImage'])
         }
         if (updateOptions.properties.rankingShape === 'none') {
-          hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize'])
+          hiddenOptions = hiddenOptions.concat(['rankingBackgroundColor', 'rankingSize','rankingSizeX','rankingSizeY'])
         }
         if (updateOptions.properties.barSymbolType !== 'custom') {
           hiddenOptions = hiddenOptions.concat(['barSymbolImage'])
@@ -877,7 +877,7 @@ export default class Visual {
         }
 
         if (!updateOptions.properties.showRanking) {
-          hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY', 'rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle', 'showBackgroundColor', 'rankingConditionCollection'])
+          hiddenOptions = hiddenOptions.concat(['secondBarPositionX', 'secondBarPositionY', 'rankingShape', 'rankingBackgroundColor', 'rankingBackgroundImage', 'rankingSize', 'rankingTextStyle', 'showBackgroundColor', 'rankingConditionCollection','rankingSizeX','rankingSizeY'])
         }
         if (!updateOptions.properties.showFirstBarCategory) {
           hiddenOptions = hiddenOptions.concat(['categoryLen'])

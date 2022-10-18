@@ -1,50 +1,58 @@
 {
-    "dataBinding": {},
-    "options": {
-        "visual": [
-            {
-                "displayName": "自定义属性",
-                "properties": [
-                    {
-                        "displayNameKey": "显示格式",
-                        "name": "shape",
-                        "type": "Enum",
-                        "items": [
-                            {
-                                "value": "Short",
-                                "displayNameKey": "短日期"
-                            },
-                            {
-                                "value": "Long",
-                                "displayNameKey": "长日期"
-                            },
-                            {
-                                "value": "detailed",
-                                "displayNameKey": "详细日期"
-                            }
-                        ],
-                        "defaultValue": "detailed"
-                    },
-                    {
-                        "name": "textStyle",
-                        "type": "TextStyle",
-                        "displayName": "字体设置",
-                        "inheritFrom": "dashboard.textStyle"
-                    }
-                ]
-            },
-            {
-                "type": "appearance"
-            }
+  "dataBinding": {},
+  "options": {
+    "visual": [
+      {
+        "displayName": "自定义属性",
+        "properties": [
+          {
+            "displayNameKey": "显示格式",
+            "name": "shape",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "Short",
+                "displayNameKey": "短日期"
+              },
+              {
+                "value": "Long",
+                "displayNameKey": "长日期"
+              },
+              {
+                "value": "detailed",
+                "displayNameKey": "详细日期"
+              }
+            ],
+            "defaultValue": "detailed"
+          },
+          {
+            "name": "format",
+            "type": "Text",
+            "displayName": "格式化"
+          },
+          {
+            "name": "textStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle"
+          }
         ]
+      },
+      {
+        "type": "appearance"
+      },
+      {
+        "type": "interaction"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "type": "focus"
     },
-    "actions": [
-        {
-            "type": "focus"
-        },
-        {
-            "type": "annotation"
-        }
-    ],
-    "analysis": []
+    {
+      "type": "annotation"
+    }
+  ],
+  "analysis": []
 }

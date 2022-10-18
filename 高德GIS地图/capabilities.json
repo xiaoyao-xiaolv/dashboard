@@ -1,0 +1,1747 @@
+{
+  "dataBinding": {
+    "dataRoles": [
+      {
+        "name": "numeric",
+        "displayNameKey": "数值",
+        "kind": "value",
+        "options": [
+          {
+            "displayNameKey": "数据格式",
+            "type": "format",
+            "name": "valueFormat"
+          },
+          {
+            "displayNameKey": "数据单位",
+            "type": "displayUnit",
+            "name": "valueDisplayUnit"
+          }
+        ]
+      },
+      {
+        "name": "start_address",
+        "displayNameKey": "起始地址",
+        "kind": "grouping"
+      },
+      {
+        "name": "start_lng",
+        "displayNameKey": "起始经度",
+        "kind": "grouping"
+      },
+      {
+        "name": "start_lat",
+        "displayNameKey": "起始纬度",
+        "kind": "grouping"
+      },
+      {
+        "name": "end_address",
+        "displayNameKey": "结束地址",
+        "kind": "grouping"
+      },
+      {
+        "name": "end_lng",
+        "displayNameKey": "结束经度",
+        "kind": "grouping"
+      },
+      {
+        "name": "end_lat",
+        "displayNameKey": "结束纬度",
+        "kind": "grouping"
+      },
+      {
+        "name": "tooltipFields",
+        "displayNameKey": "工具提示",
+        "kind": "attributeOrValue"
+      }
+    ],
+    "dataViewMappings": [
+      {
+        "plain": {
+          "required": [
+            {
+              "numeric": {
+                "min": 1
+              },
+              "start_address": {
+                "min": 1
+              },
+              "start_lng": {
+                "max": 0
+              },
+              "start_lat": {
+                "max": 0
+              },
+              "end_address": {
+                "max": 0
+              },
+              "end_lng": {
+                "max": 0
+              },
+              "end_lat": {
+                "max": 0
+              }
+            },
+            {
+              "numeric": {
+                "min": 1
+              },
+              "start_address": {
+                "min": 1
+              },
+              "start_lng": {
+                "min": 1
+              },
+              "start_lat": {
+                "min": 1
+              },
+              "end_address": {
+                "max": 0
+              },
+              "end_lng": {
+                "max": 0
+              },
+              "end_lat": {
+                "max": 0
+              }
+            },
+            {
+              "numeric": {
+                "min": 1
+              },
+              "start_address": {
+                "min": 1
+              },
+              "start_lng": {
+                "min": 1
+              },
+              "start_lat": {
+                "min": 1
+              },
+              "end_address": {
+                "min": 1
+              },
+              "end_lng": {
+                "max": 0
+              },
+              "end_lat": {
+                "max": 0
+              }
+            },
+            {
+              "numeric": {
+                "min": 1
+              },
+              "start_address": {
+                "min": 1
+              },
+              "start_lng": {
+                "min": 1
+              },
+              "start_lat": {
+                "min": 1
+              },
+              "end_address": {
+                "min": 1
+              },
+              "end_lng": {
+                "min": 1
+              },
+              "end_lat": {
+                "min": 1
+              }
+            },
+            {
+              "numeric": {
+                "min": 1
+              },
+              "start_address": {
+                "min": 1
+              },
+              "start_lng": {
+                "max": 0
+              },
+              "start_lat": {
+                "max": 0
+              },
+              "end_address": {
+                "min": 1
+              },
+              "end_lng": {
+                "max": 0
+              },
+              "end_lat": {
+                "max": 0
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "numeric": {
+          "max": 1
+        },
+        "start_address": {
+          "max": 1
+        },
+        "start_lng": {
+          "max": 0
+        },
+        "start_lat": {
+          "max": 0
+        },
+        "end_address": {
+          "max": 0
+        },
+        "end_lng": {
+          "max": 0
+        },
+        "end_lat": {
+          "max": 0
+        }
+      },
+      {
+        "numeric": {
+          "max": 1
+        },
+        "start_address": {
+          "max": 1
+        },
+        "start_lng": {
+          "max": 1
+        },
+        "start_lat": {
+          "max": 1
+        },
+        "end_address": {
+          "max": 0
+        },
+        "end_lng": {
+          "max": 0
+        },
+        "end_lat": {
+          "max": 0
+        }
+      },
+      {
+        "numeric": {
+          "max": 1
+        },
+        "start_address": {
+          "max": 1
+        },
+        "start_lng": {
+          "max": 1
+        },
+        "start_lat": {
+          "max": 1
+        },
+        "end_address": {
+          "max": 1
+        },
+        "end_lng": {
+          "max": 0
+        },
+        "end_lat": {
+          "max": 0
+        }
+      },
+      {
+        "numeric": {
+          "max": 1
+        },
+        "start_address": {
+          "max": 1
+        },
+        "start_lng": {
+          "max": 1
+        },
+        "start_lat": {
+          "max": 1
+        },
+        "end_address": {
+          "max": 1
+        },
+        "end_lng": {
+          "max": 1
+        },
+        "end_lat": {
+          "max": 1
+        }
+      },
+      {
+        "numeric": {
+          "max": 1
+        },
+        "start_address": {
+          "max": 1
+        },
+        "start_lng": {
+          "max": 0
+        },
+        "start_lat": {
+          "max": 0
+        },
+        "end_address": {
+          "max": 1
+        },
+        "end_lng": {
+          "max": 0
+        },
+        "end_lat": {
+          "max": 0
+        }
+      }
+    ]
+  },
+  "options": {
+    "visual": [
+      {
+        "displayName": "地图设置",
+        "properties": [
+          {
+            "name": "centerLnglat",
+            "displayName": "地图中心点",
+            "type": "Text",
+            "defaultValue": "陕西省"
+          },
+          {
+            "name": "zoom",
+            "displayName": "显示级别",
+            "type": "Float",
+            "defaultValue": 4.5,
+            "min": 0,
+            "max": 20
+          },
+          {
+            "name": "pitch",
+            "displayName": "倾斜角度",
+            "type": "Integer",
+            "defaultValue": 35,
+            "max": 90,
+            "min": 0
+          },
+          {
+            "name": "mapStyle",
+            "displayName": "地图样式",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "normal",
+                "displayName": "标准"
+              },
+              {
+                "value": "dark",
+                "displayName": "幻影黑"
+              },
+              {
+                "value": "light",
+                "displayName": "月光银"
+              },
+              {
+                "value": "whitesmoke",
+                "displayName": "远山黛"
+              },
+              {
+                "value": "fresh",
+                "displayName": "草色青"
+              },
+              {
+                "value": "grey",
+                "displayName": "雅士灰"
+              },
+              {
+                "value": "graffiti",
+                "displayName": "涂鸦"
+              },
+              {
+                "value": "macaron",
+                "displayName": "马卡龙"
+              },
+              {
+                "value": "blue",
+                "displayName": "靛青蓝"
+              },
+              {
+                "value": "darkblue",
+                "displayName": "极夜蓝"
+              },
+              {
+                "value": "wine",
+                "displayName": "酱籽"
+              }
+            ],
+            "defaultValue": "grey"
+          },
+          {
+            "name": "v_wx",
+            "displayName": "卫星视图",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "dragEnable",
+            "displayName": "开启鼠标平移",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "zoomEnable",
+            "displayName": "开启缩放",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "rotateEnable",
+            "displayName": "开启旋转",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "pitchEnable",
+            "displayName": "开启视角",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "feat_bg",
+            "displayName": "显示区域面",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "feat_road",
+            "displayName": "显示道路",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "feat_building",
+            "displayName": "显示建筑物",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "feat_point",
+            "displayName": "显示标注",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "feat_point",
+            "displayName": "显示标注",
+            "type": "Boolean",
+            "defaultValue": true
+          }
+        ]
+      },
+      {
+        "displayName": "地图贴图设置",
+        "properties": [
+          {
+            "name": "map_skyColor",
+            "displayName": "天空颜色",
+            "type": "Color"
+          },
+          {
+            "name": "map_color",
+            "displayName": "地图填充色",
+            "type": "Color"
+          },
+          {
+            "name": "map_image",
+            "displayName": "地图背景",
+            "type": "Image"
+          },
+          {
+            "name": "img_url",
+            "displayName": "覆盖图层",
+            "type": "Image"
+          },
+          {
+            "name": "img_lnglat_0",
+            "displayName": "图片起点经纬度",
+            "type": "Text",
+            "defaultValue": "106.329298,38.47496"
+          },
+          {
+            "name": "img_lnglat_1",
+            "displayName": "图片终点经纬度",
+            "type": "Text",
+            "defaultValue": "112.723341,32.021903"
+          },
+          {
+            "name": "img_opacity",
+            "displayName": "图层透明度",
+            "type": "Integer",
+            "defaultValue": 40,
+            "step": 10,
+            "min": 0,
+            "max": 100
+          },
+          {
+            "name": "img_Position",
+            "displayName": "起点偏移量",
+            "type": "Position"
+          }
+        ]
+      },
+      {
+        "displayName": "图点属性设置",
+        "properties": [
+          {
+            "name": "r_icon_show",
+            "displayName": "显示图点",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "unit",
+            "displayName": "单位",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "px",
+                "displayName": "px"
+              },
+              {
+                "value": "meter",
+                "displayName": "米"
+              }
+            ],
+            "defaultValue": "meter"
+          },
+          {
+            "name": "r_icon_size",
+            "displayName": "渐变大小",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "icon_type",
+            "displayName": "图标类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "PO",
+                "displayName": "圆点"
+              },
+              {
+                "value": "IMG",
+                "displayName": "自定义图标"
+              }
+            ],
+            "defaultValue": "PO"
+          },
+          {
+            "name": "icon_color",
+            "type": "Color",
+            "displayName": "填充颜色",
+            "defaultValue": "#5DFBF9"
+          },
+          {
+            "name": "icon_symbol",
+            "displayName": "图标样式",
+            "type": "Image"
+          },
+          {
+            "name": "icon_size",
+            "displayName": "图标大小",
+            "type": "Integer",
+            "defaultValue": 400,
+            "step": 10,
+            "min": 0
+          },
+          {
+            "name": "r_icon_flash",
+            "displayName": "开启闪点",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "r_f_width",
+            "displayName": "闪点比率",
+            "type": "Float",
+            "defaultValue": 2
+          },
+          {
+            "name": "r_f_duration",
+            "displayName": "闪点周期",
+            "type": "Integer",
+            "defaultValue": 1000,
+            "step": 500,
+            "min": 0
+          },
+          {
+            "name": "icon_png",
+            "displayName": "闪点样式",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png",
+                "displayName": "红色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png",
+                "displayName": "黄色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/static/green.png",
+                "displayName": "蓝色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/static/orange.png",
+                "displayName": "橙色"
+              }
+            ],
+            "defaultValue": "https://a.amap.com/Loca/static/static/green.png"
+          },
+          {
+            "name": "customize_bubble",
+            "displayName": "自定义设置",
+            "type": "Collection",
+            "itemShape": [
+              {
+                "name": "num_interval",
+                "displayName": "数值区间",
+                "type": "Text",
+                "defaultValue": "(,1000)",
+                "regex": "^(\\[|\\()\\d*,\\d*(\\]|\\))$"
+              },
+              {
+                "name": "q_category",
+                "displayName": "地址",
+                "type": "Text",
+                "defaultValue": ""
+              },
+              {
+                "name": "q_color",
+                "type": "Color",
+                "displayName": "填充颜色",
+                "defaultValue": "#5DFBF9"
+              },
+              {
+                "name": "q_icon_size",
+                "displayName": "图标大小",
+                "type": "Integer",
+                "defaultValue": 400,
+                "min": 0
+              },
+              {
+                "name": "q_f_width",
+                "displayName": "闪点比率",
+                "type": "Float",
+                "defaultValue": 2
+              },
+              {
+                "name": "q_f_duration",
+                "displayName": "闪点周期",
+                "type": "Integer",
+                "defaultValue": 1000,
+                "step": 500,
+                "min": 0
+              },
+              {
+                "name": "q_icon_png",
+                "displayName": "闪点样式",
+                "type": "Enum",
+                "items": [
+                  {
+                    "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png",
+                    "displayName": "红色"
+                  },
+                  {
+                    "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png",
+                    "displayName": "黄色"
+                  },
+                  {
+                    "value": "https://a.amap.com/Loca/static/static/green.png",
+                    "displayName": "蓝色"
+                  },
+                  {
+                    "value": "https://a.amap.com/Loca/static/static/orange.png",
+                    "displayName": "橙色"
+                  }
+                ],
+                "defaultValue": "https://a.amap.com/Loca/static/static/green.png"
+              }
+            ],
+            "defaultValue": []
+          }
+        ]
+      },
+      {
+        "displayName": "标签设置",
+        "properties": [
+          {
+            "name": "t_title",
+            "displayName": "开启标签提示",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "title_type",
+            "displayName": "标签类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "simp",
+                "displayName": "简单标签"
+              },
+              {
+                "value": "plex",
+                "displayName": "高级标签"
+              },
+              {
+                "value": "bar",
+                "displayName": "柱状图"
+              }
+            ],
+            "defaultValue": "simp"
+          },
+          {
+            "name": "label_head_show",
+            "displayName": "显示标签",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "t_showNumber",
+            "displayName": "显示数值",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "t_TextStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle"
+          },
+          {
+            "name": "t_tb",
+            "displayName": "标签上下偏移",
+            "type": "Integer",
+            "defaultValue": -50
+          },
+          {
+            "name": "t_lr",
+            "displayName": "标签左右偏移",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "label_head_bg_image",
+            "type": "Image",
+            "displayName": "标签背景图"
+          },
+          {
+            "name": "label_head_size_w",
+            "displayName": "标签宽度",
+            "type": "Integer",
+            "defaultValue": 100,
+            "min": 100
+          },
+          {
+            "name": "label_head_size_h",
+            "displayName": "标签高度",
+            "type": "Integer",
+            "defaultValue": 30,
+            "min": 0
+          },
+          {
+            "name": "label_head_pixel_x",
+            "displayName": "标签左右偏移",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "label_head_pixel_y",
+            "displayName": "标签上下偏移",
+            "type": "Integer",
+            "defaultValue": -20
+          },
+          {
+            "name": "label_head_margin_left",
+            "displayName": "文字左右偏移",
+            "type": "Integer",
+            "defaultValue": 10
+          },
+          {
+            "name": "label_head_margin_top",
+            "displayName": "文字上下偏移",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "mark_icon_image",
+            "type": "Image",
+            "displayName": "柱体图片"
+          },
+          {
+            "name": "mark_icon_size_w",
+            "displayName": "柱体宽度",
+            "type": "Integer",
+            "defaultValue": 55
+          },
+          {
+            "name": "mark_icon_size_h",
+            "displayName": "柱体高度",
+            "type": "Integer",
+            "defaultValue": 40
+          },
+          {
+            "name": "mark_offset",
+            "displayName": "图标偏移",
+            "type": "Text",
+            "defaultValue": "[0,0]",
+            "regex": "[\\[](0|[1-9][0-9]*|-[1-9][0-9]*)[,](0|[1-9][0-9]*|-[1-9][0-9]*)[\\]]"
+          },
+          {
+            "name": "scat_bg_show",
+            "displayName": "显示底图",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "title_unit",
+            "displayName": "长度单位",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "px",
+                "displayName": "px"
+              },
+              {
+                "value": "meter",
+                "displayName": "米"
+              }
+            ],
+            "defaultValue": "px"
+          },
+          {
+            "name": "scat_bg_image",
+            "type": "Image",
+            "displayName": "底部图片"
+          },
+          {
+            "name": "scat_bg_size_w",
+            "displayName": "底图宽度",
+            "type": "Integer",
+            "defaultValue": 90
+          },
+          {
+            "name": "scat_bg_size_h",
+            "displayName": "底图高度",
+            "type": "Integer",
+            "defaultValue": 90
+          },
+          {
+            "name": "scat_bg_altitude",
+            "displayName": "海拔高度",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "scat_bg_duration",
+            "displayName": "轮播周期",
+            "type": "Integer",
+            "defaultValue": 2000
+          },
+          {
+            "name": "p_rolling",
+            "displayName": "显示标签",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "p_title_TextStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle",
+            "defaultValue": {
+              "fontSize": "10pt"
+            }
+          },
+          {
+            "name": "p_border_radius",
+            "displayName": "标签弧度",
+            "type": "Integer",
+            "defaultValue": 5
+          },
+          {
+            "name": "p_bg_color_bor",
+            "type": "Color",
+            "displayName": "边框颜色",
+            "defaultValue": "rgba(221, 221, 221, 0.8)"
+          },
+          {
+            "name": "p_bg_color",
+            "type": "Color",
+            "displayName": "标签背景色",
+            "defaultValue": "rgba(221, 221, 221, 0.42)"
+          },
+          {
+            "name": "p_height",
+            "displayName": "棱柱高度",
+            "type": "Integer",
+            "defaultValue": 3000,
+            "step": 10,
+            "min": 10
+          },
+          {
+            "name": "pr_radius",
+            "displayName": "棱柱半径",
+            "type": "Integer",
+            "defaultValue": 400,
+            "min": 1
+          },
+          {
+            "name": "p_sideNumber",
+            "displayName": "棱柱边数",
+            "type": "Integer",
+            "defaultValue": 6,
+            "step": 1,
+            "min": 3,
+            "max": 100
+          },
+          {
+            "name": "p_opacity",
+            "displayName": "棱柱透明度",
+            "type": "Integer",
+            "defaultValue": 100,
+            "min": 1,
+            "max": 100
+          },
+          {
+            "name": "p_topColor",
+            "type": "Color",
+            "displayName": "顶部填充色",
+            "defaultValue": "#189393"
+          },
+          {
+            "name": "p_sideTopColor_1",
+            "type": "Color",
+            "displayName": "棱柱填充色",
+            "defaultValue": "#70e984"
+          },
+          {
+            "name": "p_sideBottomColor",
+            "type": "Color",
+            "displayName": "底部填充色",
+            "defaultValue": "#15e1e1"
+          },
+          {
+            "name": "c_customize_show",
+            "displayName": "自定义设置",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "c_TextStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle",
+            "defaultValue": {
+              "fontSize": "10pt"
+            }
+          },
+          {
+            "name": "customize_bubble_title",
+            "displayName": "自定义设置",
+            "type": "Collection",
+            "itemShape": [
+              {
+                "name": "q_category",
+                "displayName": "地址",
+                "type": "Text",
+                "defaultValue": ""
+              },
+              {
+                "name": "label_head_show",
+                "displayName": "显示标签",
+                "type": "Boolean",
+                "defaultValue": true
+              },
+              {
+                "name": "label_head_bg_image",
+                "type": "Image",
+                "displayName": "标签背景图"
+              },
+              {
+                "name": "label_head_size_w",
+                "displayName": "标签宽度",
+                "type": "Integer",
+                "defaultValue": 100,
+                "min": 100
+              },
+              {
+                "name": "label_head_size_h",
+                "displayName": "标签高度",
+                "type": "Integer",
+                "defaultValue": 30,
+                "min": 0
+              },
+              {
+                "name": "label_head_pixel_y",
+                "displayName": "标签上下偏移",
+                "type": "Integer",
+                "defaultValue": -20
+              },
+              {
+                "name": "label_head_pixel_x",
+                "displayName": "标签左右偏移",
+                "type": "Integer",
+                "defaultValue": 0
+              },
+              {
+                "name": "label_head_margin_left",
+                "displayName": "文字左右偏移",
+                "type": "Integer",
+                "defaultValue": 10
+              },
+              {
+                "name": "label_head_margin_top",
+                "displayName": "文字上下偏移",
+                "type": "Integer",
+                "defaultValue": 0
+              },
+              {
+                "name": "mark_icon_image",
+                "type": "Image",
+                "displayName": "柱体图片"
+              },
+              {
+                "name": "mark_icon_size_w",
+                "displayName": "柱体宽度",
+                "type": "Integer",
+                "defaultValue": 55
+              },
+              {
+                "name": "mark_icon_size_h",
+                "displayName": "柱体高度",
+                "type": "Integer",
+                "defaultValue": 40
+              },
+              {
+                "name": "mark_offset",
+                "displayName": "图标偏移",
+                "type": "Text",
+                "defaultValue": "[0,0]",
+                "regex": "[\\[](0|[1-9][0-9]*|-[1-9][0-9]*)[,](0|[1-9][0-9]*|-[1-9][0-9]*)[\\]]"
+              },
+              {
+                "name": "scat_bg_show",
+                "displayName": "显示底图",
+                "type": "Boolean",
+                "defaultValue": false
+              },
+              {
+                "name": "scat_bg_image",
+                "type": "Image",
+                "displayName": "底部图片"
+              },
+              {
+                "name": "scat_bg_size_w",
+                "displayName": "底图宽度",
+                "type": "Integer",
+                "defaultValue": 90
+              },
+              {
+                "name": "scat_bg_size_h",
+                "displayName": "底图高度",
+                "type": "Integer",
+                "defaultValue": 90
+              },
+              {
+                "name": "scat_bg_altitude",
+                "displayName": "海拔高度",
+                "type": "Integer",
+                "defaultValue": 0
+              },
+              {
+                "name": "scat_bg_duration",
+                "displayName": "轮播周期",
+                "type": "Integer",
+                "defaultValue": 2000
+              }
+            ]
+          },
+          {
+            "name": "t_show",
+            "displayName": "鼠标提示",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "t_border",
+            "type": "Color",
+            "displayName": "边框颜色",
+            "defaultValue": "rgba(101, 108, 101, 0.84)"
+          },
+          {
+            "name": "t_border_px",
+            "displayName": "边框宽度",
+            "type": "Integer",
+            "defaultValue": 2
+          },
+          {
+            "name": "t_radius",
+            "displayName": "圆角角度",
+            "type": "Integer",
+            "defaultValue": 5
+          },
+          {
+            "name": "t_background",
+            "type": "Color",
+            "displayName": "提示框颜色",
+            "defaultValue": "rgba(101, 108, 101, 0.84)"
+          },
+          {
+            "name": "t_titleStyle",
+            "type": "TextStyle",
+            "displayName": "提示字体",
+            "inheritFrom": "dashboard.textStyle"
+          },
+          {
+            "name": "t_remain",
+            "displayName": "驻留时间",
+            "type": "Integer",
+            "defaultValue": 3000
+          }
+        ]
+      },
+      {
+        "displayName": "飞线设置",
+        "properties": [
+          {
+            "name": "line_show",
+            "displayName": "开启飞线",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "line_state",
+            "displayName": "线条类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "in",
+                "displayName": "飞入"
+              },
+              {
+                "value": "out",
+                "displayName": "飞出"
+              }
+            ],
+            "defaultValue": "out"
+          },
+          {
+            "name": "line_Lnglat",
+            "displayName": "飞线中心点",
+            "type": "Text",
+            "defaultValue": "北京市"
+          },
+          {
+            "name": "line_lineWidth_star",
+            "displayName": "起点宽度",
+            "type": "Integer",
+            "defaultValue": 10
+          },
+          {
+            "name": "line_lineWidth_end",
+            "displayName": "终点宽度",
+            "type": "Integer",
+            "defaultValue": 10
+          },
+          {
+            "name": "line_height",
+            "displayName": "飞线高度",
+            "type": "Integer",
+            "defaultValue": 1000
+          },
+          {
+            "name": "line_speed",
+            "displayName": "飞线速度",
+            "type": "Integer",
+            "defaultValue": 30
+          },
+          {
+            "name": "line_flowLength",
+            "displayName": "脉冲长度",
+            "type": "Integer",
+            "defaultValue": 40
+          },
+          {
+            "name": "line_headColor",
+            "type": "Color",
+            "displayName": "头部颜色",
+            "defaultValue": "#FF4F00"
+          },
+          {
+            "name": "line_trailColor",
+            "type": "Color",
+            "displayName": "尾部填充色",
+            "defaultValue": "rgba(255,79,0,0)"
+          },
+          {
+            "name": "line_lineColors",
+            "type": "Palette",
+            "displayName": "飞线颜色"
+          }
+        ]
+      },
+      {
+        "displayName": "终点设置",
+        "properties": [
+          {
+            "name": "f_title_show",
+            "displayName": "开启配置",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "e_title_type",
+            "displayName": "标签类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "simp",
+                "displayName": "简单标签"
+              },
+              {
+                "value": "plex",
+                "displayName": "高级标签"
+              }
+            ],
+            "defaultValue": "simp"
+          },
+          {
+            "name": "e_icon_type",
+            "displayName": "图标类型",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "PO",
+                "displayName": "圆点"
+              },
+              {
+                "value": "IMG",
+                "displayName": "自定义图标"
+              }
+            ],
+            "defaultValue": "PO"
+          },
+          {
+            "name": "e_icon_color",
+            "type": "Color",
+            "displayName": "填充颜色",
+            "defaultValue": "#5DFBF9"
+          },
+          {
+            "name": "e_icon_symbol",
+            "displayName": "图标样式",
+            "type": "Image"
+          },
+          {
+            "name": "e_icon_size",
+            "displayName": "图标大小",
+            "type": "Integer",
+            "defaultValue": 400,
+            "step": 10,
+            "min": 0
+          },
+          {
+            "name": "e_r_icon_flash",
+            "displayName": "开启闪点",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "e_r_f_width",
+            "displayName": "闪点比率",
+            "type": "Float",
+            "defaultValue": 2
+          },
+          {
+            "name": "e_r_f_duration",
+            "displayName": "闪点周期",
+            "type": "Integer",
+            "defaultValue": 1000,
+            "step": 500,
+            "min": 0
+          },
+          {
+            "name": "e_icon_png",
+            "displayName": "闪点样式",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_red.png",
+                "displayName": "红色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/loca-v2/demos/images/breath_yellow.png",
+                "displayName": "黄色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/static/green.png",
+                "displayName": "蓝色"
+              },
+              {
+                "value": "https://a.amap.com/Loca/static/static/orange.png",
+                "displayName": "橙色"
+              }
+            ],
+            "defaultValue": "https://a.amap.com/Loca/static/static/green.png"
+          },
+          {
+            "name": "f_TextStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle"
+          },
+          {
+            "name": "f_tb",
+            "displayName": "标签上下偏移",
+            "type": "Integer",
+            "defaultValue": -50
+          },
+          {
+            "name": "f_lr",
+            "displayName": "标签左右偏移",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "e_label_head_show",
+            "displayName": "显示标签",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "e_t_TextStyle",
+            "type": "TextStyle",
+            "displayName": "字体设置",
+            "inheritFrom": "dashboard.textStyle"
+          },
+          {
+            "name": "e_label_head_bg_image",
+            "type": "Image",
+            "displayName": "标签背景图"
+          },
+          {
+            "name": "e_label_head_size_w",
+            "displayName": "标签宽度",
+            "type": "Integer",
+            "defaultValue": 100,
+            "min": 100
+          },
+          {
+            "name": "e_label_head_size_h",
+            "displayName": "标签高度",
+            "type": "Integer",
+            "defaultValue": 30,
+            "min": 0
+          },
+          {
+            "name": "e_label_head_pixel_x",
+            "displayName": "标签左右偏移",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "e_label_head_pixel_y",
+            "displayName": "标签上下偏移",
+            "type": "Integer",
+            "defaultValue": -20
+          },
+          {
+            "name": "e_label_head_margin_left",
+            "displayName": "文字左右偏移",
+            "type": "Integer",
+            "defaultValue": 10
+          },
+          {
+            "name": "e_label_head_margin_top",
+            "displayName": "文字上下偏移",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "e_mark_icon_image",
+            "type": "Image",
+            "displayName": "柱体图片"
+          },
+          {
+            "name": "e_mark_icon_size_w",
+            "displayName": "柱体宽度",
+            "type": "Integer",
+            "defaultValue": 55
+          },
+          {
+            "name": "e_mark_icon_size_h",
+            "displayName": "柱体高度",
+            "type": "Integer",
+            "defaultValue": 40
+          },
+          {
+            "name": "e_mark_offset",
+            "displayName": "图标偏移",
+            "type": "Text",
+            "defaultValue": "[0,0]",
+            "regex": "[\\[](0|[1-9][0-9]*|-[1-9][0-9]*)[,](0|[1-9][0-9]*|-[1-9][0-9]*)[\\]]"
+          },
+          {
+            "name": "e_scat_bg_show",
+            "displayName": "显示底图",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "e_scat_bg_image",
+            "type": "Image",
+            "displayName": "底部图片"
+          },
+          {
+            "name": "e_scat_bg_size_w",
+            "displayName": "底图宽度",
+            "type": "Integer",
+            "defaultValue": 90
+          },
+          {
+            "name": "e_scat_bg_size_h",
+            "displayName": "底图高度",
+            "type": "Integer",
+            "defaultValue": 90
+          },
+          {
+            "name": "e_scat_bg_altitude",
+            "displayName": "海拔高度",
+            "type": "Integer",
+            "defaultValue": 0
+          },
+          {
+            "name": "e_scat_bg_duration",
+            "displayName": "轮播周期",
+            "type": "Integer",
+            "defaultValue": 2000
+          }
+        ]
+      },
+      {
+        "displayName": "区域掩模设置",
+        "properties": [
+          {
+            "name": "pr_show",
+            "displayName": "开启设置",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "pr_areaName",
+            "displayName": "区域名称",
+            "type": "Text",
+            "defaultValue": "中国"
+          },
+          {
+            "name": "amb_show",
+            "displayName": "开启光照",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "amb_intensity",
+            "displayName": "环境光强度",
+            "type": "Integer",
+            "defaultValue": 30,
+            "min": 0,
+            "max": 100
+          },
+          {
+            "name": "amb_color",
+            "type": "Color",
+            "displayName": "环境光颜色",
+            "defaultValue": "#fff"
+          },
+          {
+            "name": "dir_intensity",
+            "displayName": "平行光强度",
+            "type": "Integer",
+            "defaultValue": 60,
+            "min": 0,
+            "max": 100
+          },
+          {
+            "name": "dir_color",
+            "type": "Color",
+            "displayName": "平行光颜色",
+            "defaultValue": "#ffffff"
+          },
+          {
+            "name": "dir_target",
+            "displayName": "光照位置",
+            "type": "Text",
+            "defaultValue": "0, 0, 0"
+          },
+          {
+            "name": "dir_position",
+            "displayName": "坐标位置",
+            "type": "Text",
+            "defaultValue": "0,-1,1"
+          },
+          {
+            "name": "opt_topColor",
+            "type": "Color",
+            "displayName": "顶面颜色 ",
+            "defaultValue": "rgba(168, 245, 190, 0.07)"
+          },
+          {
+            "name": "opt_bottomColor",
+            "type": "Color",
+            "displayName": "底面颜色 ",
+            "defaultValue": "rgba(168, 245, 190, 0)"
+          },
+          {
+            "name": "opt_sideTopColor",
+            "type": "Color",
+            "displayName": "侧面顶部颜色 ",
+            "defaultValue": "#3ca5b0"
+          },
+          {
+            "name": "opt_sideBottomColor",
+            "type": "Color",
+            "displayName": "侧面底部颜色 ",
+            "defaultValue": "rgba(125, 237, 242, 0.64)"
+          },
+          {
+            "name": "opt_altitude",
+            "displayName": "海拔高度",
+            "type": "Integer",
+            "defaultValue": -60000
+          },
+          {
+            "name": "opt_height",
+            "displayName": "棱柱高度",
+            "type": "Integer",
+            "defaultValue": 60000
+          },
+          {
+            "name": "pr_mask",
+            "displayName": "开启掩模",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "poly_cover",
+            "displayName": "开启遮罩",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "poly_fillColor",
+            "type": "Color",
+            "displayName": "填充色 ",
+            "defaultValue": "rgba(204, 204, 204, 0.2)"
+          },
+          {
+            "name": "pr_poly",
+            "displayName": "显示区域轮廓",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "pr_Color",
+            "type": "Color",
+            "displayName": "轮廓颜色",
+            "defaultValue": "#00ffff"
+          },
+          {
+            "name": "pr_strokeWeight",
+            "displayName": "轮廓宽度",
+            "type": "Integer",
+            "defaultValue": 1
+          },
+          {
+            "name": "pr_outlineColor",
+            "type": "Color",
+            "displayName": "描边颜色",
+            "defaultValue": "#00ffff"
+          },
+          {
+            "name": "pr_borderWeight",
+            "displayName": "描边宽度",
+            "type": "Integer",
+            "defaultValue": 1
+          },
+          {
+            "name": "pr_strokeStyle",
+            "displayName": "轮廓线样式",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "solid",
+                "displayName": "实线"
+              },
+              {
+                "value": "dashed",
+                "displayName": "虚线"
+              }
+            ],
+            "defaultValue": "solid"
+          }
+        ]
+      },
+      {
+        "displayName": "子区域设置",
+        "properties": [
+          {
+            "name": "am_display",
+            "displayName": "子区域绘制",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "am_strokeColor",
+            "type": "Color",
+            "displayName": "边线颜色",
+            "defaultValue": "#999999"
+          },
+          {
+            "name": "am_bg_fill_bol",
+            "displayName": "开启颜色填充",
+            "type": "Boolean",
+            "defaultValue": true
+          },
+          {
+            "name": "am_bg_fill_color",
+            "displayName": "地图填充色",
+            "type": "Palette",
+            "defaultValue": "dashboard.palette"
+          },
+          {
+            "name": "am_fillOpacity",
+            "displayName": "填充透明度",
+            "type": "Integer",
+            "defaultValue": 30,
+            "max": 100,
+            "min": 0
+          },
+          {
+            "name": "am_hover_fillOpacity",
+            "displayName": "选中透明度",
+            "type": "Integer",
+            "defaultValue": 50,
+            "max": 100,
+            "min": 0
+          }
+        ]
+      },
+      {
+        "displayName": "区域钻取",
+        "properties": [
+          {
+            "name": "area_group_type",
+            "displayName": "数据聚合方式",
+            "type": "Enum",
+            "items": [
+              {
+                "value": "0",
+                "displayName": "无"
+              },
+              {
+                "value": "1",
+                "displayName": "省级"
+              },
+              {
+                "value": "2",
+                "displayName": "省市级"
+              },
+              {
+                "value": "3",
+                "displayName": "省市区级"
+              }
+            ],
+            "defaultValue": "0"
+          },
+          {
+            "name": "area_drill_down",
+            "displayName": "显示导航",
+            "type": "Boolean",
+            "defaultValue": false
+          },
+          {
+            "name": "area_bt_top",
+            "displayName": "导航上边距",
+            "type": "Integer",
+            "defaultValue": 1,
+            "max": 100,
+            "min": 0
+          },
+          {
+            "name": "area_bt_left",
+            "displayName": "导航左边距",
+            "type": "Integer",
+            "defaultValue": 1,
+            "max": 100,
+            "min": 0
+          },
+          {
+            "name": "area_bt_border",
+            "type": "Color",
+            "displayName": "导航边线颜色",
+            "defaultValue": "#c9c0c0"
+          },
+          {
+            "name": "area_bt_TextStyle",
+            "type": "TextStyle",
+            "displayName": "导航字体设置",
+            "inheritFrom": "dashboard.textStyle"
+          },
+          {
+            "name": "area_bg_color",
+            "type": "Color",
+            "displayName": "导航背景色",
+            "defaultValue": "rgba(128, 128, 128, 0.3)"
+          },
+          {
+            "name": "area_bg_hv_color",
+            "type": "Color",
+            "displayName": "导航选中色",
+            "defaultValue": "rgba(128, 128, 128, 0.1)"
+          },
+          {
+            "name": "area_border_color",
+            "type": "Color",
+            "displayName": "导航选中色",
+            "defaultValue": "#999999"
+          }
+        ]
+      },
+      {
+        "type": "title"
+      },
+      {
+        "type": "interaction"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "type": "focus"
+    },
+    {
+      "type": "export"
+    },
+    {
+      "type": "filter"
+    },
+    {
+      "type": "convertVisual"
+    },
+    {
+      "type": "annotation"
+    }
+  ],
+  "analysis": []
+}

@@ -105,13 +105,16 @@
                         "defaultValue": ""
                     }
                 ]
+            },
+            {
+                "type": "interaction"
             }
         ]
     },
     "actions": [
         {
             "type": "focus"
-        },
+        },    
         {
             "type": "annotation"
         }

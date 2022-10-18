@@ -1,0 +1,204 @@
+#container{
+  height:100%;
+  width:100%;
+}
+
+.sp_top {
+  font-size: 16px;
+  line-height: 13px;
+}
+
+.sp_en {
+  height: 14px;
+  line-height: 13px;
+  font-size: 15px;
+}
+
+.box-cent {
+  margin: 10px 20px;
+  display: none;
+}
+
+.box {
+  float: left;
+  height: 120px;
+  width: 220px;
+  color: #ffffff;
+  background-color: #0c2635;
+}
+
+.amap-info-content{
+  background-color: rgba(101, 108, 101, 0.84);
+  padding: 5px;
+
+}
+.amap-info-close{
+  display: block;
+}
+.bottom-center .amap-info-sharp{
+  border-top: 8px solid rgba(101, 108, 101, 0.84);
+}
+
+.content-window-card{
+  position: relative;
+  background-color: rgba(101, 108, 101, 0.84);
+  max-width: 20rem;
+  min-width: 13rem;
+  padding: 0.7rem;
+  box-shadow: none;
+  bottom: 0;
+  left: 0;
+}
+
+.content-window-card p{
+  height: 2rem;
+}
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.input-title{
+  font-weight:bold;
+}
+.input-item{
+}
+.hr{
+  position: relative;
+  top: -5px;
+
+}
+
+.amap-marker-label {  border: 0;  text-align:center;  background-color: transparent;}
+
+.sim-button{
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 125px;
+  margin: 5px;
+  cursor: pointer;
+  float: left;
+}
+.sim-button-t{
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 125px;
+  margin: 3px;
+  cursor: pointer;
+  float: left;
+}
+.button28 {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  position: relative;
+}
+.button28 span{
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  padding: 10px;
+}
+.button28 a{
+  text-decoration: none;
+  display: block;
+}
+.button28::before{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-top-color:rgb(190, 185, 185);
+  border-bottom-color: rgba(190, 185, 185, 0.08);
+  -webkit-transform: scale(0.1, 1);
+  transform: scale(0.1, 1);
+
+}
+.button28:hover span{
+  letter-spacing: 2px;
+}
+.button28:hover::before{
+  opacity: 1;
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
+
+}
+.button28::after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  background-color: rgba(138, 133, 133, 0.25);
+
+}
+.button28:hover::after{
+  opacity: 0;
+  -webkit-transform: scale(0.1, 1);
+  transform: scale(0.1, 1);
+}
+#loadingTip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: #0c2635
+}
+
+.tipMarker{
+  color:#555;
+  background-color:rgba(255,254,239,0.8);
+  border:1px solid #7E7E7E;
+  padding:2px 6px;
+  font-size:12px;
+  white-space:nowrap;
+  display:inline-block;
+}
+.tipMarker:before,
+.tipMarker:after{
+  content:'';
+  display:block;
+  position:absolute;
+  margin:auto;
+  width:0;
+  height:0;
+  border:solid transparent;
+  border-width:5px 5px;
+}
+.tipMarker.top{
+  transform:translate(-50%,-110%);
+}
+.tipMarker.top:before,
+.tipMarker.top:after{
+  bottom:-9px;
+  left:0;
+  right:0;
+  border-top-color:rgba(255,254,239,0.8);
+}
+.tipMarker.top:before{
+  bottom:-10px;
+  border-top-color:#7E7E7E;
+}
